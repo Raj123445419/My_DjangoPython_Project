@@ -1,0 +1,433 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>index</title>
+
+
+<!-- Latest compiled and minified CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Latest compiled JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@200..900&display=swap" rel="stylesheet">
+
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+
+
+
+.f1 {
+  font-family: "Inconsolata", monospace;
+  font-optical-sizing: auto;
+  font-weight: 20px;
+  font-style: normal;
+  font-variation-settings:"wdth" 100;
+  font-size:26px;
+}
+
+
+.img1 {
+background-image: url(../static/img/new.webp);
+height:729px ;
+width: 100%;
+background-position: center;
+background-repeat: no-repeat;
+background-size: cover;
+}
+
+
+.f2 {
+  font-family: "Inconsolata", monospace;
+  font-optical-sizing: auto;
+  font-weight: 20px;
+  font-style: normal;
+  font-variation-settings:"wdth" 100;
+  font-size:24px;
+}
+
+.f3 {
+  font-family: "Inconsolata", monospace;
+  font-optical-sizing: auto;
+  font-weight: 20px;
+  font-style: normal;
+  font-variation-settings:"wdth" 100;
+  font-size:60px;
+}
+
+.cl1{
+  color: #1eb1be
+}
+
+.cl1:hover{
+  color: rgb(190, 145, 19)
+}
+
+
+.cl2{
+  color: #57092ce3
+}
+
+
+
+.bt{
+height: 50px;
+font-size: 24px;
+background-color: #1e87bee0;
+color: #57092ce3;
+
+}
+
+.bt:hover{
+background-color: rgba(1, 167, 162, 0.833);
+color: rgb(21, 0, 125);
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.alert-box{
+    position: fixed;
+    top: 90px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+.myalert:hover{
+    transform: translateY(-4px);
+}
+
+@keyframes topdown{
+
+    from{
+        opacity:0;
+        transform: translateY(-40px);
+    }
+
+    to{
+        opacity:1;
+        transform: translateY(0px);
+    }
+
+}
+
+
+
+.myalert{
+
+    background:  #08d0d393 !important;
+    color: #01143f !important;
+
+    border-radius: 15px;
+
+    width: 100%;
+    max-width: 800px;
+
+    padding: 18px;
+
+    font-family: "Merienda", cursive;
+    font-weight: 100;
+    font-size: 20px;
+
+    box-shadow: 0px 5px 20px rgba(0,0,0,0.3);
+
+    animation: topdown 0.5s ease;
+    transition: 0.4s;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</style>
+
+
+
+
+<body>
+    
+
+
+<div class="col-md-12 img1 ">
+
+
+
+
+<nav class="navbar navbar-expand-sm col-md-12" style="background-color: #065a5e38;height: 73px;">
+
+  <div class="container-fluid">
+
+    <a class="navbar-brand" href="/">
+ <span class="f1 cl1"> My Anime book </span>
+    </a>
+
+
+
+
+{% if request.session.fullname %}
+
+<li class="nav-item ms-auto ms-md-1">
+
+<a href="#"
+class="nav-link f2 cl1 d-flex justify-content-center align-items-center"
+style="border:2px solid #1eb1be;
+       border-radius:50%;
+       width:38px;
+       height:38px;
+       font-size:20px;">
+
+{{ request.session.fullname|slice:":1"|upper }}{{ request.session.fullname.split|last|slice:":1"|upper }}
+
+</a>
+
+</li>
+
+{% endif %}
+
+
+
+
+
+
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  
+    <div class="collapse navbar-collapse justify-content-end container" style="height: 55px;" id="collapsibleNavbar">
+      <ul class="navbar-nav ">
+        <li class="nav-item">
+          <a class="nav-link f2 cl1" href="/Home/">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link f2 cl1" href="/Shop/">Shop</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link f2 cl1" href="/Aboutus/">About us</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link f2 cl1" href="/Contect/">Contect</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link f2 cl1" href="/Account/">Account</a>
+        </li>
+
+
+<!-- Cart Icon -->
+<li class="nav-item d-flex align-items-center">
+  <a class="nav-link cl1" href="/Cart/">
+    <i class="fa fa-cart-plus"
+       aria-hidden="true"
+       style="font-size:28px;"></i>
+  </a>
+</li>
+
+
+
+{% if request.session.fullname %}
+
+<!-- Logout Button -->
+<li class="nav-item ms-2">
+  <a class="nav-link f2 cl1"
+     href="/Logout/"
+     style="border:2px solid #1eb1be;
+            border-radius:8px;
+            padding:5px 14px;
+            font-size:22px;">
+    Log Out
+  </a>
+</li>
+
+{% else %}
+
+<!-- Login Button -->
+<li class="nav-item ms-2">
+  <a class="nav-link f2 cl1"
+     href="/Account/"
+     style="border:2px solid #1eb1be;
+            border-radius:8px;
+            padding:5px 14px;
+            font-size:22px;">
+    Log In
+  </a>
+</li>
+
+{% endif %}
+
+
+
+
+
+
+
+
+
+
+
+
+      </ul>
+    </div>
+
+
+
+
+
+  </div>
+
+
+
+</nav>
+
+
+
+
+
+<!--  -->
+  <center>
+<div class="alert-box col-md-12">
+
+{% for message in messages %}
+
+<div class="btw alert alert-{{message.tags}} alert-dismissible show myalert">
+    
+    {{ message }}
+
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+
+</div>
+
+{% endfor %}
+
+</div>
+  </center>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="col-md-12 d-flex justify-content-center align-items-end" style="height: 328px;">
+
+<span class="f3 cl2">My Anime World</span>
+
+</div>
+
+<center>
+
+   <a href="Home" style="text-decoration: none;" class="btn bt col-md-2"> Enten in Anime Book</a>
+
+</center>
+
+
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--  -->
+
+<script>
+
+setTimeout(function(){
+
+    let alerts = document.querySelectorAll('.myalert');
+
+    alerts.forEach(function(alert){
+
+        alert.style.opacity = "0";
+        alert.style.transform = "translateY(-20px)";
+
+        setTimeout(function(){
+            alert.remove();
+        },500);
+
+    });
+
+},5000);
+
+</script>
+
+<!--  -->
+</body>
+</html>

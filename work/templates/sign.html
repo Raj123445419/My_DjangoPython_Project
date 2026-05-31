@@ -1,0 +1,1336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign up</title>
+    <!-- Latest compiled and minified CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Latest compiled JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+
+
+<!-- nav bar -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@200..900&display=swap" rel="stylesheet">
+<!--  -->
+
+
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Merienda:wght@300..900&display=swap" rel="stylesheet">
+
+<!-- form -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chewy&display=swap" rel="stylesheet">
+
+
+
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Merienda:wght@300..900&display=swap" rel="stylesheet">
+
+
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+
+
+
+
+<style>
+ /* nav bar */
+.cl1{
+  color: #1eb1be
+}
+
+.cl1:hover{
+  color: rgb(190, 145, 19)
+}
+
+.f1 {
+  font-family: "Inconsolata", monospace;
+  font-optical-sizing: auto;
+  font-weight: 20px;
+  font-style: normal;
+  font-variation-settings:"wdth" 100;
+  font-size:26px;
+}
+.f2 {
+  font-family: "Inconsolata", monospace;
+  font-optical-sizing: auto;
+  font-weight: 20px;
+  font-style: normal;
+  font-variation-settings:"wdth" 100;
+  font-size:24px;
+}
+/* nav end */
+
+
+
+
+.sin {
+background-image: url(../static/img/sn.webp);
+height:auto ;
+width: 100%;
+background-position: center;
+background-repeat: no-repeat;
+background-size: cover;
+}
+
+
+.ff1 {
+  font-family: "Merienda", cursive;
+  font-optical-sizing: auto;
+  font-weight:100;
+  font-style: normal;
+}
+
+
+.ff2 {
+  font-family: "Chewy", system-ui;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.sub{
+    background-color: #590902;
+    color: #e10a0ab3;
+}
+
+.sub:hover{
+    background-color: #e10a0ab3;
+    color: #590902;
+}
+
+.cl3 {
+  color: white;
+}
+
+.cl3:hover {
+  color: rgb(211, 27, 27);
+}
+
+
+
+
+
+
+
+.alert-box{
+    position: fixed;
+    top: 90px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+.myalert:hover{
+    transform: translateY(-4px);
+}
+
+@keyframes topdown{
+
+    from{
+        opacity:0;
+        transform: translateY(-40px);
+    }
+
+    to{
+        opacity:1;
+        transform: translateY(0px);
+    }
+
+}
+
+
+
+.myalert{
+
+    background:  #08d0d393 !important;
+    color: #01143f !important;
+
+    border-radius: 15px;
+
+    width: 100%;
+    max-width: 800px;
+
+    padding: 18px;
+
+    font-family: "Merienda", cursive;
+    font-weight: 100;
+    font-size: 20px;
+
+    box-shadow: 0px 5px 20px rgba(0,0,0,0.3);
+
+    animation: topdown 0.5s ease;
+    transition: 0.4s;
+}
+
+/*  */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* MODAL BACKGROUND BLUR */
+.modal-content{
+    background: rgba(10,10,10,0.88) !important;
+    backdrop-filter: blur(12px);
+    border: 2px solid rgba(0,255,255,0.3) !important;
+    border-radius: 22px !important;
+    overflow: hidden;
+    box-shadow:
+    0 0 20px rgba(0,255,255,0.2),
+    0 0 40px rgba(255,0,255,0.15);
+}
+
+/* RESPONSIVE WIDTH */
+.modal-dialog{
+    max-width: 650px;
+    width: 95%;
+}
+
+/* MODAL HEIGHT */
+.modal-body{
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+/* BACKGROUND IMAGE */
+.modal-content::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background-image:url('../static/img/con1.png');
+    background-size:cover;
+    background-position:center;
+    opacity:0.12;
+    z-index:-1;
+}
+
+/* TITLE */
+.popup-title{
+    color:#fff;
+    font-size:32px;
+    font-weight:700;
+    letter-spacing:1px;
+    text-shadow:0 0 10px cyan;
+}
+
+/* OPTION BUTTONS */
+.popup-btn{
+    width:100%;
+    border:none;
+    padding:16px;
+    border-radius:14px;
+    background:linear-gradient(135deg,#071b2a,#0d3b52);
+    color:white;
+    font-size:18px;
+    font-weight:600;
+    transition:0.4s;
+    margin-bottom:15px;
+    border:1px solid rgba(0,255,255,0.2);
+}
+
+.popup-btn:hover{
+    transform:translateY(-4px) scale(1.02);
+    background:linear-gradient(135deg,#00bcd4,#0077ff);
+    color:white;
+    box-shadow:
+    0 0 15px rgba(0,255,255,0.6),
+    0 0 30px rgba(0,119,255,0.4);
+}
+
+/* DELETE BUTTON */
+.delete-btn{
+    background:linear-gradient(135deg,#7a0000,#ff0000);
+}
+
+.delete-btn:hover{
+    background:linear-gradient(135deg,#ff0000,#ff4d4d);
+    box-shadow:
+    0 0 15px rgba(255,0,0,0.6),
+    0 0 30px rgba(255,0,0,0.4);
+}
+
+/* INPUTS */
+.form-control{
+    background:rgba(255,255,255,0.08) !important;
+    border:1px solid rgba(255,255,255,0.2) !important;
+    color:white !important;
+    border-radius:14px !important;
+    padding:14px !important;
+    font-size:17px;
+    transition:0.3s;
+}
+
+.form-control:focus{
+    border:1px solid cyan !important;
+    box-shadow:0 0 15px rgba(0,255,255,0.5) !important;
+    background:rgba(255,255,255,0.12) !important;
+}
+
+/* PLACEHOLDER */
+.form-control::placeholder{
+    color:#cfcfcf;
+}
+
+/* TEXTAREA */
+.suggestion-box{
+    resize:none;
+}
+
+/* FOOTER BUTTONS */
+.modal-footer .btn{
+    border-radius:12px;
+    padding:10px 25px;
+    font-size:18px;
+    transition:0.3s;
+}
+
+.modal-footer .btn-secondary:hover{
+    transform:scale(1.05);
+}
+
+.modal-footer .btn-danger:hover{
+    transform:scale(1.05);
+    box-shadow:0 0 20px rgba(255,0,0,0.5);
+}
+
+/* CLOSE BUTTON */
+.btn-close{
+    filter:invert(1);
+}
+
+/* MOBILE RESPONSIVE */
+@media(max-width:768px){
+
+    .popup-title{
+        font-size:24px;
+    }
+
+    .popup-btn{
+        font-size:15px;
+        padding:13px;
+    }
+
+    .modal-dialog{
+        width:95%;
+        margin:auto;
+    }
+
+    .modal-body{
+        max-height:65vh;
+    }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* footer */
+
+.foot{
+background-image: url(../static/img/f.png);
+height: auto ;
+width: 100%;
+background-position: center;
+background-repeat: no-repeat;
+background-size: cover;
+background-color: #08d1d3;
+}
+/*  */
+</style>
+
+
+</head>
+<body>
+ <!-- nav start -->
+<nav class="navbar navbar-expand-sm col-md-12" style="background-color: #450065;height: 73px;z-index: 10">
+
+  <div class="container-fluid" style="background-color: #450065">
+
+    <a class="navbar-brand" href="/">
+ <span class="f1 cl1"> My Anime book </span>
+    </a>
+
+
+
+{% if request.session.fullname %}
+
+<li class="nav-item ms-auto ms-md-1">
+
+<a href="#"
+class="nav-link f2 cl1 d-flex justify-content-center align-items-center"
+style="border:2px solid #1eb1be;
+       border-radius:50%;
+       width:38px;
+       height:38px;
+       font-size:20px;">
+
+{{ request.session.fullname|slice:":1"|upper }}{{ request.session.fullname.split|last|slice:":1"|upper }}
+
+</a>
+
+</li>
+
+{% endif %}
+
+
+
+
+
+
+
+
+
+
+
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  
+    <div class="collapse navbar-collapse justify-content-end container" style="height: 55px;" id="collapsibleNavbar">
+      <ul class="navbar-nav ">
+        <li class="nav-item">
+          <a class="nav-link f2 cl1" href="/Home/">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link f2 cl1" href="/Shop/">Shop</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link f2 cl1" href="/Aboutus/">About us</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link f2 cl1" href="/Contect/">Contect</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link f2 cl1" href="/Account/">Account</a>
+        </li>
+        <!--  -->
+
+<!-- Cart Icon -->
+<li class="nav-item d-flex align-items-center">
+  <a class="nav-link cl1" href="/Cart/">
+    <i class="fa fa-cart-plus"
+       aria-hidden="true"
+       style="font-size:28px;"></i>
+  </a>
+</li>
+
+
+
+
+{% if request.session.fullname %}
+
+<!-- Logout Button -->
+<li class="nav-item ms-2">
+  <a class="nav-link f2 cl1"
+     href="/Logout/"
+     style="border:2px solid #1eb1be;
+            border-radius:8px;
+            padding:5px 14px;
+            font-size:22px;">
+    Log Out
+  </a>
+</li>
+
+{% else %}
+
+<!-- Login Button -->
+<li class="nav-item ms-2">
+  <a class="nav-link f2 cl1"
+     href="/Account/"
+     style="border:2px solid #1eb1be;
+            border-radius:8px;
+            padding:5px 14px;
+            font-size:22px;">
+    Log In
+  </a>
+</li>
+
+{% endif %}
+
+
+
+
+
+
+      </ul>
+    </div>
+<!--  -->
+  </div>
+<!--  -->
+<!--  -->
+</nav>
+<!-- nav end -->
+<!--  -->
+<!--  -->   
+  <center>
+<div class="alert-box col-md-12">
+
+{% for message in messages %}
+
+<div class="btw alert alert-{{message.tags}} alert-dismissible show myalert">
+    
+    {{ message }}
+
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+
+</div>
+
+{% endfor %}
+
+</div>
+  </center>
+
+
+
+
+
+
+
+
+
+
+<div class="col-md-12 sin">
+<div class="col-md-12" style="height: 100%;background-color: #01285446;">
+<div class="container">   
+<div class="row">
+<div class="col-md-3 h-100 col-0"></div>
+<!--  -->
+<!--  -->
+<!--  -->
+
+
+<div class="col-md-6 mt-5 mb-5 rounded-3" style="border: 2px solid black;box-shadow: 20px 20px 20px 15px rgba(109, 7, 2, 0.575)">
+<div class="row">
+<div class="col-md-2"></div>
+<!--  -->
+
+<div class="col-md-8">
+
+
+<span class="ff1" style="font-size: 60px;color: #11de96dd;"> Sing Up </span>
+
+<form action="/sipage/" method="post" class="mt-4">
+  {% csrf_token %}
+<!--  -->
+<span class="ff2 text-light" style="font-size: 25px;"> Full Name <span style="color: red;">*</span> </span>    <br>  
+<input type="text" name="funame" class="mt-2 mb-3 rounded-2 col-md-12 col-10 ff2" style="border: none;height: 40px;font-size: 20px;">     <br>  
+
+<!-- mmm -->
+<div class="col-md-12">
+  <div class="row">
+<!--  -->
+<div class="col-md-6 col-6">
+ <!--  -->
+<span class="ff2 text-light" style="font-size: 25px;"> Age <span style="color: red;">*</span> </span>    <br>  
+<input type="number" name="age" class=" mt-2 mb-3 rounded-2 col-md-12 col-12 ff2" style="border: none;height: 40px;font-size: 20px;">  
+</div>
+
+<div class="col-md-6 col-6">
+ <!--  -->
+<span class="ff2 text-light" style="font-size: 25px;"> Country <span style="color: red;">*</span> </span>    <br>  
+<input type="text" name="contur" class="mt-2 mb-3 rounded-2 col-md-12 col-12 ff2" style="border: none;height: 40px;font-size: 20px;">  
+
+</div>
+<!-- -->
+
+</div>
+</div>
+
+
+<!--  -->
+<span class="ff2 text-light" style="font-size: 25px;"> Email <span style="color: red;">*</span> </span>    <br>  
+<input type="Email" name="email" class="mt-2 mb-3 rounded-2 col-md-12 col-10 ff2" style="border: none;height: 40px;font-size: 20px;">          <br>        
+ <!--  -->
+<span class="ff2 text-light" style="font-size: 25px;"> Password <span style="color: red;">*</span> </span>    <br>  
+<input type="password" name="password" class="mt-2 mb-3 rounded-2 col-md-12 col-10 ff2" style="border: none;height: 40px;font-size: 20px;">          <br>          
+ <!--  -->
+<span class="ff2 text-light" style="font-size: 25px;"> Phon Number <span style="color: red;">*</span> </span>    <br>  
+<input type="Number" name="phnumber" class="mt-2 mb-3 rounded-2 col-md-12 col-10 ff2" style="border: none;height: 40px;font-size: 20px;">          <br>                            
+        
+<center>
+ <button type="submit" class="btn ff2 sub col-md-6 mt-3 mb-3" style="font-size: 30px"> submit </button>      
+<br>
+<a href="/Account/" class="ff2 cl3 mt-3 mb-3" style="text-decoration: none;font-size: 30px;"> "Already have an account." </a> <br>
+
+<a href="" class="ff2 cl3 mt-3" style="text-decoration: none;font-size: 30px;"> "Reset your password." </a>
+
+ </center>       
+<!--  -->
+</form>    
+<!--  -->
+</div>
+<!--  -->
+<!--  -->
+<div class="col-md-2"></div>
+</div>        
+</div>        
+<!--  -->
+<!--  -->
+<!--  -->  
+<div class="col-md-3 h-100 col-0"></div>
+</div> 
+</div>
+</div>
+</div>
+<!--  -->
+<!--  -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- footer -->
+
+
+<div class="col-md-12 foot"> 
+
+  <div class="col-md-12" 
+       style="height: 73px;
+              background-color: rgba(0, 59, 79, 0.621);">
+
+    <nav class="navbar navbar-expand-sm col-md-12">
+
+      <div class="container-fluid">
+
+        <!-- Logo -->
+        <a class="navbar-brand" href="/">
+          <span class="f1 cl1"> My Anime book </span>
+        </a>
+
+        <!-- Mobile Button -->
+        <button class="navbar-toggler" 
+                type="button" 
+                data-bs-toggle="collapse" 
+                data-bs-target="#collapsibleNavbar">
+
+          <span class="navbar-toggler-icon"></span>
+
+        </button>
+
+        <!-- Navbar Links -->
+        <div class="collapse navbar-collapse justify-content-end container" 
+             style="height: 55px;" 
+             id="collapsibleNavbar">
+
+          <ul class="navbar-nav">
+
+            <li class="nav-item">
+              <a class="nav-link f2 cl1" href="/Home/">Home</a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link f2 cl1" href="/Shop/">Shop</a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link f2 cl1" href="/Aboutus/">About us</a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link f2 cl1" href="/Contect/">Contect</a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link f2 cl1" href="/Account/">Account</a>
+            </li>
+
+           <!-- DELETE ACCOUNT BUTTON -->
+
+{% if request.session.fullname %}
+
+<li class="nav-item ms-2">
+
+<button
+type="button"
+class="nav-link f2 cl1"
+data-bs-toggle="modal"
+data-bs-target="#feedbackModal"
+
+style="
+border:2px solid red;
+border-radius:8px;
+padding:5px 14px;
+font-size:22px;
+background:transparent;
+color:#ff4d4d;
+">
+
+Delete Account
+
+</button>
+
+</li>
+
+{% endif %}
+
+          </ul>
+
+        </div>
+
+      </div>
+
+    </nav>
+
+  </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- FIRST POPUP -->
+
+<div class="modal fade" id="feedbackModal">
+
+  <div class="modal-dialog modal-dialog-centered">
+
+    <div class="modal-content position-relative">
+
+      <!-- Header -->
+      <div class="modal-header border-0">
+
+        <h3 class="popup-title">
+          Why Are You Leaving?
+        </h3>
+
+        <button type="button"
+                class="btn-close"
+                data-bs-dismiss="modal">
+        </button>
+
+      </div>
+
+      <!-- Body -->
+      <div class="modal-body">
+
+<button
+type="button"
+class="popup-btn reason-btn"
+data-reason="1. I no longer use this account"
+data-bs-dismiss="modal"
+data-bs-toggle="modal"
+data-bs-target="#deleteModal">
+
+           I no longer need this account
+
+        </button>
+
+<button
+type="button"
+class="popup-btn reason-btn"
+data-reason="2. I found a better alternative website/app"
+data-bs-dismiss="modal"
+data-bs-toggle="modal"
+data-bs-target="#deleteModal">
+
+           I found a better alternative website/app
+
+        </button>
+
+<button
+type="button"
+class="popup-btn reason-btn"
+data-reason="3. I am facing technical issues or bugs"
+data-bs-dismiss="modal"
+data-bs-toggle="modal"
+data-bs-target="#deleteModal">
+
+          I am facing technical issues or bugs
+
+        </button>
+
+        <button type="button"
+class="popup-btn reason-btn"
+data-reason="4. I am concerned about privacy and security"
+data-bs-dismiss="modal"
+data-bs-toggle="modal"
+data-bs-target="#deleteModal">
+
+          I am concerned about privacy and security
+
+        </button>
+<button
+type="button"
+class="popup-btn reason-btn"
+data-reason="5. The available content or features are insufficient"
+data-bs-dismiss="modal"
+data-bs-toggle="modal"
+data-bs-target="#deleteModal">
+
+
+          The available content or features are insufficient
+
+        </button>
+
+<button
+type="button"
+class="popup-btn reason-btn"
+data-reason="6. Other"
+data-bs-dismiss="modal"
+data-bs-toggle="modal"
+data-bs-target="#deleteModal">
+          Other
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+
+
+
+
+<!-- SECOND POPUP -->
+
+<div class="modal fade" id="deleteModal">
+
+  <div class="modal-dialog modal-dialog-centered">
+
+    <div class="modal-content position-relative">
+
+      <!-- Header -->
+      <div class="modal-header border-0">
+
+        <h3 class="popup-title">
+          Delete Account
+        </h3>
+
+        <button type="button"
+                class="btn-close"
+                data-bs-dismiss="modal">
+        </button>
+
+      </div>
+
+      <!-- Form -->
+      <form action="/DeleteAccount/" method="POST">
+
+        {% csrf_token %}
+
+   <input type="hidden"
+           name="reason"
+           id="selectedReason"> 
+
+
+        <div class="modal-body">
+
+ 
+
+
+
+<textarea
+name="suggestion"
+class="form-control mb-3 suggestion-box"
+rows="4"
+placeholder="Any suggestion so I can improve my website and make your experience better?"
+required>
+</textarea>
+
+          <!-- Email -->
+          <input type="email"
+                 name="email"
+                 placeholder="Enter Email"
+                 class="form-control mb-3"
+                 required>
+
+          <!-- Password -->
+          <input type="password"
+                 name="password"
+                 placeholder="Enter Password"
+                 class="form-control mb-3"
+                 required>
+
+          <!-- Phone -->
+          <input type="text"
+                 name="phnumber"
+                 placeholder="Enter Phone Number"
+                 class="form-control"
+                 required>
+
+        </div>
+
+        <!-- Footer -->
+        <div class="modal-footer border-0">
+
+          <button type="button"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal">
+
+            Cancel
+
+          </button>
+
+          <button type="submit"
+                  class="btn btn-danger">
+
+            Proceed
+
+          </button>
+
+        </div>
+
+      </form>
+
+    </div>
+
+  </div>
+
+</div>
+
+<!--  -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+
+setTimeout(function(){
+
+    let alerts = document.querySelectorAll('.myalert');
+
+    alerts.forEach(function(alert){
+
+        alert.style.opacity = "0";
+        alert.style.transform = "translateY(-20px)";
+
+        setTimeout(function(){
+            alert.remove();
+        },500);
+
+    });
+
+},5000);
+
+</script>
+
+
+
+
+
+
+<!--  -->
+
+
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function(){
+
+    document.querySelectorAll('.reason-btn').forEach(btn => {
+
+        btn.addEventListener('click', function(){
+
+            document.getElementById('selectedReason').value =
+            this.getAttribute('data-reason');
+
+        });
+
+    });
+
+});
+
+</script>
+<!--  -->
+
+
+<script>
+
+setTimeout(function(){
+
+    let alerts = document.querySelectorAll('.myalert');
+
+    alerts.forEach(function(alert){
+
+        alert.style.opacity = "0";
+        alert.style.transform = "translateY(-20px)";
+
+        setTimeout(function(){
+            alert.remove();
+        },500);
+
+    });
+
+},5000);
+
+</script>
+
+
+
+
+<!--  -->
+</body>
+</html>
