@@ -46,7 +46,7 @@ urlpatterns = [
 
     path('', views.ind, name='ind'),
 
-    path('Home/', views.home, name='home'),
+    path('Home/', views.home, name='Home'),
     path('Shop/', views.shop, name='shop'),
 
     path('Shop1/', views.shop1),
