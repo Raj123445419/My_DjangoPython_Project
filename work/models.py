@@ -47,7 +47,7 @@ class page(models.Model):
 
 
 
-class shopproduct(models.Model):
+class ShopProduct(models.Model):
 
     CATEGORY_CHOICES = (
         ('shop', 'Shop'),

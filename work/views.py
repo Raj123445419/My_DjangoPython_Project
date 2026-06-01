@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import shopproduct
+from .models import ShopProduct
 import re
 from urllib import request 
 from django.http import JsonResponse
@@ -16,7 +16,7 @@ def ind(request):
 
 
 def home(request):
-    data = shopproduct.objects.filter(category='shop')
+    data = ShopProduct.objects.filter(category='shop')
 
     return render(request, 'Home.html', {
         'product': data
@@ -24,7 +24,7 @@ def home(request):
 
 def shop(request):
 
-    data = shopproduct.objects.filter(category='shop')
+    data = ShopProduct.objects.filter(category='shop')
 
     return render(
         request,
@@ -35,7 +35,7 @@ def shop(request):
 
 def shop1(request):
 
-    data = shopproduct.objects.filter(category='shop1')
+    data = ShopProduct.objects.filter(category='shop1')
 
     return render(
         request,
@@ -46,7 +46,7 @@ def shop1(request):
 
 def shop2(request):
 
-    data = shopproduct.objects.filter(category='shop2')
+    data = ShopProduct.objects.filter(category='shop2')
 
     return render(
         request,
@@ -57,7 +57,7 @@ def shop2(request):
 
 def shop3(request):
 
-    data = shopproduct.objects.filter(category='shop3')
+    data = ShopProduct.objects.filter(category='shop3')
 
     return render(
         request,
@@ -68,7 +68,7 @@ def shop3(request):
 
 def shop4(request):
 
-    data = shopproduct.objects.filter(category='shop4')
+    data = ShopProduct.objects.filter(category='shop4')
 
     return render(
         request,
@@ -90,7 +90,7 @@ def sign(request):
 
 def addtocart(request, id):
 
-    product = get_object_or_404(shopproduct, id=id)
+    product = get_object_or_404(ShopProduct, id=id)
 
     cart = request.session.get('cart', {})
 
@@ -588,4 +588,4 @@ def live_search(request):
 
     return JsonResponse({
         'products': products
-    })
+    })  
