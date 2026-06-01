@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import shopproduct, shopproduct
+from .models import shopproduct
 import re
 from urllib import request 
 from django.http import JsonResponse
@@ -14,15 +14,13 @@ from .models import DeletedAccount
 def ind(request):
       return render(request, 'index.html')
 
-def home(request):
 
+def home(request):
     data = shopproduct.objects.filter(category='shop')
 
-    return render(
-        request,
-        'Home.html',
-        {'product': data}
-    )
+    return render(request, 'Home.html', {
+        'product': data
+    })
 
 def shop(request):
 
