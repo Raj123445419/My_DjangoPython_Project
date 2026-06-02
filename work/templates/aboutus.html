@@ -17,7 +17,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@200..900&display=swap" rel="stylesheet">
-<!--  -->
 
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -383,7 +382,44 @@ background-repeat: no-repeat;
 background-size: cover;
 background-color: #08d1d3;
 }
-/*  */
+
+
+/* UPDATED RESPONSIVE CSS PATCH (SEPARATE ID CONTROLS APPLIED) */
+@media (max-width: 575px) {
+  nav.navbar {
+    position: relative !important;
+  }
+  
+  /* HEADER INSTANT DROPDOWN OVERLAY (TARGETED BY DISTINCT ID) */
+  #headerNavbar.collapse.navbar-collapse,
+  #headerNavbar.collapsing {
+    position: absolute !important;
+    top: 73px;
+    left: 0;
+    width: 100%;
+    background-color: #45006587 !important; 
+    z-index: 9999 !important;
+    height: auto !important;
+    padding: 15px !important;
+    box-shadow: 0px 8px 16px rgba(0,0,0,0.3);
+    transition: none !important; 
+  }
+
+  /* FOOTER INSTANT DROPDOWN OVERLAY (TARGETED BY DISTINCT ID) */
+  #footerNavbar.collapse.navbar-collapse,
+  #footerNavbar.collapsing {
+    position: absolute !important;
+    bottom: 73px;
+    left: 0;
+    width: 100%;
+    background-color: rgba(6, 3, 40, 0.597) !important; 
+    z-index: 9999 !important;
+    height: auto !important;
+    padding: 15px !important;
+    box-shadow: 0px -8px 16px rgba(0,0,0,0.3);
+    transition: none !important;
+  }
+}
 </style>
 
 
@@ -395,6 +431,7 @@ background-color: #08d1d3;
 <div class="col-md-12 imgab">
 <div class="col-md-12 h-100" style="background-color: rgba(0, 0, 0, 0.225);">
 
+<!-- HEADER NAV (Data targets updated to unique id #headerNavbar) -->
 <nav class="navbar navbar-expand-sm col-md-12" style="background-color: #450065a6;height: 73px;z-index: 10">
 
   <div class="container-fluid">
@@ -433,11 +470,11 @@ style="border:2px solid #1eb1be;
 
 
 
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#headerNavbar">
       <span class="navbar-toggler-icon"></span>
     </button>
   
-    <div class="collapse navbar-collapse justify-content-end container" style="height: 55px;" id="collapsibleNavbar">
+    <div class="collapse navbar-collapse justify-content-end container" style="height: 55px;" id="headerNavbar">
       <ul class="navbar-nav ">
         <li class="nav-item">
           <a class="nav-link f2 cl1" href="/Home/">Home</a>
@@ -454,7 +491,7 @@ style="border:2px solid #1eb1be;
         <li class="nav-item">
           <a class="nav-link f2 cl1" href="/Account/">Account</a>
         </li>
-        <!--  -->
+        
 <!-- Cart Icon -->
 <li class="nav-item d-flex align-items-center">
   <a class="nav-link cl1" href="/Cart/">
@@ -475,7 +512,8 @@ style="border:2px solid #1eb1be;
      style="border:2px solid #1eb1be;
             border-radius:8px;
             padding:5px 14px;
-            font-size:22px;">
+            font-size:22px;
+            display: inline-block;">
     Log Out
   </a>
 </li>
@@ -489,7 +527,8 @@ style="border:2px solid #1eb1be;
      style="border:2px solid #1eb1be;
             border-radius:8px;
             padding:5px 14px;
-            font-size:22px;">
+            font-size:22px;
+            display: inline-block;">
     Log In
   </a>
 </li>
@@ -499,13 +538,10 @@ style="border:2px solid #1eb1be;
 
       </ul>
     </div>
-<!--  -->
+
   </div>
-<!--  -->
-<!--  -->
+
 </nav>
-<!--  -->
-<!--  -->
 
 
 
@@ -551,7 +587,6 @@ style="border:2px solid #1eb1be;
 
 
 
-<!--  -->
 <div class="col-md-12" style="height: 656px;">
   <div class="container">
 
@@ -560,17 +595,16 @@ style="border:2px solid #1eb1be;
     About Us
   </span>
 </div>
-<!--  -->
+
   </div>
 </div>
-<!--  -->
-<!--  -->
+
 </div>
 </div>
 <!-- nav end -->
-<!--  -->
+
 <br><br>
-<!--  -->   
+   
 
 
 
@@ -583,16 +617,15 @@ style="border:2px solid #1eb1be;
 
 </div>
 
-<!--  -->
-<!--  -->
+
 <br><br>
-<!--  -->
-<!--  -->
+
+
 <div class="col-md-12">
   <div class="container">
     <div class="row">
-<!--  -->
-<!--  -->
+
+
 <div class="col-md-6">
   <center>
   <div class="col-md-10 img1 col-12">
@@ -619,23 +652,22 @@ delivery and convenient cashon delivery
   </span>
 
 </div>
-<!--  -->
-<!--  -->
+
 </div>
   </div>
 </div>
-<!--  -->
+
 <br><br>
-<!--  -->
+
 
 <!-- footer -->
-
 <div class="col-md-12 foot"> 
 
   <div class="col-md-12" 
        style="height: 73px;
               background-color: rgba(0, 59, 79, 0.621);">
 
+    <!-- FOOTER NAV (Data targets updated to unique id #footerNavbar) -->
     <nav class="navbar navbar-expand-sm col-md-12">
 
       <div class="container-fluid">
@@ -649,7 +681,7 @@ delivery and convenient cashon delivery
         <button class="navbar-toggler" 
                 type="button" 
                 data-bs-toggle="collapse" 
-                data-bs-target="#collapsibleNavbar">
+                data-bs-target="#footerNavbar">
 
           <span class="navbar-toggler-icon"></span>
 
@@ -658,7 +690,7 @@ delivery and convenient cashon delivery
         <!-- Navbar Links -->
         <div class="collapse navbar-collapse justify-content-end container" 
              style="height: 55px;" 
-             id="collapsibleNavbar">
+             id="footerNavbar">
 
           <ul class="navbar-nav">
 
@@ -683,7 +715,6 @@ delivery and convenient cashon delivery
             </li>
 
            <!-- DELETE ACCOUNT BUTTON -->
-
 {% if request.session.fullname %}
 
 <li class="nav-item ms-2">
@@ -693,7 +724,6 @@ type="button"
 class="nav-link f2 cl1"
 data-bs-toggle="modal"
 data-bs-target="#feedbackModal"
-
 style="
 border:2px solid red;
 border-radius:8px;
@@ -736,7 +766,6 @@ Delete Account
 
 
 <!-- FIRST POPUP -->
-
 <div class="modal fade" id="feedbackModal">
 
   <div class="modal-dialog modal-dialog-centered">
@@ -844,7 +873,6 @@ data-bs-target="#deleteModal">
 
 
 <!-- SECOND POPUP -->
-
 <div class="modal fade" id="deleteModal">
 
   <div class="modal-dialog modal-dialog-centered">
@@ -871,8 +899,8 @@ data-bs-target="#deleteModal">
         {% csrf_token %}
 
    <input type="hidden"
-           name="reason"
-           id="selectedReason"> 
+          name="reason"
+          id="selectedReason"> 
 
 
         <div class="modal-body">
@@ -940,60 +968,31 @@ required>
 
 </div>
 
-<!--  -->
-
 
 <script>
-
 document.addEventListener("DOMContentLoaded", function(){
-
     document.querySelectorAll('.reason-btn').forEach(btn => {
-
         btn.addEventListener('click', function(){
-
             document.getElementById('selectedReason').value =
             this.getAttribute('data-reason');
-
         });
-
     });
-
 });
-
 </script>
-
-<!--  -->
-
-
 
 
 <script>
-
 setTimeout(function(){
-
     let alerts = document.querySelectorAll('.myalert');
-
     alerts.forEach(function(alert){
-
         alert.style.opacity = "0";
         alert.style.transform = "translateY(-20px)";
-
         setTimeout(function(){
             alert.remove();
         },500);
-
     });
-
 },5000);
-
 </script>
 
-
-
-
-
-
-
-<!--  -->
 </body>
 </html>

@@ -182,6 +182,9 @@ body{
     background-size:cover;
 
     background-position:center;
+    
+    /* Fixed: Min-width ensures layout doesn't crash on mobile and enables pure horizontal scroll */
+    min-width: 750px; 
 }
 
 /* =========================
@@ -475,7 +478,7 @@ body{
 
 .grand-box{
 
-    max-width:900px;
+    max-width:1100px; /* Aligned with table width */
 
     margin:auto;
 
@@ -805,15 +808,51 @@ background-repeat: no-repeat;
 background-size: cover;
 background-color: #08d1d3;
 }
-/*  */
+
+
+/* UPDATED RESPONSIVE PATCH FOR INDEPENDENT DROPDOWNS */
+@media (max-width: 575px) {
+  nav.navbar {
+    position: relative !important;
+  }
+  
+  /* HEADER OVERLAY ONLY */
+  #headerNavbar.collapse.navbar-collapse,
+  #headerNavbar.collapsing {
+    position: absolute !important;
+    top: 73px;
+    left: 0;
+    width: 100%;
+    background-color: #001a2e !important; 
+    z-index: 9999 !important;
+    height: auto !important;
+    padding: 15px !important;
+    box-shadow: 0px 8px 16px rgba(0,0,0,0.3);
+    transition: none !important; 
+  }
+
+  /* FOOTER OVERLAY ONLY */
+  #footerNavbar.collapse.navbar-collapse,
+  #footerNavbar.collapsing {
+    position: absolute !important;
+    bottom: 73px;
+    left: 0;
+    width: 100%;
+    background-color: rgba(0, 59, 79, 0.95) !important; 
+    z-index: 9999 !important;
+    height: auto !important;
+    padding: 15px !important;
+    box-shadow: 0px -8px 16px rgba(0,0,0,0.3);
+    transition: none !important;
+  }
+}
 </style>
 </head>
 <body>
     <div class="col-md-12 cart">
 
 
-
-
+<!-- HEADER NAV -->
 <nav class="navbar navbar-expand-sm col-md-12" style="background-color: #00274367;height: 73px;">
 
   <div class="container-fluid">
@@ -845,11 +884,11 @@ style="border:2px solid #1eb1be;
 
 
 
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#headerNavbar">
       <span class="navbar-toggler-icon"></span>
     </button>
   
-    <div class="collapse navbar-collapse justify-content-end container" style="height: 55px;" id="collapsibleNavbar">
+    <div class="collapse navbar-collapse justify-content-end container" style="height: 55px;" id="headerNavbar">
       <ul class="navbar-nav ">
         <li class="nav-item">
           <a class="nav-link f2 cl1" href="/Home/">Home</a>
@@ -992,169 +1031,174 @@ style="border:2px solid #1eb1be;
 
 
 
-
+<!-- FIXED RESPONSIVE CONTAINER & GRID WRAPPER FOR TABLE -->
 <div class="container py-5">
+    <div class="row">
+        <div class="col-12">
 
-    <h1 class="text-center mb-5">
-        My Cart
-    </h1>
+            <h1 class="text-center mb-5">
+                My Cart
+            </h1>
 
-    {% if cart %}
+            {% if cart %}
 
-    <div class="table-responsive cart-table">
+            <!-- Added table-responsive properly wrapper -->
+            <div class="table-responsive cart-table">
 
-        <table class="table table-bordered align-middle">
+                <table class="table table-bordered align-middle m-0">
 
-            <thead>
+                    <thead>
 
-                <tr>
+                        <tr>
 
-                    <th>Image</th>
-                    <th>Name</th>
-                    <th>Chapters</th>
-                    <th>Price</th>
-                    <th>Quantity</th>
-                    <th>Total</th>
-                    <th>Action</th>
+                            <th>Image</th>
+                            <th>Name</th>
+                            <th>Chapters</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th>Total</th>
+                            <th>Action</th>
 
-                </tr>
+                        </tr>
 
-            </thead>
+                    </thead>
 
-            <tbody>
+                    <tbody>
 
-                {% for key, item in cart.items %}
+                        {% for key, item in cart.items %}
 
-                <tr>
+                        <tr>
 
-                    <!-- IMAGE -->
+                            <!-- IMAGE -->
 
-                    <td>
+                            <td>
 
-                        <img src="{{ item.image }}" class="cart-img">
+                                <img src="{{ item.image }}" class="cart-img">
 
-                    </td>
+                            </td>
 
-                    <!-- NAME -->
+                            <!-- NAME -->
 
-                    <td>
+                            <td>
 
-                        {{ item.name }}
+                                {{ item.name }}
 
-                    </td>
+                            </td>
 
-                    <!-- CHAPTER -->
+                            <!-- CHAPTER -->
 
-                    <td>
+                            <td>
 
-                        {{ item.chapter }}
+                                {{ item.chapter }}
 
-                    </td>
+                            </td>
 
-                    <!-- PRICE -->
+                            <!-- PRICE -->
 
-                    <td>
+                            <td>
 
-                        ${{ item.price }}
+                                ${{ item.price }}
 
-                    </td>
+                            </td>
 
-                    <!-- QUANTITY -->
+                            <!-- QUANTITY -->
 
-                    <td>
+                            <td>
 
-                        <div class="qty-box">
+                                <div class="qty-box">
 
-                            <a href="/decrease/{{ key }}/"
-                               class="qty-btn minus">
+                                    <a href="/decrease/{{ key }}/"
+                                       class="qty-btn minus">
 
-                                -
+                                         -
 
-                            </a>
+                                    </a>
 
-                            <span class="qty-number">
+                                    <span class="qty-number">
 
-                                {{ item.quantity }}
+                                         {{ item.quantity }}
 
-                            </span>
+                                    </span>
 
-                            <a href="/increase/{{ key }}/"
-                               class="qty-btn plus">
+                                    <a href="/increase/{{ key }}/"
+                                       class="qty-btn plus">
 
-                                +
+                                         +
 
-                            </a>
+                                    </a>
 
-                        </div>
+                                </div>
 
-                    </td>
+                            </td>
 
-                    <!-- TOTAL -->
+                            <!-- TOTAL -->
 
-                    <td>
+                            <td>
 
-                        ${{ item.total }}
+                                ${{ item.total }}
 
-                    </td>
+                            </td>
 
-                    <!-- DELETE BUTTON -->
+                            <!-- DELETE BUTTON -->
 
-                    <td>
+                            <td>
 
-                        <a href="/remove-cart-item/{{ key }}/">
+                                <a href="/remove-cart-item/{{ key }}/">
 
-                            <button class="delete-btn">
+                                    <button class="delete-btn">
 
-                                Delete
+                                         Delete
 
-                            </button>
+                                    </button>
 
-                        </a>
+                                </a>
 
-                    </td>
+                            </td>
 
-                </tr>
+                        </tr>
 
-                {% endfor %}
+                        {% endfor %}
 
-            </tbody>
+                    </tbody>
 
-        </table>
+                </table>
 
+            </div>
+
+            <!-- GRAND TOTAL -->
+
+            <div class="grand-box mt-4">
+
+                Grand Total :
+
+                ${{ grand_total }}
+
+            </div>
+
+            {% else %}
+
+            <!-- EMPTY CART -->
+
+            <div class="empty-cart">
+
+                <h1>
+                    🛒
+                </h1>
+
+                <h3>
+                    Your Cart Is Empty
+                </h3>
+
+                <p>
+                    “Add your favorite items to the cart.”
+                </p>
+
+            </div>
+
+            {% endif %}
+
+        </div>
     </div>
-
-    <!-- GRAND TOTAL -->
-
-    <div class="grand-box mt-4">
-
-        Grand Total :
-
-        ${{ grand_total }}
-
-    </div>
-
-    {% else %}
-
-    <!-- EMPTY CART -->
-
-    <div class="empty-cart">
-
-        <h1>
-            🛒
-        </h1>
-
-        <h3>
-            Your Cart Is Empty
-        </h3>
-
-        <p>
-            “Add your favorite items to the cart.”
-        </p>
-
-    </div>
-
-    {% endif %}
-
 </div>
 
 
@@ -1188,6 +1232,7 @@ style="border:2px solid #1eb1be;
        style="height: 73px;
               background-color: rgba(0, 59, 79, 0.621);">
 
+    <!-- FOOTER NAV -->
     <nav class="navbar navbar-expand-sm col-md-12">
 
       <div class="container-fluid">
@@ -1201,7 +1246,7 @@ style="border:2px solid #1eb1be;
         <button class="navbar-toggler" 
                 type="button" 
                 data-bs-toggle="collapse" 
-                data-bs-target="#collapsibleNavbar">
+                data-bs-target="#footerNavbar">
 
           <span class="navbar-toggler-icon"></span>
 
@@ -1210,7 +1255,7 @@ style="border:2px solid #1eb1be;
         <!-- Navbar Links -->
         <div class="collapse navbar-collapse justify-content-end container" 
              style="height: 55px;" 
-             id="collapsibleNavbar">
+             id="footerNavbar">
 
           <ul class="navbar-nav">
 
@@ -1423,8 +1468,8 @@ data-bs-target="#deleteModal">
         {% csrf_token %}
 
    <input type="hidden"
-           name="reason"
-           id="selectedReason"> 
+          name="reason"
+          id="selectedReason"> 
 
 
         <div class="modal-body">
