@@ -26,11 +26,10 @@ SECRET_KEY = 'django-insecure--&nfgjhcc9xy-*_^##d26lj3a!z_t7-f4m0pts4qkg%hty%-=h
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    "my-djangopython-project-5.onrender.com",
-    "localhost",
+    "my-djangopython-project.onrender.com",   # Raw domain (No https://)
+    "my-djangopython-project-5.onrender.com", # Added this since it was in your list
     "127.0.0.1",
-    # ".onrender.com",
-
+    "localhost",
 ]
 
 
