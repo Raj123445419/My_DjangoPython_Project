@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure--&nfgjhcc9xy-*_^##d26lj3a!z_t7-f4m0pts4qkg%hty%-=h'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = [
     "my-djangopython-project.onrender.com",   # Raw domain image lane keliye (No https://)
