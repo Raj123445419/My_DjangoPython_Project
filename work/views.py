@@ -18,7 +18,7 @@ def ind(request):
 def home(request):
     data = ShopProduct.objects.filter(category='shop')
 
-    return render(request, 'Home.html', {
+    return render(request, 'home.html', {
         'product': data
     })
 
@@ -160,7 +160,7 @@ def cart(request):
 
         grand_total += item['total']
 
-    return render(request, 'cart.html', {
+    return render(request, 'Cart.html', {
 
         'cart': cart,
 
