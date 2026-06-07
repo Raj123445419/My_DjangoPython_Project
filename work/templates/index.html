@@ -6,307 +6,324 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>index</title>
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@300..900&display=swap" rel="stylesheet">
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@200..900&display=swap" rel="stylesheet">
+    <style>
+        /* --- Base Layout --- */
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            min-height: 100%;
+            background-color: #050b1a;
+            overflow-x: hidden !important;
+        }
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<style>
+        .img1 {
+            background-image: url(../static/img/new.webp);
+            min-height: 100vh;
+            height: auto; 
+            width: 100%;
+            background-position: center top;
+            background-repeat: no-repeat;
+            background-size: cover;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden !important;
+        }
 
-.f1 {
-  font-family: "Inconsolata", monospace;
-  font-optical-sizing: auto;
-  font-weight: 20px;
-  font-style: normal;
-  font-variation-settings:"wdth" 100;
-  font-size:26px;
-}
+        /* --- Global Fonts --- */
+        .f1 {
+            font-family: "Inconsolata", monospace;
+            font-weight: 800;
+            font-size: 26px;
+            letter-spacing: 1px;
+            white-space: nowrap;
+        }
 
+        .f2 {
+            font-family: "Inconsolata", monospace;
+            font-weight: 600;
+            font-size: 20px;
+            white-space: nowrap;
+        }
 
-.img1 {
-background-image: url(../static/img/new.webp);
-height:729px ;
-width: 100%;
-background-position: center;
-background-repeat: no-repeat;
-background-size: cover;
-}
+        .f3 {
+            font-family: "Inconsolata", monospace;
+            font-weight: 900;
+            font-size: calc(1.8rem + 3.5vw);
+            letter-spacing: 2px;
+            line-height: 1.2;
+        }
 
+        /* --- Glassmorphism Navbar Core --- */
+        nav.navbar {
+            background-color: rgba(10, 16, 36, 0.4) !important;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            min-height: 75px;
+            width: 100%;
+            z-index: 2050;
+            position: relative;
+            transition: background-color 0.1s ease;
+        }
 
-.f2 {
-  font-family: "Inconsolata", monospace;
-  font-optical-sizing: auto;
-  font-weight: 20px;
-  font-style: normal;
-  font-variation-settings:"wdth" 100;
-  font-size:24px;
-}
+        /* --- Links & Hover --- */
+        .cl1 {
+            color: #ffffff !important; 
+            text-shadow: 0px 2px 8px rgba(0, 15, 45, 0.8);
+            transition: color 0.3s ease;
+        }
 
-.f3 {
-  font-family: "Inconsolata", monospace;
-  font-optical-sizing: auto;
-  font-weight: 20px;
-  font-style: normal;
-  font-variation-settings:"wdth" 100;
-  font-size:60px;
-}
+        .cl1:hover {
+            color: #00f0ff !important;
+            text-shadow: 0px 0px 12px #00f0ff;
+        }
 
-.cl1{
-  color: #1eb1be
-}
+        /* Hero Text Aura */
+        .cl2 {
+            color: #ffffff; 
+            text-shadow: 
+                0px 4px 20px rgba(10, 15, 30, 0.95),
+                0px 0px 30px rgba(255, 0, 127, 0.35);
+        }
 
-.cl1:hover{
-  color: rgb(190, 145, 19)
-}
+        /* --- Hero CTA Button --- */
+        .bt {
+            min-height: 54px;
+            font-size: 22px;
+            font-weight: 700;
+            background: linear-gradient(45deg, #ff007f, #ff7300);
+            color: #ffffff !important;
+            border: none;
+            border-radius: 50px;
+            box-shadow: 0px 6px 20px rgba(255, 0, 127, 0.4);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 10px 35px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            max-width: 90%;
+        }
 
+        .bt:hover {
+            background: linear-gradient(45deg, #ff7300, #ff007f);
+            box-shadow: 0px 8px 30px rgba(255, 115, 0, 0.7);
+            transform: translateY(-3px) scale(1.02);
+        }
 
-.cl2{
-  color: #57092ce3
-}
+        /* --- Locked View Center Container --- */
+        .hero-center-content {
+            position: absolute !important;
+            top: 55% !important; 
+            left: 50% !important;
+            transform: translate(-50%, -50%) !important;
+            width: 100%;
+            z-index: 10; 
+        }
 
+        /* --- Alerts Engine --- */
+        .alert-box {
+            position: fixed;
+            top: 95px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 9999;
+            width: 90%;
+            max-width: 750px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 
+        .myalert {
+            background: rgba(0, 240, 255, 0.95) !important;
+            backdrop-filter: blur(8px);
+            color: #050b1a !important;
+            border-radius: 12px;
+            width: 100%;
+            padding: 16px;
+            font-weight: 700;
+            font-size: 18px;
+            box-shadow: 0px 10px 30px rgba(0, 240, 255, 0.3);
+            animation: topdown 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: 0.4s;
+            border: none;
+        }
 
-.bt{
-height: 50px;
-font-size: 24px;
-background-color: #1e87bee0;
-color: #57092ce3;
+        @keyframes topdown {
+            from { opacity:0; transform: translateY(-40px); }
+            to { opacity:1; transform: translateY(0px); }
+        }
 
-}
+        /* --- RESPONSIVE MATRIX ENGINE --- */
+        @media (max-width: 991px) {
+            .collapsing {
+                transition: none !important;
+            }
 
-.bt:hover{
-background-color: rgba(1, 167, 162, 0.833);
-color: rgb(21, 0, 125);
+            /* Main continuous parent container color system alteration when menu opens */
+            nav.navbar:has(.show), nav.navbar:has(.collapsing) {
+                background-color: rgba(5, 11, 26, 0.25) !important;
+                backdrop-filter: blur(25px) !important;
+                -webkit-backdrop-filter: blur(25px) !important;
+            }
 
-}
+            /* Mixed Child Layout Framework without broken borders or individual background divs */
+            .collapse.navbar-collapse {
+                background: transparent !important; /* Background removed completely to blend into parent */
+                backdrop-filter: none !important;
+                -webkit-backdrop-filter: none !important;
+                padding: 15px 0 10px 0 !important; 
+                margin: 0 !important; 
+                width: 100% !important;
+                border: none !important; /* Clears double div look artifacts */
+                box-shadow: none !important;
+                transition: none !important;
+            }
+            
+            .navbar-nav {
+                align-items: center !important;
+                text-align: center;
+                width: 100%;
+                margin: 0 !important;
+                padding: 0 !important;
+                display: flex;
+                flex-direction: column;
+            }
+            
+            .navbar-nav .nav-item {
+                margin: 8px 0 !important;
+                width: 100% !important;
+            }
+            
+            .navbar-toggler {
+                border-color: rgba(255,255,255,0.3) !important;
+                padding: 5px 9px;
+            }
+            
+            .navbar-toggler-icon {
+                filter: invert(1);
+            }
+            
+            .bt {
+                font-size: 18px;
+                padding: 8px 25px;
+            }
+        }
 
-.alert-box{
-    position: fixed;
-    top: 90px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 9999;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-
-.myalert:hover{
-    transform: translateY(-4px);
-}
-
-@keyframes topdown{
-
-    from{
-        opacity:0;
-        transform: translateY(-40px);
-    }
-
-    to{
-        opacity:1;
-        transform: translateY(0px);
-    }
-
-}
-
-.myalert{
-
-    background:  #08d0d393 !important;
-    color: #01143f !important;
-
-    border-radius: 15px;
-
-    width: 100%;
-    max-width: 800px;
-
-    padding: 18px;
-
-    font-family: "Merienda", cursive;
-    font-weight: 100;
-    font-size: 20px;
-
-    box-shadow: 0px 5px 20px rgba(0,0,0,0.3);
-
-    animation: topdown 0.5s ease;
-    transition: 0.4s;
-}
-
-/* ONLY RESPONSIVE PATCH - NO STYLE CHANGES */
-@media (max-width: 576px) {
-  nav.navbar {
-    height: auto !important; /* Mobile par fixed height hata di */
-  }
-  .collapse.navbar-collapse {
-    height: auto !important; /* Mobile menu open hone ke liye height auto ki */
-  }
-  .f3 {
-    font-size: 42px; /* Mobile screen par text fit karne ke liye size thoda chota kiya */
-  }
-  .bt {
-    width: 80% !important; /* Mobile par button text wrap na ho isliye width adjust ki */
-    font-size: 20px;
-  }
-}
-
-</style>
+        @media (max-width: 480px) {
+            .f1 { font-size: 21px; }
+            .myalert { font-size: 16px; }
+        }
+    </style>
 </head>
 <body>
     
-<div class="col-md-12 img1 ">
+<div class="img1">
 
-<nav class="navbar navbar-expand-sm col-md-12" style="background-color: #065a5e38;height: 73px;">
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid px-3 px-md-4">
+            <a class="navbar-brand" href="/">
+                <span class="f1 cl1">My Anime book</span>
+            </a>
 
-  <div class="container-fluid">
+            {% if request.session.fullname %}
+            <div class="ms-auto d-block d-lg-none me-3">
+                <a href="#" class="nav-link f2 cl1 d-flex justify-content-center align-items-center"
+                   style="border:2px solid #ffffff; border-radius:50%; width:38px; height:38px; font-size:16px; background: rgba(255,255,255,0.15);">
+                    {{ request.session.fullname|slice:":1"|upper }}{{ request.session.fullname.split|last|slice:":1"|upper }}
+                </a>
+            </div>
+            {% endif %}
 
-    <a class="navbar-brand" href="/">
- <span class="f1 cl1"> My Anime book </span>
-    </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+          
+            <div class="collapse navbar-collapse justify-content-end" id="collapsibleNavbar">
+                <ul class="navbar-nav align-items-center">
+                    <li class="nav-item"><a class="nav-link f2 cl1 px-2 px-xl-3" href="/Home/">Home</a></li>
+                    <li class="nav-item"><a class="nav-link f2 cl1 px-2 px-xl-3" href="/Shop/">Shop</a></li>
+                    <li class="nav-item"><a class="nav-link f2 cl1 px-2 px-xl-3" href="/Aboutus/">About us</a></li>
+                    <li class="nav-item"><a class="nav-link f2 cl1 px-2 px-xl-3" href="/Contect/">Contect</a></li>
+                    <li class="nav-item"><a class="nav-link f2 cl1 px-2 px-xl-3" href="/Account/">Account</a></li>
 
-{% if request.session.fullname %}
+                    <li class="nav-item px-2">
+                        <a class="nav-link cl1" href="/Cart/">
+                            <i class="fa fa-cart-plus" aria-hidden="true" style="font-size:26px;"></i>
+                        </a>
+                    </li>
 
-<li class="nav-item ms-auto ms-md-1">
+                    {% if request.session.fullname %}
+                    <li class="nav-item ms-lg-2 d-none d-lg-block">
+                        <a href="#" class="nav-link f2 cl1 d-flex justify-content-center align-items-center"
+                           style="border:2px solid #ffffff; border-radius:50%; width:40px; height:40px; font-size:18px; background: rgba(255,255,255,0.15);">
+                            {{ request.session.fullname|slice:":1"|upper }}{{ request.session.fullname.split|last|slice:":1"|upper }}
+                        </a>
+                    </li>
+                    <li class="nav-item ms-lg-3 mt-2 mt-lg-0">
+                        <a class="nav-link f2 cl1 d-inline-block" href="/Logout/"
+                           style="border:2px solid #ffffff; border-radius:30px; padding:4px 20px; font-size:18px; background: rgba(255,255,255,0.05); min-width: 110px;">
+                            Log Out
+                        </a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item ms-lg-3 mt-2 mt-lg-0">
+                        <a class="nav-link f2 cl1 d-inline-block" href="/Account/"
+                           style="border:2px solid #ffffff; border-radius:30px; padding:4px 20px; font-size:18px; background: rgba(255,255,255,0.05); min-width: 110px;">
+                            Log In
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
 
-<a href="#"
-class="nav-link f2 cl1 d-flex justify-content-center align-items-center"
-style="border:2px solid #1eb1be;
-       border-radius:50%;
-       width:38px;
-       height:38px;
-       font-size:20px;">
-
-{{ request.session.fullname|slice:":1"|upper }}{{ request.session.fullname.split|last|slice:":1"|upper }}
-
-</a>
-
-</li>
-
-{% endif %}
-
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-  
-    <div class="collapse navbar-collapse justify-content-end container" style="height: 55px;" id="collapsibleNavbar">
-      <ul class="navbar-nav ">
-        <li class="nav-item">
-          <a class="nav-link f2 cl1" href="/Home/">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link f2 cl1" href="/Shop/">Shop</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link f2 cl1" href="/Aboutus/">About us</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link f2 cl1" href="/Contect/">Contect</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link f2 cl1" href="/Account/">Account</a>
-        </li>
-
-
-<li class="nav-item d-flex align-items-center">
-  <a class="nav-link cl1" href="/Cart/">
-    <i class="fa fa-cart-plus"
-       aria-hidden="true"
-       style="font-size:28px;"></i>
-  </a>
-</li>
-
-{% if request.session.fullname %}
-
-<li class="nav-item ms-2">
-  <a class="nav-link f2 cl1"
-     href="/Logout/"
-     style="border:2px solid #1eb1be;
-            border-radius:8px;
-            padding:5px 14px;
-            font-size:22px;">
-    Log Out
-  </a>
-</li>
-
-{% else %}
-
-<li class="nav-item ms-2">
-  <a class="nav-link f2 cl1"
-     href="/Account/"
-     style="border:2px solid #1eb1be;
-            border-radius:8px;
-            padding:5px 14px;
-            font-size:22px;">
-    Log In
-  </a>
-</li>
-
-{% endif %}
-
-      </ul>
+    <div class="alert-box">
+        {% for message in messages %}
+        <div class="btw alert alert-{{message.tags}} alert-dismissible show myalert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        {% endfor %}
     </div>
 
-  </div>
+    <div class="container hero-center-content text-center px-3">
+        
+        <div class="w-100 mb-4">
+            <h1 class="f3 cl2 m-0 p-0">My Anime World</h1>
+        </div>
 
-</nav>
-
-  <center>
-<div class="alert-box col-md-12">
-
-{% for message in messages %}
-
-<div class="btw alert alert-{{message.tags}} alert-dismissible show myalert">
-    
-    {{ message }}
-
-    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-
-</div>
-
-{% endfor %}
-
-</div>
-  </center>
-
-<div class="col-md-12 d-flex justify-content-center align-items-end" style="height: 328px;">
-
-<span class="f3 cl2">My Anime World</span>
-
-</div>
-
-<center>
-
-   <a href="Home" style="text-decoration: none;" class="btn bt col-md-2"> Enten in Anime Book</a>
-
-</center>
+        <div class="w-100">
+            <a href="Home" style="text-decoration: none;" class="btn bt">Enten in Anime Book</a>
+        </div>
+        
+    </div>
 
 </div>
 
 <script>
-
-setTimeout(function(){
-
-    let alerts = document.querySelectorAll('.myalert');
-
-    alerts.forEach(function(alert){
-
-        alert.style.opacity = "0";
-        alert.style.transform = "translateY(-20px)";
-
-        setTimeout(function(){
-            alert.remove();
-        },500);
-
-    });
-
-},5000);
-
+    setTimeout(function(){
+        let alerts = document.querySelectorAll('.myalert');
+        alerts.forEach(function(alert){
+            alert.style.opacity = "0";
+            alert.style.transform = "translateY(-20px)";
+            setTimeout(function(){
+                alert.remove();
+            }, 500);
+        });
+    }, 5000);
 </script>
 
 </body>
