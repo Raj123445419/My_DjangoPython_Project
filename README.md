@@ -1,1 +1,0 @@
-# My_DjangoPython_Project
