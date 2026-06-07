@@ -1,0 +1,503 @@
+{% extends 'base_responsive.html' %}
+{% load static %}
+
+{% block title %}Dynamic Colors & Hover Effects - My Django Project{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/colors-and-effects.css' %}">
+<style>
+    .showcase-section {
+        margin: 40px 0;
+    }
+
+    .section-title {
+        font-size: 2rem;
+        margin: 40px 0 20px 0;
+        color: var(--text-dark);
+        border-bottom: 3px solid var(--primary-blue);
+        padding-bottom: 10px;
+    }
+
+    .buttons-showcase {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 15px;
+        margin: 20px 0;
+    }
+
+    @media (min-width: 577px) {
+        .buttons-showcase {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+    }
+
+    @media (min-width: 993px) {
+        .buttons-showcase {
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+        }
+    }
+
+    .button-wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .button-label {
+        font-weight: 600;
+        color: var(--text-light);
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .colors-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+        gap: 15px;
+        margin: 20px 0;
+    }
+
+    .color-box {
+        height: 120px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all var(--transition-normal);
+        box-shadow: var(--shadow-md);
+        text-align: center;
+        padding: 10px;
+        font-size: 0.85rem;
+    }
+
+    .color-box:hover {
+        transform: scale(1.1) rotate(5deg);
+        box-shadow: var(--shadow-lg);
+    }
+
+    .badges-showcase {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin: 20px 0;
+    }
+
+    .info-box {
+        background: var(--light-bg);
+        padding: 15px;
+        border-radius: 8px;
+        border-left: 4px solid var(--primary-blue);
+        margin: 15px 0;
+    }
+
+    .info-box.success {
+        border-left-color: var(--accent-green);
+        background: rgba(39, 174, 96, 0.1);
+    }
+
+    .info-box.warning {
+        border-left-color: var(--accent-orange);
+        background: rgba(243, 156, 18, 0.1);
+    }
+
+    .info-box.danger {
+        border-left-color: var(--accent-pink);
+        background: rgba(231, 76, 60, 0.1);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- Hero Section -->
+<section class="hero">
+    <h1>✨ Dynamic Colors & Hover Effects</h1>
+    <p>Interactive UI Elements with Modern Animations</p>
+</section>
+
+<!-- Color Palette Section -->
+<section class="showcase-section">
+    <h2 class="section-title">🎨 Color Palette</h2>
+    
+    <div class="colors-grid">
+        <div class="color-box" style="background: var(--primary-blue-gradient);">
+            <div>
+                <div>Primary Blue</div>
+                <div style="font-size: 0.75rem; opacity: 0.9;">#3498db</div>
+            </div>
+        </div>
+        <div class="color-box" style="background: var(--secondary-purple-gradient);">
+            <div>
+                <div>Secondary Purple</div>
+                <div style="font-size: 0.75rem; opacity: 0.9;">#9b59b6</div>
+            </div>
+        </div>
+        <div class="color-box" style="background: var(--accent-pink-gradient);">
+            <div>
+                <div>Accent Pink</div>
+                <div style="font-size: 0.75rem; opacity: 0.9;">#e74c3c</div>
+            </div>
+        </div>
+        <div class="color-box" style="background: var(--accent-green-gradient);">
+            <div>
+                <div>Accent Green</div>
+                <div style="font-size: 0.75rem; opacity: 0.9;">#27ae60</div>
+            </div>
+        </div>
+        <div class="color-box" style="background: var(--accent-orange-gradient);">
+            <div>
+                <div>Accent Orange</div>
+                <div style="font-size: 0.75rem; opacity: 0.9;">#f39c12</div>
+            </div>
+        </div>
+        <div class="color-box" style="background: var(--accent-cyan-gradient);">
+            <div>
+                <div>Accent Cyan</div>
+                <div style="font-size: 0.75rem; opacity: 0.9;">#1abc9c</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Buttons Section -->
+<section class="showcase-section">
+    <h2 class="section-title">🔘 Button Styles & Hover Effects</h2>
+    <p>Hover over buttons to see interactive ripple effects and smooth animations</p>
+    
+    <div class="buttons-showcase">
+        <div class="button-wrapper">
+            <span class="button-label">Primary Button</span>
+            <button class="btn btn-primary">Primary Action</button>
+        </div>
+        <div class="button-wrapper">
+            <span class="button-label">Secondary Button</span>
+            <button class="btn btn-secondary">Secondary Action</button>
+        </div>
+        <div class="button-wrapper">
+            <span class="button-label">Success Button</span>
+            <button class="btn btn-success">Success Action</button>
+        </div>
+        <div class="button-wrapper">
+            <span class="button-label">Danger Button</span>
+            <button class="btn btn-danger">Danger Action</button>
+        </div>
+        <div class="button-wrapper">
+            <span class="button-label">Warning Button</span>
+            <button class="btn btn-warning">Warning Action</button>
+        </div>
+        <div class="button-wrapper">
+            <span class="button-label">Info Button</span>
+            <button class="btn btn-info">Info Action</button>
+        </div>
+    </div>
+
+    <div class="info-box">
+        <strong>🎯 Interactive Features:</strong>
+        <ul style="margin-top: 10px; padding-left: 20px;">
+            <li>✨ Smooth ripple effect on click</li>
+            <li>📈 Lift effect on hover (translateY)</li>
+            <li>💫 Dynamic box shadow with color matching</li>
+            <li>⚡ Fast transitions for smooth feel</li>
+        </ul>
+    </div>
+</section>
+
+<!-- Outline Buttons -->
+<section class="showcase-section">
+    <h2 class="section-title">📊 Outline & Special Buttons</h2>
+    
+    <div class="buttons-showcase">
+        <div class="button-wrapper">
+            <span class="button-label">Outline Button</span>
+            <button class="btn btn-outline">Outline Style</button>
+        </div>
+    </div>
+</section>
+
+<!-- Cards Section -->
+<section class="showcase-section">
+    <h2 class="section-title">🎴 Cards with Hover Effects</h2>
+    <p>Cards have animated border colors and smooth lift animations</p>
+    
+    <div class="grid">
+        <div class="card card-primary fade-in">
+            <h3>💙 Primary Card</h3>
+            <p>Hover over this card to see the smooth lift effect and color transition. The top border animates through different colors on hover.</p>
+            <button class="btn btn-primary" style="width: 100%;">Learn More</button>
+        </div>
+        <div class="card card-secondary fade-in" style="animation-delay: 0.1s;">
+            <h3>💜 Secondary Card</h3>
+            <p>Each card has a glossy shine effect that moves across the card when you hover over it. Professional and smooth!</p>
+            <button class="btn btn-secondary" style="width: 100%;">Learn More</button>
+        </div>
+        <div class="card card-success fade-in" style="animation-delay: 0.2s;">
+            <h3>💚 Success Card</h3>
+            <p>Cards lift up slightly and cast a larger shadow on hover, creating a floating effect that feels interactive and responsive.</p>
+            <button class="btn btn-success" style="width: 100%;">Learn More</button>
+        </div>
+    </div>
+
+    <div class="grid" style="margin-top: 20px;">
+        <div class="card card-danger fade-in" style="animation-delay: 0.3s;">
+            <h3>❤️ Danger Card</h3>
+            <p>Try hovering and see the dynamic transformations! The card border color changes with a smooth animation.</p>
+            <button class="btn btn-danger" style="width: 100%;">Learn More</button>
+        </div>
+        <div class="card card-warning fade-in" style="animation-delay: 0.4s;">
+            <h3>🧡 Warning Card</h3>
+            <p>All interactive elements are designed with accessibility in mind, featuring proper contrast and smooth animations.</p>
+            <button class="btn btn-warning" style="width: 100%;">Learn More</button>
+        </div>
+        <div class="card card-info fade-in" style="animation-delay: 0.5s;">
+            <h3>💎 Info Card</h3>
+            <p>The animations are performance-optimized and respect user's motion preferences for accessibility compliance.</p>
+            <button class="btn btn-info" style="width: 100%;">Learn More</button>
+        </div>
+    </div>
+</section>
+
+<!-- Feature Cards -->
+<section class="showcase-section">
+    <h2 class="section-title">⭐ Feature Cards with Icon Animation</h2>
+    <p>Hover over the icons to see bouncing and rotating effects</p>
+    
+    <div class="feature-grid">
+        <div class="feature-card">
+            <div class="feature-icon">🚀</div>
+            <h3>Performance</h3>
+            <p>Optimized animations that don't slow down your browser. Smooth 60fps transitions on all devices.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">🎨</div>
+            <h3>Beautiful Design</h3>
+            <p>Carefully crafted color palettes and gradients that work in both light and dark modes.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">♿</div>
+            <h3>Accessible</h3>
+            <p>All animations respect prefers-reduced-motion. High contrast modes supported for better visibility.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">📱</div>
+            <h3>Responsive</h3>
+            <p>Perfect on mobile, tablet, laptop, and TV screens. Animations scale beautifully on all sizes.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">⚡</div>
+            <h3>Interactive</h3>
+            <p>Every element responds to user interaction with smooth, engaging animations and transitions.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">🌙</div>
+            <h3>Dark Mode</h3>
+            <p>Automatically adapts to system dark mode settings with optimized colors for comfortable viewing.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Badges Section -->
+<section class="showcase-section">
+    <h2 class="section-title">🏷️ Badges & Tags</h2>
+    <p>Hover to see scale and shadow animations</p>
+    
+    <div class="badges-showcase">
+        <span class="badge badge-primary">Primary</span>
+        <span class="badge badge-secondary">Secondary</span>
+        <span class="badge badge-success">Success</span>
+        <span class="badge badge-danger">Danger</span>
+        <span class="badge badge-warning">Warning</span>
+        <span class="badge badge-info">Info</span>
+        <span class="badge badge-primary">Interactive</span>
+        <span class="badge badge-secondary">Hover Me</span>
+        <span class="badge badge-success">Beautiful</span>
+    </div>
+</section>
+
+<!-- Form Inputs Section -->
+<section class="showcase-section">
+    <h2 class="section-title">📝 Form Inputs with Dynamic Focus</h2>
+    <p>Click on inputs to see the animated gradient border and scale effect</p>
+    
+    <div style="background: white; padding: 25px; border-radius: 12px; box-shadow: var(--shadow-md);">
+        <form id="demoForm" novalidate>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="demoName">Full Name</label>
+                    <input type="text" id="demoName" placeholder="Enter your name">
+                </div>
+                <div class="form-group">
+                    <label for="demoEmail">Email Address</label>
+                    <input type="email" id="demoEmail" placeholder="Enter your email">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="demoMessage">Message</label>
+                <textarea id="demoMessage" placeholder="Type your message here..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="demoSelect">Select an Option</label>
+                <select id="demoSelect">
+                    <option value="">Choose...</option>
+                    <option value="option1">Option 1 - Dynamic</option>
+                    <option value="option2">Option 2 - Attractive</option>
+                    <option value="option3">Option 3 - Interactive</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Submit Form</button>
+        </form>
+
+        <div class="info-box success" style="margin-top: 25px;">
+            <strong>✅ Form Features:</strong>
+            <ul style="margin-top: 10px; padding-left: 20px;">
+                <li>🎯 Gradient border on focus</li>
+                <li>💫 Smooth scale animation</li>
+                <li>🌟 Colored box shadow feedback</li>
+                <li>⚡ Placeholder color transitions</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta-section">
+    <h2>Ready to Transform Your UI?</h2>
+    <p>Experience the power of dynamic colors and smooth interactions</p>
+    <button class="btn" onclick="alert('Thank you for your interest!');">Get Started Today</button>
+</section>
+
+<!-- Info Boxes -->
+<section class="showcase-section">
+    <h2 class="section-title">📢 Information Boxes</h2>
+    
+    <div class="info-box">
+        <strong>ℹ️ Information:</strong> This is a standard info box with a blue left border. Perfect for important notices and details.
+    </div>
+
+    <div class="info-box success">
+        <strong>✅ Success:</strong> Great! You're experiencing the dynamic hover effects and interactive elements in action.
+    </div>
+
+    <div class="info-box warning">
+        <strong>⚠️ Warning:</strong> These effects are performance-optimized and work smoothly on all modern browsers and devices.
+    </div>
+
+    <div class="info-box danger">
+        <strong>❌ Danger:</strong> Remember to test hover effects on different devices and screen sizes for the best experience.
+    </div>
+</section>
+
+<!-- Animation Types Section -->
+<section class="showcase-section">
+    <h2 class="section-title">✨ Animation Effects Showcase</h2>
+    
+    <div class="grid">
+        <div class="card fade-in">
+            <h3>Fade In</h3>
+            <p>Elements fade in smoothly with a subtle upward movement when the page loads.</p>
+            <p style="font-size: 0.9rem; color: var(--text-light);">Delay: 0s</p>
+        </div>
+        <div class="card slide-in-left" style="animation-delay: 0.2s;">
+            <h3>Slide In Left</h3>
+            <p>Elements slide in from the left while fading in for a dynamic entrance.</p>
+            <p style="font-size: 0.9rem; color: var(--text-light);">Delay: 0.2s</p>
+        </div>
+        <div class="card slide-in-right" style="animation-delay: 0.4s;">
+            <h3>Slide In Right</h3>
+            <p>Elements slide in from the right while fading in for variety in animations.</p>
+            <p style="font-size: 0.9rem; color: var(--text-light);">Delay: 0.4s</p>
+        </div>
+    </div>
+
+    <div class="info-box" style="margin-top: 25px;">
+        <strong>🎬 Animation Details:</strong>
+        <ul style="margin-top: 10px; padding-left: 20px;">
+            <li>⏱️ Smooth 0.6s transitions</li>
+            <li>🔄 Staggered animation delays</li>
+            <li>📐 Cubic Bézier easing functions</li>
+            <li>♿ Respects prefers-reduced-motion</li>
+        </ul>
+    </div>
+</section>
+
+<!-- Gradient Backgrounds Section -->
+<section class="showcase-section">
+    <h2 class="section-title">🌈 Beautiful Gradient Backgrounds</h2>
+    
+    <div class="colors-grid">
+        <div style="height: 150px; border-radius: 12px; background: var(--ocean-gradient); color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; text-shadow: 0 2px 4px rgba(0,0,0,0.3);">Ocean Gradient</div>
+        <div style="height: 150px; border-radius: 12px; background: var(--forest-gradient); color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; text-shadow: 0 2px 4px rgba(0,0,0,0.3);">Forest Gradient</div>
+        <div style="height: 150px; border-radius: 12px; background: var(--sunset-gradient); color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; text-shadow: 0 2px 4px rgba(0,0,0,0.3);">Sunset Gradient</div>
+        <div style="height: 150px; border-radius: 12px; background: var(--fire-gradient); color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; text-shadow: 0 2px 4px rgba(0,0,0,0.3);">Fire Gradient</div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Form validation with visual feedback
+    document.getElementById('demoForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const name = document.getElementById('demoName');
+        const email = document.getElementById('demoEmail');
+        
+        // Validate inputs
+        if (name.value.trim()) {
+            name.classList.add('success');
+            name.classList.remove('error');
+        } else {
+            name.classList.add('error');
+        }
+        
+        if (email.value.trim() && email.value.includes('@')) {
+            email.classList.add('success');
+            email.classList.remove('error');
+        } else {
+            email.classList.add('error');
+        }
+        
+        alert('Form submitted! Check the console for details.');
+    });
+
+    // Clear error on focus
+    document.querySelectorAll('input, textarea').forEach(input => {
+        input.addEventListener('focus', function() {
+            this.classList.remove('error', 'success');
+        });
+    });
+
+    // Add ripple effect on buttons
+    document.querySelectorAll('button, .btn').forEach(button => {
+        button.addEventListener('click', function(e) {
+            const ripple = document.createElement('span');
+            const rect = this.getBoundingClientRect();
+            const size = Math.max(rect.width, rect.height);
+            const x = e.clientX - rect.left - size / 2;
+            const y = e.clientY - rect.top - size / 2;
+            
+            ripple.style.width = ripple.style.height = size + 'px';
+            ripple.style.left = x + 'px';
+            ripple.style.top = y + 'px';
+            ripple.classList.add('ripple');
+            
+            this.appendChild(ripple);
+            
+            setTimeout(() => ripple.remove(), 600);
+        });
+    });
+
+    console.log('✨ Dynamic Colors & Hover Effects loaded successfully!');
+    console.log('🎨 Try hovering over buttons, cards, badges, and form inputs.');
+    console.log('📱 Resize your browser to see responsive animations.');
+</script>
+{% endblock %}
