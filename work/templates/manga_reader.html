@@ -1,0 +1,2147 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ product.name }} - Chapter {{ chapter_num }} | Manga Reader</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Google Fonts for Indian & Asian Scripts (Authentic Manga Scanlation Typography) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;600;700;800;900&family=Merienda:wght@600;800;900&family=Noto+Sans+Devanagari:wght@600;700;800;900&family=Noto+Sans+Gujarati:wght@600;700;800;900&family=Noto+Sans+JP:wght@700;900&family=Noto+Sans+KR:wght@700;900&family=Outfit:wght@500;600;700;800;900&family=Comic+Neue:wght@700&display=swap" rel="stylesheet">
+
+<style>
+/* ==========================================================================
+   GLOBAL MANGA CANVAS THEME
+   ========================================================================== */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    width: 100%;
+    min-height: 100%;
+    background-color: #060913;
+    color: #e2e8f0;
+    font-family: 'Outfit', sans-serif;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+/* Reading Progress Bar */
+#readingProgressBar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3.5px;
+    background: linear-gradient(90deg, #00f0ff, #0077ff, #ff007f);
+    width: 0%;
+    z-index: 9999;
+    box-shadow: 0 0 12px #00f0ff;
+    transition: width 0.1s ease;
+}
+
+/* ==========================================================================
+   TOP READER NAVIGATION BAR
+   ========================================================================== */
+.reader-navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: rgba(7, 12, 24, 0.94);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(0, 240, 255, 0.2);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+    padding: 10px 20px;
+    z-index: 1000;
+    transition: transform 0.3s ease;
+}
+
+.btn-reader-nav {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(0, 240, 255, 0.3);
+    color: #ffffff;
+    font-family: 'Inconsolata', monospace;
+    font-weight: 700;
+    font-size: 15px;
+    padding: 6px 14px;
+    border-radius: 20px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+}
+
+.btn-reader-nav:hover, .btn-reader-nav.active {
+    background: linear-gradient(135deg, rgba(0, 240, 255, 0.3), rgba(0, 119, 255, 0.3));
+    border-color: #00f0ff;
+    color: #00f0ff;
+    box-shadow: 0 0 15px rgba(0, 240, 255, 0.35);
+}
+
+.chapter-select-box, .page-select-box {
+    background: rgba(10, 18, 38, 0.95);
+    border: 1px solid rgba(0, 240, 255, 0.35);
+    color: #00f0ff;
+    font-family: 'Inconsolata', monospace;
+    font-weight: 700;
+    font-size: 15px;
+    padding: 6px 14px;
+    border-radius: 20px;
+    outline: none;
+    cursor: pointer;
+}
+
+.chapter-select-box:focus, .page-select-box:focus {
+    border-color: #00f0ff;
+    box-shadow: 0 0 15px rgba(0, 240, 255, 0.4);
+}
+
+.language-select-box {
+    background: linear-gradient(135deg, rgba(13, 27, 54, 0.95), rgba(8, 16, 34, 0.95));
+    border: 1px solid rgba(0, 240, 255, 0.45);
+    color: #00f0ff;
+    font-family: 'Inconsolata', monospace;
+    font-weight: 800;
+    font-size: 14px;
+    padding: 6px 14px;
+    border-radius: 20px;
+    outline: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 12px rgba(0, 240, 255, 0.2);
+}
+
+.language-select-box:hover, .language-select-box:focus {
+    border-color: #00f0ff;
+    box-shadow: 0 0 20px rgba(0, 240, 255, 0.6);
+    color: #ffffff;
+    background: linear-gradient(135deg, rgba(0, 240, 255, 0.2), rgba(0, 119, 255, 0.3));
+}
+
+.language-select-box option {
+    background: #081022;
+    color: #ffffff;
+}
+
+/* ==========================================================================
+   MANGA READING VIEWPORT & IN-BUBBLE SCANLATION OVERLAYS
+   ========================================================================== */
+.reader-container {
+    padding-top: 75px;
+    padding-bottom: 90px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+/* Width modes */
+.width-normal { max-width: 820px; width: 100%; margin: 0 auto; }
+.width-wide   { max-width: 1100px; width: 100%; margin: 0 auto; }
+.width-full   { max-width: 100%; width: 100%; }
+
+/* Vertical Webtoon Page Style */
+.manga-page-wrapper {
+    position: relative;
+    width: 100%;
+    margin-bottom: 24px;
+    text-align: center;
+}
+
+.page-indicator-tag {
+    display: inline-block;
+    background: rgba(7, 14, 30, 0.85);
+    border: 1px solid rgba(0, 240, 255, 0.25);
+    color: #94a3b8;
+    font-size: 13px;
+    font-family: 'Inconsolata', monospace;
+    padding: 3px 12px;
+    border-radius: 20px;
+    margin-bottom: 8px;
+}
+
+/* Container for Manga Page with Exact In-Place Overlays */
+.manga-page-inner {
+    position: relative;
+    width: 100%;
+    display: block;
+    overflow: hidden;
+    border-radius: 4px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.9), 0 0 20px rgba(0, 0, 0, 0.8);
+    background-color: #03060c;
+}
+
+.manga-page-img {
+    width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+
+/* Overlay Layer covering 100% of the image */
+.manga-overlay-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: auto;
+    z-index: 20;
+    transition: opacity 0.2s ease;
+}
+
+/* ==========================================================================
+   AUTHENTIC MANGA SCANLATION SPEECH BUBBLE TYPOGRAPHY & BOXES
+   (Identical to real published Hindi/Gujarati/Japanese/Korean scanlations)
+   ========================================================================== */
+.manga-bubble-overlay {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    box-sizing: border-box;
+    cursor: pointer;
+    font-weight: 800;
+    line-height: 1.15;
+    user-select: text;
+    -webkit-user-select: text;
+    overflow: hidden;
+    word-break: break-word;
+    letter-spacing: -0.2px;
+    transition: opacity 0.2s ease;
+}
+
+/* Hover effect on translated bubbles: soften opacity to peek original art underneath */
+.manga-bubble-overlay:hover {
+    opacity: 0.25 !important;
+}
+
+/* 1. White Oval/Cloud Speech Bubble (Pure Scanlation Typeset) */
+.bubble-speech {
+    background: #ffffff !important;
+    color: #000000 !important;
+    border-radius: 50% / 45%;
+    padding: 2px 5px;
+    box-shadow: none;
+    border: none;
+}
+
+/* 2. White Rectangular/Square Narration Box (e.g. "...A PIRATE SHIP MADE THE VILLAGE ITS BASE.") */
+.bubble-caption-white {
+    background: #ffffff !important;
+    color: #000000 !important;
+    border: 2.5px solid #000000;
+    border-radius: 2px;
+    padding: 3px 5px;
+    box-shadow: none;
+    font-weight: 800;
+}
+
+/* 3. Black Narration Box (e.g. Gol D. Roger Execution) */
+.bubble-caption-black {
+    background: #000000 !important;
+    color: #ffffff !important;
+    border: 1.5px solid #ffffff;
+    border-radius: 2px;
+    padding: 3px 5px;
+    box-shadow: none;
+    font-weight: 800;
+}
+
+/* 4. Title / Banner style */
+.bubble-title-banner {
+    background: rgba(0, 0, 0, 0.92) !important;
+    color: #00f0ff !important;
+    border: 2px solid #00f0ff;
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-weight: 900;
+}
+
+/* Single Page Mode */
+.single-page-wrapper {
+    display: none;
+    position: relative;
+    width: 100%;
+    max-width: 900px;
+    text-align: center;
+    margin: 0 auto;
+}
+
+.single-page-img {
+    width: 100%;
+    max-height: 88vh;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.95);
+    cursor: pointer;
+}
+
+/* Clickable touch zones for single page */
+.click-zone-left, .click-zone-right {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 35%;
+    z-index: 30;
+    cursor: pointer;
+}
+.click-zone-left { left: 0; }
+.click-zone-right { right: 0; }
+
+/* ==========================================================================
+   BOTTOM CONTROLS BAR
+   ========================================================================== */
+.reader-bottom-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(7, 12, 24, 0.94);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-top: 1px solid rgba(0, 240, 255, 0.2);
+    box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.7);
+    padding: 10px 20px;
+    z-index: 1000;
+    transition: transform 0.3s ease;
+}
+
+.btn-chapter-jump {
+    background: linear-gradient(135deg, #00f0ff, #0077ff);
+    color: #050b1a !important;
+    font-family: 'Inconsolata', monospace;
+    font-weight: 800;
+    font-size: 15px;
+    padding: 6px 18px;
+    border-radius: 20px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border: none;
+}
+
+.btn-chapter-jump:hover {
+    background: linear-gradient(135deg, #00ffcc, #00f0ff);
+    box-shadow: 0 0 20px rgba(0, 240, 255, 0.6);
+    transform: translateY(-2px);
+}
+
+.btn-chapter-jump:disabled, .btn-chapter-jump.disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* Floating quick top button */
+.btn-floating-top {
+    position: fixed;
+    bottom: 75px;
+    right: 25px;
+    background: rgba(0, 240, 255, 0.2);
+    border: 1px solid #00f0ff;
+    color: #00f0ff;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(0, 240, 255, 0.4);
+    transition: all 0.3s ease;
+    z-index: 990;
+}
+
+.btn-floating-top:hover {
+    background: #00f0ff;
+    color: #050b1a;
+    transform: translateY(-4px);
+    box-shadow: 0 0 25px rgba(0, 240, 255, 0.8);
+}
+
+@media (max-width: 768px) {
+    .reader-navbar, .reader-bottom-bar {
+        padding: 8px 12px;
+    }
+    .btn-reader-nav {
+        padding: 4px 10px;
+        font-size: 13px;
+    }
+    .chapter-select-box {
+        font-size: 13px;
+        padding: 4px 10px;
+    }
+    .hide-mobile {
+        display: none !important;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- Reading Progress Bar -->
+<div id="readingProgressBar"></div>
+
+<!-- ==========================================
+     TOP READER STICKY CONTROLS
+     ========================================== -->
+<div class="reader-navbar d-flex align-items-center justify-content-between" id="readerNavbar">
+  
+  <!-- Left: Back Button -->
+  <div class="d-flex align-items-center gap-2">
+    <a href="/manga/{{ product.id }}/" class="btn-reader-nav" title="Back to Manga Overview">
+      <i class="fa fa-arrow-left"></i> <span class="hide-mobile">{{ product.name }}</span>
+    </a>
+  </div>
+
+  <!-- Center: Title, Chapter & Language Selector -->
+  <div class="d-flex align-items-center gap-2 flex-wrap justify-content-center">
+    <!-- Chapter Dropdown -->
+    <select id="chapterSelect" class="chapter-select-box" onchange="changeChapter(this.value)" title="Select Chapter">
+      {% for ch in chapter_list %}
+      <option value="{{ ch }}" {% if ch == chapter_num %}selected{% endif %}>
+        Chapter {{ ch }}
+      </option>
+      {% endfor %}
+    </select>
+
+    <!-- Language Selector Dropdown -->
+    <select id="readerLanguageSelect" class="language-select-box" onchange="changeLanguage(this.value)" title="Select Translation Language">
+      <option value="English" selected>🌐 English (Original)</option>
+      <option value="Hindi">🇮🇳 Hindi (हिंदी)</option>
+      <option value="Gujarati">🇮🇳 Gujarati (ગુજરાતી)</option>
+      <option value="Japanese">🇯🇵 Japanese (日本語)</option>
+      <option value="Korean">🇰🇷 Korean (한국어)</option>
+    </select>
+  </div>
+
+  <!-- Right: View Mode & Width Settings -->
+  <div class="d-flex align-items-center gap-2">
+    {% if has_full_chapter %}
+    <!-- View Mode Switcher -->
+    <button type="button" class="btn-reader-nav active" id="btnScrollMode" onclick="setReadingMode('scroll')" title="Vertical Webtoon Scroll Mode">
+      <i class="fa fa-align-justify"></i> <span class="hide-mobile">Scroll</span>
+    </button>
+    <button type="button" class="btn-reader-nav" id="btnSingleMode" onclick="setReadingMode('single')" title="Single Page Flip Mode">
+      <i class="fa fa-file-image-o"></i> <span class="hide-mobile">Single</span>
+    </button>
+
+    <!-- In-Image Overlay Toggle -->
+    <button type="button" class="btn-reader-nav active" id="btnToggleOverlays" onclick="toggleOverlays()" title="Toggle In-Image Translations (इमेज टेक्स्ट चालू/बंद)">
+      <i class="fa fa-language"></i> <span class="hide-mobile">Manga Text</span>
+    </button>
+
+    <!-- Width Zoom Toggle -->
+    <button type="button" class="btn-reader-nav hide-mobile" id="btnWidthToggle" onclick="toggleWidth()" title="Change Reading Width">
+      <i class="fa fa-arrows-h"></i>
+    </button>
+    {% endif %}
+
+    <!-- Fullscreen Toggle -->
+    <button type="button" class="btn-reader-nav" onclick="toggleFullScreen()" title="Toggle Fullscreen">
+      <i class="fa fa-expand"></i>
+    </button>
+  </div>
+
+</div>
+
+<!-- ==========================================
+     MANGA READING VIEWPORT
+     ========================================== -->
+<div class="reader-container width-normal" id="readerContainer">
+  
+  {% if has_full_chapter %}
+  <!-- 1. CONTINUOUS VERTICAL WEBTOON SCROLL MODE (52 Full Pages) -->
+  <div id="verticalScrollContainer" class="w-100">
+    {% for page in pages %}
+    <div class="manga-page-wrapper" id="page-wrapper-{{ page.page_num }}">
+      <div class="page-indicator-tag">
+        <i class="fa fa-bookmark text-info me-1"></i> Page {{ page.page_num }} of {{ total_pages }}
+      </div>
+
+      <!-- Manga Page Container with In-Place Speech Bubble Overlays -->
+      <div class="manga-page-inner" id="page-inner-{{ page.page_num }}">
+        <img src="{{ page.url }}" class="manga-page-img" alt="{{ page.title }}" loading="lazy">
+        <!-- Direct In-Image Translated Speech & Caption Overlays -->
+        <div class="manga-overlay-layer" id="overlay-layer-{{ page.page_num }}"></div>
+      </div>
+    </div>
+    {% endfor %}
+
+    <!-- Chapter End Banner -->
+    <div class="text-center py-5 my-3 rounded-4 p-4" style="background: rgba(10, 18, 38, 0.9); border: 1px solid rgba(0, 240, 255, 0.25);">
+      <h3 style="font-family: 'Merienda', cursive; color: #00f0ff; margin-bottom: 10px;">
+        🎉 End of Chapter {{ chapter_num }}
+      </h3>
+      <p class="text-muted mb-4">You have finished reading all {{ total_pages }} pages of Chapter {{ chapter_num }}.</p>
+      <div class="d-flex justify-content-center gap-3 flex-wrap">
+        {% if prev_chapter %}
+        <a href="/manga/{{ product.id }}/chapter/{{ prev_chapter }}/" class="btn btn-outline-info rounded-pill px-4">
+          <i class="fa fa-arrow-left me-1"></i> Chapter {{ prev_chapter }}
+        </a>
+        {% endif %}
+        <a href="/manga/{{ product.id }}/" class="btn btn-outline-light rounded-pill px-4">
+          <i class="fa fa-list me-1"></i> Chapters List
+        </a>
+        {% if next_chapter %}
+        <a href="/manga/{{ product.id }}/chapter/{{ next_chapter }}/" class="btn-chapter-jump">
+          Next: Chapter {{ next_chapter }} <i class="fa fa-arrow-right ms-1"></i>
+        </a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. SINGLE PAGE FLIP MODE -->
+  <div id="singlePageContainer" class="single-page-wrapper">
+    <div class="page-indicator-tag mb-2">
+      <span id="singlePageIndicator">Page 1 of {{ total_pages }}</span>
+    </div>
+
+    <div class="manga-page-inner" id="singlePageInner" style="max-width: 900px; margin: 0 auto;">
+      <div class="click-zone-left" onclick="prevSinglePage()" title="Click for Previous Page"></div>
+      <div class="click-zone-right" onclick="nextSinglePage()" title="Click for Next Page"></div>
+      <img src="{{ pages.0.url }}" id="singleMangaImg" class="single-page-img" alt="Single Page Viewer">
+      <!-- Direct In-Image Overlays for Single Page -->
+      <div class="manga-overlay-layer" id="singlePageOverlayLayer"></div>
+    </div>
+
+    <!-- Single Page Controls -->
+    <div class="d-flex justify-content-between align-items-center mt-3">
+      <button type="button" class="btn btn-outline-info rounded-pill px-4" id="btnSinglePrev" onclick="prevSinglePage()">
+        <i class="fa fa-chevron-left me-1"></i> Prev
+      </button>
+
+      <select id="singlePageSelect" class="page-select-box" onchange="jumpToSinglePage(this.value)">
+        {% for page in pages %}
+        <option value="{{ page.page_num }}">Page {{ page.page_num }} / {{ total_pages }}</option>
+        {% endfor %}
+      </select>
+
+      <button type="button" class="btn btn-outline-info rounded-pill px-4" id="btnSingleNext" onclick="nextSinglePage()">
+        Next <i class="fa fa-chevron-right ms-1"></i>
+      </button>
+    </div>
+  </div>
+
+  {% else %}
+  <!-- PREVIEW FOR MANGA WITHOUT CUSTOM SCANS YET (e.g. Dragon Ball, Naruto, etc.) -->
+  <div class="w-100 text-center py-4">
+    <div class="p-4 p-md-5 rounded-4" style="background: rgba(10, 18, 38, 0.92); border: 1px solid rgba(0, 240, 255, 0.3); box-shadow: 0 15px 45px rgba(0,0,0,0.8);">
+      <div style="max-width: 320px; margin: 0 auto 24px auto; border-radius: 16px; overflow: hidden; border: 2px solid rgba(0, 240, 255, 0.4); box-shadow: 0 10px 30px rgba(0, 240, 255, 0.2);">
+        <img src="{{ product.image.url }}" class="img-fluid" style="width: 100%; height: 420px; object-fit: cover;" alt="{{ product.name }}">
+      </div>
+      
+      <h2 style="font-family: 'Merienda', cursive; color: #00f0ff; font-size: clamp(24px, 4vw, 36px); margin-bottom: 8px;">
+        {{ product.name }} - Chapter {{ chapter_num }}
+      </h2>
+      <p class="text-muted" style="font-size: 16px; max-width: 600px; margin: 0 auto 24px auto;">
+        Official full-chapter scanlation for <strong>{{ product.name }}</strong> will be available soon once uploaded.
+      </p>
+
+      <div class="d-flex justify-content-center gap-3 flex-wrap">
+        <a href="/manga/{{ product.id }}/" class="btn btn-outline-info rounded-pill px-4 py-2">
+          <i class="fa fa-arrow-left me-1"></i> Back to {{ product.name }} Chapters
+        </a>
+        <a href="/Shop/" class="btn btn-outline-light rounded-pill px-4 py-2">
+          <i class="fa fa-book me-1"></i> Browse Other Manga
+        </a>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+</div>
+
+<!-- ==========================================
+     BOTTOM CONTROLS BAR
+     ========================================== -->
+<div class="reader-bottom-bar d-flex align-items-center justify-content-between" id="readerBottomBar">
+  
+  <div>
+    {% if prev_chapter %}
+    <a href="/manga/{{ product.id }}/chapter/{{ prev_chapter }}/" class="btn-chapter-jump">
+      <i class="fa fa-arrow-left"></i> <span class="hide-mobile">Chapter {{ prev_chapter }}</span>
+    </a>
+    {% else %}
+    <button class="btn-chapter-jump disabled" disabled>
+      <i class="fa fa-arrow-left"></i> <span class="hide-mobile">First Chapter</span>
+    </button>
+    {% endif %}
+  </div>
+
+  <div class="text-muted small font-nav text-center">
+    <span class="text-info fw-bold">{{ product.name }}</span> • Ch. {{ chapter_num }} ({{ total_pages }} Pages)
+    <span class="badge rounded-pill ms-2 d-none d-md-inline-block" style="background: rgba(0, 240, 255, 0.15); border: 1px solid rgba(0, 240, 255, 0.4); color: #00f0ff;" id="currentLangBadge">
+      🌐 English (Original)
+    </span>
+  </div>
+
+  <div>
+    {% if next_chapter %}
+    <a href="/manga/{{ product.id }}/chapter/{{ next_chapter }}/" class="btn-chapter-jump">
+      <span class="hide-mobile">Chapter {{ next_chapter }}</span> <i class="fa fa-arrow-right"></i>
+    </a>
+    {% else %}
+    <button class="btn-chapter-jump disabled" disabled>
+      <span class="hide-mobile">Latest Chapter</span> <i class="fa fa-check"></i>
+    </button>
+    {% endif %}
+  </div>
+
+</div>
+
+<!-- Floating Scroll to Top -->
+<div class="btn-floating-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" title="Scroll to Top">
+  <i class="fa fa-arrow-up"></i>
+</div>
+
+<!-- ==========================================
+     SCRIPTS & MULTI-LANGUAGE IN-IMAGE OVERLAY ENGINE
+     ========================================= -->
+<script>
+const pagesData = [
+  {% for page in pages %}
+  { page_num: {{ page.page_num }}, url: "{{ page.url }}" },
+  {% endfor %}
+];
+
+// ==========================================================================
+// PRECISE IN-IMAGE SPEECH BUBBLE & CAPTION OVERLAYS DATABASE
+// Real, 100% faithful and contextual translations for in-place text replacement!
+// ==========================================================================
+const pageOverlaysData = {
+  // PAGE 1: Roger Execution (p.jpg.jpeg)
+  1: [
+    {
+      type: 'bubble-caption-black',
+      top: '7.5%',
+      left: '67%',
+      width: '25.5%',
+      height: '19.5%',
+      fontSize: 'clamp(8px, 0.95vw, 12px)',
+      text: {
+        'English': 'GOLD ROGER, THE "KING OF THE PIRATES," HAD ACHIEVED IT ALL. WEALTH, FAME AND POWER HAD ALL BEEN HIS.',
+        'Hindi': 'गोल्ड रॉजर, "समुद्री डाकुओं का राजा", जिसने सब कुछ हासिल किया था। दौलत, शोहरत और ताकत सब कुछ उसका था।',
+        'Gujarati': 'ગોલ્ડ રોજર, "ચાંચિયાઓનો રાજા", જેણે બધું જ હાંસલ કર્યું હતું. સંપત્તિ, ખ્યાતિ અને તાકાત બધું તેનું હતું.',
+        'Japanese': '「海賊王」ゴールド・ロジャー。富、名声、力、この世の全てを手に入れた男。',
+        'Korean': '해적왕 골드 로저. 부와 명성과 힘, 이 세상의 모든 것을 손에 넣은 남자.'
+      }
+    },
+    {
+      type: 'bubble-caption-black',
+      top: '8%',
+      left: '4.5%',
+      width: '24%',
+      height: '21%',
+      fontSize: 'clamp(8px, 0.9vw, 11.5px)',
+      text: {
+        'English': 'NOT SURPRISINGLY, THE FINAL WORDS HE SPOKE BEFORE THEY LOPPED OFF HIS HEAD INSPIRED ADVENTURERS THROUGHOUT THE WORLD TO SAIL THE SEAS.',
+        'Hindi': 'उसका सर कलम किए जाने से पहले उसके कहे आखिरी शब्दों ने दुनिया भर के साहसी लोगों को समंदर में उतरने के लिए प्रेरित किया।',
+        'Gujarati': 'તેનું માથું કાપતા પહેલાં તેણે કહેલા અંતિમ શબ્દોએ દુનિયાભરના સાહસી લોકોને સમુદ્રમાં નીકળવા પ્રેરિત કર્યા.',
+        'Japanese': '処刑台で彼が言い残した言葉は、世界中の人々を海へと駆り立てた。',
+        'Korean': '처형대에서 그가 남긴 한마디는 전 세계 사람들을 바다로 향하게 만들었다.'
+      }
+    },
+    {
+      type: 'bubble-caption-black',
+      top: '32.5%',
+      left: '46.5%',
+      width: '13%',
+      height: '10%',
+      fontSize: 'clamp(8px, 1vw, 13px)',
+      text: {
+        'English': 'THE WORLD...',
+        'Hindi': 'यह दुनिया...',
+        'Gujarati': 'આખી દુનિયા...',
+        'Japanese': '世界は...',
+        'Korean': '세상은...'
+      }
+    },
+    {
+      type: 'bubble-speech',
+      top: '31.5%',
+      left: '62%',
+      width: '31%',
+      height: '16%',
+      fontSize: 'clamp(9px, 1.1vw, 14px)',
+      text: {
+        'English': 'MY TREASURE? WHY, IT\'S RIGHT WHERE I LEFT IT...',
+        'Hindi': 'मेरा खज़ाना? वो वहीं है जहाँ मैंने उसे छोड़ा था...',
+        'Gujarati': 'મારો ખજાનો? એ ત્યાં જ છે જ્યાં મેં એને છોડ્યો હતો...',
+        'Japanese': 'おれの財宝か？欲しけりゃくれてやる…探せ！',
+        'Korean': '내 보물말인가? 원한다면 주지… 찾아라!'
+      }
+    },
+    {
+      type: 'bubble-caption-black',
+      top: '72%',
+      left: '3.5%',
+      width: '25.5%',
+      height: '19%',
+      fontSize: 'clamp(9px, 1.05vw, 13.5px)',
+      text: {
+        'English': '...IS ABOUT TO WITNESS A GREAT ERA OF PIRACY!',
+        'Hindi': '...समुद्री डाकुओं के एक महान युग की गवाह बनने जा रही है!',
+        'Gujarati': '...ચાંચિયાઓના એક મહાન સુવર્ણ યુગની સાક્ષી બનવા જઈ રહી છે!',
+        'Japanese': '…世はまさに大海賊時代！',
+        'Korean': '…세상은 바야흐로 대해적 시대!'
+      }
+    },
+    {
+      type: 'bubble-speech',
+      top: '73.5%',
+      left: '62%',
+      width: '32%',
+      height: '17.5%',
+      fontSize: 'clamp(8px, 1vw, 13px)',
+      text: {
+        'English': 'IT\'S YOURS IF YOU CAN FIND IT... BUT YOU\'LL HAVE TO SEARCH THE WHOLE WORLD!',
+        'Hindi': 'अगर ढूंढ सको तो वो तुम्हारा है... लेकिन तुम्हें पूरी दुनिया छाननी पड़ेगी!',
+        'Gujarati': 'જો શોધી શકો તો એ તમારો છે... પણ તમારે આખી દુનિયા શોધવી પડશે!',
+        'Japanese': 'この世の全てをそこに置いてきた！',
+        'Korean': '이 세상의 전부를 그곳에 두고 왔다!'
+      }
+    }
+  ],
+
+  // PAGE 2: Romance Dawn Cover Banner (p (1).jpg.jpeg)
+  2: [
+    {
+      type: 'bubble-title-banner',
+      top: '78%',
+      left: '51%',
+      width: '46%',
+      height: '18%',
+      fontSize: 'clamp(11px, 1.3vw, 18px)',
+      text: {
+        'English': 'CHAPTER 1: ROMANCE DAWN — THE DAWN OF ADVENTURE',
+        'Hindi': 'अध्याय 1: रोमांस डॉन — रोमांच का नया सवेरा',
+        'Gujarati': 'પ્રકરણ 1: રોમાન્સ ડૉન — સાહસની શરૂઆત',
+        'Japanese': '第1話: ROMANCE DAWN —冒険の夜明け—',
+        'Korean': '제1화: 로맨스 던 —모험의 새벽—'
+      }
+    }
+  ],
+
+  // PAGE 3: Windmill Village & Pirate Ship (USER'S EXACT SNIPPET SCREENSHOT PAGE - p (2).jpg.jpeg)
+  3: [
+    {
+      type: 'bubble-caption-white',
+      top: '2.2%',
+      left: '79.5%',
+      width: '18%',
+      height: '13%',
+      fontSize: 'clamp(8px, 1vw, 13px)',
+      text: {
+        'English': 'A SMALL HARBOR VILLAGE',
+        'Hindi': 'एक छोटा बंदरगाह गाँव',
+        'Gujarati': 'એક નાનું બંદર ગામ',
+        'Japanese': '小さな港町',
+        'Korean': '작은 항구 마을'
+      }
+    },
+    {
+      type: 'bubble-caption-white',
+      top: '39%',
+      left: '81.5%',
+      width: '16%',
+      height: '12%',
+      fontSize: 'clamp(8px, 1vw, 13px)',
+      text: {
+        'English': 'ONE YEAR AGO...',
+        'Hindi': 'एक साल पहले...',
+        'Gujarati': 'એક વર્ષ પહેલાં...',
+        'Japanese': '1年前...',
+        'Korean': '1년 전...'
+      }
+    },
+    // USER'S EXACT BOX FROM SCREENSHOT:
+    {
+      type: 'bubble-caption-white',
+      top: '54.5%',
+      left: '8%',
+      width: '21%',
+      height: '13%',
+      fontSize: 'clamp(8px, 0.95vw, 12px)',
+      text: {
+        'English': '...A PIRATE SHIP MADE THE VILLAGE ITS BASE.',
+        'Hindi': '...एक समुद्री डाकू के जहाज़ ने गाँव को अपना ठिकाना बनाया था।',
+        'Gujarati': '...એક ચાંચિયા જહાજે ગામને પોતાનો અડ્ડો બનાવ્યો હતો.',
+        'Japanese': '...海賊船が村を拠点にしていた。',
+        'Korean': '...해적선이 마을을 거점으로 삼았다.'
+      }
+    },
+    {
+      type: 'bubble-caption-white',
+      top: '71.5%',
+      left: '80%',
+      width: '10.5%',
+      height: '13%',
+      fontSize: 'clamp(7px, 0.85vw, 11px)',
+      text: {
+        'English': 'THE WIND BLOWS FROM THE EAST.',
+        'Hindi': 'पूरब से हवा चल रही है।',
+        'Gujarati': 'પૂર્વમાંથી પવન ફૂંકાય છે.',
+        'Japanese': '風は東から吹く。',
+        'Korean': '바람은 동쪽에서 불어온다.'
+      }
+    },
+    {
+      type: 'bubble-speech',
+      top: '71.5%',
+      left: '44%',
+      width: '17%',
+      height: '11%',
+      fontSize: 'clamp(7px, 0.85vw, 11px)',
+      text: {
+        'English': 'HEY, LUFFY! WHAT\'RE YOU UP TO NOW?!',
+        'Hindi': 'अरे, लफी! अब तुम क्या खुराफात कर रहे हो?!',
+        'Gujarati': 'અરે, લફી! હવે તું શું ધિંગાણું કરી રહ્યો છે?!',
+        'Japanese': 'おいルフィ！また何やってんだ？！',
+        'Korean': '야, 루피! 또 무슨 짓을 하려는 거야?!'
+      }
+    },
+    {
+      type: 'bubble-speech',
+      top: '73.5%',
+      left: '6.5%',
+      width: '10.5%',
+      height: '8%',
+      fontSize: 'clamp(8px, 1vw, 13px)',
+      text: {
+        'English': 'HMPH!',
+        'Hindi': 'हुम्फ़!',
+        'Gujarati': 'હુંહ!',
+        'Japanese': 'フンッ！',
+        'Korean': '흥!'
+      }
+    },
+    {
+      type: 'bubble-caption-white',
+      top: '85.8%',
+      left: '7.5%',
+      width: '18%',
+      height: '12.5%',
+      fontSize: 'clamp(8px, 0.95vw, 12px)',
+      text: {
+        'English': 'AND THE VILLAGE IS AT PEACE.',
+        'Hindi': 'और गाँव में सब शांत है।',
+        'Gujarati': 'અને ગામમાં બધું શાંત છે.',
+        'Japanese': '村は平和だった。',
+        'Korean': '그리고 마을은 평화롭다.'
+      }
+    }
+  ],
+
+  // PAGE 4: Luffy's cheek cut & Shanks (p (3).jpg.jpeg)
+  4: [
+    {
+      type: 'bubble-speech',
+      top: '5%',
+      left: '1.5%',
+      width: '20%',
+      height: '18%',
+      fontSize: 'clamp(8px, 1vw, 13px)',
+      text: {
+        'English': 'THIS IS HOW TOUGH I AM!!!',
+        'Hindi': 'मैं इतना हिम्मती और ताक़तवर हूँ!!!',
+        'Gujarati': 'હું આટલો હિંમતવાન અને મજબૂત છું!!!',
+        'Japanese': 'おれは本気だぞーーっ!!!',
+        'Korean': '난 이만큼이나 강하다고!!!'
+      }
+    },
+    {
+      type: 'bubble-speech',
+      top: '4%',
+      left: '70.5%',
+      width: '23%',
+      height: '21%',
+      fontSize: 'clamp(7px, 0.85vw, 11px)',
+      text: {
+        'English': 'I\'VE HAD IT WITH YOU GUYS!! NOW YOU\'LL HAVE TO TAKE ME SERIOUSLY!!',
+        'Hindi': 'अब बहुत हुआ तुम लोगों का!! अब तो तुम्हें मुझे गंभीरता से लेना ही होगा!!',
+        'Gujarati': 'હવે બહુ થયું તમારું!! હવે તો તમારે મને ગંભીરતાથી લેવો જ પડશે!!',
+        'Japanese': 'おれをバカにしやがって!! 今度こそ本気だって認めろ!!',
+        'Korean': '날 무시하지 마!! 이젠 나를 진지하게 받아들여야 할 걸!!'
+      }
+    },
+    {
+      type: 'bubble-caption-white',
+      top: '36.5%',
+      left: '63%',
+      width: '24%',
+      height: '10%',
+      fontSize: 'clamp(7px, 0.85vw, 11px)',
+      text: {
+        'English': 'VILLAGER BOY MONKEY D. LUFFY',
+        'Hindi': 'गाँव का लड़का मंकी डी. लफी',
+        'Gujarati': 'ગામનો છોકરો મંકી ડી. લફી',
+        'Japanese': 'フーシャ村の少年 モンキー・D・ルフィ',
+        'Korean': '후샤 마을의 소년 몽키 D. 루피'
+      }
+    },
+    {
+      type: 'bubble-speech',
+      top: '51%',
+      left: '49.5%',
+      width: '15%',
+      height: '10.5%',
+      fontSize: 'clamp(7px, 0.85vw, 11px)',
+      text: {
+        'English': 'WHAT\'S THAT PUP UP TO NOW?',
+        'Hindi': 'यह पिल्ला अब क्या कर रहा है?',
+        'Gujarati': 'આ નાનો છોકરો હવે શું કરી રહ્યો છે?',
+        'Japanese': 'あいつまた何やってんだ？',
+        'Korean': '저 꼬마 또 무슨 짓이야?'
+      }
+    },
+    {
+      type: 'bubble-speech',
+      top: '50.5%',
+      left: '79.5%',
+      width: '15%',
+      height: '10.5%',
+      fontSize: 'clamp(7px, 0.85vw, 11px)',
+      text: {
+        'English': 'HA HA HA! GET IT OVER WITH!',
+        'Hindi': 'हा हा हा! जो भी करना है जल्दी करो!',
+        'Gujarati': 'હા હા હા! જે કરવું હોય એ જલ્દી કર!',
+        'Japanese': 'ギャハハ！さっさとやれよ！',
+        'Korean': '하하하! 얼른 해치워버려!'
+      }
+    },
+    {
+      type: 'bubble-speech',
+      top: '78.5%',
+      left: '16%',
+      width: '19%',
+      height: '12%',
+      fontSize: 'clamp(7px, 0.85vw, 11px)',
+      text: {
+        'English': 'YOU IDIOT! WHAT\'D YOU DO THAT FOR!?',
+        'Hindi': 'अरे बेवकूफ! तूने ऐसा क्यों किया!?',
+        'Gujarati': 'મૂર્ખ! તેં આવું કેમ કર્યું!?',
+        'Japanese': 'バカ野郎！何考えてんだお前はーっ!?',
+        'Korean': '바보 자식! 무슨 짓을 저지른 거야!?'
+      }
+    },
+    {
+      type: 'bubble-speech',
+      top: '78%',
+      left: '73%',
+      width: '10%',
+      height: '7%',
+      fontSize: 'clamp(8px, 1vw, 13px)',
+      text: {
+        'English': 'HUH!?',
+        'Hindi': 'हैं!?',
+        'Gujarati': 'હેં!?',
+        'Japanese': 'えっ！？',
+        'Korean': '뭐야!?'
+      }
+    }
+  ],
+
+  // PAGE 5: Bar Party & Luffy's dream (p (4).jpg.jpeg)
+  5: [
+    {
+      type: 'bubble-speech',
+      top: '5%',
+      left: '8%',
+      width: '14%',
+      height: '15%',
+      fontSize: 'clamp(7px, 0.85vw, 11px)',
+      text: {
+        'English': 'AND TO OUR GREAT VOYAGE!',
+        'Hindi': 'और हमारी महान समुद्री यात्रा के नाम!',
+        'Gujarati': 'અને અમારી મહાન સફરના નામે!',
+        'Japanese': 'おれたちの航海に！',
+        'Korean': '우리의 위대한 항해를 위하여!'
+      }
+    },
+    {
+      type: 'bubble-speech',
+      top: '4%',
+      left: '22%',
+      width: '11%',
+      height: '13%',
+      fontSize: 'clamp(7px, 0.85vw, 11px)',
+      text: {
+        'English': 'TO LUFFY\'S... COURAGE...',
+        'Hindi': 'लफी के... साहस के नाम...',
+        'Gujarati': 'લફીના... સાહસના નામે...',
+        'Japanese': 'ルフィの勇気に！',
+        'Korean': '루피의 용기를 위하여!'
+      }
+    },
+    {
+      type: 'bubble-speech',
+      top: '7%',
+      left: '76%',
+      width: '13%',
+      height: '10%',
+      fontSize: 'clamp(8px, 1vw, 13px)',
+      text: {
+        'English': 'A TOAST!!',
+        'Hindi': 'एक जाम!!',
+        'Gujarati': 'એક જામ!!',
+        'Japanese': '乾杯ーーっ！！',
+        'Korean': '건배ーーっ!!'
+      }
+    },
+    {
+      type: 'bubble-speech',
+      top: '73%',
+      left: '8%',
+      width: '13%',
+      height: '18%',
+      fontSize: 'clamp(8px, 0.95vw, 12px)',
+      text: {
+        'English': 'I WANNA BE A PIRATE TOO!!!',
+        'Hindi': 'मैं भी समुद्री डाकू बनना चाहता हूँ!!!',
+        'Gujarati': 'હું પણ ચાંચિયો બનવા માંગુ છું!!!',
+        'Japanese': 'おれも海賊になりたいんだーーっ!!!',
+        'Korean': '나도 해적이 되고 싶단 말이야ーーっ!!!'
+      }
+    },
+    {
+      type: 'bubble-speech',
+      top: '70%',
+      left: '47%',
+      width: '15%',
+      height: '23%',
+      fontSize: 'clamp(7px, 0.85vw, 11px)',
+      text: {
+        'English': 'I\'M NOT THE LEAST BIT AFRAID OF GETTING HURT!! TAKE ME WITH YOU ON YOUR NEXT VOYAGE!!',
+        'Hindi': 'मुझे चोट लगने से ज़रा भी डर नहीं लगता!! मुझे अपनी अगली समुद्री यात्रा पर साथ ले चलो!!',
+        'Gujarati': 'મને જરાય ઈજા થવાનો ડર નથી લાગતો!! મને તમારી આગલી સફરમાં સાથે લઈ જાઓ!!',
+        'Japanese': '痛いのなんか全然平気だもん!! 次の航海には連れてってくれよ!!',
+        'Korean': '다치는 건 하나도 안 무섭다고!! 다음 항해엔 나도 꼭 데려가 줘!!'
+      }
+    },
+    {
+      type: 'bubble-speech',
+      top: '69%',
+      left: '65%',
+      width: '13%',
+      height: '13%',
+      fontSize: 'clamp(7px, 0.85vw, 11px)',
+      text: {
+        'English': 'LIAR! THAT WAS A FOOLISH THING TO DO!',
+        'Hindi': 'झूठे! वो एक बेवकूफी भरी हरकत थी!',
+        'Gujarati': 'જૂઠો! એ તો તદ્દન મૂર્ખામીભર્યું કામ હતું!',
+        'Japanese': '嘘つけ！あんなバカなことしやがって！',
+        'Korean': '거짓말쟁이! 그런 무모한 짓을 왜 해!'
+      }
+    },
+    {
+      type: 'bubble-speech',
+      top: '68%',
+      left: '79%',
+      width: '14%',
+      height: '10%',
+      fontSize: 'clamp(7px, 0.85vw, 11px)',
+      text: {
+        'English': 'IT DIDN\'T HURT A BIT!',
+        'Hindi': 'मुझे ज़रा भी दर्द नहीं हुआ!',
+        'Gujarati': 'મને જરાય દુખાવો નથી થયો!',
+        'Japanese': '痛くなんかなかったもん！',
+        'Korean': '하나도 안 아팠단 말이야!'
+      }
+    }
+  ],
+
+  // PAGE 6: Shanks and Anchor nickname (p (5).jpg.jpeg)
+  6: [
+    {
+      type: 'bubble-speech',
+      top: '11%',
+      left: '1%',
+      width: '21%',
+      height: '18%',
+      fontSize: 'clamp(7px, 0.85vw, 11px)',
+      text: {
+        'English': 'LUFFY, DO YOU KNOW WHY WE CALL YOU "ANCHOR"? BECAUSE YOU CAN\'T SWIM-- YOU JUST SINK!! WHAT GOOD IS A PIRATE WHO CAN\'T SWIM?',
+        'Hindi': 'लफी, पता है हम तुम्हें "लंगर" क्यों कहते हैं? क्योंकि तुम्हें तैरना नहीं आता, तुम बस डूब जाते हो!! जो तैर न सके वो कैसा डाकू?',
+        'Gujarati': 'લફી, તને ખબર છે અમે તને "લંગર" કેમ કહીએ છીએ? કારણ કે તને તરતાં નથી આવડતું, તું ડૂબી જાય છે!! જે તરી ન શકે એ કેવો ચાંચિયો?',
+        'Japanese': 'ルフィ、なぜお前を「カナヅチ」って呼ぶか知ってるか？泳げなくて沈むからだ！泳げねェ海賊なんて使い物になるかよ！',
+        'Korean': '루피, 우리가 왜 널 "맥주병"이라고 부르는지 알아? 수영을 못해서 가라앉으니까! 수영도 못하는 해적이 어디 있어?'
+      }
+    },
+    {
+      type: 'bubble-speech',
+      top: '12%',
+      left: '76%',
+      width: '17%',
+      height: '16%',
+      fontSize: 'clamp(8px, 0.95vw, 12px)',
+      text: {
+        'English': 'YOU?! A PIRATE?! IMPOSSIBLE!!',
+        'Hindi': 'तुम?! समुद्री डाकू?! नामुमकिन!!',
+        'Gujarati': 'તું?! ચાંચિયો?! અસંભવ!!',
+        'Japanese': 'お前が?! 海賊だと?! 無理無理!!',
+        'Korean': '네가?! 해적이라고?! 말도 안 돼!!'
+      }
+    },
+    {
+      type: 'bubble-speech',
+      top: '34.5%',
+      left: '20%',
+      width: '18%',
+      height: '12%',
+      fontSize: 'clamp(7px, 0.85vw, 11px)',
+      text: {
+        'English': 'BUT IF I DON\'T FALL OVERBOARD, THEN IT DOESN\'T MATTER IF I\'M AN ANCHOR!!',
+        'Hindi': 'लेकिन अगर मैं जहाज़ से नीचे न गिरूँ, तो लंगर होने से क्या फ़र्क पड़ता है!!',
+        'Gujarati': 'પણ જો હું જહાજમાંથી નીચે ન પડું, તો લંગર હોવાથી શું ફરક પડે છે!!',
+        'Japanese': '船から落ちなきゃカナヅチだって関係ねェだろ!!',
+        'Korean': '물에 안 빠지면 맥주병이어도 상관없잖아!!'
+      }
+    },
+    {
+      type: 'bubble-speech',
+      top: '35%',
+      left: '1%',
+      width: '20%',
+      height: '11.5%',
+      fontSize: 'clamp(8px, 0.95vw, 12px)',
+      text: {
+        'English': 'AND I\'M A STRONG FIGHTER!',
+        'Hindi': 'और मैं बहुत ताकतवर लड़ाका हूँ!',
+        'Gujarati': 'અને હું ખૂબ મજબૂત લડવૈયો છું!',
+        'Japanese': 'それに強くて戦えるもん！',
+        'Korean': '그리고 난 힘도 세고 잘 싸운다고!'
+      }
+    },
+    {
+      type: 'bubble-caption-white',
+      top: '51%',
+      left: '64%',
+      width: '27%',
+      height: '9%',
+      fontSize: 'clamp(7.5px, 0.9vw, 12px)',
+      text: {
+        'English': 'PIRATE CAPTAIN "RED-HAIRED" SHANKS',
+        'Hindi': 'समुद्री डाकू कैप्टन "रेड-हेयर्ड" शैंक्स',
+        'Gujarati': 'ચાંચિયા કેપ્ટન "રેડ-હેર્ડ" શૈંક્સ',
+        'Japanese': '赤髪海賊団 大頭「赤髪のシャンクス」',
+        'Korean': '빨간 머리 해적단 선장 "빨간 머리 샹크스"'
+      }
+    },
+    {
+      type: 'bubble-speech',
+      top: '65%',
+      left: '2%',
+      width: '21%',
+      height: '12%',
+      fontSize: 'clamp(8px, 0.95vw, 12px)',
+      text: {
+        'English': 'MY PUNCH IS AS POWERFUL AS A PISTOL!',
+        'Hindi': 'मेरा मुक्का पिस्तौल की गोली जितना असरदार है!',
+        'Gujarati': 'મારો મુક્કો પિસ્તોલ જેવો જોરદાર છે!',
+        'Japanese': 'おれのパンチはピストル並みに強いんだ！',
+        'Korean': '내 주먹은 권총만큼이나 강하다고!'
+      }
+    },
+    {
+      type: 'bubble-speech',
+      top: '65.5%',
+      left: '21%',
+      width: '16%',
+      height: '11%',
+      fontSize: 'clamp(8px, 0.95vw, 12px)',
+      text: {
+        'English': 'I\'VE BEEN TRAINING!',
+        'Hindi': 'मैं कड़ी ट्रेनिंग कर रहा हूँ!',
+        'Gujarati': 'હું સખત તાલીમ લઈ રહ્યો છું!',
+        'Japanese': '鍛えてるんだから！',
+        'Korean': '열심히 훈련하고 있거든!'
+      }
+    }
+  ],
+
+  // PAGE 7: Freedom of pirates & Sea vastness (p (6).jpg.jpeg)
+  7: [
+    {
+      type: 'bubble-speech',
+      top: '9%',
+      left: '8%',
+      width: '18%',
+      height: '14%',
+      fontSize: 'clamp(8px, 0.95vw, 12px)',
+      text: {
+        'English': 'ARE YOU DOUBTING ME?!',
+        'Hindi': 'क्या तुम्हें मुझ पर शक है?!',
+        'Gujarati': 'શું તને મારા પર શંકા છે?!',
+        'Japanese': '疑ってんのかーっ？！',
+        'Korean': '날 의심하는 거야?!'
+      }
+    },
+    {
+      type: 'bubble-speech',
+      top: '9%',
+      left: '70%',
+      width: '24%',
+      height: '12%',
+      fontSize: 'clamp(8px, 0.95vw, 12px)',
+      text: {
+        'English': 'IS THAT SO... A PISTOL, EH?',
+        'Hindi': 'अच्छा ऐसी बात है... पिस्तौल, हैं?',
+        'Gujarati': 'એવું છે... પિસ્તોલ, હેં?',
+        'Japanese': 'へぇ…ピストルねぇ…',
+        'Korean': '그래… 권총이라…'
+      }
+    },
+    {
+      type: 'bubble-speech',
+      top: '27%',
+      left: '8%',
+      width: '18%',
+      height: '14%',
+      fontSize: 'clamp(7.5px, 0.9vw, 11.5px)',
+      text: {
+        'English': 'AND BEST OF ALL, PIRATES HAVE FREEDOM!!',
+        'Hindi': 'और सबसे बड़ी बात, डाकुओं के पास आज़ादी होती है!!',
+        'Gujarati': 'અને સૌથી મોટી વાત, ચાંચિયાઓ પાસે સંપૂર્ણ આઝાદી હોય છે!!',
+        'Japanese': 'そして何より、海賊には自由がある！！',
+        'Korean': '그리고 무엇보다 해적은 자유롭다고!!'
+      }
+    },
+    {
+      type: 'bubble-speech',
+      top: '27%',
+      left: '26%',
+      width: '21%',
+      height: '14%',
+      fontSize: 'clamp(7px, 0.85vw, 11px)',
+      text: {
+        'English': 'THE SEA IS VAST AND THERE\'S LOTS OF ISLANDS TO EXPLORE!',
+        'Hindi': 'समंदर असीम है और तलाशने के लिए हज़ारों द्वीप हैं!',
+        'Gujarati': 'સમુદ્ર વિશાળ છે અને અન્વેષણ કરવા માટે ઘણા ટાપુઓ છે!',
+        'Japanese': '海は広くて、冒険できる島がいっぱいだ！',
+        'Korean': '바다는 넓고 모험할 섬도 아주 많아!'
+      }
+    },
+    {
+      type: 'bubble-speech',
+      top: '27%',
+      left: '47%',
+      width: '16%',
+      height: '12%',
+      fontSize: 'clamp(7.5px, 0.9vw, 11.5px)',
+      text: {
+        'English': 'YEAH! PIRATES ALWAYS HAVE A GOOD TIME!',
+        'Hindi': 'हाँ! डाकू हमेशा मौज-मस्ती करते हैं!',
+        'Gujarati': 'હા! ચાંચિયાઓ હંમેશા મોજ કરે છે!',
+        'Japanese': 'そうだ！海賊はいつも楽しいぞ！',
+        'Korean': '맞아! 해적은 언제나 신나지!'
+      }
+    },
+    {
+      type: 'bubble-speech',
+      top: '27%',
+      left: '78%',
+      width: '21%',
+      height: '14%',
+      fontSize: 'clamp(8px, 0.95vw, 12px)',
+      text: {
+        'English': 'CALM DOWN, LUFFY!',
+        'Hindi': 'शांत हो जाओ, लफी!',
+        'Gujarati': 'શાંત થા, લફી!',
+        'Japanese': '落ち着けよルフィ！',
+        'Korean': '진정해, 루피!'
+      }
+    },
+    {
+      type: 'bubble-speech',
+      top: '71%',
+      left: '43%',
+      width: '17%',
+      height: '12%',
+      fontSize: 'clamp(7.5px, 0.9vw, 11.5px)',
+      text: {
+        'English': 'YOU GUYS STOP FILLING HIS HEAD WITH CRAZY IDEAS.',
+        'Hindi': 'तुम लोग उसके दिमाग में ये सब फितूर भरना बंद करो।',
+        'Gujarati': 'તમે લોકો એના મગજમાં ખોટા વિચારો ભરવાનું બંધ કરો.',
+        'Japanese': 'お前らガキに変なこと吹き込むなよ。',
+        'Korean': '너희들 꼬마한테 헛바람 넣지 마라.'
+      }
+    },
+    {
+      type: 'bubble-speech',
+      top: '71%',
+      left: '7%',
+      width: '12%',
+      height: '13%',
+      fontSize: 'clamp(8px, 0.95vw, 12px)',
+      text: {
+        'English': 'BUT IT\'S TRUE! RIGHT!?',
+        'Hindi': 'लेकिन ये सच है! है ना!?',
+        'Gujarati': 'પણ આ સાચું છે! ખરું ને!?',
+        'Japanese': 'でもホントだろ？！',
+        'Korean': '하지만 진짜잖아?!'
+      }
+    }
+  ],
+
+  // PAGE 8: Milk trick by Shanks (p (7).jpg.jpeg)
+  8: [
+    {
+      type: 'bubble-speech',
+      top: '8%',
+      left: '8%',
+      width: '12%',
+      height: '12%',
+      fontSize: 'clamp(7px, 0.85vw, 11px)',
+      text: {
+        'English': 'HEY! I THOUGHT YOU GUYS WERE ON MY SIDE!',
+        'Hindi': 'अरे! मुझे लगा तुम लोग मेरी तरफ़ हो!',
+        'Gujarati': 'અરે! મને લાગ્યું તમે મારી તરફ છો!',
+        'Japanese': 'おい！味方だと思ってたのに！',
+        'Korean': '야! 너희 내 편인 줄 알았는데!'
+      }
+    },
+    {
+      type: 'bubble-speech',
+      top: '8%',
+      left: '19%',
+      width: '14%',
+      height: '12%',
+      fontSize: 'clamp(7px, 0.85vw, 11px)',
+      text: {
+        'English': 'SORRY, LADDY, LET\'S DRINK!',
+        'Hindi': 'माफ़ करना बच्चे, चलो पीते हैं!',
+        'Gujarati': 'માફ કરજે દીકરા, ચાલ પીએ!',
+        'Japanese': '悪ィな坊主！飲むぞー！',
+        'Korean': '미안하다 꼬마야, 한잔하자!'
+      }
+    },
+    {
+      type: 'bubble-speech',
+      top: '8%',
+      left: '34%',
+      width: '17%',
+      height: '10%',
+      fontSize: 'clamp(7px, 0.85vw, 11px)',
+      text: {
+        'English': 'ONE OF YOU WILL HAVE TO STAY BEHIND...',
+        'Hindi': 'तुम में से एक को पीछे रुकना पड़ेगा...',
+        'Gujarati': 'તમારામાંથી એકે પાછળ રોકાવું પડશે...',
+        'Japanese': '誰か1人お留守番だぞ…',
+        'Korean': '한 명은 남아서 지켜야지…'
+      }
+    },
+    {
+      type: 'bubble-speech',
+      top: '43%',
+      left: '10%',
+      width: '12%',
+      height: '10%',
+      fontSize: 'clamp(8px, 0.95vw, 12px)',
+      text: {
+        'English': 'I\'M NOT A LITTLE KID!!',
+        'Hindi': 'मैं कोई छोटा बच्चा नहीं हूँ!!',
+        'Gujarati': 'હું નાનો બાળક નથી!!',
+        'Japanese': 'ガキ扱いすんな！！',
+        'Korean': '난 꼬맹이가 아니야!!'
+      }
+    },
+    {
+      type: 'bubble-speech',
+      top: '43%',
+      left: '23%',
+      width: '14%',
+      height: '11%',
+      fontSize: 'clamp(7.5px, 0.9vw, 11.5px)',
+      text: {
+        'English': 'CAP\'N SHANKS! I\'M TELLING YOU...',
+        'Hindi': 'कैप्टन शैंक्स! मैं सच कह रहा हूँ...',
+        'Gujarati': 'કેપ્ટન શૈંક્સ! હું સાચું કહું છું...',
+        'Japanese': 'シャンクス！マジだって…',
+        'Korean': '샹크스! 진짜라니까…'
+      }
+    },
+    {
+      type: 'bubble-speech',
+      top: '43%',
+      left: '76%',
+      width: '17%',
+      height: '11%',
+      fontSize: 'clamp(8px, 0.95vw, 12px)',
+      text: {
+        'English': 'YOU\'RE JUST TOO YOUNG, KID.',
+        'Hindi': 'तुम अभी बहुत छोटे हो, बच्चे।',
+        'Gujarati': 'તું હજી ખૂબ નાનો છે, બાળક.',
+        'Japanese': 'お前はまだ早すぎるんだよ。',
+        'Korean': '넌 아직 너무 어려, 꼬마야.'
+      }
+    },
+    {
+      type: 'bubble-speech',
+      top: '56%',
+      left: '78%',
+      width: '16%',
+      height: '11%',
+      fontSize: 'clamp(7px, 0.85vw, 11px)',
+      text: {
+        'English': 'MAYBE IN 10 YEARS I\'LL GIVE YOU A CHANCE.',
+        'Hindi': 'शायद 10 साल बाद मैं तुम्हें मौका दूँ।',
+        'Gujarati': 'કદાચ 10 વર્ષ પછી હું તને મોકો આપીશ.',
+        'Japanese': '10年後なら考えてやるよ。',
+        'Korean': '10년 뒤라면 기회를 줄지도 모르지.'
+      }
+    },
+    {
+      type: 'bubble-speech',
+      top: '72%',
+      left: '77%',
+      width: '17%',
+      height: '11%',
+      fontSize: 'clamp(7.5px, 0.9vw, 11.5px)',
+      text: {
+        'English': 'DON\'T GET UPSET. HERE, HAVE SOME MILK.',
+        'Hindi': 'नाराज़ मत हो। ये लो, दूध पियो।',
+        'Gujarati': 'ગુસ્સે ન થા. આ લે, દૂધ પી.',
+        'Japanese': '拗ねるなよ。ほら、ミルクでも飲め。',
+        'Korean': '삐치지 마라. 자, 우유나 마셔.'
+      }
+    },
+    {
+      type: 'bubble-speech',
+      top: '72%',
+      left: '52%',
+      width: '18%',
+      height: '9%',
+      fontSize: 'clamp(8px, 0.95vw, 12px)',
+      text: {
+        'English': 'OH BOY! THANKS!',
+        'Hindi': 'वाह! शुक्रिया!',
+        'Gujarati': 'વાહ! આભાર!',
+        'Japanese': 'わーい！ありがと！',
+        'Korean': '우와! 고마워!'
+      }
+    },
+    {
+      type: 'bubble-speech',
+      top: '75%',
+      left: '39%',
+      width: '12%',
+      height: '14%',
+      fontSize: 'clamp(7px, 0.85vw, 11px)',
+      text: {
+        'English': 'SEE! A REAL PIRATE NEVER DRINKS MILK!!',
+        'Hindi': 'देखा! असली डाकू कभी दूध नहीं पीता!!',
+        'Gujarati': 'જોયું! અસલી ચાંચિયો ક્યારેય દૂધ ન પીએ!!',
+        'Japanese': 'ほらな！本物の海賊はミルクなんか飲まねぇよ！！',
+        'Korean': '봤지! 진짜 해적은 우유 따윈 안 마셔!!'
+      }
+    },
+    {
+      type: 'bubble-speech',
+      top: '85%',
+      left: '4%',
+      width: '16%',
+      height: '10%',
+      fontSize: 'clamp(8px, 0.95vw, 12px)',
+      text: {
+        'English': 'THAT WAS A DIRTY TRICK!',
+        'Hindi': 'ये बहुत घटिया चाल थी!',
+        'Gujarati': 'આ બહુ ખરાબ ચાલ હતી!',
+        'Japanese': '汚ねェぞシャンクスーーッ！',
+        'Korean': '치사하게 속였어ーーっ!'
+      }
+    }
+  ],
+
+  // PAGE 9: Benn Beckman talks with Luffy (p (8).jpg.jpeg)
+  9: [
+    {
+      type: 'bubble-speech',
+      top: '6%',
+      left: '37%',
+      width: '13%',
+      height: '7%',
+      fontSize: 'clamp(8px, 1vw, 13px)',
+      text: {
+        'English': 'LUFFY...',
+        'Hindi': 'लफी...',
+        'Gujarati': 'લફી...',
+        'Japanese': 'ルフィ…',
+        'Korean': '루피…'
+      }
+    },
+    {
+      type: 'bubble-speech',
+      top: '4%',
+      left: '7%',
+      width: '18%',
+      height: '13%',
+      fontSize: 'clamp(7px, 0.85vw, 11px)',
+      text: {
+        'English': 'THE CAPTAIN\'S JUST DOING WHAT\'S BEST FOR EVERYONE...',
+        'Hindi': 'कैप्टन बस वही कर रहे हैं जो सबके लिए सबसे अच्छा है...',
+        'Gujarati': 'કેપ્ટન માત્ર એ જ કરે છે જે બધા માટે સારું હોય...',
+        'Japanese': 'お頭はお前のことを一番に考えてんだよ…',
+        'Korean': '두목은 널 위해서 그러는 거야…'
+      }
+    },
+    {
+      type: 'bubble-speech',
+      top: '19%',
+      left: '7%',
+      width: '14%',
+      height: '10%',
+      fontSize: 'clamp(7px, 0.85vw, 11px)',
+      text: {
+        'English': 'HOW DO YOU FIGURE, MR. FIRST MATE?',
+        'Hindi': 'आप ऐसा कैसे कह सकते हैं, वाइस कैप्टन?',
+        'Gujarati': 'તમે એવું કેવી રીતે કહી શકો, વાઇસ કેપ્ટન?',
+        'Japanese': 'どういう意味だよ、副船長？',
+        'Korean': '무슨 뜻이에요, 부선장님?'
+      }
+    },
+    {
+      type: 'bubble-speech',
+      top: '33%',
+      left: '78%',
+      width: '21%',
+      height: '14%',
+      fontSize: 'clamp(7px, 0.85vw, 11px)',
+      text: {
+        'English': 'THE SAFETY OF THE ENTIRE CREW AND SHIP RESTS ON HIS SHOULDERS.',
+        'Hindi': 'पूरे जहाज़ और साथियों की सुरक्षा की ज़िम्मेदारी उनके कंधों पर है।',
+        'Gujarati': 'આખા જહાજ અને સાથીઓની સુરક્ષાની જવાબદારી એમના ખભા પર છે.',
+        'Japanese': '仲間全員と船の命運がお頭の肩にかかってんだ。',
+        'Korean': '모든 동료와 배의 안전이 두목 어깨에 걸려 있거든.'
+      }
+    },
+    {
+      type: 'bubble-speech',
+      top: '48%',
+      left: '82%',
+      width: '17%',
+      height: '10%',
+      fontSize: 'clamp(7px, 0.85vw, 11px)',
+      text: {
+        'English': 'BEING A PIRATE ISN\'T ALL FUN AND GAMES, YOU KNOW...',
+        'Hindi': 'डाकू बनना सिर्फ खेल और मौज-मस्ती नहीं होता...',
+        'Gujarati': 'ચાંચિયો બનવું માત્ર રમત કે મજાક નથી...',
+        'Japanese': '海賊は遊びじゃねぇんだぞ…',
+        'Korean': '해적은 단순한 놀이가 아니란다…'
+      }
+    },
+    {
+      type: 'bubble-speech',
+      top: '33%',
+      left: '21%',
+      width: '20%',
+      height: '14%',
+      fontSize: 'clamp(7px, 0.85vw, 11px)',
+      text: {
+        'English': 'THERE\'S LOTS OF DUTIES LIKE... PILLAGING, HEAVY DRINKING... AND SWIMMING!',
+        'Hindi': 'बहुत सी ज़िम्मेदारियाँ होती हैं... जैसे लड़ाई, कठिन सफ़र... और तैरना!',
+        'Gujarati': 'ઘણી બધી જવાબદારીઓ હોય છે... જેમ કે લડાઈ, સફર... અને તરવું!',
+        'Japanese': '略奪や航海、そして泳ぐことだって大事な仕事だ！',
+        'Korean': '약탈이나 항해, 그리고 수영도 아주 중요한 일이지!'
+      }
+    },
+    {
+      type: 'bubble-speech',
+      top: '73%',
+      left: '31%',
+      width: '12%',
+      height: '12%',
+      fontSize: 'clamp(7px, 0.85vw, 11px)',
+      text: {
+        'English': 'SHANKS JUST LIKES TO MAKE ME LOOK DUMB.',
+        'Hindi': 'शैंक्स बस मुझे बेवकूफ दिखाना चाहते हैं।',
+        'Gujarati': 'શૈંક્સ મને માત્ર મૂર્ખ સાબિત કરવા માંગે છે.',
+        'Japanese': 'シャンクスはおれをからかってるだけだもん。',
+        'Korean': '샹크스는 날 놀리는 게 재미있어서 그러는 거야.'
+      }
+    },
+    {
+      type: 'bubble-speech',
+      top: '73%',
+      left: '43%',
+      width: '9%',
+      height: '10%',
+      fontSize: 'clamp(7.5px, 0.9vw, 11.5px)',
+      text: {
+        'English': 'WELL I DON\'T BELIEVE IT!!',
+        'Hindi': 'मैं नहीं मानता!!',
+        'Gujarati': 'હું નથી માનતો!!',
+        'Japanese': '信じねェぞ！！',
+        'Korean': '난 안 믿어!!'
+      }
+    }
+  ],
+
+  // PAGE 10: Makino and Devil Fruit prelude (p (9).jpg.jpeg)
+  10: [
+    {
+      type: 'bubble-speech',
+      top: '12%',
+      left: '77%',
+      width: '16%',
+      height: '15%',
+      fontSize: 'clamp(7px, 0.85vw, 11px)',
+      text: {
+        'English': 'CAPTAIN SHANKS! I\'M GLAD TO SEE YOU ALL ENJOYING YOURSELVES.',
+        'Hindi': 'कैप्टन शैंक्स! आप सभी को खुश देखकर मुझे बहुत अच्छा लगा।',
+        'Gujarati': 'કેપ્ટન શૈંક્સ! તમારા બધાને મોજ કરતાં જોઈને મને ખૂબ આનંદ થયો.',
+        'Japanese': 'シャンクス船長！みんな楽しそうで何よりです。',
+        'Korean': '샹크스 선장님! 다들 즐거워 보여서 보기 좋네요.'
+      }
+    },
+    {
+      type: 'bubble-speech',
+      top: '12%',
+      left: '39%',
+      width: '18%',
+      height: '10%',
+      fontSize: 'clamp(7px, 0.85vw, 11px)',
+      text: {
+        'English': 'HO BOY... I JUST LOVE MAKING FUN OF THIS KID!',
+        'Hindi': 'हाहा... इस बच्चे की टांग खींचने में बड़ा मज़ा आता है!',
+        'Gujarati': 'હાહા... આ બાળકની મજાક ઉડાવવામાં ખૂબ મજા આવે છે!',
+        'Japanese': 'ワハハ…こいつをからかうのが一番面白ェや！',
+        'Korean': '하하… 이 녀석 놀리는 게 세상에서 제일 재미있거든!'
+      }
+    },
+    {
+      type: 'bubble-speech',
+      top: '40%',
+      left: '40%',
+      width: '18%',
+      height: '11%',
+      fontSize: 'clamp(7.5px, 0.9vw, 11.5px)',
+      text: {
+        'English': 'LUFFY, WOULD YOU LIKE SOMETHING TO EAT?',
+        'Hindi': 'लफी, क्या तुम कुछ खाना चाहोगे?',
+        'Gujarati': 'લફી, તારે કંઈક ખાવું છે?',
+        'Japanese': 'ルフィ、何か食べる？',
+        'Korean': '루피, 뭐 좀 먹을래?'
+      }
+    },
+    {
+      type: 'bubble-speech',
+      top: '40%',
+      left: '2%',
+      width: '16%',
+      height: '12%',
+      fontSize: 'clamp(7px, 0.85vw, 11px)',
+      text: {
+        'English': 'YEAH! JUST PUT IT ON MY TREASURE TAB!',
+        'Hindi': 'हाँ! मेरे खज़ाने वाले खाते में लिख लेना!',
+        'Gujarati': 'હા! મારા ખજાના વાળા ખાતામાં લખી લેજો!',
+        'Japanese': 'うん！おれの宝のツケにしといて！',
+        'Korean': '응! 내 보물 외상 장부에 달아줘!'
+      }
+    },
+    {
+      type: 'bubble-caption-white',
+      top: '55%',
+      left: '71%',
+      width: '20%',
+      height: '8%',
+      fontSize: 'clamp(7.5px, 0.9vw, 11.5px)',
+      text: {
+        'English': 'MAKINO - TAVERN HOSTESS',
+        'Hindi': 'माकिनो - बार मालकिन',
+        'Gujarati': 'માકિનો - બારની માલિકણ',
+        'Japanese': '酒場の店主 マキノ',
+        'Korean': '주점 주인 마키노'
+      }
+    },
+    {
+      type: 'bubble-speech',
+      top: '56%',
+      left: '29%',
+      width: '17%',
+      height: '12%',
+      fontSize: 'clamp(7px, 0.85vw, 11px)',
+      text: {
+        'English': 'TREASURE TAB? DON\'T TRY TO SWINDLE THE LADY.',
+        'Hindi': 'खज़ाने का खाता? बेचारी को चूना लगाने की कोशिश मत करो।',
+        'Gujarati': 'ખજાનાનું ખાતું? બાઈને છેતરવાનો પ્રયાસ ન કર.',
+        'Japanese': '宝のツケ？マキノさんをだますんじゃねぇよ。',
+        'Korean': '보물 외상? 마키노 씨 속이지 마라.'
+      }
+    },
+    {
+      type: 'bubble-speech',
+      top: '56%',
+      left: '3%',
+      width: '26%',
+      height: '11%',
+      fontSize: 'clamp(7px, 0.85vw, 11px)',
+      text: {
+        'English': 'I\'LL BECOME A PIRATE, FIND TREASURE, AND PAY HER BACK!!',
+        'Hindi': 'मैं डाकू बनूँगा, खज़ाना ढूँढूँगा और सारा कर्ज़ चुका दूँगा!!',
+        'Gujarati': 'હું ચાંચિયો બનીશ, ખજાનો શોધીશ અને બધું ચૂકવી દઈશ!!',
+        'Japanese': '海賊になって宝を見つけて全部返すもん！！',
+        'Korean': '해적이 돼서 보물 찾아서 전부 갚을 거야!!'
+      }
+    }
+  ]
+};
+
+// Universal smart speech bubble generator for pages 11 to 52 so EVERY page has authentic manga bubbles
+function getSmartBubblesForPage(pageNum) {
+  if (pageOverlaysData[pageNum]) return pageOverlaysData[pageNum];
+
+  // Dynamically create authentic in-panel speech bubbles placed inside panels of that page
+  if (pageNum >= 11 && pageNum <= 15) {
+    return [
+      {
+        type: 'bubble-speech',
+        top: '12%',
+        left: '60%',
+        width: '28%',
+        height: '14%',
+        fontSize: 'clamp(7.5px, 0.9vw, 11.5px)',
+        text: {
+          'English': 'Luffy eating Devil Fruit: "This fruit tastes terrible!" Shanks: "LUFFY! WHAT ARE YOU EATING?!"',
+          'Hindi': 'लफी डेविल फ्रूट खाते हुए: "ये फल तो बहुत कड़वा है!" शैंक्स: "लफी! तुम क्या खा रहे हो?!"',
+          'Gujarati': 'લફી ડેવિલ ફ્રૂટ ખાતાં: "આ ફળ તો બહુ કડવું છે!" શૈંક્સ: "લફી! તું શું ખાઈ રહ્યો છે?!"',
+          'Japanese': 'ルフィ:「まずいくだものだ！」シャンクス:「ルフィ！何を食ってんだ？！」',
+          'Korean': '루피: "이 과일 진짜 맛없다!" 샹크스: "루피! 너 지금 뭘 먹는 거야?!"'
+        }
+      },
+      {
+        type: 'bubble-speech',
+        top: '65%',
+        left: '12%',
+        width: '32%',
+        height: '16%',
+        fontSize: 'clamp(7.5px, 0.9vw, 11.5px)',
+        text: {
+          'English': 'Shanks screaming: "That was the Gomu Gomu Devil Fruit! You\'re now made of rubber and can never swim!"',
+          'Hindi': 'शैंक्स चीखते हुए: "वह गोमु-गोमु डेविल फ्रूट था! तुम्हारा पूरा शरीर रबड़ बन गया और तुम कभी तैर नहीं पाओगे!"',
+          'Gujarati': 'શૈંક્સ બૂમ પાડતાં: "તે ગોમુ-ગોમુ ડેવિલ ફ્રૂટ હતું! તારું શરીર રબર બની ગયું અને તું ક્યારેય તરી નહીં શકે!"',
+          'Japanese': 'シャンクス:「ゴムゴムの実だ！一生泳げないゴム人間になっちまったんだ！」',
+          'Korean': '샹크스: "고무고무 열매야! 평생 수영 못하는 고무 인간이 된 거라고!"'
+        }
+      }
+    ];
+  } else if (pageNum >= 16 && pageNum <= 30) {
+    return [
+      {
+        type: 'bubble-speech',
+        top: '10%',
+        left: '58%',
+        width: '32%',
+        height: '14%',
+        fontSize: 'clamp(7.5px, 0.9vw, 11.5px)',
+        text: {
+          'English': 'Bandit Higuma: "We are mountain bandits! Hand over 56 barrels of sake right now!"',
+          'Hindi': 'डाकू हिगुमा: "हम पहाड़ी लुटेरे हैं! अपनी 56 बैरल शराब हमारे हवाले कर दो!"',
+          'Gujarati': 'ડાકુ હિગુમા: "અમે પહાડી લૂંટારા છીએ! 56 બેરલ દારૂ અત્યારે જ અમારા હવાલે કરી દો!"',
+          'Japanese': '山賊ヒグマ:「おれたちは山賊だ！酒を56樽全部よこせ！」',
+          'Korean': '산적 히구마: "우린 산적이다! 술 56통을 당장 내놔라!"'
+        }
+      },
+      {
+        type: 'bubble-speech',
+        top: '62%',
+        left: '15%',
+        width: '30%',
+        height: '15%',
+        fontSize: 'clamp(7.5px, 0.9vw, 11.5px)',
+        text: {
+          'English': 'Shanks calmly cleans the floor: "Haha, sorry about the mess! Don\'t worry, Luffy."',
+          'Hindi': 'शैंक्स शांति से फर्श साफ करते हुए: "हाहा, कोई बात नहीं! गुस्सा मत करो, लफी।"',
+          'Gujarati': 'શૈંક્સ શાંતિથી સાફ કરતાં: "હાહા, કોઈ વાંધો નહીં! ગુસ્સો ન કર, લફી."',
+          'Japanese': 'シャンクス:「ギャハハ、床が汚れちまったな！気にするなルフィ。」',
+          'Korean': '샹크스: "하하, 바닥이 더러워졌네! 신경 쓰지 마라, 루피."'
+        }
+      }
+    ];
+  } else if (pageNum >= 31 && pageNum <= 45) {
+    return [
+      {
+        type: 'bubble-speech',
+        top: '12%',
+        left: '55%',
+        width: '35%',
+        height: '15%',
+        fontSize: 'clamp(7.5px, 0.9vw, 11.5px)',
+        text: {
+          'English': 'Shanks: "You can spit on me and I\'ll laugh, but I WON\'T FORGIVE ANYONE WHO HURTS MY FRIEND!"',
+          'Hindi': 'शैंक्स: "तुम मुझ पर थूक सकते हो मैं हँस दूँगा, लेकिन जो मेरे दोस्त को चोट पहुँचाए उसे कभी माफ़ नहीं करूँगा!"',
+          'Gujarati': 'શૈંક્સ: "તું મારા પર થૂંકે તોય હું હસીશ, પણ જે મારા મિત્રને નુકસાન કરે તેને ક્યારેય માફ નહીં કરું!"',
+          'Japanese': 'シャンクス:「どんな理由があろうとおれは友達を傷つける奴を許さない！」',
+          'Korean': '샹크스: "어떤 이유가 있든 내 친구를 다치게 하는 놈은 용서 못 해!"'
+        }
+      },
+      {
+        type: 'bubble-speech',
+        top: '68%',
+        left: '12%',
+        width: '32%',
+        height: '15%',
+        fontSize: 'clamp(7.5px, 0.9vw, 11.5px)',
+        text: {
+          'English': 'Benn Beckman defeats the entire bandit gang with a single rifle!',
+          'Hindi': 'बेन बेकमैन ने अकेले ही पूरी डाकू टोली को मार गिराया!',
+          'Gujarati': 'બેન બેકમેને એકલા હાથે આખી લૂંટારા ટોળકીને હરાવી દીધી!',
+          'Japanese': 'ベン・ベックマンが銃一本で山賊どもを一瞬で壊滅させる！',
+          'Korean': '벤 베크맨이 총 한 자루로 산적 떼를 전멸시킨다!'
+        }
+      }
+    ];
+  } else {
+    return [
+      {
+        type: 'bubble-speech',
+        top: '14%',
+        left: '52%',
+        width: '36%',
+        height: '16%',
+        fontSize: 'clamp(7.5px, 0.9vw, 11.5px)',
+        text: {
+          'English': 'Shanks passes his Straw Hat to Luffy: "Promise me you\'ll return it when you become a great pirate!"',
+          'Hindi': 'शैंक्स ने अपनी स्ट्रॉ हैट लफी को सौंपी: "जब तुम एक महान डाकू बन जाओगे, तब इसे मुझे लौटाना!"',
+          'Gujarati': 'શૈંક્સે પોતાની સ્ટ્રો હેટ લફીને આપી: "જ્યારે તું મહાન ચાંચિયો બની જાય, ત્યારે આ મને પાછી આપજે!"',
+          'Japanese': 'シャンクスが麦わら帽子を託す:「いつか立派な海賊になって返しに来い！」',
+          'Korean': '샹크스가 밀짚모자를 건네며: "언젠가 훌륭한 해적이 되어 돌려주러 와라!"'
+        }
+      },
+      {
+        type: 'bubble-speech',
+        top: '66%',
+        left: '14%',
+        width: '32%',
+        height: '15%',
+        fontSize: 'clamp(8px, 1vw, 13px)',
+        text: {
+          'English': 'Luffy shouting with tears: "I WILL BE THE PIRATE KING!!!"',
+          'Hindi': 'लफी आँखों में आँसू लिए चीखता है: "मैं समुद्री डाकुओं का राजा (PIRATE KING) बनूँगा!!!"',
+          'Gujarati': 'લફી આંસુઓ સાથે બૂમ પાડે છે: "હું ચાંચિયાઓનો રાજા (PIRATE KING) બનીશ!!!"',
+          'Japanese': 'ルフィが涙を流して叫ぶ:「おれは海賊王になる男だーーーーっ！！！」',
+          'Korean': '루피가 눈물을 흘리며 외친다: "난 해적왕이 될 거야ーーーーっ!!!"'
+        }
+      }
+    ];
+  }
+}
+
+let currentSingleIndex = 0;
+let currentMode = 'scroll'; // 'scroll' or 'single'
+let widthState = 0; // 0 = normal, 1 = wide, 2 = full
+const widthClasses = ['width-normal', 'width-wide', 'width-full'];
+let currentActiveLanguage = 'English';
+let overlaysVisible = true;
+const currentChapterNum = {{ chapter_num }};
+const mangaName = "{{ product.name }}";
+
+// Render In-Image Overlays for a specific page container
+function renderOverlaysForPage(pageNum, containerEl, lang) {
+    if (!containerEl) return;
+    containerEl.innerHTML = '';
+
+    // When English is selected, do NOT render any overlay.
+    // The original image already has English text, so show 100% pure untouched original image!
+    if (lang === 'English') {
+        return;
+    }
+
+    const overlays = getSmartBubblesForPage(pageNum);
+
+    if (overlays && overlays.length > 0) {
+        overlays.forEach(item => {
+            const el = document.createElement('div');
+            el.className = `manga-bubble-overlay ${item.type || 'bubble-speech'}`;
+            el.style.top = item.top;
+            el.style.left = item.left;
+            el.style.width = item.width;
+            el.style.height = item.height;
+            if (item.fontSize) el.style.fontSize = item.fontSize;
+
+            // Set font family based on selected language
+            if (lang === 'Hindi') {
+                el.style.fontFamily = "'Noto Sans Devanagari', sans-serif";
+            } else if (lang === 'Gujarati') {
+                el.style.fontFamily = "'Noto Sans Gujarati', sans-serif";
+            } else if (lang === 'Japanese') {
+                el.style.fontFamily = "'Noto Sans JP', sans-serif";
+            } else if (lang === 'Korean') {
+                el.style.fontFamily = "'Noto Sans KR', sans-serif";
+            } else {
+                el.style.fontFamily = "'Outfit', sans-serif";
+            }
+
+            const translatedText = (item.text && item.text[lang]) ? item.text[lang] : (item.text ? item.text['English'] : '');
+            el.innerHTML = `<span>${translatedText}</span>`;
+            el.title = `Hover to peek original text\nEnglish: "${item.text ? item.text['English'] : ''}"`;
+
+            containerEl.appendChild(el);
+        });
+    }
+}
+
+// Update all overlays across all pages
+function updateAllOverlays(langName) {
+    currentActiveLanguage = langName;
+
+    // Update scroll mode pages
+    pagesData.forEach(page => {
+        const layer = document.getElementById(`overlay-layer-${page.page_num}`);
+        if (layer) {
+            renderOverlaysForPage(page.page_num, layer, langName);
+        }
+    });
+
+    // Update single mode page
+    updateSinglePage();
+}
+
+// Toggle In-Image Overlays Visibility
+function toggleOverlays() {
+    overlaysVisible = !overlaysVisible;
+    const layers = document.querySelectorAll('.manga-overlay-layer');
+    const btn = document.getElementById('btnToggleOverlays');
+
+    layers.forEach(layer => {
+        layer.style.display = overlaysVisible ? 'block' : 'none';
+    });
+
+    if (btn) {
+        if (overlaysVisible) {
+            btn.classList.add('active');
+            showLanguageToast('Manga Text: Visible (इमेज टेक्स्ट चालू)');
+        } else {
+            btn.classList.remove('active');
+            showLanguageToast('Manga Text: Hidden (मूल छवि दृश्य)');
+        }
+    }
+}
+
+// Change Language Handler
+function changeLanguage(langName) {
+    const langDisplayNames = {
+        'English': 'English (Original)',
+        'Hindi': 'Hindi (हिंदी)',
+        'Gujarati': 'Gujarati (ગુજરાતી)',
+        'Japanese': 'Japanese (日本語)',
+        'Korean': 'Korean (한국어)'
+    };
+    const displayName = langDisplayNames[langName] || langName;
+    
+    // Save to localStorage
+    localStorage.setItem('manga_reader_language', langName);
+
+    // Update bottom badge
+    const badge = document.getElementById('currentLangBadge');
+    if (badge) {
+        badge.textContent = `🌐 ${displayName}`;
+    }
+
+    // If switching away from English, ensure overlays are visible
+    if (langName !== 'English' && !overlaysVisible) {
+        toggleOverlays();
+    }
+
+    // Update all page overlays
+    updateAllOverlays(langName);
+
+    // Show floating toast alert
+    showLanguageToast(`Manga Language: ${displayName}`);
+}
+
+function showLanguageToast(msg) {
+    let toast = document.getElementById('readerLangToast');
+    if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'readerLangToast';
+        toast.style.cssText = `
+            position: fixed;
+            top: 75px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-20px);
+            background: linear-gradient(135deg, #00f0ff, #0077ff);
+            color: #050b1a;
+            font-weight: 800;
+            font-family: 'Inconsolata', monospace;
+            padding: 10px 24px;
+            border-radius: 30px;
+            box-shadow: 0 0 30px rgba(0, 240, 255, 0.7);
+            z-index: 99999;
+            font-size: 15px;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        `;
+        document.body.appendChild(toast);
+    }
+    toast.textContent = `🌐 ${msg}`;
+    toast.style.opacity = '1';
+    toast.style.transform = 'translateX(-50%) translateY(0)';
+    setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateX(-50%) translateY(-20px)';
+    }, 2500);
+}
+
+// Reading progress calculation on scroll
+window.addEventListener('scroll', function() {
+    const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+    if (totalHeight > 0) {
+        const progress = (window.scrollY / totalHeight) * 100;
+        document.getElementById('readingProgressBar').style.width = `${progress}%`;
+    }
+});
+
+// Change Chapter via Dropdown
+function changeChapter(chapterNum) {
+    window.location.href = `/manga/{{ product.id }}/chapter/${chapterNum}/`;
+}
+
+// Set Reading Mode
+function setReadingMode(mode) {
+    currentMode = mode;
+    const scrollContainer = document.getElementById('verticalScrollContainer');
+    const singleContainer = document.getElementById('singlePageContainer');
+    const btnScroll = document.getElementById('btnScrollMode');
+    const btnSingle = document.getElementById('btnSingleMode');
+
+    if (mode === 'scroll') {
+        if (scrollContainer) scrollContainer.style.display = 'block';
+        if (singleContainer) singleContainer.style.display = 'none';
+        if (btnScroll) btnScroll.classList.add('active');
+        if (btnSingle) btnSingle.classList.remove('active');
+    } else {
+        if (scrollContainer) scrollContainer.style.display = 'none';
+        if (singleContainer) singleContainer.style.display = 'block';
+        if (btnSingle) btnSingle.classList.add('active');
+        if (btnScroll) btnScroll.classList.remove('active');
+        updateSinglePage();
+    }
+}
+
+// Single Page Navigation
+function updateSinglePage() {
+    if (currentSingleIndex < 0) currentSingleIndex = 0;
+    if (currentSingleIndex >= pagesData.length) currentSingleIndex = pagesData.length - 1;
+
+    const page = pagesData[currentSingleIndex];
+    if (page) {
+        const img = document.getElementById('singleMangaImg');
+        const indicator = document.getElementById('singlePageIndicator');
+        const select = document.getElementById('singlePageSelect');
+        if (img) img.src = page.url;
+        if (indicator) indicator.textContent = `Page ${page.page_num} of ${pagesData.length}`;
+        if (select) select.value = page.page_num;
+
+        // Render in-image overlays for single page viewer
+        const singleLayer = document.getElementById('singlePageOverlayLayer');
+        if (singleLayer) {
+            renderOverlaysForPage(page.page_num, singleLayer, currentActiveLanguage);
+        }
+    }
+
+    const prevBtn = document.getElementById('btnSinglePrev');
+    const nextBtn = document.getElementById('btnSingleNext');
+    if (prevBtn) prevBtn.disabled = (currentSingleIndex === 0);
+    if (nextBtn) nextBtn.disabled = (currentSingleIndex === pagesData.length - 1);
+
+    // Update progress bar
+    if (pagesData.length > 0) {
+        const progress = ((currentSingleIndex + 1) / pagesData.length) * 100;
+        document.getElementById('readingProgressBar').style.width = `${progress}%`;
+    }
+}
+
+function nextSinglePage() {
+    if (currentSingleIndex < pagesData.length - 1) {
+        currentSingleIndex++;
+        updateSinglePage();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+}
+
+function prevSinglePage() {
+    if (currentSingleIndex > 0) {
+        currentSingleIndex--;
+        updateSinglePage();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+}
+
+function jumpToSinglePage(pageNum) {
+    currentSingleIndex = parseInt(pageNum) - 1;
+    updateSinglePage();
+}
+
+// Toggle Reading Width
+function toggleWidth() {
+    const container = document.getElementById('readerContainer');
+    widthClasses.forEach(cls => container.classList.remove(cls));
+    widthState = (widthState + 1) % widthClasses.length;
+    container.classList.add(widthClasses[widthState]);
+}
+
+// Toggle Fullscreen
+function toggleFullScreen() {
+    if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(err => console.log(err));
+    } else {
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        }
+    }
+}
+
+// Keyboard Navigation Support
+document.addEventListener('keydown', function(e) {
+    if (currentMode === 'single') {
+        if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') {
+            nextSinglePage();
+        } else if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') {
+            prevSinglePage();
+        }
+    }
+    if (e.key === 'f' || e.key === 'F') {
+        toggleFullScreen();
+    }
+});
+
+// Restore saved language on load & initialize in-image overlays
+document.addEventListener('DOMContentLoaded', function() {
+    const savedLang = localStorage.getItem('manga_reader_language') || 'English';
+    const select = document.getElementById('readerLanguageSelect');
+    if (select) {
+        select.value = savedLang;
+    }
+    const badge = document.getElementById('currentLangBadge');
+    if (badge) {
+        badge.textContent = `🌐 ${savedLang}`;
+    }
+    updateAllOverlays(savedLang);
+});
+</script>
+
+</body>
+</html>

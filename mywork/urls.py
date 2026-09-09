@@ -74,6 +74,7 @@ urlpatterns = [
     path('decrease/<str:key>/', views.decrease_quantity),
     path('remove-cart-item/<int:id>/', views.remove_cart_item),
     path('manga/<int:id>/', views.manga_detail, name='manga_detail'),
+    path('manga/<int:id>/chapter/<int:chapter_num>/', views.manga_chapter_reader, name='manga_chapter_reader'),
     path('DeleteAccount/', views.DeleteAccount, name='DeleteAccount'),
 
 ]

@@ -728,9 +728,9 @@ footer.app-footer {
           <a href="/addtocart/{{ product.id }}/" class="btn-action-cart">
             <i class="fa fa-cart-plus me-1"></i> Add to Bag (${{ product.price }})
           </a>
-          <button type="button" class="btn-action-read" onclick="openReader(1)">
+          <a href="/manga/{{ product.id }}/chapter/1/" class="btn-action-read">
             <i class="fa fa-play-circle me-1"></i> Start Chapter 1
-          </button>
+          </a>
           <a href="/Shop/" class="btn-action-read">
             <i class="fa fa-arrow-left me-1"></i> All Manga
           </a>
@@ -765,18 +765,24 @@ footer.app-footer {
     <!-- Chapter Rows Loop -->
     <div class="chapters-list" id="chaptersList">
       {% for ch in chapter_list %}
-      <div class="chapter-row chapter-item" data-chapter="{{ ch }}">
+      <a href="/manga/{{ product.id }}/chapter/{{ ch }}/" class="chapter-row chapter-item" data-chapter="{{ ch }}">
         <div class="d-flex align-items-center gap-3">
           <span class="chapter-num-badge">#{{ ch }}</span>
           <div>
             <div class="chapter-name">{{ product.name }} Chapter {{ ch }}</div>
-            <div style="font-size: 13px; color: #94a3b8;"><i class="fa fa-check-circle text-success me-1"></i> Official Translation • High Quality</div>
+            <div style="font-size: 13px; color: #94a3b8;">
+              {% if "one" in product.name.lower and "piece" in product.name.lower and ch == 1 %}
+              <i class="fa fa-check-circle text-success me-1"></i> Official Translation • 52 Pages • High Quality
+              {% else %}
+              <i class="fa fa-check-circle text-info me-1"></i> Official Chapter • High Quality
+              {% endif %}
+            </div>
           </div>
         </div>
-        <button type="button" class="btn-read-chapter" onclick="openReader({{ ch }})">
+        <span class="btn-read-chapter">
           <i class="fa fa-book-open"></i> Read
-        </button>
-      </div>
+        </span>
+      </a>
       {% endfor %}
     </div>
 

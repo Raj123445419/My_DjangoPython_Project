@@ -625,4 +625,68 @@ def manga_detail(request, id):
         'total_chapters': total_chapters,
         'chapter_list': chapter_list,
         'related_products': related_products,
+    })
+
+
+# DEDICATED HIGH-PERFORMANCE MANGA READER
+def manga_chapter_reader(request, id, chapter_num):
+    product = get_object_or_404(ShopProduct, id=id)
+
+    # Extract total chapters count accurately
+    clean_chapter_str = str(product.chapter).replace(',', '').strip()
+    digits = re.findall(r'\d+', clean_chapter_str)
+    total_chapters = int(digits[0]) if digits else 12
+    if total_chapters < 1:
+        total_chapters = 1
+
+    chapter_list = list(range(1, total_chapters + 1))
+
+    # Validate chapter_num
+    if chapter_num < 1:
+        chapter_num = 1
+    elif chapter_num > total_chapters:
+        chapter_num = total_chapters
+
+    # Check if this manga is strictly One Piece
+    is_one_piece = ('one' in product.name.lower() and 'piece' in product.name.lower()) or (product.name.strip().lower() == 'one piece')
+
+    pages = []
+    has_full_chapter = False
+
+    if is_one_piece and chapter_num == 1:
+        has_full_chapter = True
+        # Page 1: p.jpg.jpeg
+        pages.append({
+            'page_num': 1,
+            'url': '/static/img/p.jpg.jpeg',
+            'title': f'{product.name} - Chapter {chapter_num} Page 1'
+        })
+        # Pages 2 to 52: p (1).jpg.jpeg ... p (51).jpg.jpeg
+        for i in range(1, 52):
+            pages.append({
+                'page_num': i + 1,
+                'url': f'/static/img/p ({i}).jpg.jpeg',
+                'title': f'{product.name} - Chapter {chapter_num} Page {i + 1}'
+            })
+    else:
+        # For Dragon Ball, Naruto, etc. or other chapters, show that manga's own cover image
+        pages.append({
+            'page_num': 1,
+            'url': product.image.url if product.image else '/static/img/back.jpg',
+            'title': f'{product.name} - Chapter {chapter_num} Preview'
+        })
+
+    prev_chapter = chapter_num - 1 if chapter_num > 1 else None
+    next_chapter = chapter_num + 1 if chapter_num < total_chapters else None
+
+    return render(request, 'manga_reader.html', {
+        'product': product,
+        'chapter_num': chapter_num,
+        'total_chapters': total_chapters,
+        'chapter_list': chapter_list,
+        'pages': pages,
+        'total_pages': len(pages),
+        'has_full_chapter': has_full_chapter,
+        'prev_chapter': prev_chapter,
+        'next_chapter': next_chapter,
     })
