@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home - My Anime Book</title>
+    <title>{{ product.name }} - Chapters & Details | My Anime Book</title>
 
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -16,7 +16,7 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;600;700;800;900&family=Merienda:wght@600;800;900&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;600;700;800;900&family=Merienda:wght@600;800;900&family=Outfit:wght@400;500;600;700;800&family=Orbitron:wght@600;700;800;900&display=swap" rel="stylesheet">
 
 <style>
 /* ==========================================================================
@@ -37,9 +37,8 @@ html, body {
     overflow-x: hidden !important;
 }
 
-/* Base Background */
 .main-bg {
-    background-image: linear-gradient(180deg, rgba(6, 11, 23, 0.88) 0%, rgba(10, 18, 38, 0.95) 100%), url(../static/img/back.jpg);
+    background-image: linear-gradient(180deg, rgba(6, 11, 23, 0.90) 0%, rgba(10, 18, 38, 0.96) 100%), url(../static/img/back.jpg);
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -48,7 +47,6 @@ html, body {
     width: 100%;
 }
 
-/* Typography Tokens */
 .font-brand {
     font-family: "Inconsolata", monospace;
     font-weight: 800;
@@ -64,11 +62,6 @@ html, body {
     font-family: "Inconsolata", monospace;
     font-size: clamp(17px, 2.5vw, 21px);
     font-weight: 700;
-}
-
-.font-title {
-    font-family: "Merienda", cursive;
-    font-weight: 800;
 }
 
 /* ==========================================================================
@@ -101,13 +94,6 @@ nav.app-navbar {
     background: rgba(0, 240, 255, 0.12);
     transform: translateY(-2px);
     box-shadow: 0 0 16px rgba(0, 240, 255, 0.25);
-}
-
-.nav-link-custom.active-page {
-    color: #00f0ff !important;
-    background: rgba(0, 240, 255, 0.18);
-    border: 1px solid rgba(0, 240, 255, 0.4);
-    box-shadow: 0 0 20px rgba(0, 240, 255, 0.35);
 }
 
 .cart-nav-link {
@@ -182,161 +168,248 @@ nav.app-navbar {
 }
 
 /* ==========================================================================
-   CAROUSEL HERO SECTION
+   MANGA DETAIL HERO SHOWCASE
    ========================================================================== */
-.carousel-container {
-    border-radius: 24px;
-    overflow: hidden;
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6), 0 0 30px rgba(0, 240, 255, 0.15);
-    border: 1px solid rgba(0, 240, 255, 0.2);
-    margin: 20px auto;
+.manga-detail-hero {
+    background: rgba(13, 23, 44, 0.88);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(0, 240, 255, 0.25);
+    border-radius: 28px;
+    padding: 36px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 35px rgba(0, 240, 255, 0.12);
+    margin: 30px auto;
 }
 
-.carousel-item {
-    height: clamp(280px, 46vh, 520px);
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+.poster-frame {
     position: relative;
+    border-radius: 20px;
+    overflow: hidden;
+    border: 2px solid rgba(0, 240, 255, 0.4);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7), 0 0 25px rgba(0, 240, 255, 0.2);
+    max-width: 360px;
+    margin: 0 auto;
+    height: 480px;
 }
 
-.carousel-item::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(180deg, rgba(6, 11, 23, 0.1) 0%, rgba(6, 11, 23, 0.75) 100%);
+.poster-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
 }
 
-.img-hero-1 { background-image: url(../static/img/first.jpg); }
-.img-hero-2 { background-image: url(../static/img/secound.jpg); }
-.img-hero-3 { background-image: url(../static/img/third.jpg); }
-.img-hero-4 { background-image: url(../static/img/fourth.jpg); }
-.img-hero-5 { background-image: url(../static/img/fifth.jpg); }
+.poster-frame:hover .poster-img {
+    transform: scale(1.06);
+}
+
+.manga-header-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: clamp(32px, 5vw, 48px);
+    font-weight: 900;
+    color: #ffffff;
+    text-shadow: 0 0 25px rgba(0, 240, 255, 0.4);
+    margin-bottom: 12px;
+}
+
+.badge-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 16px;
+    border-radius: 30px;
+    font-size: 15px;
+    font-weight: 700;
+    font-family: 'Inconsolata', monospace;
+}
+
+.badge-genre {
+    background: rgba(255, 0, 127, 0.15);
+    border: 1px solid rgba(255, 0, 127, 0.4);
+    color: #ff007f;
+}
+
+.badge-chapters {
+    background: rgba(0, 240, 255, 0.15);
+    border: 1px solid rgba(0, 240, 255, 0.4);
+    color: #00f0ff;
+}
+
+.badge-price {
+    background: rgba(0, 255, 204, 0.15);
+    border: 1px solid rgba(0, 255, 204, 0.4);
+    color: #00ffcc;
+    font-size: 20px;
+    font-weight: 800;
+}
+
+.btn-action-cart {
+    background: linear-gradient(135deg, #00f0ff 0%, #0077ff 100%);
+    color: #050b1a;
+    font-family: 'Inconsolata', monospace;
+    font-size: 20px;
+    font-weight: 800;
+    padding: 12px 30px;
+    border-radius: 14px;
+    text-decoration: none;
+    box-shadow: 0 6px 20px rgba(0, 240, 255, 0.4);
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-action-cart:hover {
+    background: linear-gradient(135deg, #00ffcc 0%, #00f0ff 100%);
+    color: #050b1a;
+    box-shadow: 0 0 25px rgba(0, 240, 255, 0.7);
+    transform: translateY(-2px);
+}
+
+.btn-action-read {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    color: #ffffff;
+    font-family: 'Inconsolata', monospace;
+    font-size: 20px;
+    font-weight: 700;
+    padding: 12px 28px;
+    border-radius: 14px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-action-read:hover {
+    background: rgba(0, 240, 255, 0.2);
+    border-color: #00f0ff;
+    color: #00f0ff;
+    box-shadow: 0 0 20px rgba(0, 240, 255, 0.4);
+    transform: translateY(-2px);
+}
 
 /* ==========================================================================
-   DYNAMIC SEARCH BAR
+   CHAPTERS DIRECTORY SECTION
    ========================================================================== */
-.home-search-bar {
-    max-width: 750px;
-    margin: 15px auto 25px auto;
-    position: relative;
-    z-index: 1000;
+.chapters-container {
+    background: rgba(13, 23, 44, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(0, 240, 255, 0.25);
+    border-radius: 28px;
+    padding: 36px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+    margin-bottom: 50px;
 }
 
-.search-container {
+.chapter-search-box {
     width: 100%;
-    position: relative;
-    z-index: 1000;
-}
-
-.search-input-custom {
-    width: 100%;
-    height: 52px;
-    padding: 0 20px 0 52px;
-    border: 1px solid rgba(0, 240, 255, 0.35);
+    height: 48px;
+    padding: 0 20px 0 45px;
+    border: 1px solid rgba(0, 240, 255, 0.3);
     outline: none;
     border-radius: 30px;
-    background: rgba(8, 16, 34, 0.92);
+    background: rgba(8, 16, 34, 0.9);
     color: #ffffff;
     font-size: 16px;
     transition: all 0.3s ease;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4), inset 0 2px 6px rgba(0, 0, 0, 0.4);
 }
 
-.search-input-custom:focus {
+.chapter-search-box:focus {
     border-color: #00f0ff;
-    box-shadow: 0 0 25px rgba(0, 240, 255, 0.5), inset 0 2px 6px rgba(0, 0, 0, 0.4);
-    background: rgba(10, 22, 48, 0.98);
+    box-shadow: 0 0 20px rgba(0, 240, 255, 0.4);
 }
 
-.search-icon-inside {
-    position: absolute;
-    left: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #00f0ff;
-    font-size: 20px;
-    pointer-events: none;
-}
-
-.search-results {
-    position: absolute;
-    top: 60px;
-    left: 0;
-    width: 100%;
-    background: #081022 !important;
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(0, 240, 255, 0.5);
-    border-radius: 18px;
-    overflow: hidden;
-    max-height: 380px;
-    z-index: 99999 !important;
+.chapters-list {
+    max-height: 600px;
     overflow-y: auto;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.95), 0 0 30px rgba(0, 240, 255, 0.3);
+    padding-right: 8px;
 }
 
-.search-results:empty {
-    display: none;
+.chapters-list::-webkit-scrollbar {
+    width: 8px;
 }
 
-.search-item {
+.chapters-list::-webkit-scrollbar-track {
+    background: rgba(8, 16, 34, 0.6);
+    border-radius: 10px;
+}
+
+.chapters-list::-webkit-scrollbar-thumb {
+    background: rgba(0, 240, 255, 0.4);
+    border-radius: 10px;
+}
+
+.chapter-row {
+    background: rgba(10, 18, 38, 0.75);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    padding: 16px 22px;
+    margin-bottom: 12px;
     display: flex;
     align-items: center;
-    gap: 16px;
-    padding: 12px 20px;
-    color: #ffffff;
+    justify-content: space-between;
+    transition: all 0.3s ease;
     text-decoration: none;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-    transition: all 0.25s ease;
+    color: #ffffff;
 }
 
-.search-item:hover {
-    background: rgba(0, 240, 255, 0.15);
+.chapter-row:hover {
+    background: rgba(15, 28, 58, 0.95);
+    border-color: rgba(0, 240, 255, 0.4);
+    transform: translateX(6px);
+    box-shadow: 0 6px 20px rgba(0, 240, 255, 0.15);
+}
+
+.chapter-num-badge {
+    font-family: 'Inconsolata', monospace;
+    font-size: 18px;
+    font-weight: 800;
     color: #00f0ff;
 }
 
-.search-item img {
-    width: 48px;
-    height: 64px;
-    object-fit: cover;
-    border-radius: 8px;
-    border: 1px solid rgba(0, 240, 255, 0.35);
-}
-
-/* ==========================================================================
-   DYNAMIC MARQUEE TICKER
-   ========================================================================== */
-.marquee-wrapper {
-    background: linear-gradient(90deg, #032d4d 0%, #081d3a 50%, #032d4d 100%);
-    border-top: 1px solid rgba(0, 240, 255, 0.25);
-    border-bottom: 1px solid rgba(0, 240, 255, 0.25);
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.35);
-    padding: 14px 0;
-}
-
-.marquee-text {
-    font-family: "Merienda", cursive;
-    font-size: clamp(16px, 3.2vw, 22px);
+.chapter-name {
+    font-size: 17px;
     font-weight: 700;
+    color: #e2e8f0;
+}
+
+.btn-read-chapter {
+    background: rgba(0, 240, 255, 0.12);
+    border: 1px solid #00f0ff;
     color: #00f0ff;
-    text-shadow: 0 0 12px rgba(0, 240, 255, 0.4);
+    font-weight: 700;
+    font-size: 14px;
+    padding: 6px 18px;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.chapter-row:hover .btn-read-chapter {
+    background: linear-gradient(135deg, #00f0ff, #0077ff);
+    color: #050b1a;
+    box-shadow: 0 0 15px rgba(0, 240, 255, 0.6);
 }
 
 /* ==========================================================================
-   DYNAMIC MANGA CARDS GRID
+   RECOMMENDED MANGA CARDS
    ========================================================================== */
 .cardbox {
-    height: 450px;
+    height: 420px;
     position: relative;
     border-radius: 20px;
     background: rgba(13, 22, 44, 0.75);
     backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
     border: 1px solid rgba(0, 240, 255, 0.15);
     box-shadow: 0 12px 30px rgba(0, 0, 0, 0.55);
     overflow: hidden;
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    margin-bottom: 30px;
+    margin-bottom: 25px;
     display: flex;
     flex-direction: column;
 }
@@ -344,8 +417,7 @@ nav.app-navbar {
 .cardbox:hover {
     transform: translateY(-8px) scale(1.02);
     border-color: rgba(0, 240, 255, 0.6);
-    box-shadow: 0 20px 40px rgba(0, 240, 255, 0.2), 0 0 25px rgba(255, 0, 127, 0.15);
-    z-index: 10;
+    box-shadow: 0 20px 40px rgba(0, 240, 255, 0.2);
 }
 
 .imgbox {
@@ -359,13 +431,7 @@ nav.app-navbar {
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(
-        to top,
-        rgba(6, 11, 23, 0.96) 20%,
-        rgba(6, 11, 23, 0.6) 55%,
-        rgba(6, 11, 23, 0.15) 80%,
-        transparent 100%
-    );
+    background: linear-gradient(to top, rgba(6, 11, 23, 0.96) 20%, rgba(6, 11, 23, 0.6) 55%, transparent 100%);
     z-index: 2;
 }
 
@@ -380,137 +446,13 @@ nav.app-navbar {
     transform: scale(1.08);
 }
 
-.cart-container {
-    position: absolute;
-    top: 14px;
-    right: 14px;
-    z-index: 20;
-}
-
-.quick-cart-btn {
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-decoration: none;
-    background: rgba(8, 18, 38, 0.85);
-    border: 2px solid #00f0ff;
-    backdrop-filter: blur(8px);
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
-    color: #00f0ff;
-    font-size: 18px;
-    transition: all 0.3s ease;
-}
-
-.quick-cart-btn:hover {
-    background: linear-gradient(135deg, #00f0ff, #0077ff);
-    color: #ffffff;
-    border-color: #ffffff;
-    box-shadow: 0 0 20px rgba(0, 240, 255, 0.6);
-    transform: scale(1.1) rotate(-8deg);
-}
-
 .cardcontent {
     position: absolute;
     bottom: 0;
     left: 0;
     width: 100%;
     z-index: 5;
-    padding: 16px 18px;
-    display: flex;
-    flex-direction: column;
-}
-
-.manga-name {
-    color: #ffffff;
-    font-family: 'Outfit', sans-serif;
-    font-size: 20px;
-    font-weight: 800;
-    margin-bottom: 4px;
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-.manga-meta {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 12px;
-}
-
-.manga-chapters {
-    color: #94a3b8;
-    font-size: 14px;
-    font-weight: 600;
-}
-
-.manga-price {
-    color: #00f0ff;
-    font-family: 'Inconsolata', monospace;
-    font-size: 18px;
-    font-weight: 800;
-    background: rgba(0, 240, 255, 0.12);
-    border: 1px solid rgba(0, 240, 255, 0.3);
-    padding: 2px 10px;
-    border-radius: 20px;
-    text-shadow: 0 0 10px rgba(0, 240, 255, 0.4);
-}
-
-.buttonbox {
-    width: 100%;
-    display: flex;
-    gap: 10px;
-}
-
-.btn-read {
-    flex: 1;
-    height: 42px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-decoration: none;
-    border-radius: 12px;
-    font-size: 15px;
-    font-weight: 700;
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: #ffffff;
-    transition: all 0.3s ease;
-}
-
-.btn-read:hover {
-    background: rgba(255, 255, 255, 0.18);
-    color: #00f0ff;
-    border-color: #00f0ff;
-    box-shadow: 0 0 15px rgba(0, 240, 255, 0.25);
-}
-
-.btn-buy {
-    flex: 1;
-    height: 42px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-decoration: none;
-    border-radius: 12px;
-    font-size: 15px;
-    font-weight: 800;
-    background: linear-gradient(135deg, #00f0ff 0%, #0077ff 100%);
-    color: #050b1a;
-    border: none;
-    box-shadow: 0 4px 15px rgba(0, 240, 255, 0.35);
-    transition: all 0.3s ease;
-}
-
-.btn-buy:hover {
-    background: linear-gradient(135deg, #00ffcc 0%, #00f0ff 100%);
-    color: #050b1a;
-    box-shadow: 0 0 25px rgba(0, 240, 255, 0.7);
-    transform: translateY(-2px);
+    padding: 16px;
 }
 
 /* ==========================================================================
@@ -558,7 +500,6 @@ nav.app-navbar {
 footer.app-footer {
     background: rgba(5, 10, 22, 0.95);
     backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
     border-top: 1px solid rgba(0, 240, 255, 0.2);
     box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.5);
     padding: 24px 0;
@@ -588,12 +529,11 @@ footer.app-footer {
    MODAL DIALOGS
    ========================================================================== */
 .modal-content {
-    background: rgba(10, 16, 32, 0.94) !important;
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+    background: rgba(10, 16, 32, 0.96) !important;
+    backdrop-filter: blur(20px);
     border: 2px solid rgba(0, 240, 255, 0.3) !important;
     border-radius: 24px !important;
-    box-shadow: 0 0 30px rgba(0, 240, 255, 0.25), 0 0 50px rgba(255, 0, 127, 0.15);
+    box-shadow: 0 0 40px rgba(0, 240, 255, 0.25);
 }
 
 .popup-title {
@@ -660,21 +600,6 @@ footer.app-footer {
         width: 100%;
         margin: 4px 0;
     }
-
-    .navbar-toggler {
-        border: 1px solid rgba(0, 240, 255, 0.4) !important;
-        padding: 6px 12px;
-    }
-
-    .navbar-toggler-icon {
-        filter: invert(1);
-    }
-}
-
-@media (max-width: 575px) {
-    .cardbox {
-        height: 420px;
-    }
 }
 </style>
 </head>
@@ -707,10 +632,10 @@ footer.app-footer {
     <div class="collapse navbar-collapse justify-content-end" id="headerNavbar">
       <ul class="navbar-nav align-items-center gap-1 font-nav">
         <li class="nav-item">
-          <a class="nav-link nav-link-custom active-page" href="/Home/">Home</a>
+          <a class="nav-link nav-link-custom" href="/Home/">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link nav-link-custom" href="/Shop/">Shop</a>
+          <a class="nav-link nav-link-custom active-page" href="/Shop/">Shop</a>
         </li>
         <li class="nav-item">
           <a class="nav-link nav-link-custom" href="/Aboutus/">About us</a>
@@ -761,101 +686,131 @@ footer.app-footer {
 </div>
 
 <!-- ==========================================
-     CAROUSEL HERO
+     MANGA SHOWCASE HERO
      ========================================== -->
 <div class="container py-3">
-  <div id="heroCarousel" class="carousel slide carousel-fade carousel-container" data-bs-ride="carousel">
+  
+  <!-- Breadcrumb -->
+  <div class="d-flex align-items-center gap-2 mb-3 text-muted" style="font-size: 15px;">
+    <a href="/Home/" class="text-info text-decoration-none"><i class="fa fa-home me-1"></i>Home</a>
+    <span>/</span>
+    <a href="/Shop/" class="text-info text-decoration-none">Catalog</a>
+    <span>/</span>
+    <span class="text-white fw-bold">{{ product.name }}</span>
+  </div>
+
+  <div class="manga-detail-hero">
+    <div class="row align-items-center g-4">
+      
+      <!-- Big Poster Column -->
+      <div class="col-lg-4 col-md-5 col-12 text-center">
+        <div class="poster-frame">
+          <img src="{{ product.image.url }}" class="poster-img" alt="{{ product.name }}">
+        </div>
+      </div>
+
+      <!-- Manga Information Column -->
+      <div class="col-lg-8 col-md-7 col-12">
+        <div class="d-flex flex-wrap gap-2 mb-3">
+          <span class="badge-tag badge-genre"><i class="fa fa-fire"></i> {{ product.category|upper }}</span>
+          <span class="badge-tag badge-chapters"><i class="fa fa-book"></i> {{ total_chapters }} Chapters</span>
+          <span class="badge-tag badge-price">${{ product.price }}</span>
+        </div>
+
+        <h1 class="manga-header-title">{{ product.name }}</h1>
+
+        <p class="text-muted" style="font-size: 17px; line-height: 1.8; margin-bottom: 25px;">
+          Dive straight into the thrilling world of <strong>{{ product.name }}</strong>! Follow the unforgettable storyline, breathtaking character arcs, and epic confrontations. All official releases and chapters are compiled right here for you.
+        </p>
+
+        <!-- Quick Action Buttons -->
+        <div class="d-flex flex-wrap gap-3">
+          <a href="/addtocart/{{ product.id }}/" class="btn-action-cart">
+            <i class="fa fa-cart-plus me-1"></i> Add to Bag (${{ product.price }})
+          </a>
+          <button type="button" class="btn-action-read" onclick="openReader(1)">
+            <i class="fa fa-play-circle me-1"></i> Start Chapter 1
+          </button>
+          <a href="/Shop/" class="btn-action-read">
+            <i class="fa fa-arrow-left me-1"></i> All Manga
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ==========================================
+     CHAPTERS DIRECTORY
+     ========================================== -->
+<div class="container py-2 mb-5">
+  <div class="chapters-container">
     
-    <div class="carousel-indicators">
-      <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active"></button>
-      <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1"></button>
-      <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2"></button>
-      <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="3"></button>
-      <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="4"></button>
-    </div>
+    <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4">
+      <div>
+        <h2 style="font-family: 'Merienda', cursive; font-size: clamp(24px, 4vw, 34px); color: #00f0ff; margin-bottom: 4px;">
+          <i class="fa fa-list-ul me-2"></i> {{ product.name }} - Chapters List
+        </h2>
+        <p class="text-muted mb-0">Total {{ total_chapters }} chapters available for online reading</p>
+      </div>
 
-    <div class="carousel-inner">
-      <div class="carousel-item img-hero-1 active"></div>
-      <div class="carousel-item img-hero-2"></div>
-      <div class="carousel-item img-hero-3"></div>
-      <div class="carousel-item img-hero-4"></div>
-      <div class="carousel-item img-hero-5"></div>
-    </div>
-
-    <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
-      <span class="carousel-control-prev-icon"></span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
-      <span class="carousel-control-next-icon"></span>
-    </button>
-  </div>
-</div>
-
-<!-- ==========================================
-     LIVE SEARCH BAR (CONNECTED TO BACKEND)
-     ========================================== -->
-<div class="container position-relative" style="z-index: 1000;">
-  <div class="home-search-bar">
-    <div class="search-container">
-      <i class="fa fa-search search-icon-inside"></i>
-      <input type="text" id="searchInput" class="search-input-custom" placeholder="Search manga titles, authors, genres..." autocomplete="off">
-      <div id="searchResults" class="search-results"></div>
-    </div>
-  </div>
-</div>
-
-<!-- ==========================================
-     ANNOUNCEMENT TICKER
-     ========================================== -->
-<div class="marquee-wrapper my-3">
-  <div class="container-fluid text-center">
-    <marquee behavior="scroll" direction="left" scrollamount="6" class="marquee-text m-0">
-      🔥 "Read any manga here and download it for free! Available in English, Hindi, Tamil, Telugu, Marathi, and Japanese."
-    </marquee>
-  </div>
-</div>
-
-<!-- ==========================================
-     MANGA CATALOG GRID (DYNAMIC DJANGO LOOP)
-     ========================================== -->
-<div class="container py-4">
-  <div class="row g-4">
-    {% for i in product %}
-    <div class="col-xl-3 col-lg-4 col-sm-6 col-12 d-flex justify-content-center">
-      <div class="cardbox w-100">
-        
-        <div class="imgbox">
-          <a href="/manga/{{ i.id }}/">
-            <img src="{{ i.image.url }}" class="cardimg" alt="{{ i.name }}">
-          </a>
-        </div>
-
-        <div class="cart-container">
-          <a href="/addtocart/{{ i.id }}/" class="quick-cart-btn" title="Add to Cart">
-            <i class="fa fa-cart-plus"></i>
-          </a>
-        </div>
-
-        <div class="cardcontent">
-          <h5 class="manga-name" title="{{ i.name }}">
-            <a href="/manga/{{ i.id }}/" style="color: inherit; text-decoration: none;">{{ i.name }}</a>
-          </h5>
-          
-          <div class="manga-meta">
-            <span class="manga-chapters"><i class="fa fa-book me-1"></i>{{ i.chapter }}</span>
-            <span class="manga-price">${{ i.price }}</span>
-          </div>
-
-          <div class="buttonbox">
-            <a href="/manga/{{ i.id }}/" class="btn-read">Explore</a>
-            <a href="/addtocart/{{ i.id }}/" class="btn-buy">Buy Now</a>
-          </div>
-        </div>
-
+      <!-- Quick Chapter Search Bar -->
+      <div style="min-width: 260px; position: relative;">
+        <i class="fa fa-search" style="position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: #00f0ff;"></i>
+        <input type="text" id="chapterFilter" class="chapter-search-box" placeholder="Filter chapter (e.g. 5, 20)...">
       </div>
     </div>
-    {% endfor %}
+
+    <!-- Chapter Rows Loop -->
+    <div class="chapters-list" id="chaptersList">
+      {% for ch in chapter_list %}
+      <div class="chapter-row chapter-item" data-chapter="{{ ch }}">
+        <div class="d-flex align-items-center gap-3">
+          <span class="chapter-num-badge">#{{ ch }}</span>
+          <div>
+            <div class="chapter-name">{{ product.name }} Chapter {{ ch }}</div>
+            <div style="font-size: 13px; color: #94a3b8;"><i class="fa fa-check-circle text-success me-1"></i> Official Translation • High Quality</div>
+          </div>
+        </div>
+        <button type="button" class="btn-read-chapter" onclick="openReader({{ ch }})">
+          <i class="fa fa-book-open"></i> Read
+        </button>
+      </div>
+      {% endfor %}
+    </div>
+
   </div>
+
+  <!-- Related Manga Recommendations -->
+  {% if related_products %}
+  <div class="mt-5">
+    <h3 style="font-family: 'Merienda', cursive; font-size: 26px; color: #ffffff; margin-bottom: 20px;">
+      ⚡ You May Also Like
+    </h3>
+    <div class="row g-4">
+      {% for r in related_products %}
+      <div class="col-xl-3 col-lg-4 col-sm-6 col-12 d-flex justify-content-center">
+        <div class="cardbox w-100">
+          <div class="imgbox">
+            <a href="/manga/{{ r.id }}/">
+              <img src="{{ r.image.url }}" class="cardimg" alt="{{ r.name }}">
+            </a>
+          </div>
+          <div class="cardcontent">
+            <h5 class="manga-name" title="{{ r.name }}">{{ r.name }}</h5>
+            <div class="d-flex justify-content-between align-items-center mt-2">
+              <span style="color: #94a3b8; font-size: 14px;">{{ r.chapter }}</span>
+              <a href="/manga/{{ r.id }}/" class="btn btn-sm btn-outline-info rounded-pill px-3">Explore</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+
 </div>
 
 <!-- ==========================================
@@ -872,8 +827,8 @@ footer.app-footer {
 
       <div class="col-12 col-md-8 text-center text-md-end">
         <ul class="list-inline mb-0 font-nav">
-          <li class="list-inline-item"><a class="nav-link-custom active-page" href="/Home/">Home</a></li>
-          <li class="list-inline-item"><a class="nav-link-custom" href="/Shop/">Shop</a></li>
+          <li class="list-inline-item"><a class="nav-link-custom" href="/Home/">Home</a></li>
+          <li class="list-inline-item"><a class="nav-link-custom active-page" href="/Shop/">Shop</a></li>
           <li class="list-inline-item"><a class="nav-link-custom" href="/Aboutus/">About us</a></li>
           <li class="list-inline-item"><a class="nav-link-custom" href="/Contect/">Contect</a></li>
           <li class="list-inline-item"><a class="nav-link-custom" href="/Account/">Account</a></li>
@@ -893,7 +848,42 @@ footer.app-footer {
 </footer>
 
 <!-- ==========================================
-     MODALS
+     MANGA READER PREVIEW MODAL
+     ========================================== -->
+<div class="modal fade" id="readerModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content p-4">
+      <div class="modal-header border-0 pb-2">
+        <div>
+          <h3 class="popup-title mb-1" id="readerTitle">{{ product.name }}</h3>
+          <p class="text-info mb-0" id="readerSubtitle">Chapter 1</p>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" style="filter: invert(1);"></button>
+      </div>
+      <div class="modal-body text-center">
+        
+        <div class="p-3 my-2 rounded-4" style="background: rgba(8, 16, 34, 0.85); border: 1px solid rgba(0, 240, 255, 0.3);">
+          <img src="{{ product.image.url }}" id="readerImage" class="img-fluid rounded-3" style="max-height: 480px; object-fit: contain; box-shadow: 0 10px 30px rgba(0,0,0,0.8); transition: opacity 0.2s ease, transform 0.2s ease;" alt="Reading Page">
+          <p class="mt-3 text-muted small">You are viewing <strong>{{ product.name }}</strong> official high definition manga reader.</p>
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center mt-3">
+          <button type="button" class="btn btn-outline-info rounded-pill px-4" id="prevChapterBtn" onclick="navigateChapter(-1)">
+            <i class="fa fa-arrow-left me-1"></i> Previous
+          </button>
+          <span class="badge-tag badge-chapters" id="chapterIndicator">Chapter 1 of {{ total_chapters }}</span>
+          <button type="button" class="btn btn-outline-info rounded-pill px-4" id="nextChapterBtn" onclick="navigateChapter(1)">
+            Next <i class="fa fa-arrow-right ms-1"></i>
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==========================================
+     DELETE ACCOUNT MODALS
      ========================================== -->
 <div class="modal fade" id="feedbackModal" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered">
@@ -943,6 +933,76 @@ footer.app-footer {
 
 <!-- Scripts -->
 <script>
+let currentChapter = 1;
+const maxChapters = {{ total_chapters }};
+const mangaTitle = "{{ product.name }}";
+let readerModalInstance = null;
+
+function getReaderModal() {
+    if (!readerModalInstance) {
+        const modalEl = document.getElementById('readerModal');
+        readerModalInstance = bootstrap.Modal.getOrCreateInstance(modalEl);
+    }
+    return readerModalInstance;
+}
+
+function updateReaderContent(chapterNum) {
+    currentChapter = parseInt(chapterNum);
+    if (isNaN(currentChapter) || currentChapter < 1) currentChapter = 1;
+    if (currentChapter > maxChapters) currentChapter = maxChapters;
+
+    const subtitleEl = document.getElementById("readerSubtitle");
+    const indicatorEl = document.getElementById("chapterIndicator");
+    const prevBtn = document.getElementById("prevChapterBtn");
+    const nextBtn = document.getElementById("nextChapterBtn");
+    const readerImg = document.getElementById("readerImage");
+
+    if (subtitleEl) subtitleEl.textContent = `Chapter ${currentChapter}`;
+    if (indicatorEl) indicatorEl.textContent = `Chapter ${currentChapter} of ${maxChapters}`;
+    
+    if (prevBtn) prevBtn.disabled = (currentChapter <= 1);
+    if (nextBtn) nextBtn.disabled = (currentChapter >= maxChapters);
+
+    if (readerImg) {
+        readerImg.style.opacity = '0.6';
+        readerImg.style.transform = 'scale(0.98)';
+        setTimeout(() => {
+            readerImg.style.opacity = '1';
+            readerImg.style.transform = 'scale(1)';
+        }, 120);
+    }
+}
+
+function openReader(chapterNum) {
+    updateReaderContent(chapterNum);
+    getReaderModal().show();
+}
+
+function navigateChapter(direction) {
+    let target = currentChapter + direction;
+    if (target >= 1 && target <= maxChapters) {
+        updateReaderContent(target);
+    }
+}
+
+// Chapter Filter Input
+const chapterFilterInput = document.getElementById("chapterFilter");
+if (chapterFilterInput) {
+    chapterFilterInput.addEventListener("input", function(){
+        let filter = this.value.trim().toLowerCase();
+        let rows = document.querySelectorAll(".chapter-item");
+        rows.forEach(row => {
+            let chText = row.textContent.toLowerCase();
+            let chNum = row.getAttribute("data-chapter");
+            if (chText.includes(filter) || chNum === filter) {
+                row.style.display = "flex";
+            } else {
+                row.style.display = "none";
+            }
+        });
+    });
+}
+
 setTimeout(function(){
     let alerts = document.querySelectorAll('.myalert');
     alerts.forEach(function(alert){
@@ -955,55 +1015,13 @@ setTimeout(function(){
 document.addEventListener("DOMContentLoaded", function(){
     document.querySelectorAll('.reason-btn').forEach(btn => {
         btn.addEventListener('click', function(){
-            document.getElementById('selectedReason').value = this.getAttribute('data-reason');
+            const reasonInput = document.getElementById('selectedReason');
+            if (reasonInput) {
+                reasonInput.value = this.getAttribute('data-reason');
+            }
         });
     });
 });
-
-// Live Search Engine (Connected to Django Backend /search/?q=)
-const searchInput = document.getElementById("searchInput");
-const searchResults = document.getElementById("searchResults");
-
-if (searchInput && searchResults) {
-    searchInput.addEventListener("keyup", function(){
-        let query = this.value.trim();
-        if(query.length === 0){
-            searchResults.innerHTML = "";
-            return;
-        }
-        fetch(`/search/?q=${encodeURIComponent(query)}`)
-        .then(response => response.json())
-        .then(data => {
-            searchResults.innerHTML = "";
-            const items = data.products || data.results || [];
-            if(items.length > 0){
-                items.forEach(product => {
-                    let div = document.createElement("a");
-                    div.classList.add("search-item");
-                    let targetUrl = product.page ? (product.page.startsWith('/') ? product.page : '/' + product.page) : '/Shop/';
-                    div.href = targetUrl;
-                    div.innerHTML = `
-                        <img src="${product.image}" alt="${product.name}">
-                        <div>
-                            <div style="font-weight: 700; color: #00f0ff; font-size: 16px;">${product.name}</div>
-                            ${product.chapter ? `<div style="font-size: 13px; color: #94a3b8;">${product.chapter} • $${product.price || ''}</div>` : ''}
-                        </div>
-                    `;
-                    searchResults.appendChild(div);
-                });
-            } else {
-                searchResults.innerHTML = `<div style="padding: 16px; text-align: center; color: #94a3b8; font-size: 15px;">No manga found matching "${query}"</div>`;
-            }
-        })
-        .catch(err => console.error("Search fetch error:", err));
-    });
-
-    document.addEventListener("click", function(e){
-        if(!searchInput.contains(e.target) && !searchResults.contains(e.target)){
-            searchResults.innerHTML = "";
-        }
-    });
-}
 </script>
 
 </body>

@@ -4,2116 +4,1001 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shop Page</title>
+    <title>Shop (Fantasy & Sci-Fi) - My Anime Book</title>
 
-
-<!-- Latest compiled and minified CSS -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
-<!-- Latest compiled JavaScript -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-
-<!-- nav bar -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@200..900&display=swap" rel="stylesheet">
-<!--  -->
-
-<!-- fafa icon -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;600;700;800;900&family=Merienda:wght@600;800;900&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
-    /* nav bar */
-.cl1{
-  color: #1eb1be
+/* ==========================================================================
+   GLOBAL RESET & THEME DESIGN SYSTEM
+   ========================================================================== */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
-.cl1:hover{
-  color: rgb(190, 145, 19)
-}
-
-.f1 {
-  font-family: "Inconsolata", monospace;
-  font-optical-sizing: auto;
-  font-weight: 20px;
-  font-style: normal;
-  font-variation-settings:"wdth" 100;
-  font-size:26px;
-}
-.f2 {
-  font-family: "Inconsolata", monospace;
-  font-optical-sizing: auto;
-  font-weight: 20px;
-  font-style: normal;
-  font-variation-settings:"wdth" 100;
-  font-size:24px;
-}
-/* nav end */
-
-
-
-
-/* for shop */
-/*  */
-
-.img6 {
-background-image: url(../static/img/back.jpg);
-height: auto ;
-width: 100%;
-background-position: center;
-background-repeat: no-repeat;
-background-size: cover;
-}
-
-
-/* .bg25{
-background-image: url(../static/img/25.jpg);
-height: 420px ;
-width: 100%;
-background-position: center;
-background-repeat: no-repeat;
-background-size: cover;
-background-color: #08d1d3;
-}
-
-
-.bg26{
-background-image: url(../static/img/26.jpg);
-height: 420px ;
-width: 100%;
-background-position: center;
-background-repeat: no-repeat;
-background-size: cover;
-background-color: #08d1d3;
-}
-
-.bg27{
-background-image: url(../static/img/27.jpg);
-height: 420px ;
-width: 100%;
-background-position: center;
-background-repeat: no-repeat;
-background-size: cover;
-background-color: #08d1d3;
-}
-
-.bg28{
-background-image: url(../static/img/28.jpg);
-height: 420px ;
-width: 100%;
-background-position: center;
-background-repeat: no-repeat;
-background-size: cover;
-background-color: #08d1d3;
-}
-
-.bg29{
-background-image: url(../static/img/29.jpg);
-height: 420px ;
-width: 100%;
-background-position: center;
-background-repeat: no-repeat;
-background-size: cover;
-background-color: #08d1d3;
-}
-
-.bg30{
-background-image: url(../static/img/30.jpg);
-height: 420px ;
-width: 100%;
-background-position: center;
-background-repeat: no-repeat;
-background-size: cover;
-background-color: #08d1d3;
-}
-
-.bg31{
-background-image: url(../static/img/31.jpg);
-height: 420px ;
-width: 100%;
-background-position: center;
-background-repeat: no-repeat;
-background-size: cover;
-background-color: #08d1d3;
-}
-
-.bg32{
-background-image: url(../static/img/32.jpg);
-height: 420px ;
-width: 100%;
-background-position: center;
-background-repeat: no-repeat;
-background-size: cover;
-background-color: #08d1d3;
-}
-
-.bg33{
-background-image: url(../static/img/33.jpg);
-height: 420px ;
-width: 100%;
-background-position: center;
-background-repeat: no-repeat;
-background-size: cover;
-background-color: #08d1d3;
-}
-
-.bg34{
-background-image: url(../static/img/34.jpg);
-height: 420px ;
-width: 100%;
-background-position: center;
-background-repeat: no-repeat;
-background-size: cover;
-background-color: #08d1d3;
-}
-
-.bg35{
-background-image: url(../static/img/35.jpg);
-height: 420px ;
-width: 100%;
-background-position: center;
-background-repeat: no-repeat;
-background-size: cover;
-background-color: #08d1d3;
-}
-
-.bg36{
-background-image: url(../static/img/36.jpg);
-height: 420px ;
-width: 100%;
-background-position: center;
-background-repeat: no-repeat;
-background-size: cover;
-background-color: #08d1d3;
-} */
-
-.ff7{
-  font-family: "Libertinus Math", system-ui;
-  font-weight: 400;
-  font-style: normal;
-  font-size: 30px;
-  color: #23e9fbf7;
-}
-
-.ff0{
-  font-family: "Libertinus Math", system-ui;
-  font-weight: 400;
-  font-style: normal;
-}
-
-.cl0{
-  font-size: 25px;
-  background-color: #1a0071;
-  display: inline;
-  color: #23e9fbf7;
-
-}
-
-.cl2{
-  color: #23e9fbf7;
-  background-color: #1a0071;
-  font-size: 25px;
-  display: inline;
-}
-
-.cl0:hover{
-  color: #1a0071;
-  background-color: #23e9fbf7;
-}
-
-.cl2:hover{
-  color: #1a0071;
-  background-color: #23e9fbf7;
-}
-
-.pb{
-  background-color: rgba(59, 196, 255, 0.716);
-  border: none;
-}
-
-.pc{
-  color: #580033;
-}
-
-.pb:hover{
-  background-color: #580033bd;
-}
-
-.bc:hover{
-  color: rgba(59, 196, 255, 0.716);
-}
-/*  */
-
-.m1{
-height: 40px;
-border-radius: 10px;
-background-color: #08d1d3;
-
-}
-
-/* footer */
-
-.foot{
-background-image: url(../static/img/f.png);
-height: auto ;
-width: 100%;
-background-position: center;
-background-repeat: no-repeat;
-background-size: cover;
-background-color: #08d1d3;
-}
-/*  */
-
-
-/* ===================================================== */
-/* ================= SEARCH BAR ======================== */
-/* ===================================================== */
-
-.search-container{
+html, body {
     width: 100%;
-    max-width: 500px;
+    min-height: 100%;
+    background-color: #060b17;
+    color: #ffffff;
+    font-family: 'Outfit', sans-serif;
+    overflow-x: hidden !important;
+}
+
+.main-bg {
+    background-image: linear-gradient(180deg, rgba(6, 11, 23, 0.88) 0%, rgba(10, 18, 38, 0.95) 100%), url(../static/img/back.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    min-height: 100vh;
+    width: 100%;
+}
+
+.font-brand {
+    font-family: "Inconsolata", monospace;
+    font-weight: 800;
+    font-size: clamp(22px, 3.5vw, 28px);
+    letter-spacing: 0.5px;
+    background: linear-gradient(135deg, #00f0ff 0%, #0077ff 50%, #ff007f 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 25px rgba(0, 240, 255, 0.35);
+}
+
+.font-nav {
+    font-family: "Inconsolata", monospace;
+    font-size: clamp(17px, 2.5vw, 21px);
+    font-weight: 700;
+}
+
+/* ==========================================================================
+   UNIFIED HEADER NAVBAR
+   ========================================================================== */
+nav.app-navbar {
+    background: rgba(8, 14, 30, 0.82) !important;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(0, 240, 255, 0.18);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+    min-height: 75px;
+    z-index: 1050;
     position: relative;
-    margin: auto;
-    padding-bottom: 10px;
+    transition: all 0.3s ease;
 }
 
-#searchInput{
-    width: 90%;
-    height: 52px;
-
-    padding: 0 20px;
-
-    border: none;
-    outline: none;
-
-    border-radius: 15px;
-
-    background: rgba(63, 195, 247, 0.658);
-
-    backdrop-filter: blur(8px);
-
-    color: #000;
-
-    font-size: 18px;
-
-    transition: all .3s ease;
-
-    box-shadow: 0 5px 15px rgba(0,0,0,.15);
+.nav-link-custom {
+    color: #e2e8f0 !important;
+    padding: 8px 18px !important;
+    border-radius: 30px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    text-decoration: none;
+    display: inline-block;
 }
 
-#searchInput:hover{
-    color: #08d1d3;
-}
-
-#searchInput:focus{
+.nav-link-custom:hover {
+    color: #00f0ff !important;
+    background: rgba(0, 240, 255, 0.12);
     transform: translateY(-2px);
-
-    box-shadow:
-    0 8px 20px rgba(0,0,0,.25);
+    box-shadow: 0 0 16px rgba(0, 240, 255, 0.25);
 }
 
-#searchInput::placeholder{
-    color: rgba(0,0,0,.8);
+.nav-link-custom.active-page {
+    color: #00f0ff !important;
+    background: rgba(0, 240, 255, 0.18);
+    border: 1px solid rgba(0, 240, 255, 0.4);
+    box-shadow: 0 0 20px rgba(0, 240, 255, 0.35);
 }
 
-/* ===================================================== */
-/* ================= SEARCH RESULTS ==================== */
-/* ===================================================== */
+.cart-nav-link {
+    color: #00f0ff !important;
+    font-size: 26px;
+    padding: 6px 14px !important;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
-.search-results{
+.cart-nav-link:hover {
+    color: #ff007f !important;
+    transform: scale(1.15) rotate(-6deg);
+    text-shadow: 0 0 18px rgba(255, 0, 127, 0.6);
+}
+
+.profile-avatar {
+    border: 2px solid #00f0ff;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 17px;
+    font-weight: 800;
+    color: #ffffff;
+    background: linear-gradient(135deg, rgba(0, 240, 255, 0.25), rgba(157, 78, 221, 0.35));
+    box-shadow: 0 0 16px rgba(0, 240, 255, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+}
+
+.btn-auth-logout {
+    border: 2px solid #ff3366 !important;
+    background: rgba(255, 51, 102, 0.12) !important;
+    color: #ff3366 !important;
+    border-radius: 30px !important;
+    padding: 6px 20px !important;
+    font-weight: 700;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-auth-logout:hover {
+    background: linear-gradient(135deg, #ff3366, #ff007f) !important;
+    color: #ffffff !important;
+    box-shadow: 0 0 20px rgba(255, 51, 102, 0.55);
+    transform: translateY(-2px);
+}
+
+.btn-auth-login {
+    border: 2px solid #00f0ff !important;
+    background: rgba(0, 240, 255, 0.12) !important;
+    color: #00f0ff !important;
+    border-radius: 30px !important;
+    padding: 6px 20px !important;
+    font-weight: 700;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-auth-login:hover {
+    background: linear-gradient(135deg, #00f0ff, #0077ff) !important;
+    color: #ffffff !important;
+    box-shadow: 0 0 20px rgba(0, 240, 255, 0.55);
+    transform: translateY(-2px);
+}
+
+/* ==========================================================================
+   DYNAMIC SEARCH & FILTER BAR
+   ========================================================================== */
+.shop-filter-bar {
+    background: rgba(13, 23, 44, 0.85);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(0, 240, 255, 0.2);
+    border-radius: 24px;
+    padding: 16px 24px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    margin: 25px auto;
+    position: relative;
+    z-index: 1000;
+}
+
+.search-container {
+    width: 100%;
+    position: relative;
+    z-index: 1000;
+}
+
+.search-input-custom {
+    width: 100%;
+    height: 48px;
+    padding: 0 20px 0 45px;
+    border: 1px solid rgba(0, 240, 255, 0.3);
+    outline: none;
+    border-radius: 30px;
+    background: rgba(8, 16, 34, 0.9);
+    color: #ffffff;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+.search-input-custom:focus {
+    border-color: #00f0ff;
+    box-shadow: 0 0 20px rgba(0, 240, 255, 0.4), inset 0 2px 6px rgba(0, 0, 0, 0.4);
+    background: rgba(10, 22, 48, 0.95);
+}
+
+.search-icon-inside {
     position: absolute;
-
-    width: 90%;
-
-    background: rgba(63, 195, 247, 0.92);
-
-    border-radius: 14px;
-
-    overflow: hidden;      /* Important */
-
-    max-height: 400px;
-
-    z-index: 9999;
-
-        overflow-y: auto;
-    overflow-x: hidden;
-
-    box-shadow: 0 10px 25px rgba(0,0,0,.25);
+    left: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #00f0ff;
+    font-size: 18px;
+    pointer-events: none;
 }
 
-.search-results:empty{
+.search-results {
+    position: absolute;
+    top: 55px;
+    left: 0;
+    width: 100%;
+    background: #081022 !important;
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(0, 240, 255, 0.5);
+    border-radius: 16px;
+    overflow: hidden;
+    max-height: 380px;
+    z-index: 99999 !important;
+    overflow-y: auto;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.95), 0 0 30px rgba(0, 240, 255, 0.3);
+}
+
+.search-results:empty {
     display: none;
 }
 
-.search-results::-webkit-scrollbar{
-    width: 6px;
-}
-
-.search-results::-webkit-scrollbar-track{
-    border-radius: 14px;
-}
-
-.search-results::-webkit-scrollbar-thumb{
-    background: rgba(0,0,0,.3);
-    border-radius: 20px;
-    
-}
-
-/* ===================================================== */
-/* ================= SEARCH ITEM ======================= */
-/* ===================================================== */
-
-.search-item{
+.search-item {
     display: flex;
-
     align-items: center;
-
-    gap: 12px;
-
-    padding: 14px;
-
+    gap: 14px;
+    padding: 12px 18px;
+    color: #ffffff;
     text-decoration: none;
-
-    color: black;
-
-    transition: all .3s ease;
-
-    border-radius: 10px;
-
-    font-family: "Playwrite GB S", cursive;
-    font-size: 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    transition: all 0.25s ease;
 }
 
-.search-item:hover{
-    background: rgba(255,255,255,.12);
-
-    backdrop-filter: blur(10px);
-
-    border-left: 4px solid #00e5ff;
-
-    transform: translateX(8px);
-
-    color: black;
-
-    box-shadow:
-    0 6px 18px rgba(0,0,0,.2);
+.search-item:hover {
+    background: rgba(0, 240, 255, 0.15);
+    color: #00f0ff;
 }
 
-.search-item img{
-    width: 55px;
-    height: 55px;
-
+.search-item img {
+    width: 45px;
+    height: 60px;
     object-fit: cover;
-
-    border-radius: 10px;
-
-    flex-shrink: 0;
-
-    transition: .3s;
+    border-radius: 8px;
+    border: 1px solid rgba(0, 240, 255, 0.3);
 }
 
-.search-item:hover img{
-    transform: scale(1.08);
-}
-
-.no-result{
-    padding: 15px;
-
-    text-align: center;
-
-    color: black;
-
-    font-family: "Playwrite GB S", cursive;
+.genre-select-custom {
+    height: 48px;
+    border-radius: 30px;
+    background: rgba(8, 16, 34, 0.9);
+    border: 1px solid rgba(0, 240, 255, 0.3);
+    color: #00f0ff;
+    font-family: 'Inconsolata', monospace;
     font-size: 18px;
-}
-
-/* ===================================================== */
-/* ================= SELECT TAG ======================== */
-/* ===================================================== */
-
-.genre-box{
-    display: flex;
-    justify-content: end;
-    align-items: center;
-}
-
-.genre-select{
-    width: 220px;
-    height: 52px;
-
-    padding: 0 18px;
-
-    border: none;
+    font-weight: 700;
+    padding: 0 20px;
     outline: none;
-
-    border-radius: 15px;
-
-    background: rgba(22, 28, 92, 0.95);
-
-    color: #4d22ff;
-
-    font-size: 20px;
-    font-weight: 500;
-
     cursor: pointer;
-
-    transition: all .3s ease;
-
-    box-shadow:
-    0 5px 15px rgba(0,0,0,.2);
-}
-
-.genre-select:hover{
-    background: rgba(28,35,110,1);
-
-    transform: translateY(-2px);
-
-    box-shadow:
-    0 8px 20px rgba(0,0,0,.3);
-}
-
-.genre-select:focus{
-    box-shadow:
-    0 8px 20px rgba(0,0,0,.35);
-}
-
-.genre-select option{
-    background: #161c5c;
-    color: white;
-    font-size: 16px;
-}
-
-/* ===================================================== */
-/* ================= FONT ============================== */
-/* ===================================================== */
-
-.m1{
-    font-family: "Playwrite GB S", cursive;
-    font-size: 20px;
-    color: black;
-}
-
-/* ===================================================== */
-/* ================= TABLET ============================ */
-/* ===================================================== */
-
-@media(max-width:991px){
-
-    .genre-select{
-        width: 190px;
-        height: 48px;
-        font-size: 18px;
-    }
-}
-
-/* ===================================================== */
-/* ================= MOBILE ============================ */
-/* ===================================================== */
-
-@media(max-width:768px){
-
-    .search-container{
-        max-width: 100%;
-    }
-
-    #searchInput{
-        height: 48px;
-        font-size: 16px;
-    }
-
-    .genre-box{
-        justify-content: center;
-        margin-top: 10px;
-    }
-
-    .genre-select{
-        width: 180px;
-        height: 45px;
-        font-size: 16px;
-    }
-
-    .search-item{
-        font-size: 16px;
-        padding: 10px;
-    }
-
-    .search-item img{
-        width: 45px;
-        height: 45px;
-    }
-}
-
-@media(max-width:576px){
-
-    .genre-select{
-        width: 160px;
-        height: 42px;
-        margin-bottom: 20px;
-    }
-
-    #searchInput{
-        height: 44px;
-        font-size: 15px;
-    }
-}
-
-/*  */
-/*  */
-/*  */
-
-
-
-
-
-
-
-
-/* MODAL BACKGROUND BLUR */
-.modal-content{
-    background: rgba(10,10,10,0.88) !important;
-    backdrop-filter: blur(12px);
-    border: 2px solid rgba(0,255,255,0.3) !important;
-    border-radius: 22px !important;
-    overflow: hidden;
-    box-shadow:
-    0 0 20px rgba(0,255,255,0.2),
-    0 0 40px rgba(255,0,255,0.15);
-}
-
-/* RESPONSIVE WIDTH */
-.modal-dialog{
-    max-width: 650px;
-    width: 95%;
-}
-
-/* MODAL HEIGHT */
-.modal-body{
-    max-height: 70vh;
-    overflow-y: auto;
-}
-
-/* BACKGROUND IMAGE */
-.modal-content::before{
-    content:"";
-    position:absolute;
-    inset:0;
-    background-image:url('../static/img/con1.png');
-    background-size:cover;
-    background-position:center;
-    opacity:0.12;
-    z-index:-1;
-}
-
-/* TITLE */
-.popup-title{
-    color:#fff;
-    font-size:32px;
-    font-weight:700;
-    letter-spacing:1px;
-    text-shadow:0 0 10px cyan;
-}
-
-/* OPTION BUTTONS */
-.popup-btn{
-    width:100%;
-    border:none;
-    padding:16px;
-    border-radius:14px;
-    background:linear-gradient(135deg,#071b2a,#0d3b52);
-    color:white;
-    font-size:18px;
-    font-weight:600;
-    transition:0.4s;
-    margin-bottom:15px;
-    border:1px solid rgba(0,255,255,0.2);
-}
-
-.popup-btn:hover{
-    transform:translateY(-4px) scale(1.02);
-    background:linear-gradient(135deg,#00bcd4,#0077ff);
-    color:white;
-    box-shadow:
-    0 0 15px rgba(0,255,255,0.6),
-    0 0 30px rgba(0,119,255,0.4);
-}
-
-/* DELETE BUTTON */
-.delete-btn{
-    background:linear-gradient(135deg,#7a0000,#ff0000);
-}
-
-.delete-btn:hover{
-    background:linear-gradient(135deg,#ff0000,#ff4d4d);
-    box-shadow:
-    0 0 15px rgba(255,0,0,0.6),
-    0 0 30px rgba(255,0,0,0.4);
-}
-
-/* INPUTS */
-.form-control{
-    background:rgba(255,255,255,0.08) !important;
-    border:1px solid rgba(255,255,255,0.2) !important;
-    color:white !important;
-    border-radius:14px !important;
-    padding:14px !important;
-    font-size:17px;
-    transition:0.3s;
-}
-
-.form-control:focus{
-    border:1px solid cyan !important;
-    box-shadow:0 0 15px rgba(0,255,255,0.5) !important;
-    background:rgba(255,255,255,0.12) !important;
-}
-
-/* PLACEHOLDER */
-.form-control::placeholder{
-    color:#cfcfcf;
-}
-
-/* TEXTAREA */
-.suggestion-box{
-    resize:none;
-}
-
-/* FOOTER BUTTONS */
-.modal-footer .btn{
-    border-radius:12px;
-    padding:10px 25px;
-    font-size:18px;
-    transition:0.3s;
-}
-
-.modal-footer .btn-secondary:hover{
-    transform:scale(1.05);
-}
-
-.modal-footer .btn-danger:hover{
-    transform:scale(1.05);
-    box-shadow:0 0 20px rgba(255,0,0,0.5);
-}
-
-/* CLOSE BUTTON */
-.btn-close{
-    filter:invert(1);
-}
-
-/* MOBILE RESPONSIVE */
-@media(max-width:768px){
-
-    .popup-title{
-        font-size:24px;
-    }
-
-    .popup-btn{
-        font-size:15px;
-        padding:13px;
-    }
-
-    .modal-dialog{
-        width:95%;
-        margin:auto;
-    }
-
-    .modal-body{
-        max-height:65vh;
-    }
-
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* ===================================================== */
-/* ================= GLOBAL RESET ====================== */
-/* ===================================================== */
-
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body{
-    background: #0b0b0b;
-    font-family: Arial, Helvetica, sans-serif;
-}
-
-/* ===================================================== */
-/* ================= MAIN GRID ========================= */
-/* ===================================================== */
-
-.card-grid{
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
     width: 100%;
-
-    display: grid;
-
-    /* Laptop = 4 Cards */
-    grid-template-columns: repeat(4, 1fr);
-
-    /* SPACE BETWEEN CARDS */
-    gap: 35px;
-
-    padding: 25px;
-
-    overflow: visible !important;
 }
 
-/* ===================================================== */
-/* ================= TABLET ============================ */
-/* ===================================================== */
-
-@media(max-width: 991px){
-
-    .card-grid{
-        grid-template-columns: repeat(3, 1fr);
-        gap: 20px;
-    }
-
+.genre-select-custom:focus, .genre-select-custom:hover {
+    border-color: #00f0ff;
+    box-shadow: 0 0 18px rgba(0, 240, 255, 0.4);
+    background: rgba(10, 22, 48, 0.95);
 }
 
-/* ===================================================== */
-/* ================= MOBILE ============================ */
-/* ===================================================== */
-
-@media(max-width: 600px){
-
-    .card-grid{
-        grid-template-columns: repeat(2, 1fr);
-
-        gap: 18px;
-
-        padding: 14px;
-    }
-
-}
-
-/* ===================================================== */
-/* ================= CARD ============================== */
-/* ===================================================== */
-
-.cardbox{
-    height: 440px;
-
+/* ==========================================================================
+   DYNAMIC MANGA CARDS GRID
+   ========================================================================== */
+.cardbox {
+    height: 450px;
     position: relative;
-
-    border-radius: 18px;
-
-    background: #000;
-
-    overflow: visible !important;
-
-    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-
-    transition: 0.35s ease;
-
+    border-radius: 20px;
+    background: rgba(13, 22, 44, 0.75);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(0, 240, 255, 0.15);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.55);
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     margin-bottom: 30px;
-}
-
-/* Hover */
-.cardbox:hover{
-    transform: translateY(-5px);
-    z-index: 100;
-}
-
-/* Tablet */
-@media(max-width: 991px){
-
-    .cardbox{
-        height: 390px;
-    }
-
-}
-
-/* Mobile */
-@media(max-width: 600px){
-
-    .cardbox{
-        height: 300px;
-        border-radius: 14px;
-    }
-
-}
-
-/* ===================================================== */
-/* ================= IMAGE BOX ========================= */
-/* ===================================================== */
-
-.imgbox{
-    position: absolute;
-
-    inset: 0;
-
-    border-radius: inherit;
-
-    overflow: hidden;
-
-    z-index: 1;
-}
-
-/* Gradient Overlay */
-.imgbox::after{
-    content: '';
-
-    position: absolute;
-
-    inset: 0;
-
-    background: linear-gradient(
-        to top,
-        rgba(0,0,0,0.95) 15%,
-        rgba(0,0,0,0.55) 45%,
-        rgba(0,0,0,0.15) 70%,
-        transparent 100%
-    );
-
-    z-index: 2;
-}
-
-/* Image */
-.cardimg{
-    width: 100%;
-    height: 100%;
-
-    object-fit: cover;
-
-    transition: transform 0.5s ease;
-}
-
-/* Zoom Hover */
-.cardbox:hover .cardimg{
-    transform: scale(1.08);
-}
-
-/* ===================================================== */
-/* ================= CART ICON ========================= */
-/* ===================================================== */
-
-.cart-container{
-    position: absolute;
-
-    top: 15px;
-    right: 15px;
-
-    z-index: 9999;
-
-    overflow: visible;
-}
-
-/* Mobile */
-@media(max-width: 600px){
-
-    .cart-container{
-        top: 10px;
-        right: 10px;
-    }
-
-}
-
-/* Circle Button */
-.tooltip{
-    position: relative;
-
-    width: 46px;
-    height: 46px;
-
-    border-radius: 50%;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    text-decoration: none;
-
-    background: rgba(0,39,67,0.85);
-
-    border: 2px solid #1eb1be;
-
-    backdrop-filter: blur(8px);
-
-    box-shadow: 0 5px 15px rgba(0,0,0,0.4);
-
-    opacity: 0;
-    visibility: hidden;
-
-    transform: scale(0.6);
-
-    overflow: visible;
-
-    transition: 0.3s ease;
-}
-
-/* Mobile */
-@media(max-width: 600px){
-
-    .tooltip{
-        width: 38px;
-        height: 38px;
-    }
-
-}
-
-.tooltip i{
-    color: #1eb1be;
-    font-size: 18px;
-
-    transition: 0.3s ease;
-}
-
-/* Show Button */
-.cardbox:hover .tooltip{
-    opacity: 1;
-    visibility: visible;
-
-    transform: scale(1);
-}
-
-/* Hover */
-.tooltip:hover{
-    background: #1eb1be;
-    border-color: #1eb1be;
-}
-
-.tooltip:hover i{
-    color: #000;
-}
-
-/* ===================================================== */
-/* ================= TOOLTIP TEXT ====================== */
-/* ===================================================== */
-
-.tooltiptext{
-    position: absolute;
-
-    bottom: 140%;
-    left: 50%;
-
-    transform: translateX(-50%) translateY(10px);
-
-    width: 120px;
-    height: 36px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    background: linear-gradient(135deg, #08d1d3, #0a8cff);
-
-    color: #fff;
-
-    border-radius: 6px;
-
-    font-size: 13px;
-    font-weight: 600;
-
-    white-space: nowrap;
-
-    opacity: 0;
-    visibility: hidden;
-
-    z-index: 999999;
-
-    transition: 0.3s ease;
-}
-
-/* Arrow */
-.tooltiptext::after{
-    content: '';
-
-    position: absolute;
-
-    top: 100%;
-    left: 50%;
-
-    transform: translateX(-50%);
-
-    border-width: 7px;
-    border-style: solid;
-
-    border-color: #0a8cff transparent transparent transparent;
-}
-
-/* Show Tooltip */
-.tooltip:hover .tooltiptext{
-    opacity: 1;
-    visibility: visible;
-
-    transform: translateX(-50%) translateY(0);
-}
-
-/* ===================================================== */
-/* ================= CONTENT =========================== */
-/* ===================================================== */
-
-.cardcontent{
-    position: absolute;
-
-    bottom: 0;
-    left: 0;
-
-    width: 100%;
-
-    z-index: 5;
-
-    padding: 18px;
-
     display: flex;
     flex-direction: column;
 }
 
-/* Mobile */
-@media(max-width: 600px){
-
-    .cardcontent{
-        padding: 12px;
-    }
-
+.cardbox:hover {
+    transform: translateY(-8px) scale(1.02);
+    border-color: rgba(0, 240, 255, 0.6);
+    box-shadow: 0 20px 40px rgba(0, 240, 255, 0.2), 0 0 25px rgba(255, 0, 127, 0.15);
+    z-index: 10;
 }
 
-/* ===================================================== */
-/* ================= TITLE ============================= */
-/* ===================================================== */
+.imgbox {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    z-index: 1;
+}
 
-.manga-name{
-    color: #1eb1be;
+.imgbox::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        to top,
+        rgba(6, 11, 23, 0.96) 20%,
+        rgba(6, 11, 23, 0.6) 55%,
+        rgba(6, 11, 23, 0.15) 80%,
+        transparent 100%
+    );
+    z-index: 2;
+}
 
-    font-size: 22px;
-    font-weight: 700;
+.cardimg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
 
-    margin-bottom: 6px;
+.cardbox:hover .cardimg {
+    transform: scale(1.08);
+}
 
-    text-shadow: 0 3px 10px rgba(0,0,0,0.8);
+.cart-container {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    z-index: 20;
+}
 
+.quick-cart-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    background: rgba(8, 18, 38, 0.85);
+    border: 2px solid #00f0ff;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+    color: #00f0ff;
+    font-size: 18px;
+    transition: all 0.3s ease;
+}
+
+.quick-cart-btn:hover {
+    background: linear-gradient(135deg, #00f0ff, #0077ff);
+    color: #ffffff;
+    border-color: #ffffff;
+    box-shadow: 0 0 20px rgba(0, 240, 255, 0.6);
+    transform: scale(1.1) rotate(-8deg);
+}
+
+.cardcontent {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 5;
+    padding: 16px 18px;
+    display: flex;
+    flex-direction: column;
+}
+
+.manga-name {
+    color: #ffffff;
+    font-family: 'Outfit', sans-serif;
+    font-size: 20px;
+    font-weight: 800;
+    margin-bottom: 4px;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
 
-/* Mobile */
-@media(max-width: 600px){
-
-    .manga-name{
-        font-size: 16px;
-    }
-
-}
-
-.manga-chapters{
-    color: #fff;
-
-    font-size: 14px;
-
-    margin-bottom: 14px;
-
-    text-shadow: 0 3px 10px rgba(0,0,0,0.8);
-}
-
-/* Mobile */
-@media(max-width: 600px){
-
-    .manga-chapters{
-        font-size: 12px;
-        margin-bottom: 10px;
-    }
-
-}
-
-/* ===================================================== */
-/* ================= BUTTONS =========================== */
-/* ===================================================== */
-
-.buttonbox{
-    width: 100%;
-
+.manga-meta {
     display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
 
+.manga-chapters {
+    color: #94a3b8;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.manga-price {
+    color: #00f0ff;
+    font-family: 'Inconsolata', monospace;
+    font-size: 18px;
+    font-weight: 800;
+    background: rgba(0, 240, 255, 0.12);
+    border: 1px solid rgba(0, 240, 255, 0.3);
+    padding: 2px 10px;
+    border-radius: 20px;
+    text-shadow: 0 0 10px rgba(0, 240, 255, 0.4);
+}
+
+.buttonbox {
+    width: 100%;
+    display: flex;
     gap: 10px;
 }
 
-.readbtn,
-.buy-wrapper{
+.btn-read {
     flex: 1;
-}
-
-.readbtn,
-.buybtn{
-    width: 100%;
     height: 42px;
-
     display: flex;
     align-items: center;
     justify-content: center;
-
     text-decoration: none;
-
-    border-radius: 8px;
-
-    font-size: 14px;
-    font-weight: 600;
-
-    transition: 0.3s ease;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 700;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+    transition: all 0.3s ease;
 }
 
-/* Mobile */
-@media(max-width: 600px){
-
-    .readbtn,
-    .buybtn{
-        height: 36px;
-        font-size: 12px;
-    }
-
+.btn-read:hover {
+    background: rgba(255, 255, 255, 0.18);
+    color: #00f0ff;
+    border-color: #00f0ff;
+    box-shadow: 0 0 15px rgba(0, 240, 255, 0.25);
 }
 
-/* Read Button */
-.readbtn{
-    background: #002743;
-
-    color: #fff;
-}
-
-.readbtn:hover{
-    background: #00192c;
-}
-
-/* Buy Wrapper */
-.buy-wrapper{
-    position: relative;
-}
-
-/* Buy Button */
-.buybtn{
-    background: rgba(0,0,0,0.5);
-
-    border: 1px solid #1eb1be;
-
-    color: #1eb1be;
-}
-
-.buybtn:hover{
-    background: #1eb1be;
-    color: #000;
-}
-
-/* ===================================================== */
-/* ================= BUY TOOLTIP ======================= */
-/* ===================================================== */
-
-.buytooltip{
-    position: absolute;
-
-    bottom: 135%;
-    left: 50%;
-
-    transform: translateX(-50%) translateY(10px);
-
-    width: 110px;
-    height: 36px;
-
+.btn-buy {
+    flex: 1;
+    height: 42px;
     display: flex;
     align-items: center;
     justify-content: center;
-
-    background: linear-gradient(135deg, #08d1d3, #0a8cff);
-
-    color: #fff;
-
-    border-radius: 6px;
-
-    font-size: 13px;
-    font-weight: 600;
-
-    opacity: 0;
-    visibility: hidden;
-
-    z-index: 999999;
-
-    transition: 0.3s ease;
+    text-decoration: none;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 800;
+    background: linear-gradient(135deg, #00f0ff 0%, #0077ff 100%);
+    color: #050b1a;
+    border: none;
+    box-shadow: 0 4px 15px rgba(0, 240, 255, 0.35);
+    transition: all 0.3s ease;
 }
 
-/* Arrow */
-.buytooltip::after{
-    content: '';
-
-    position: absolute;
-
-    top: 100%;
-    left: 50%;
-
-    transform: translateX(-50%);
-
-    border-width: 7px;
-    border-style: solid;
-
-    border-color: #0a8cff transparent transparent transparent;
+.btn-buy:hover {
+    background: linear-gradient(135deg, #00ffcc 0%, #00f0ff 100%);
+    color: #050b1a;
+    box-shadow: 0 0 25px rgba(0, 240, 255, 0.7);
+    transform: translateY(-2px);
 }
 
-/* Show */
-.buybtn:hover + .buytooltip{
-    opacity: 1;
-    visibility: visible;
-
-    transform: translateX(-50%) translateY(0);
+/* ==========================================================================
+   PAGINATION
+   ========================================================================== */
+.pagination-custom {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 30px 0;
 }
 
-/* ===================================================== */
-/* ===== FOR SWIPER / OWL / SLIDER TOOLTIP FIX ======== */
-/* ===================================================== */
-
-.swiper,
-.swiper-wrapper,
-.swiper-slide,
-.owl-carousel,
-.owl-stage-outer{
-    overflow: visible !important;
+.page-link-custom {
+    min-width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    font-family: 'Inconsolata', monospace;
+    font-size: 18px;
+    font-weight: 700;
+    padding: 6px 16px;
+    text-decoration: none;
+    background: rgba(13, 23, 44, 0.8);
+    border: 1px solid rgba(0, 240, 255, 0.2);
+    color: #00f0ff;
+    transition: all 0.3s ease;
 }
 
+.page-link-custom:hover, .page-link-custom.active {
+    background: linear-gradient(135deg, #00f0ff, #0077ff);
+    color: #050b1a;
+    border-color: #ffffff;
+    box-shadow: 0 0 20px rgba(0, 240, 255, 0.5);
+    transform: translateY(-2px);
+}
 
-
-
-
-
-
-
-
-
-
-
-.alert-box{
+/* ==========================================================================
+   NOTIFICATIONS / ALERTS
+   ========================================================================== */
+.alert-box {
     position: fixed;
-    top: 90px;
+    top: 85px;
     left: 50%;
     transform: translateX(-50%);
     z-index: 9999;
-    width: 100%;
+    width: 92%;
+    max-width: 750px;
     display: flex;
     flex-direction: column;
     align-items: center;
+    pointer-events: none;
 }
 
-
-.myalert:hover{
-    transform: translateY(-4px);
-}
-
-@keyframes topdown{
-
-    from{
-        opacity:0;
-        transform: translateY(-40px);
-    }
-
-    to{
-        opacity:1;
-        transform: translateY(0px);
-    }
-
-}
-
-
-
-.myalert{
-
-    background:  #08d0d393 !important;
-    color: #01143f !important;
-
-    border-radius: 15px;
-
+.myalert {
+    pointer-events: auto;
+    background: rgba(0, 240, 255, 0.95) !important;
+    backdrop-filter: blur(10px);
+    color: #050b1a !important;
+    border-radius: 14px;
     width: 100%;
-    max-width: 800px;
-
-    padding: 18px;
-
+    padding: 14px 20px;
     font-family: "Merienda", cursive;
-    font-weight: 100;
-    font-size: 20px;
-
-    box-shadow: 0px 5px 20px rgba(0,0,0,0.3);
-
+    font-size: clamp(15px, 2.5vw, 18px);
+    font-weight: 700;
+    box-shadow: 0px 8px 30px rgba(0, 240, 255, 0.4);
     animation: topdown 0.5s ease;
     transition: 0.4s;
+    border: none;
 }
 
+@keyframes topdown {
+    from { opacity: 0; transform: translateY(-40px); }
+    to { opacity: 1; transform: translateY(0px); }
+}
 
+/* ==========================================================================
+   UNIFIED FOOTER
+   ========================================================================== */
+footer.app-footer {
+    background: rgba(5, 10, 22, 0.95);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-top: 1px solid rgba(0, 240, 255, 0.2);
+    box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.5);
+    padding: 24px 0;
+    position: relative;
+    z-index: 10;
+}
 
+.btn-delete-account {
+    border: 2px solid #ff3366 !important;
+    background: rgba(255, 51, 102, 0.1) !important;
+    color: #ff3366 !important;
+    border-radius: 30px !important;
+    padding: 6px 18px !important;
+    font-size: 16px;
+    font-weight: 700;
+    transition: all 0.3s ease;
+}
 
+.btn-delete-account:hover {
+    background: linear-gradient(135deg, #ff3366, #ff007f) !important;
+    color: #ffffff !important;
+    box-shadow: 0 0 20px rgba(255, 51, 102, 0.5);
+    transform: translateY(-2px);
+}
 
+/* ==========================================================================
+   MODAL DIALOGS
+   ========================================================================== */
+.modal-content {
+    background: rgba(10, 16, 32, 0.94) !important;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 2px solid rgba(0, 240, 255, 0.3) !important;
+    border-radius: 24px !important;
+    box-shadow: 0 0 30px rgba(0, 240, 255, 0.25), 0 0 50px rgba(255, 0, 127, 0.15);
+}
 
+.popup-title {
+    color: #ffffff;
+    font-size: clamp(22px, 4vw, 30px);
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    text-shadow: 0 0 15px #00f0ff;
+}
 
+.popup-btn {
+    width: 100%;
+    border: none;
+    padding: 14px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #071b2a, #0d3b52);
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 600;
+    transition: 0.3s ease;
+    margin-bottom: 12px;
+    border: 1px solid rgba(0, 240, 255, 0.2);
+}
 
+.popup-btn:hover {
+    transform: translateY(-2px);
+    background: linear-gradient(135deg, #00f0ff, #0077ff);
+    color: #ffffff;
+    box-shadow: 0 0 20px rgba(0, 240, 255, 0.5);
+}
 
+.form-control-custom {
+    background: rgba(255, 255, 255, 0.08) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    color: #ffffff !important;
+    border-radius: 14px !important;
+    padding: 12px 16px !important;
+    font-size: 16px;
+    transition: 0.3s;
+}
 
+.form-control-custom:focus {
+    border: 1px solid #00f0ff !important;
+    box-shadow: 0 0 18px rgba(0, 240, 255, 0.5) !important;
+    background: rgba(255, 255, 255, 0.12) !important;
+}
 
+/* ==========================================================================
+   RESPONSIVE MEDIA QUERIES
+   ========================================================================== */
+@media (max-width: 991px) {
+    #headerNavbar.collapse.navbar-collapse,
+    #headerNavbar.collapsing,
+    #footerNavbar.collapse.navbar-collapse,
+    #footerNavbar.collapsing {
+        background: rgba(8, 14, 30, 0.98) !important;
+        padding: 20px !important;
+        border-radius: 16px;
+        margin-top: 10px;
+        border: 1px solid rgba(0, 240, 255, 0.2);
+    }
+
+    .nav-link-custom {
+        width: 100%;
+        margin: 4px 0;
+    }
+
+    .navbar-toggler {
+        border: 1px solid rgba(0, 240, 255, 0.4) !important;
+        padding: 6px 12px;
+    }
+
+    .navbar-toggler-icon {
+        filter: invert(1);
+    }
+}
+
+@media (max-width: 575px) {
+    .cardbox {
+        height: 420px;
+    }
+}
 </style>
-
-
 </head>
 
-
-
 <body>
-<!-- nav start -->
-<nav class="navbar navbar-expand-sm col-md-12" style="background-color: #450065;height: 73px;z-index: 10">
+<div class="main-bg">
 
-  <div class="container-fluid" style="background-color: #450065">
-
-    <a class="navbar-brand" href="/">
- <span class="f1 cl1"> My Anime book </span>
+<!-- ==========================================
+     UNIFIED HEADER NAVBAR
+     ========================================== -->
+<nav class="navbar navbar-expand-lg app-navbar">
+  <div class="container-fluid px-3 px-md-4">
+    
+    <a class="navbar-brand d-flex align-items-center" href="/">
+      <span class="font-brand">My Anime book</span>
     </a>
 
+    {% if request.session.fullname %}
+    <div class="d-lg-none ms-auto me-2">
+      <a href="#" class="profile-avatar">
+        {{ request.session.fullname|slice:":1"|upper }}{{ request.session.fullname.split|last|slice:":1"|upper }}
+      </a>
+    </div>
+    {% endif %}
 
-
-
-
-
-{% if request.session.fullname %}
-
-<li class="nav-item ms-auto ms-md-1">
-
-<a href="#"
-class="nav-link f2 cl1 d-flex justify-content-center align-items-center"
-style="border:2px solid #1eb1be;
-       border-radius:50%;
-       width:38px;
-       height:38px;
-       font-size:20px;">
-
-{{ request.session.fullname|slice:":1"|upper }}{{ request.session.fullname.split|last|slice:":1"|upper }}
-
-</a>
-
-</li>
-
-{% endif %}
-
-
-
-
-
-
-
-
-
-
-
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#headerNavbar">
       <span class="navbar-toggler-icon"></span>
     </button>
-  
-    <div class="collapse navbar-collapse justify-content-end container" style="height: 55px;" id="collapsibleNavbar">
-      <ul class="navbar-nav ">
+
+    <div class="collapse navbar-collapse justify-content-end" id="headerNavbar">
+      <ul class="navbar-nav align-items-center gap-1 font-nav">
         <li class="nav-item">
-          <a class="nav-link f2 cl1" href="/Home/">Home</a>
+          <a class="nav-link nav-link-custom" href="/Home/">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link f2 cl1" href="/Shop/">Shop</a>
+          <a class="nav-link nav-link-custom active-page" href="/Shop/">Shop</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link f2 cl1" href="/Aboutus/">About us</a>
+          <a class="nav-link nav-link-custom" href="/Aboutus/">About us</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link f2 cl1" href="/Contect/">Contect</a>
+          <a class="nav-link nav-link-custom" href="/Contect/">Contect</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link f2 cl1" href="/Account/">Account</a>
+          <a class="nav-link nav-link-custom" href="/Account/">Account</a>
         </li>
-        <!--  -->
 
-<!-- Cart Icon -->
-<li class="nav-item d-flex align-items-center">
-  <a class="nav-link cl1" href="/Cart/">
-    <i class="fa fa-cart-plus"
-       aria-hidden="true"
-       style="font-size:28px;"></i>
-  </a>
-</li>
+        <li class="nav-item">
+          <a class="nav-link cart-nav-link" href="/Cart/" title="View Cart">
+            <i class="fa fa-cart-plus" aria-hidden="true"></i>
+          </a>
+        </li>
 
-
-
-
-{% if request.session.fullname %}
-
-<!-- Logout Button -->
-<li class="nav-item ms-2">
-  <a class="nav-link f2 cl1"
-     href="/Logout/"
-     style="border:2px solid #1eb1be;
-            border-radius:8px;
-            padding:5px 14px;
-            font-size:22px;">
-    Log Out
-  </a>
-</li>
-
-{% else %}
-
-<!-- Login Button -->
-<li class="nav-item ms-2">
-  <a class="nav-link f2 cl1"
-     href="/Account/"
-     style="border:2px solid #1eb1be;
-            border-radius:8px;
-            padding:5px 14px;
-            font-size:22px;">
-    Log In
-  </a>
-</li>
-
-{% endif %}
-
-
-
+        {% if request.session.fullname %}
+        <li class="nav-item d-none d-lg-block ms-2">
+          <a href="#" class="profile-avatar">
+            {{ request.session.fullname|slice:":1"|upper }}{{ request.session.fullname.split|last|slice:":1"|upper }}
+          </a>
+        </li>
+        <li class="nav-item ms-lg-2 mt-2 mt-lg-0">
+          <a class="btn-auth-logout" href="/Logout/">Log Out</a>
+        </li>
+        {% else %}
+        <li class="nav-item ms-lg-2 mt-2 mt-lg-0">
+          <a class="btn-auth-login" href="/Account/">Log In</a>
+        </li>
+        {% endif %}
       </ul>
     </div>
-<!--  -->
+
   </div>
-<!--  -->
-<!--  -->
 </nav>
-<!-- nav end -->
-<!--  -->
 
-
-  <center>
-<div class="alert-box col-md-12">
-
+<!-- ==========================================
+     NOTIFICATION ALERTS
+     ========================================== -->
+<div class="alert-box">
 {% for message in messages %}
-
-<div class="btw alert alert-{{message.tags}} alert-dismissible show myalert">
-    
+<div class="alert alert-{{message.tags}} alert-dismissible show myalert" role="alert">
     {{ message }}
-
     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-
 </div>
-
 {% endfor %}
-
-</div>
-  </center>
-
-
-
-
-
-  
-<!--  -->
-<div class="col-md-12 img6" >
-  <div class="col-md-12 h-100" style="background-color: #004f8747;">
-  <div class="container" >
-    <div class="row">
-
-
-<div class="col-md-6">
-<br>
-<div class="search-container">
-
-    <input id="searchInput" placeholder="Search your favorite manga." autocomplete="off" class="m1">
-
-    <div id="searchResults"
-         class="search-results"></div>
-
 </div>
 
+<!-- ==========================================
+     SEARCH & GENRE FILTER HEADER
+     ========================================== -->
+<div class="container position-relative" style="z-index: 1000;">
+  <div class="shop-filter-bar">
+    <div class="row align-items-center g-3">
+      
+      <div class="col-12 col-md-7 col-lg-8">
+        <div class="search-container">
+          <i class="fa fa-search search-icon-inside"></i>
+          <input type="text" id="searchInput" class="search-input-custom" placeholder="Search manga titles, authors, genres..." autocomplete="off">
+          <div id="searchResults" class="search-results"></div>
+        </div>
+      </div>
 
+      <div class="col-12 col-md-5 col-lg-4">
+        <select id="genreSelect" class="genre-select-custom">
+          <option value="/Shop/">📚 All Categories (Shop)</option>
+          <option value="/Shop1/">🔥 Action & Adventure</option>
+          <option value="/Shop2/" selected>🌌 Fantasy & Sci-Fi</option>
+          <option value="/Shop3/">⚡ Shonen & Thriller</option>
+          <option value="/Shop4/">💖 Romance & Drama</option>
+        </select>
+      </div>
+
+    </div>
+  </div>
 </div>
 
-
-
-<!--  -->
-<!--  -->
-<!--  -->
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- ff5 -->
- <div class="col-lg-6 col-md-8 col-12 genre-box">
-
-    <form class="genre-form">
-
-        <div class="select-wrapper">
-
-            <select name="genre" class="genre-select ff5 ">
-
-                <option value="" disabled selected>
-                    Select Genre
-                </option>
-
-                <option value="Action">Action</option>
-                <option value="Fantasy">Fantasy</option>
-                <option value="Comedy">Comedy</option>
-                <option value="Thriller">Thriller</option>
-                <option value="Adventure">Adventure</option>
-                <option value="Love">Love</option>
-                <option value="Romance">Romance</option>
-                <option value="Shonen">Shonen</option>
-                <option value="Drama">Drama</option>
-                <option value="Horror">Horror</option>
-                <option value="Mecha">Mecha</option>
-                <option value="Sci-Fi">Sci-Fi</option>
-                <option value="Music">Music</option>
-                <option value="Mystery">Mystery</option>
-                <option value="Supernatural">Supernatural</option>
-                <option value="Time Travel">Time Travel</option>
-                <option value="Sports">Sports</option>
-                <option value="Vampire">Vampire</option>
-                <option value="Shonen Manga">Shonen Manga</option>
-                <option value="Action Manga">Action Manga</option>
-
-            </select>
-
+<!-- ==========================================
+     MANGA CATALOG GRID (DYNAMIC DJANGO LOOP)
+     ========================================== -->
+<div class="container py-3">
+  <div class="row g-4">
+    {% for i in product %}
+    <div class="col-xl-3 col-lg-4 col-sm-6 col-12 d-flex justify-content-center">
+      <div class="cardbox w-100">
+        
+        <div class="imgbox">
+          <a href="/manga/{{ i.id }}/">
+            <img src="{{ i.image.url }}" class="cardimg" alt="{{ i.name }}">
+          </a>
         </div>
 
-    </form>
-
-</div>
-<!--  -->
-<!--  -->
-<!--  -->
-
-
-
-
-
-<div class="col-md-12">
-  <div class="container">
-
-
-
-
-
-<div class="row product-row">
-  {% for i in product %}
-  <div class="col-lg-3 col-md-4 col-sm-6 col-12">
-    <div class="cardbox">
-      
-      <div class="imgbox">
-        <img src="{{ i.image.url }}" class="cardimg" alt="{{ i.name }}">
-      </div>
-
-      <div class="cart-container">
-        <a href="{% url 'addtocart' i.id %}" class="tooltip">
-          <i class="fa fa-shopping-cart"></i>
-          <span class="tooltiptext">Add To Cart</span>
-        </a>
-      </div>
-
-      <div class="cardcontent">
-        <span class="manga-name">
-          Name: {{ i.name }}
-        </span>
-        
-        <span class="manga-chapters">
-          Total Chapters: {{ i.chapter }}
-        </span>
-
-        <div class="buttonbox">
-          <a href="" class="readbtn">
-            Read now
+        <div class="cart-container">
+          <a href="/addtocart/{{ i.id }}/" class="quick-cart-btn" title="Add to Cart">
+            <i class="fa fa-cart-plus"></i>
           </a>
+        </div>
 
-          <div class="buy-wrapper">
-            <a href="/Shop/" class="buybtn">
-               Buy Now
-            </a>
-            <span class="buytooltip">
-                 {{ i.price }}
-            </span>
+        <div class="cardcontent">
+          <h5 class="manga-name" title="{{ i.name }}">
+            <a href="/manga/{{ i.id }}/" style="color: inherit; text-decoration: none;">{{ i.name }}</a>
+          </h5>
+          
+          <div class="manga-meta">
+            <span class="manga-chapters"><i class="fa fa-book me-1"></i>{{ i.chapter }}</span>
+            <span class="manga-price">${{ i.price }}</span>
+          </div>
+
+          <div class="buttonbox">
+            <a href="/manga/{{ i.id }}/" class="btn-read">Explore</a>
+            <a href="/addtocart/{{ i.id }}/" class="btn-buy">Buy Now</a>
           </div>
         </div>
 
       </div>
-
     </div>
+    {% endfor %}
   </div>
-  {% endfor %}
-</div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!--  -->
-<!--  -->
+  <!-- Pagination -->
+  <div class="pagination-custom">
+    <a href="/Shop/" class="page-link-custom">1</a>
+    <a href="/Shop1/" class="page-link-custom">2</a>
+    <a href="/Shop2/" class="page-link-custom active">3</a>
+    <a href="/Shop3/" class="page-link-custom">4</a>
+    <a href="/Shop4/" class="page-link-custom">5</a>
   </div>
 </div>
 
-<!--  -->
-<!--  -->
-
-
-
-<div class="col-md-12 d-flex ">
-
-<ul class="pagination" >
-<li class="page-item col-md-5" ><center>
- <a class="page-link ff0 pb pc" href="#" style="height: 45px;font-size: 20px;text-decoration: none;">Previous</a></center>
-</li>
-
-<li class="page-item col-md-2"  ><center>
- <a class="page-link ff0 pb pc" href="/Shop/" style="height: 45px;font-size: 20px;text-decoration: none;">1</a></center>
-</li>
-
-<li class="page-item col-md-2" ><center>
- <a class="page-link ff0 pb pc" href="/Shop1/" style="height: 45px;font-size: 20px;text-decoration: none;">2</a></center>
-</li>
-
-<li class="page-item col-md-2" ><center>
- <a class="page-link ff0 pb pc" href="/Shop2/" style="height: 45px;font-size: 20px;text-decoration: none;">3</a></center>
-</li>
-
-<li class="page-item col-md-2" ><center>
- <a class="page-link ff0 pb pc" href="/Shop3/" style="height: 45px;font-size: 20px;text-decoration: none;">4</a></center>
-</li>
-
-<li class="page-item col-md-2" ><center>
- <a class="page-link ff0 pb pc" href="/Shop4/" style="height: 45px;font-size: 20px;text-decoration: none;">5</a></center>
-</li>
-
-<li class="page-item col-md-4" ><center>
- <a class="page-link ff0 pb pc" href="#" style="height: 45px;font-size: 20px;text-decoration: none;">Next</a></center>
-</li>
-</ul>
-
-</div>
-
-
-<!-- end -->
-
-    </div>
-  </div>
-</div>
-</div>
-
-
-
-<!--  -->
-<br><br>
-<!--  -->
-
-
-
-<!-- footer -->
-
-
-<div class="col-md-12 foot"> 
-
-  <div class="col-md-12" 
-       style="height: 73px;
-              background-color: rgba(0, 59, 79, 0.621);">
-
-    <nav class="navbar navbar-expand-sm col-md-12">
-
-      <div class="container-fluid">
-
-        <!-- Logo -->
-        <a class="navbar-brand" href="/">
-          <span class="f1 cl1"> My Anime book </span>
-        </a>
-
-        <!-- Mobile Button -->
-        <button class="navbar-toggler" 
-                type="button" 
-                data-bs-toggle="collapse" 
-                data-bs-target="#collapsibleNavbar">
-
-          <span class="navbar-toggler-icon"></span>
-
-        </button>
-
-        <!-- Navbar Links -->
-        <div class="collapse navbar-collapse justify-content-end container" 
-             style="height: 55px;" 
-             id="collapsibleNavbar">
-
-          <ul class="navbar-nav">
-
-            <li class="nav-item">
-              <a class="nav-link f2 cl1" href="/Home/">Home</a>
-            </li>
-
-            <li class="nav-item">
-              <a class="nav-link f2 cl1" href="/Shop/">Shop</a>
-            </li>
-
-            <li class="nav-item">
-              <a class="nav-link f2 cl1" href="/Aboutus/">About us</a>
-            </li>
-
-            <li class="nav-item">
-              <a class="nav-link f2 cl1" href="/Contect/">Contect</a>
-            </li>
-
-            <li class="nav-item">
-              <a class="nav-link f2 cl1" href="/Account/">Account</a>
-            </li>
-
-           <!-- DELETE ACCOUNT BUTTON -->
-
-{% if request.session.fullname %}
-
-<li class="nav-item ms-2">
-
-<button
-type="button"
-class="nav-link f2 cl1"
-data-bs-toggle="modal"
-data-bs-target="#feedbackModal"
-
-style="
-border:2px solid red;
-border-radius:8px;
-padding:5px 14px;
-font-size:22px;
-background:transparent;
-color:#ff4d4d;
-">
-
-Delete Account
-
-</button>
-
-</li>
-
-{% endif %}
-
-          </ul>
-
-        </div>
-
+<!-- ==========================================
+     UNIFIED FOOTER
+     ========================================== -->
+<footer class="app-footer">
+  <div class="container-fluid px-3 px-md-4">
+    <div class="row align-items-center gy-3">
+      
+      <div class="col-12 col-md-4 text-center text-md-start">
+        <span class="font-brand" style="font-size: 20px;">My Anime book</span>
+        <p class="text-muted small mb-0 mt-1">© 2026 My Anime book. All rights reserved.</p>
       </div>
 
-    </nav>
+      <div class="col-12 col-md-8 text-center text-md-end">
+        <ul class="list-inline mb-0 font-nav">
+          <li class="list-inline-item"><a class="nav-link-custom" href="/Home/">Home</a></li>
+          <li class="list-inline-item"><a class="nav-link-custom active-page" href="/Shop/">Shop</a></li>
+          <li class="list-inline-item"><a class="nav-link-custom" href="/Aboutus/">About us</a></li>
+          <li class="list-inline-item"><a class="nav-link-custom" href="/Contect/">Contect</a></li>
+          <li class="list-inline-item"><a class="nav-link-custom" href="/Account/">Account</a></li>
+          
+          {% if request.session.fullname %}
+          <li class="list-inline-item ms-md-2 mt-2 mt-md-0">
+            <button type="button" class="btn-delete-account" data-bs-toggle="modal" data-bs-target="#feedbackModal">
+              Delete Account
+            </button>
+          </li>
+          {% endif %}
+        </ul>
+      </div>
 
+    </div>
   </div>
+</footer>
 
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- FIRST POPUP -->
-
-<div class="modal fade" id="feedbackModal">
-
+<!-- ==========================================
+     MODALS
+     ========================================== -->
+<div class="modal fade" id="feedbackModal" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered">
-
-    <div class="modal-content position-relative">
-
-      <!-- Header -->
+    <div class="modal-content p-3">
       <div class="modal-header border-0">
-
-        <h3 class="popup-title">
-          Why Are You Leaving?
-        </h3>
-
-        <button type="button"
-                class="btn-close"
-                data-bs-dismiss="modal">
-        </button>
-
+        <h3 class="popup-title">Why Are You Leaving?</h3>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" style="filter: invert(1);"></button>
       </div>
-
-      <!-- Body -->
       <div class="modal-body">
-
-<button
-type="button"
-class="popup-btn reason-btn"
-data-reason="1. I no longer use this account"
-data-bs-dismiss="modal"
-data-bs-toggle="modal"
-data-bs-target="#deleteModal">
-
-           I no longer need this account
-
-        </button>
-
-<button
-type="button"
-class="popup-btn reason-btn"
-data-reason="2. I found a better alternative website/app"
-data-bs-dismiss="modal"
-data-bs-toggle="modal"
-data-bs-target="#deleteModal">
-
-           I found a better alternative website/app
-
-        </button>
-
-<button
-type="button"
-class="popup-btn reason-btn"
-data-reason="3. I am facing technical issues or bugs"
-data-bs-dismiss="modal"
-data-bs-toggle="modal"
-data-bs-target="#deleteModal">
-
-          I am facing technical issues or bugs
-
-        </button>
-
-        <button type="button"
-class="popup-btn reason-btn"
-data-reason="4. I am concerned about privacy and security"
-data-bs-dismiss="modal"
-data-bs-toggle="modal"
-data-bs-target="#deleteModal">
-
-          I am concerned about privacy and security
-
-        </button>
-<button
-type="button"
-class="popup-btn reason-btn"
-data-reason="5. The available content or features are insufficient"
-data-bs-dismiss="modal"
-data-bs-toggle="modal"
-data-bs-target="#deleteModal">
-
-
-          The available content or features are insufficient
-
-        </button>
-
-<button
-type="button"
-class="popup-btn reason-btn"
-data-reason="6. Other"
-data-bs-dismiss="modal"
-data-bs-toggle="modal"
-data-bs-target="#deleteModal">
-          Other
-
-        </button>
-
+        <button type="button" class="popup-btn reason-btn" data-reason="1. I no longer use this account" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#deleteModal">I no longer need this account</button>
+        <button type="button" class="popup-btn reason-btn" data-reason="2. I found a better alternative" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#deleteModal">I found a better alternative website/app</button>
+        <button type="button" class="popup-btn reason-btn" data-reason="3. Facing technical issues" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#deleteModal">I am facing technical issues or bugs</button>
+        <button type="button" class="popup-btn reason-btn" data-reason="4. Privacy concern" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#deleteModal">I am concerned about privacy and security</button>
+        <button type="button" class="popup-btn reason-btn" data-reason="5. Insufficient features" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#deleteModal">The available content or features are insufficient</button>
+        <button type="button" class="popup-btn reason-btn" data-reason="6. Other" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#deleteModal">Other</button>
       </div>
-
     </div>
-
   </div>
-
 </div>
 
-
-
-
-
-
-<!-- SECOND POPUP -->
-
-<div class="modal fade" id="deleteModal">
-
+<div class="modal fade" id="deleteModal" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered">
-
-    <div class="modal-content position-relative">
-
-      <!-- Header -->
+    <div class="modal-content p-3">
       <div class="modal-header border-0">
-
-        <h3 class="popup-title">
-          Delete Account
-        </h3>
-
-        <button type="button"
-                class="btn-close"
-                data-bs-dismiss="modal">
-        </button>
-
+        <h3 class="popup-title">Confirm Delete</h3>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" style="filter: invert(1);"></button>
       </div>
-
-      <!-- Form -->
       <form action="/DeleteAccount/" method="POST">
-
         {% csrf_token %}
-
-   <input type="hidden"
-           name="reason"
-           id="selectedReason"> 
-
-
+        <input type="hidden" name="reason" id="selectedReason">
         <div class="modal-body">
-
- 
-
-
-
-<textarea
-name="suggestion"
-class="form-control mb-3 suggestion-box"
-rows="4"
-placeholder="Any suggestion so I can improve my website and make your experience better?"
-required>
-</textarea>
-
-          <!-- Email -->
-          <input type="email"
-                 name="email"
-                 placeholder="Enter Email"
-                 class="form-control mb-3"
-                 required>
-
-          <!-- Password -->
-          <input type="password"
-                 name="password"
-                 placeholder="Enter Password"
-                 class="form-control mb-3"
-                 required>
-
-          <!-- Phone -->
-          <input type="text"
-                 name="phnumber"
-                 placeholder="Enter Phone Number"
-                 class="form-control"
-                 required>
-
+          <textarea name="suggestion" class="form-control-custom w-100 mb-3" rows="3" placeholder="Any suggestion to help us improve?" required></textarea>
+          <input type="email" name="email" placeholder="Enter Email" class="form-control-custom w-100 mb-3" required>
+          <input type="password" name="password" placeholder="Enter Password" class="form-control-custom w-100 mb-3" required>
+          <input type="text" name="phnumber" placeholder="Enter Phone Number" class="form-control-custom w-100" required>
         </div>
-
-        <!-- Footer -->
         <div class="modal-footer border-0">
-
-          <button type="button"
-                  class="btn btn-secondary"
-                  data-bs-dismiss="modal">
-
-            Cancel
-
-          </button>
-
-          <button type="submit"
-                  class="btn btn-danger">
-
-            Proceed
-
-          </button>
-
+          <button type="button" class="btn btn-secondary rounded-pill px-4" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-danger rounded-pill px-4">Proceed</button>
         </div>
-
       </form>
-
     </div>
-
   </div>
+</div>
 
 </div>
 
-<!--  -->
-<!--  -->
+<!-- Scripts -->
 <script>
-var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-  return new bootstrap.Tooltip(tooltipTriggerEl)
-})
-</script>
-
- <script src="{% static 'search.js' %}"></script>
-
-
-
-
-<!--  -->
-
-
-
-<script>
-
-document.addEventListener("DOMContentLoaded", function(){
-
-    document.querySelectorAll('.reason-btn').forEach(btn => {
-
-        btn.addEventListener('click', function(){
-
-            document.getElementById('selectedReason').value =
-            this.getAttribute('data-reason');
-
-        });
-
-    });
-
-});
-
-</script>
-<!--  -->
-
-
-
-
-
-
-<script>
-
 setTimeout(function(){
-
     let alerts = document.querySelectorAll('.myalert');
-
     alerts.forEach(function(alert){
-
         alert.style.opacity = "0";
         alert.style.transform = "translateY(-20px)";
+        setTimeout(function(){ alert.remove(); }, 500);
+    });
+}, 5000);
 
-        setTimeout(function(){
-            alert.remove();
-        },500);
+document.addEventListener("DOMContentLoaded", function(){
+    document.querySelectorAll('.reason-btn').forEach(btn => {
+        btn.addEventListener('click', function(){
+            document.getElementById('selectedReason').value = this.getAttribute('data-reason');
+        });
+    });
+});
 
+document.getElementById('genreSelect').addEventListener('change', function() {
+    window.location.href = this.value;
+});
+
+const searchInput = document.getElementById("searchInput");
+const searchResults = document.getElementById("searchResults");
+
+if (searchInput && searchResults) {
+    searchInput.addEventListener("keyup", function(){
+        let query = this.value.trim();
+        if(query.length === 0){
+            searchResults.innerHTML = "";
+            return;
+        }
+        fetch(`/search/?q=${encodeURIComponent(query)}`)
+        .then(response => response.json())
+        .then(data => {
+            searchResults.innerHTML = "";
+            const items = data.products || data.results || [];
+            if(items.length > 0){
+                items.forEach(product => {
+                    let div = document.createElement("a");
+                    div.classList.add("search-item");
+                    let targetUrl = product.page ? (product.page.startsWith('/') ? product.page : '/' + product.page) : '/Shop/';
+                    div.href = targetUrl;
+                    div.innerHTML = `
+                        <img src="${product.image}" alt="${product.name}">
+                        <div>
+                            <div style="font-weight: 700; color: #00f0ff;">${product.name}</div>
+                            ${product.chapter ? `<div style="font-size: 13px; color: #94a3b8;">${product.chapter} • $${product.price || ''}</div>` : ''}
+                        </div>
+                    `;
+                    searchResults.appendChild(div);
+                });
+            } else {
+                searchResults.innerHTML = `<div style="padding: 15px; text-align: center; color: #94a3b8;">No manga found matching "${query}"</div>`;
+            }
+        })
+        .catch(err => console.error("Search fetch error:", err));
     });
 
-},5000);
-
+    document.addEventListener("click", function(e){
+        if(!searchInput.contains(e.target) && !searchResults.contains(e.target)){
+            searchResults.innerHTML = "";
+        }
+    });
+}
 </script>
 
-
-
-
-
-<!--  -->
 </body>
 </html>

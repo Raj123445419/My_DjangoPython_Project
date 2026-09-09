@@ -570,22 +570,59 @@ def live_search(request):
 
     if query:
 
-        search = Product.objects.filter(
+        # 1. Search in ShopProduct (links directly to dynamic manga detail page)
+        shop_matches = ShopProduct.objects.filter(
             name__icontains=query
         )
 
-        for product in search:
-
+        for sp in shop_matches:
             products.append({
-
-                'name': product.name,
-
-                'image': product.image.url,
-
-                'page': product.page
-
+                'name': sp.name,
+                'image': sp.image.url if sp.image else '',
+                'page': f'/manga/{sp.id}/',
+                'chapter': f'{sp.chapter} Chapters',
+                'price': sp.price,
             })
+
+        # 2. Search Product for backward compatibility
+        legacy_matches = Product.objects.filter(
+            name__icontains=query
+        )
+
+        for product in legacy_matches:
+            if not any(p['name'].lower() == product.name.lower() for p in products):
+                products.append({
+                    'name': product.name,
+                    'image': product.image.url if product.image else '',
+                    'page': product.page,
+                    'chapter': '',
+                    'price': '',
+                })
 
     return JsonResponse({
         'products': products
-    })  
+    })
+
+
+# MANGA INDIVIDUAL DETAIL & CHAPTERS PAGE
+def manga_detail(request, id):
+    product = get_object_or_404(ShopProduct, id=id)
+
+    # Extract total chapters count accurately (handles 1130, 1,130, 1130+, etc.)
+    clean_chapter_str = str(product.chapter).replace(',', '').strip()
+    digits = re.findall(r'\d+', clean_chapter_str)
+    total_chapters = int(digits[0]) if digits else 12
+    if total_chapters < 1:
+        total_chapters = 1
+
+    chapter_list = list(range(1, total_chapters + 1))
+
+    # Recommended / Related manga from same category
+    related_products = ShopProduct.objects.filter(category=product.category).exclude(id=product.id)[:4]
+
+    return render(request, 'manga_detail.html', {
+        'product': product,
+        'total_chapters': total_chapters,
+        'chapter_list': chapter_list,
+        'related_products': related_products,
+    })

@@ -4,1586 +4,863 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cart Page</title>
-
-
-
-
-<!-- Latest compiled and minified CSS -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
-<!-- Latest compiled JavaScript -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@200..900&display=swap" rel="stylesheet">
-
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Merienda:wght@300..900&display=swap" rel="stylesheet">
-
-<!-- nav bar -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@200..900&display=swap" rel="stylesheet">
-<!--  -->
-
-
-
-<!-- form -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Chewy&display=swap" rel="stylesheet">
-
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-
-
-
-
-
-
-
-
-
-
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<style>
-
-/* nav bar */
-.cl1{
-  color: #1eb1be
-}
-
-.cl1:hover{
-  color: rgb(190, 145, 19)
-}
-
-.f1 {
-  font-family: "Inconsolata", monospace;
-  font-optical-sizing: auto;
-  font-weight: 20px;
-  font-style: normal;
-  font-variation-settings:"wdth" 100;
-  font-size:26px;
-}
-.f2 {
-  font-family: "Inconsolata", monospace;
-  font-optical-sizing: auto;
-  font-weight: 20px;
-  font-style: normal;
-  font-variation-settings:"wdth" 100;
-  font-size:24px;
-}
-/* nav end */
-.cart {
-background-image: url(../static/img/Cart.png);
-height:729px ;
-width: 100%;
-background-position: center;
-background-repeat: no-repeat;
-background-size: cover;
-}
-
-
-.cart1 {
-background-image: url(../static/img/cart1.png);
-height:auto ;
-width: 100%;
-background-position: center;
-background-repeat: no-repeat;
-background-size: cover;
-}
-
-
-
-.ff1 {
-  font-family: "Merienda", cursive;
-  font-optical-sizing: auto;
-  font-weight:100;
-  font-style: normal;
-}
-
-/*  */
-
-
-
-
-
-
-
-
-/* =========================
-   BODY
-========================= */
-
-body{
-
-    background:#0f172a;
-
-    color:white;
-
-
-}
-
-/* =========================
-   MAIN TABLE BOX
-========================= */
-
-.cart-table{
-
-    max-width:1100px;
-
-    margin:auto;
-
-    border-radius:24px;
-
-    overflow:hidden;
-
-    background:
-        rgba(10,15,30,0.45);
-
-    backdrop-filter:blur(12px);
-
-    border:
-        1px solid rgba(255,255,255,0.06);
-
-    box-shadow:
-        0 12px 35px rgba(0,0,0,0.45);
-}
-
-/* =========================
-   TABLE
-========================= */
-
-.cart-table table{
-
-    width:100%;
-
-    border-collapse:collapse;
-
-    background-image:
-        linear-gradient(
-            rgba(5, 10, 25, 0.88),
-            rgba(10, 18, 35, 0.92)
-        ),
-        url(../static/img/back.jpg);
-
-    background-size:cover;
-
-    background-position:center;
+    <title>My Cart - My Anime Book</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     
-    /* Fixed: Min-width ensures layout doesn't crash on mobile and enables pure horizontal scroll */
-    min-width: 750px; 
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;600;700;800;900&family=Merienda:wght@600;800;900&family=Outfit:wght@400;500;600;700;800&family=Orbitron:wght@600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+/* ==========================================================================
+   GLOBAL RESET & THEME DESIGN SYSTEM
+   ========================================================================== */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
-/* =========================
-   HEADER
-========================= */
-
-.cart-table thead{
-
-    background:
-        linear-gradient(
-            135deg,
-            rgba(0,212,255,0.20),
-            rgba(17,153,158,0.35)
-        );
+html, body {
+    width: 100%;
+    min-height: 100%;
+    background-color: #060b17;
+    color: #ffffff;
+    font-family: 'Outfit', sans-serif;
+    overflow-x: hidden !important;
 }
 
-.cart-table th{
-
-    padding:20px 14px;
-
-    color:#00e5ff;
-
-    font-size:18px;
-    font-weight:700;
-
-    letter-spacing:1px;
-
-    text-align:center;
-
-    border:none;
-
-    backdrop-filter:blur(8px);
+.main-bg {
+    background-image: linear-gradient(180deg, rgba(6, 11, 23, 0.90) 0%, rgba(10, 18, 38, 0.96) 100%), url(../static/img/back.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    min-height: 100vh;
+    width: 100%;
 }
 
-/* =========================
-   BODY TD
-========================= */
-
-.cart-table td{
-
-    padding:18px 14px;
-
-    text-align:center;
-
-    color:#dbeafe;
-
-    font-size:17px;
-    font-weight:500;
-
-    border-color:
-        rgba(255,255,255,0.06);
-
-    transition:0.35s ease;
-
-    vertical-align:middle;
-
-    background:
-        rgba(255,255,255,0.03);
+.font-brand {
+    font-family: "Inconsolata", monospace;
+    font-weight: 800;
+    font-size: clamp(22px, 3.5vw, 28px);
+    letter-spacing: 0.5px;
+    background: linear-gradient(135deg, #00f0ff 0%, #0077ff 50%, #ff007f 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 25px rgba(0, 240, 255, 0.35);
 }
 
-/* =========================
-   ROW EFFECT
-========================= */
-
-.cart-table tbody tr{
-
-    transition:0.35s ease;
+.font-nav {
+    font-family: "Inconsolata", monospace;
+    font-size: clamp(17px, 2.5vw, 21px);
+    font-weight: 700;
 }
 
-.cart-table tbody tr:hover{
-
-    background:
-        rgba(255,255,255,0.08);
-
-    transform:
-        scale(1.01);
-
-    backdrop-filter:blur(10px);
-
-    box-shadow:
-        inset 0 0 20px rgba(255,255,255,0.08);
+/* ==========================================================================
+   UNIFIED HEADER NAVBAR
+   ========================================================================== */
+nav.app-navbar {
+    background: rgba(8, 14, 30, 0.82) !important;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(0, 240, 255, 0.18);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+    min-height: 75px;
+    z-index: 1050;
+    position: relative;
+    transition: all 0.3s ease;
 }
 
-.cart-table tbody tr:hover td{
-
-    color:#ffffff;
+.nav-link-custom {
+    color: #e2e8f0 !important;
+    padding: 8px 18px !important;
+    border-radius: 30px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    text-decoration: none;
+    display: inline-block;
 }
 
-/* =========================
-   IMAGE
-========================= */
-
-.cart-img{
-
-    width:90px;
-    height:120px;
-
-    object-fit:cover;
-
-    border-radius:16px;
-
-    transition:0.35s;
-
-    box-shadow:
-        0 8px 20px rgba(0,0,0,0.35);
+.nav-link-custom:hover {
+    color: #00f0ff !important;
+    background: rgba(0, 240, 255, 0.12);
+    transform: translateY(-2px);
+    box-shadow: 0 0 16px rgba(0, 240, 255, 0.25);
 }
 
-.cart-img:hover{
-
-    transform:
-        scale(1.08)
-        rotate(2deg);
-
-    box-shadow:
-        0 15px 30px rgba(0,0,0,0.45);
+.cart-nav-link {
+    color: #ff007f !important;
+    font-size: 26px;
+    padding: 6px 14px !important;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 0, 127, 0.12);
+    box-shadow: 0 0 15px rgba(255, 0, 127, 0.3);
 }
 
-/* =========================
-   QUANTITY
-========================= */
-
-.qty-box{
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    gap:14px;
+.cart-nav-link:hover {
+    transform: scale(1.15) rotate(-6deg);
+    text-shadow: 0 0 18px rgba(255, 0, 127, 0.6);
 }
 
-/* BUTTON */
-
-.qty-btn{
-
-    width:42px;
-    height:42px;
-
-    border:none;
-    outline:none;
-
-    border-radius:14px;
-
-    color:#fff;
-
-    font-size:24px;
-    font-weight:700;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    text-decoration:none;
-
-    cursor:pointer;
-
-    transition:0.3s ease;
-
-    box-shadow:
-        0 6px 15px rgba(0,0,0,0.35);
+.profile-avatar {
+    border: 2px solid #00f0ff;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 17px;
+    font-weight: 800;
+    color: #ffffff;
+    background: linear-gradient(135deg, rgba(0, 240, 255, 0.25), rgba(157, 78, 221, 0.35));
+    box-shadow: 0 0 16px rgba(0, 240, 255, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
 }
 
-/* PLUS */
-
-.plus{
-
-    background:
-        linear-gradient(135deg,#00e676,#00b248);
+.btn-auth-logout {
+    border: 2px solid #ff3366 !important;
+    background: rgba(255, 51, 102, 0.12) !important;
+    color: #ff3366 !important;
+    border-radius: 30px !important;
+    padding: 6px 20px !important;
+    font-weight: 700;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
 }
 
-.plus:hover{
-
-    transform:
-        translateY(-3px)
-        scale(1.08);
-
-    background:
-        linear-gradient(135deg,#00ff95,#00c853);
-
-    box-shadow:
-        0 10px 22px rgba(0,255,149,0.35);
+.btn-auth-logout:hover {
+    background: linear-gradient(135deg, #ff3366, #ff007f) !important;
+    color: #ffffff !important;
+    box-shadow: 0 0 20px rgba(255, 51, 102, 0.55);
+    transform: translateY(-2px);
 }
 
-/* MINUS */
-
-.minus{
-
-    background:
-        linear-gradient(135deg,#ff5f6d,#ff1744);
+.btn-auth-login {
+    border: 2px solid #00f0ff !important;
+    background: rgba(0, 240, 255, 0.12) !important;
+    color: #00f0ff !important;
+    border-radius: 30px !important;
+    padding: 6px 20px !important;
+    font-weight: 700;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
 }
 
-.minus:hover{
-
-    transform:
-        translateY(-3px)
-        scale(1.08);
-
-    background:
-        linear-gradient(135deg,#ff758c,#ff1744);
-
-    box-shadow:
-        0 10px 22px rgba(255,23,68,0.35);
+.btn-auth-login:hover {
+    background: linear-gradient(135deg, #00f0ff, #0077ff) !important;
+    color: #ffffff !important;
+    box-shadow: 0 0 20px rgba(0, 240, 255, 0.55);
+    transform: translateY(-2px);
 }
 
-/* CLICK */
-
-.qty-btn:active{
-
-    transform:scale(0.92);
+/* ==========================================================================
+   CART HERO & CONTAINER
+   ========================================================================== */
+.cart-header-banner {
+    text-align: center;
+    padding: 40px 20px 20px 20px;
 }
 
-/* NUMBER */
-
-.qty-number{
-
-    min-width:45px;
-    height:45px;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    background:
-        rgba(255,255,255,0.08);
-
-    border:
-        2px solid rgba(255,255,255,0.08);
-
-    border-radius:12px;
-
-    font-size:18px;
-    font-weight:700;
-
-    color:#ffffff;
-
-    box-shadow:
-        inset 0 2px 5px rgba(0,0,0,0.2);
+.cart-header-title {
+    font-family: 'Merienda', cursive;
+    font-size: clamp(32px, 5vw, 48px);
+    font-weight: 800;
+    background: linear-gradient(135deg, #00f0ff 0%, #00ffcc 50%, #ff007f 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 30px rgba(0, 240, 255, 0.4);
+    margin-bottom: 8px;
 }
 
-/* =========================
-   DELETE BUTTON
-========================= */
-
-.delete-btn{
-
-    border:none;
-
-    outline:none;
-
-    padding:10px 18px;
-
-    border-radius:12px;
-
-    background:
-        linear-gradient(135deg,#ff416c,#ff1744);
-
-    color:white;
-
-    font-size:14px;
-    font-weight:600;
-
-    cursor:pointer;
-
-    transition:0.3s ease;
-
-    box-shadow:
-        0 6px 15px rgba(255,23,68,0.3);
+.cart-table-wrapper {
+    background: rgba(13, 23, 44, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(0, 240, 255, 0.25);
+    border-radius: 24px;
+    padding: 24px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+    margin-bottom: 30px;
 }
 
-/* HOVER */
-
-.delete-btn:hover{
-
-    transform:
-        translateY(-2px)
-        scale(1.05);
-
-    background:
-        linear-gradient(135deg,#ff5f6d,#ff1744);
-
-    box-shadow:
-        0 10px 20px rgba(255,23,68,0.4);
+.cart-custom-table {
+    width: 100%;
+    margin-bottom: 0;
+    color: #ffffff;
+    border-collapse: separate;
+    border-spacing: 0 10px;
 }
 
-/* =========================
-   GRAND TOTAL
-========================= */
-
-.grand-box{
-
-    max-width:1100px; /* Aligned with table width */
-
-    margin:auto;
-
-    margin-top:25px;
-
-    padding:18px 28px;
-
-    border-radius:20px;
-
-    background:
-        linear-gradient(
-            135deg,
-            rgba(0,212,255,0.22),
-            rgba(17,153,158,0.35)
-        );
-
-    backdrop-filter:blur(10px);
-
-    color:#ffffff;
-
-    font-size:20px;
-    font-weight:700;
-
-    text-align:right;
-
-    box-shadow:
-        0 10px 30px rgba(0,0,0,0.35);
+.cart-custom-table thead th {
+    background: rgba(8, 16, 34, 0.95);
+    color: #00f0ff;
+    font-family: 'Inconsolata', monospace;
+    font-size: 19px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 16px;
+    border: none;
+    border-bottom: 2px solid rgba(0, 240, 255, 0.3);
 }
 
-/* =========================
-   EMPTY CART
-========================= */
-
-.empty-cart{
-
-    height:60vh;
-
-    display:flex;
-
-    justify-content:center;
-
-    align-items:center;
-
-    flex-direction:column;
+.cart-custom-table tbody tr {
+    background: rgba(10, 18, 38, 0.75);
+    border-radius: 16px;
+    transition: all 0.3s ease;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-/* MODAL BACKGROUND BLUR */
-.modal-content{
-    background: rgba(10,10,10,0.88) !important;
-    backdrop-filter: blur(12px);
-    border: 2px solid rgba(0,255,255,0.3) !important;
-    border-radius: 22px !important;
-    overflow: hidden;
-    box-shadow:
-    0 0 20px rgba(0,255,255,0.2),
-    0 0 40px rgba(255,0,255,0.15);
+.cart-custom-table tbody tr:hover {
+    background: rgba(15, 28, 58, 0.95);
+    box-shadow: 0 6px 20px rgba(0, 240, 255, 0.15);
 }
 
-/* RESPONSIVE WIDTH */
-.modal-dialog{
-    max-width: 650px;
-    width: 95%;
+.cart-custom-table td {
+    padding: 16px;
+    vertical-align: middle;
+    border: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-/* MODAL HEIGHT */
-.modal-body{
-    max-height: 70vh;
-    overflow-y: auto;
+.cart-custom-table td:first-child {
+    border-left: 1px solid rgba(255, 255, 255, 0.05);
+    border-top-left-radius: 16px;
+    border-bottom-left-radius: 16px;
 }
 
-/* BACKGROUND IMAGE */
-.modal-content::before{
-    content:"";
-    position:absolute;
-    inset:0;
-    background-image:url('../static/img/con1.png');
-    background-size:cover;
-    background-position:center;
-    opacity:0.12;
-    z-index:-1;
+.cart-custom-table td:last-child {
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
+    border-top-right-radius: 16px;
+    border-bottom-right-radius: 16px;
 }
 
-/* TITLE */
-.popup-title{
-    color:#fff;
-    font-size:32px;
-    letter-spacing:1px;
-    text-shadow:0 0 10px cyan;
+.cart-item-img {
+    width: 65px;
+    height: 90px;
+    object-fit: cover;
+    border-radius: 12px;
+    border: 1px solid rgba(0, 240, 255, 0.4);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
 }
 
-/* OPTION BUTTONS */
-.popup-btn{
-    width:100%;
-    border:none;
-    padding:16px;
-    border-radius:14px;
-    background:linear-gradient(135deg,#071b2a,#0d3b52);
-    color:white;
-    font-size:18px;
-    transition:0.4s;
-    margin-bottom:15px;
-    border:1px solid rgba(0,255,255,0.2);
+.cart-item-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #ffffff;
 }
 
-.popup-btn:hover{
-    transform:translateY(-4px) scale(1.02);
-    background:linear-gradient(135deg,#00bcd4,#0077ff);
-    color:white;
-    box-shadow:
-    0 0 15px rgba(0,255,255,0.6),
-    0 0 30px rgba(0,119,255,0.4);
+.cart-item-chapters {
+    color: #94a3b8;
+    font-size: 14px;
 }
 
-/* DELETE BUTTON */
-.delete-btn{
-    background:linear-gradient(135deg,#7a0000,#ff0000);
+.cart-item-price {
+    font-family: 'Inconsolata', monospace;
+    font-size: 18px;
+    font-weight: 800;
+    color: #00f0ff;
 }
 
-.delete-btn:hover{
-    background:linear-gradient(135deg,#ff0000,#ff4d4d);
-    box-shadow:
-    0 0 15px rgba(255,0,0,0.6),
-    0 0 30px rgba(255,0,0,0.4);
+.qty-counter-box {
+    display: inline-flex;
+    align-items: center;
+    background: rgba(8, 16, 34, 0.9);
+    border: 1px solid rgba(0, 240, 255, 0.35);
+    border-radius: 30px;
+    padding: 4px 8px;
+    gap: 12px;
 }
 
-/* INPUTS */
-.form-control{
-    background:rgba(255,255,255,0.08) !important;
-    border:1px solid rgba(255,255,255,0.2) !important;
-    color:white !important;
-    border-radius:14px !important;
-    padding:14px !important;
-    font-size:17px;
-    transition:0.3s;
+.qty-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 240, 255, 0.15);
+    color: #00f0ff;
+    text-decoration: none;
+    font-weight: 800;
+    font-size: 18px;
+    transition: all 0.25s ease;
 }
 
-.form-control:focus{
-    border:1px solid cyan !important;
-    box-shadow:0 0 15px rgba(0,255,255,0.5) !important;
-    background:rgba(255,255,255,0.12) !important;
+.qty-btn:hover {
+    background: #00f0ff;
+    color: #050b1a;
+    box-shadow: 0 0 12px rgba(0, 240, 255, 0.6);
 }
 
-/* PLACEHOLDER */
-.form-control::placeholder{
-    color:#cfcfcf;
+.qty-number {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: #ffffff;
+    min-width: 24px;
+    text-align: center;
 }
 
-/* TEXTAREA */
-.suggestion-box{
-    resize:none;
+.btn-remove-item {
+    background: rgba(255, 51, 102, 0.12);
+    border: 1px solid #ff3366;
+    color: #ff3366;
+    padding: 8px 16px;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
 }
 
-/* FOOTER BUTTONS */
-.modal-footer .btn{
-    border-radius:12px;
-    padding:10px 25px;
-    font-size:18px;
-    transition:0.3s;
+.btn-remove-item:hover {
+    background: linear-gradient(135deg, #ff3366, #ff007f);
+    color: #ffffff;
+    box-shadow: 0 0 16px rgba(255, 51, 102, 0.55);
 }
 
-.modal-footer .btn-secondary:hover{
-    transform:scale(1.05);
+/* Grand Total Card */
+.grand-total-card {
+    background: rgba(13, 23, 44, 0.9);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(0, 240, 255, 0.35);
+    border-radius: 20px;
+    padding: 24px 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 }
 
-.modal-footer .btn-danger:hover{
-    transform:scale(1.05);
-    box-shadow:0 0 20px rgba(255,0,0,0.5);
+.grand-total-label {
+    font-family: 'Inconsolata', monospace;
+    font-size: 22px;
+    font-weight: 700;
+    color: #94a3b8;
 }
 
-/* CLOSE BUTTON */
-.btn-close{
-    filter:invert(1);
+.grand-total-val {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 32px;
+    font-weight: 800;
+    color: #00f0ff;
+    text-shadow: 0 0 20px rgba(0, 240, 255, 0.5);
+    margin-left: 12px;
 }
 
-/* MOBILE RESPONSIVE */
-@media(max-width:768px){
-
-    .popup-title{
-        font-size:24px;
-    }
-
-    .popup-btn{
-        font-size:15px;
-        padding:13px;
-    }
-
-    .modal-dialog{
-        width:95%;
-        margin:auto;
-    }
-
-    .modal-body{
-        max-height:65vh;
-    }
-
+.btn-checkout {
+    background: linear-gradient(135deg, #00f0ff 0%, #0077ff 100%);
+    color: #050b1a;
+    font-family: 'Inconsolata', monospace;
+    font-size: 20px;
+    font-weight: 800;
+    padding: 12px 36px;
+    border-radius: 14px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 6px 20px rgba(0, 240, 255, 0.4);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
 }
 
+.btn-checkout:hover {
+    background: linear-gradient(135deg, #00ffcc 0%, #00f0ff 100%);
+    color: #050b1a;
+    box-shadow: 0 0 25px rgba(0, 240, 255, 0.7);
+    transform: translateY(-2px);
+}
 
+/* Empty Cart State */
+.empty-cart-card {
+    background: rgba(13, 23, 44, 0.85);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(0, 240, 255, 0.2);
+    border-radius: 28px;
+    padding: 60px 20px;
+    text-align: center;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+}
 
+.empty-icon {
+    font-size: 70px;
+    color: #00f0ff;
+    margin-bottom: 20px;
+    animation: float 3s ease-in-out infinite;
+}
 
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-.alert-box{
+/* ==========================================================================
+   NOTIFICATIONS / ALERTS
+   ========================================================================== */
+.alert-box {
     position: fixed;
-    top: 90px;
+    top: 85px;
     left: 50%;
     transform: translateX(-50%);
     z-index: 9999;
-    width: 100%;
+    width: 92%;
+    max-width: 750px;
     display: flex;
     flex-direction: column;
     align-items: center;
+    pointer-events: none;
 }
 
-
-.myalert:hover{
-    transform: translateY(-4px);
-}
-
-@keyframes topdown{
-
-    from{
-        opacity:0;
-        transform: translateY(-40px);
-    }
-
-    to{
-        opacity:1;
-        transform: translateY(0px);
-    }
-
-}
-
-
-
-.myalert{
-
-    background:  #08d0d393 !important;
-    color: #01143f !important;
-
-    border-radius: 15px;
-
+.myalert {
+    pointer-events: auto;
+    background: rgba(0, 240, 255, 0.95) !important;
+    backdrop-filter: blur(10px);
+    color: #050b1a !important;
+    border-radius: 14px;
     width: 100%;
-    max-width: 800px;
-
-    padding: 18px;
-
+    padding: 14px 20px;
     font-family: "Merienda", cursive;
-    font-weight: 100;
-    font-size: 20px;
-
-    box-shadow: 0px 5px 20px rgba(0,0,0,0.3);
-
+    font-size: clamp(15px, 2.5vw, 18px);
+    font-weight: 700;
+    box-shadow: 0px 8px 30px rgba(0, 240, 255, 0.4);
     animation: topdown 0.5s ease;
     transition: 0.4s;
+    border: none;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* footer */
-
-.foot{
-background-image: url(../static/img/f.png);
-height: auto ;
-width: 100%;
-background-position: center;
-background-repeat: no-repeat;
-background-size: cover;
-background-color: #08d1d3;
+@keyframes topdown {
+    from { opacity: 0; transform: translateY(-40px); }
+    to { opacity: 1; transform: translateY(0px); }
 }
 
+/* ==========================================================================
+   UNIFIED FOOTER
+   ========================================================================== */
+footer.app-footer {
+    background: rgba(5, 10, 22, 0.95);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-top: 1px solid rgba(0, 240, 255, 0.2);
+    box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.5);
+    padding: 24px 0;
+    position: relative;
+    z-index: 10;
+}
 
-/* UPDATED RESPONSIVE PATCH FOR INDEPENDENT DROPDOWNS */
-@media (max-width: 575px) {
-  nav.navbar {
-    position: relative !important;
-  }
-  
-  /* HEADER OVERLAY ONLY */
-  #headerNavbar.collapse.navbar-collapse,
-  #headerNavbar.collapsing {
-    position: absolute !important;
-    top: 73px;
-    left: 0;
-    width: 100%;
-    background-color: #001a2e !important; 
-    z-index: 9999 !important;
-    height: auto !important;
-    padding: 15px !important;
-    box-shadow: 0px 8px 16px rgba(0,0,0,0.3);
-    transition: none !important; 
-  }
+.btn-delete-account {
+    border: 2px solid #ff3366 !important;
+    background: rgba(255, 51, 102, 0.1) !important;
+    color: #ff3366 !important;
+    border-radius: 30px !important;
+    padding: 6px 18px !important;
+    font-size: 16px;
+    font-weight: 700;
+    transition: all 0.3s ease;
+}
 
-  /* FOOTER OVERLAY ONLY */
-  #footerNavbar.collapse.navbar-collapse,
-  #footerNavbar.collapsing {
-    position: absolute !important;
-    bottom: 73px;
-    left: 0;
+.btn-delete-account:hover {
+    background: linear-gradient(135deg, #ff3366, #ff007f) !important;
+    color: #ffffff !important;
+    box-shadow: 0 0 20px rgba(255, 51, 102, 0.5);
+    transform: translateY(-2px);
+}
+
+/* ==========================================================================
+   MODAL DIALOGS
+   ========================================================================== */
+.modal-content {
+    background: rgba(10, 16, 32, 0.94) !important;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 2px solid rgba(0, 240, 255, 0.3) !important;
+    border-radius: 24px !important;
+    box-shadow: 0 0 30px rgba(0, 240, 255, 0.25), 0 0 50px rgba(255, 0, 127, 0.15);
+}
+
+.popup-title {
+    color: #ffffff;
+    font-size: clamp(22px, 4vw, 30px);
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    text-shadow: 0 0 15px #00f0ff;
+}
+
+.popup-btn {
     width: 100%;
-    background-color: rgba(0, 59, 79, 0.95) !important; 
-    z-index: 9999 !important;
-    height: auto !important;
-    padding: 15px !important;
-    box-shadow: 0px -8px 16px rgba(0,0,0,0.3);
-    transition: none !important;
-  }
+    border: none;
+    padding: 14px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #071b2a, #0d3b52);
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 600;
+    transition: 0.3s ease;
+    margin-bottom: 12px;
+    border: 1px solid rgba(0, 240, 255, 0.2);
+}
+
+.popup-btn:hover {
+    transform: translateY(-2px);
+    background: linear-gradient(135deg, #00f0ff, #0077ff);
+    color: #ffffff;
+    box-shadow: 0 0 20px rgba(0, 240, 255, 0.5);
+}
+
+.form-control-custom {
+    background: rgba(255, 255, 255, 0.08) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    color: #ffffff !important;
+    border-radius: 14px !important;
+    padding: 12px 16px !important;
+    font-size: 16px;
+    transition: 0.3s;
+}
+
+.form-control-custom:focus {
+    border: 1px solid #00f0ff !important;
+    box-shadow: 0 0 18px rgba(0, 240, 255, 0.5) !important;
+    background: rgba(255, 255, 255, 0.12) !important;
+}
+
+/* ==========================================================================
+   RESPONSIVE MEDIA QUERIES
+   ========================================================================== */
+@media (max-width: 991px) {
+    #headerNavbar.collapse.navbar-collapse,
+    #headerNavbar.collapsing,
+    #footerNavbar.collapse.navbar-collapse,
+    #footerNavbar.collapsing {
+        background: rgba(8, 14, 30, 0.98) !important;
+        padding: 20px !important;
+        border-radius: 16px;
+        margin-top: 10px;
+        border: 1px solid rgba(0, 240, 255, 0.2);
+    }
+
+    .nav-link-custom {
+        width: 100%;
+        margin: 4px 0;
+    }
+
+    .navbar-toggler {
+        border: 1px solid rgba(0, 240, 255, 0.4) !important;
+        padding: 6px 12px;
+    }
+
+    .navbar-toggler-icon {
+        filter: invert(1);
+    }
 }
 </style>
 </head>
+
 <body>
-    <div class="col-md-12 cart">
+<div class="main-bg">
 
-
-<!-- HEADER NAV -->
-<nav class="navbar navbar-expand-sm col-md-12" style="background-color: #00274367;height: 73px;">
-
-  <div class="container-fluid">
-
-    <a class="navbar-brand" href="/">
- <span class="f1 cl1"> My Anime book </span>
+<!-- ==========================================
+     UNIFIED HEADER NAVBAR
+     ========================================== -->
+<nav class="navbar navbar-expand-lg app-navbar">
+  <div class="container-fluid px-3 px-md-4">
+    
+    <a class="navbar-brand d-flex align-items-center" href="/">
+      <span class="font-brand">My Anime book</span>
     </a>
 
-{% if request.session.fullname %}
-
-<li class="nav-item ms-auto ms-md-1">
-
-<a href="#"
-class="nav-link f2 cl1 d-flex justify-content-center align-items-center"
-style="border:2px solid #1eb1be;
-       border-radius:50%;
-       width:38px;
-       height:38px;
-       font-size:20px;">
-
-{{ request.session.fullname|slice:":1"|upper }}{{ request.session.fullname.split|last|slice:":1"|upper }}
-
-</a>
-
-</li>
-
-{% endif %}
-
-
-
+    {% if request.session.fullname %}
+    <div class="d-lg-none ms-auto me-2">
+      <a href="#" class="profile-avatar">
+        {{ request.session.fullname|slice:":1"|upper }}{{ request.session.fullname.split|last|slice:":1"|upper }}
+      </a>
+    </div>
+    {% endif %}
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#headerNavbar">
       <span class="navbar-toggler-icon"></span>
     </button>
-  
-    <div class="collapse navbar-collapse justify-content-end container" style="height: 55px;" id="headerNavbar">
-      <ul class="navbar-nav ">
+
+    <div class="collapse navbar-collapse justify-content-end" id="headerNavbar">
+      <ul class="navbar-nav align-items-center gap-1 font-nav">
         <li class="nav-item">
-          <a class="nav-link f2 cl1" href="/Home/">Home</a>
+          <a class="nav-link nav-link-custom" href="/Home/">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link f2 cl1" href="/Shop/">Shop</a>
+          <a class="nav-link nav-link-custom" href="/Shop/">Shop</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link f2 cl1" href="/Aboutus/">About us</a>
+          <a class="nav-link nav-link-custom" href="/Aboutus/">About us</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link f2 cl1" href="/Contect/">Contect</a>
+          <a class="nav-link nav-link-custom" href="/Contect/">Contect</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link f2 cl1" href="/Account/">Account</a>
+          <a class="nav-link nav-link-custom" href="/Account/">Account</a>
         </li>
 
-<!-- Cart Icon -->
-<li class="nav-item d-flex align-items-center">
-  <a class="nav-link cl1" href="/Cart/">
-    <i class="fa fa-cart-plus"
-       aria-hidden="true"
-       style="font-size:28px;"></i>
-  </a>
-</li>
+        <li class="nav-item">
+          <a class="nav-link cart-nav-link" href="/Cart/" title="View Cart">
+            <i class="fa fa-cart-plus" aria-hidden="true"></i>
+          </a>
+        </li>
 
-
-
-
-{% if request.session.fullname %}
-
-<!-- Logout Button -->
-<li class="nav-item ms-2">
-  <a class="nav-link f2 cl1"
-     href="/Logout/"
-     style="border:2px solid #1eb1be;
-            border-radius:8px;
-            padding:5px 14px;
-            font-size:22px;">
-    Log Out
-  </a>
-</li>
-
-{% else %}
-
-<!-- Login Button -->
-<li class="nav-item ms-2">
-  <a class="nav-link f2 cl1"
-     href="/Account/"
-     style="border:2px solid #1eb1be;
-            border-radius:8px;
-            padding:5px 14px;
-            font-size:22px;">
-    Log In
-  </a>
-</li>
-
-{% endif %}
-
-
-
-
-
-
-
-
-
-
-
+        {% if request.session.fullname %}
+        <li class="nav-item d-none d-lg-block ms-2">
+          <a href="#" class="profile-avatar">
+            {{ request.session.fullname|slice:":1"|upper }}{{ request.session.fullname.split|last|slice:":1"|upper }}
+          </a>
+        </li>
+        <li class="nav-item ms-lg-2 mt-2 mt-lg-0">
+          <a class="btn-auth-logout" href="/Logout/">Log Out</a>
+        </li>
+        {% else %}
+        <li class="nav-item ms-lg-2 mt-2 mt-lg-0">
+          <a class="btn-auth-login" href="/Account/">Log In</a>
+        </li>
+        {% endif %}
       </ul>
     </div>
 
-
-
-
-
   </div>
-
-
-
-
 </nav>
 
-<!--  -->
-<!--  -->
-
-
-
-  <center>
-<div class="alert-box col-md-12">
-
+<!-- ==========================================
+     NOTIFICATION ALERTS
+     ========================================== -->
+<div class="alert-box">
 {% for message in messages %}
-
-<div class="btw alert alert-{{message.tags}} alert-dismissible show myalert">
-    
+<div class="alert alert-{{message.tags}} alert-dismissible show myalert" role="alert">
     {{ message }}
-
     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-
 </div>
-
 {% endfor %}
-
 </div>
-  </center>
 
-
-
-
-<!--  -->
-<!--  -->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div class="col-md-12 d-flex justify-content-center align-items-center" style="height: 656px;background-color: rgba(0, 0, 0, 0.292);" >
-
-
-    <span class="ff1" style="font-size: 60px;color: #11de96dd;"> Your Manga Collection Is Here </span>
-
-
+<!-- ==========================================
+     CART HEADER
+     ========================================== -->
+<div class="cart-header-banner">
+  <div class="container">
+    <h1 class="cart-header-title">Your Manga Bag</h1>
+    <p class="text-muted mb-0">Review items, adjust quantities, and proceed to swift checkout</p>
+  </div>
 </div>
-<!--  -->
-<!--  -->
-</div>
-<!--  -->
-<!-- nav end -->
-<!--  -->
 
-
-
-
-<!-- FIXED RESPONSIVE CONTAINER & GRID WRAPPER FOR TABLE -->
-<div class="container py-5">
-    <div class="row">
-        <div class="col-12">
-
-            <h1 class="text-center mb-5">
-                My Cart
-            </h1>
-
-            {% if cart %}
-
-            <!-- Added table-responsive properly wrapper -->
-            <div class="table-responsive cart-table">
-
-                <table class="table table-bordered align-middle m-0">
-
-                    <thead>
-
-                        <tr>
-
-                            <th>Image</th>
-                            <th>Name</th>
-                            <th>Chapters</th>
-                            <th>Price</th>
-                            <th>Quantity</th>
-                            <th>Total</th>
-                            <th>Action</th>
-
-                        </tr>
-
-                    </thead>
-
-                    <tbody>
-
-                        {% for key, item in cart.items %}
-
-                        <tr>
-
-                            <!-- IMAGE -->
-
-                            <td>
-
-                                <img src="{{ item.image }}" class="cart-img">
-
-                            </td>
-
-                            <!-- NAME -->
-
-                            <td>
-
-                                {{ item.name }}
-
-                            </td>
-
-                            <!-- CHAPTER -->
-
-                            <td>
-
-                                {{ item.chapter }}
-
-                            </td>
-
-                            <!-- PRICE -->
-
-                            <td>
-
-                                ${{ item.price }}
-
-                            </td>
-
-                            <!-- QUANTITY -->
-
-                            <td>
-
-                                <div class="qty-box">
-
-                                    <a href="/decrease/{{ key }}/"
-                                       class="qty-btn minus">
-
-                                         -
-
-                                    </a>
-
-                                    <span class="qty-number">
-
-                                         {{ item.quantity }}
-
-                                    </span>
-
-                                    <a href="/increase/{{ key }}/"
-                                       class="qty-btn plus">
-
-                                         +
-
-                                    </a>
-
-                                </div>
-
-                            </td>
-
-                            <!-- TOTAL -->
-
-                            <td>
-
-                                ${{ item.total }}
-
-                            </td>
-
-                            <!-- DELETE BUTTON -->
-
-                            <td>
-
-                                <a href="/remove-cart-item/{{ key }}/">
-
-                                    <button class="delete-btn">
-
-                                         Delete
-
-                                    </button>
-
-                                </a>
-
-                            </td>
-
-                        </tr>
-
-                        {% endfor %}
-
-                    </tbody>
-
-                </table>
-
-            </div>
-
-            <!-- GRAND TOTAL -->
-
-            <div class="grand-box mt-4">
-
-                Grand Total :
-
-                ${{ grand_total }}
-
-            </div>
-
-            {% else %}
-
-            <!-- EMPTY CART -->
-
-            <div class="empty-cart">
-
-                <h1>
-                    🛒
-                </h1>
-
-                <h3>
-                    Your Cart Is Empty
-                </h3>
-
-                <p>
-                    “Add your favorite items to the cart.”
-                </p>
-
-            </div>
-
-            {% endif %}
-
-        </div>
+<!-- ==========================================
+     CART ITEMS / EMPTY STATE
+     ========================================== -->
+<div class="container py-4 mb-5">
+  
+  {% if cart %}
+  <div class="cart-table-wrapper">
+    <div class="table-responsive">
+      <table class="cart-custom-table align-middle">
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th>Title</th>
+            <th>Chapters</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Total</th>
+            <th class="text-end">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for key, item in cart.items %}
+          <tr>
+            <td>
+              <img src="{{ item.image }}" class="cart-item-img" alt="{{ item.name }}">
+            </td>
+            <td>
+              <span class="cart-item-title">{{ item.name }}</span>
+            </td>
+            <td>
+              <span class="cart-item-chapters"><i class="fa fa-book me-1 text-info"></i>{{ item.chapter }}</span>
+            </td>
+            <td>
+              <span class="cart-item-price">${{ item.price }}</span>
+            </td>
+            <td>
+              <div class="qty-counter-box">
+                <a href="/decrease/{{ key }}/" class="qty-btn" title="Decrease quantity">-</a>
+                <span class="qty-number">{{ item.quantity }}</span>
+                <a href="/increase/{{ key }}/" class="qty-btn" title="Increase quantity">+</a>
+              </div>
+            </td>
+            <td>
+              <span class="cart-item-price" style="color: #00ffcc;">${{ item.total }}</span>
+            </td>
+            <td class="text-end">
+              <a href="/remove-cart-item/{{ key }}/" class="btn-remove-item">
+                <i class="fa fa-trash"></i> Remove
+              </a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
     </div>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- footer -->
-
-
-
-
-<div class="col-md-12 foot"> 
-
-  <div class="col-md-12" 
-       style="height: 73px;
-              background-color: rgba(0, 59, 79, 0.621);">
-
-    <!-- FOOTER NAV -->
-    <nav class="navbar navbar-expand-sm col-md-12">
-
-      <div class="container-fluid">
-
-        <!-- Logo -->
-        <a class="navbar-brand" href="/">
-          <span class="f1 cl1"> My Anime book </span>
-        </a>
-
-        <!-- Mobile Button -->
-        <button class="navbar-toggler" 
-                type="button" 
-                data-bs-toggle="collapse" 
-                data-bs-target="#footerNavbar">
-
-          <span class="navbar-toggler-icon"></span>
-
-        </button>
-
-        <!-- Navbar Links -->
-        <div class="collapse navbar-collapse justify-content-end container" 
-             style="height: 55px;" 
-             id="footerNavbar">
-
-          <ul class="navbar-nav">
-
-            <li class="nav-item">
-              <a class="nav-link f2 cl1" href="/Home/">Home</a>
-            </li>
-
-            <li class="nav-item">
-              <a class="nav-link f2 cl1" href="/Shop/">Shop</a>
-            </li>
-
-            <li class="nav-item">
-              <a class="nav-link f2 cl1" href="/Aboutus/">About us</a>
-            </li>
-
-            <li class="nav-item">
-              <a class="nav-link f2 cl1" href="/Contect/">Contect</a>
-            </li>
-
-            <li class="nav-item">
-              <a class="nav-link f2 cl1" href="/Account/">Account</a>
-            </li>
-
-           <!-- DELETE ACCOUNT BUTTON -->
-
-{% if request.session.fullname %}
-
-<li class="nav-item ms-2">
-
-<button
-type="button"
-class="nav-link f2 cl1"
-data-bs-toggle="modal"
-data-bs-target="#feedbackModal"
-
-style="
-border:2px solid red;
-border-radius:8px;
-padding:5px 14px;
-font-size:22px;
-background:transparent;
-color:#ff4d4d;
-">
-
-Delete Account
-
-</button>
-
-</li>
-
-{% endif %}
-
-          </ul>
-
-        </div>
-
-      </div>
-
-    </nav>
-
   </div>
 
+  <!-- Grand Total Summary -->
+  <div class="grand-total-card">
+    <div class="d-flex align-items-center">
+      <span class="grand-total-label">Grand Total:</span>
+      <span class="grand-total-val">${{ grand_total }}</span>
+    </div>
+    <div class="d-flex gap-3 flex-wrap">
+      <a href="/Shop/" class="btn-auth-login px-4 py-2" style="font-size: 18px;">
+        <i class="fa fa-arrow-left me-1"></i> Continue Shopping
+      </a>
+      <a href="/Contect/" class="btn-checkout">
+        <i class="fa fa-check-circle me-1"></i> Place Order (COD)
+      </a>
+    </div>
+  </div>
+
+  {% else %}
+
+  <!-- Empty Cart State -->
+  <div class="empty-cart-card">
+    <div class="empty-icon">
+      <i class="fa fa-shopping-bag"></i>
+    </div>
+    <h2 style="font-family: 'Merienda', cursive; font-size: 32px; color: #ffffff; margin-bottom: 10px;">Your Bag Is Empty</h2>
+    <p style="color: #94a3b8; font-size: 17px; max-width: 500px; margin: 0 auto 25px auto;">
+      Looks like you haven't added any manga volumes yet. Explore our huge catalog of action, fantasy, shonen, and romance titles!
+    </p>
+    <a href="/Shop/" class="btn-checkout" style="display: inline-flex;">
+      <i class="fa fa-compass me-2"></i> Explore Manga Catalog
+    </a>
+  </div>
+
+  {% endif %}
+
 </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- FIRST POPUP -->
-
-<div class="modal fade" id="feedbackModal">
-
-  <div class="modal-dialog modal-dialog-centered">
-
-    <div class="modal-content position-relative">
-
-      <!-- Header -->
-      <div class="modal-header border-0">
-
-        <h3 class="popup-title">
-          Why Are You Leaving?
-        </h3>
-
-        <button type="button"
-                class="btn-close"
-                data-bs-dismiss="modal">
-        </button>
-
+<!-- ==========================================
+     UNIFIED FOOTER
+     ========================================== -->
+<footer class="app-footer">
+  <div class="container-fluid px-3 px-md-4">
+    <div class="row align-items-center gy-3">
+      
+      <div class="col-12 col-md-4 text-center text-md-start">
+        <span class="font-brand" style="font-size: 20px;">My Anime book</span>
+        <p class="text-muted small mb-0 mt-1">© 2026 My Anime book. All rights reserved.</p>
       </div>
 
-      <!-- Body -->
+      <div class="col-12 col-md-8 text-center text-md-end">
+        <ul class="list-inline mb-0 font-nav">
+          <li class="list-inline-item"><a class="nav-link-custom" href="/Home/">Home</a></li>
+          <li class="list-inline-item"><a class="nav-link-custom" href="/Shop/">Shop</a></li>
+          <li class="list-inline-item"><a class="nav-link-custom" href="/Aboutus/">About us</a></li>
+          <li class="list-inline-item"><a class="nav-link-custom" href="/Contect/">Contect</a></li>
+          <li class="list-inline-item"><a class="nav-link-custom" href="/Account/">Account</a></li>
+          
+          {% if request.session.fullname %}
+          <li class="list-inline-item ms-md-2 mt-2 mt-md-0">
+            <button type="button" class="btn-delete-account" data-bs-toggle="modal" data-bs-target="#feedbackModal">
+              Delete Account
+            </button>
+          </li>
+          {% endif %}
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</footer>
+
+<!-- ==========================================
+     MODALS
+     ========================================== -->
+<div class="modal fade" id="feedbackModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content p-3">
+      <div class="modal-header border-0">
+        <h3 class="popup-title">Why Are You Leaving?</h3>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" style="filter: invert(1);"></button>
+      </div>
       <div class="modal-body">
-
-<button
-type="button"
-class="popup-btn reason-btn"
-data-reason="1. I no longer use this account"
-data-bs-dismiss="modal"
-data-bs-toggle="modal"
-data-bs-target="#deleteModal">
-
-           I no longer need this account
-
-        </button>
-
-<button
-type="button"
-class="popup-btn reason-btn"
-data-reason="2. I found a better alternative website/app"
-data-bs-dismiss="modal"
-data-bs-toggle="modal"
-data-bs-target="#deleteModal">
-
-           I found a better alternative website/app
-
-        </button>
-
-<button
-type="button"
-class="popup-btn reason-btn"
-data-reason="3. I am facing technical issues or bugs"
-data-bs-dismiss="modal"
-data-bs-toggle="modal"
-data-bs-target="#deleteModal">
-
-          I am facing technical issues or bugs
-
-        </button>
-
-        <button type="button"
-class="popup-btn reason-btn"
-data-reason="4. I am concerned about privacy and security"
-data-bs-dismiss="modal"
-data-bs-toggle="modal"
-data-bs-target="#deleteModal">
-
-          I am concerned about privacy and security
-
-        </button>
-<button
-type="button"
-class="popup-btn reason-btn"
-data-reason="5. The available content or features are insufficient"
-data-bs-dismiss="modal"
-data-bs-toggle="modal"
-data-bs-target="#deleteModal">
-
-
-          The available content or features are insufficient
-
-        </button>
-
-<button
-type="button"
-class="popup-btn reason-btn"
-data-reason="6. Other"
-data-bs-dismiss="modal"
-data-bs-toggle="modal"
-data-bs-target="#deleteModal">
-          Other
-
-        </button>
-
+        <button type="button" class="popup-btn reason-btn" data-reason="1. I no longer use this account" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#deleteModal">I no longer need this account</button>
+        <button type="button" class="popup-btn reason-btn" data-reason="2. I found a better alternative" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#deleteModal">I found a better alternative website/app</button>
+        <button type="button" class="popup-btn reason-btn" data-reason="3. Facing technical issues" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#deleteModal">I am facing technical issues or bugs</button>
+        <button type="button" class="popup-btn reason-btn" data-reason="4. Privacy concern" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#deleteModal">I am concerned about privacy and security</button>
+        <button type="button" class="popup-btn reason-btn" data-reason="5. Insufficient features" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#deleteModal">The available content or features are insufficient</button>
+        <button type="button" class="popup-btn reason-btn" data-reason="6. Other" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#deleteModal">Other</button>
       </div>
-
     </div>
-
   </div>
-
 </div>
 
-
-
-
-
-
-<!-- SECOND POPUP -->
-
-<div class="modal fade" id="deleteModal">
-
+<div class="modal fade" id="deleteModal" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered">
-
-    <div class="modal-content position-relative">
-
-      <!-- Header -->
+    <div class="modal-content p-3">
       <div class="modal-header border-0">
-
-        <h3 class="popup-title">
-          Delete Account
-        </h3>
-
-        <button type="button"
-                class="btn-close"
-                data-bs-dismiss="modal">
-        </button>
-
+        <h3 class="popup-title">Confirm Delete</h3>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" style="filter: invert(1);"></button>
       </div>
-
-      <!-- Form -->
       <form action="/DeleteAccount/" method="POST">
-
         {% csrf_token %}
-
-   <input type="hidden"
-          name="reason"
-          id="selectedReason"> 
-
-
+        <input type="hidden" name="reason" id="selectedReason">
         <div class="modal-body">
-
- 
-
-
-
-<textarea
-name="suggestion"
-class="form-control mb-3 suggestion-box"
-rows="4"
-placeholder="Any suggestion so I can improve my website and make your experience better?"
-required>
-</textarea>
-
-          <!-- Email -->
-          <input type="email"
-                 name="email"
-                 placeholder="Enter Email"
-                 class="form-control mb-3"
-                 required>
-
-          <!-- Password -->
-          <input type="password"
-                 name="password"
-                 placeholder="Enter Password"
-                 class="form-control mb-3"
-                 required>
-
-          <!-- Phone -->
-          <input type="text"
-                 name="phnumber"
-                 placeholder="Enter Phone Number"
-                 class="form-control"
-                 required>
-
+          <textarea name="suggestion" class="form-control-custom w-100 mb-3" rows="3" placeholder="Any suggestion to help us improve?" required></textarea>
+          <input type="email" name="email" placeholder="Enter Email" class="form-control-custom w-100 mb-3" required>
+          <input type="password" name="password" placeholder="Enter Password" class="form-control-custom w-100 mb-3" required>
+          <input type="text" name="phnumber" placeholder="Enter Phone Number" class="form-control-custom w-100" required>
         </div>
-
-        <!-- Footer -->
         <div class="modal-footer border-0">
-
-          <button type="button"
-                  class="btn btn-secondary"
-                  data-bs-dismiss="modal">
-
-            Cancel
-
-          </button>
-
-          <button type="submit"
-                  class="btn btn-danger">
-
-            Proceed
-
-          </button>
-
+          <button type="button" class="btn btn-secondary rounded-pill px-4" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-danger rounded-pill px-4">Proceed</button>
         </div>
-
       </form>
-
     </div>
-
   </div>
+</div>
 
 </div>
 
-<!--  -->
-
-
+<!-- Scripts -->
 <script>
-
-document.addEventListener("DOMContentLoaded", function(){
-
-    document.querySelectorAll('.reason-btn').forEach(btn => {
-
-        btn.addEventListener('click', function(){
-
-            document.getElementById('selectedReason').value =
-            this.getAttribute('data-reason');
-
-        });
-
-    });
-
-});
-
-</script>
-
-<!--  -->
-
-<script>
-
 setTimeout(function(){
-
     let alerts = document.querySelectorAll('.myalert');
-
     alerts.forEach(function(alert){
-
         alert.style.opacity = "0";
         alert.style.transform = "translateY(-20px)";
-
-        setTimeout(function(){
-            alert.remove();
-        },500);
-
+        setTimeout(function(){ alert.remove(); }, 500);
     });
+}, 5000);
 
-},5000);
-
+document.addEventListener("DOMContentLoaded", function(){
+    document.querySelectorAll('.reason-btn').forEach(btn => {
+        btn.addEventListener('click', function(){
+            document.getElementById('selectedReason').value = this.getAttribute('data-reason');
+        });
+    });
+});
 </script>
 
-
-
-<!--  -->
 </body>
 </html>
