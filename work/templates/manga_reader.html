@@ -10,10 +10,15 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <!-- Google Fonts for Indian & Asian Scripts (Authentic Manga Scanlation Typography) -->
+    <!-- Google Fonts: Sora (Headings), Poppins (Body/Text), Outfit (Buttons/Nav), Asian/Indic scripts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;600;700;800;900&family=Merienda:wght@600;800;900&family=Noto+Sans+Devanagari:wght@600;700;800;900&family=Noto+Sans+Gujarati:wght@600;700;800;900&family=Noto+Sans+JP:wght@700;900&family=Noto+Sans+KR:wght@700;900&family=Outfit:wght@500;600;700;800;900&family=Comic+Neue:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&family=Noto+Sans+Devanagari:wght@600;700;800;900&family=Noto+Sans+Gujarati:wght@600;700;800;900&family=Noto+Sans+JP:wght@700;900&family=Noto+Sans+KR:wght@700;900&family=Outfit:wght@500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800&family=Sora:wght@600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Centralized Stylesheets & Theme Engine -->
+    <link rel="stylesheet" href="{% static 'main.css' %}">
+    <link rel="stylesheet" href="{% static 'theme.css' %}">
+    <script src="{% static 'theme.js' %}"></script>
 
 <style>
 /* ==========================================================================
@@ -201,7 +206,6 @@ html, body {
     height: 100%;
     pointer-events: auto;
     z-index: 20;
-    transition: opacity 0.2s ease;
 }
 
 /* ==========================================================================
@@ -217,12 +221,13 @@ html, body {
     box-sizing: border-box;
     cursor: pointer;
     font-weight: 800;
-    line-height: 1.15;
+    line-height: 1.2;
     user-select: text;
     -webkit-user-select: text;
     overflow: hidden;
     word-break: break-word;
     letter-spacing: -0.2px;
+    padding: 3px 5px;
     transition: opacity 0.2s ease;
 }
 
@@ -236,7 +241,6 @@ html, body {
     background: #ffffff !important;
     color: #000000 !important;
     border-radius: 50% / 45%;
-    padding: 2px 5px;
     box-shadow: none;
     border: none;
 }
@@ -247,7 +251,6 @@ html, body {
     color: #000000 !important;
     border: 2.5px solid #000000;
     border-radius: 2px;
-    padding: 3px 5px;
     box-shadow: none;
     font-weight: 800;
 }
@@ -258,7 +261,6 @@ html, body {
     color: #ffffff !important;
     border: 1.5px solid #ffffff;
     border-radius: 2px;
-    padding: 3px 5px;
     box-shadow: none;
     font-weight: 800;
 }
@@ -461,6 +463,19 @@ html, body {
     <button type="button" class="btn-reader-nav" onclick="toggleFullScreen()" title="Toggle Fullscreen">
       <i class="fa fa-expand"></i>
     </button>
+
+    <!-- Theme Mode Switcher -->
+    <div class="theme-dropdown-wrap dropdown d-inline-block">
+      <button class="theme-toggle-btn dropdown-toggle" type="button" id="themeDropdown" data-bs-toggle="dropdown" aria-expanded="false" title="Theme Mode">
+        <i class="fa fa-clock-o me-1 theme-icon-indicator text-info"></i>
+        <span class="theme-label-indicator">Auto</span>
+      </button>
+      <ul class="dropdown-menu dropdown-menu-end theme-dropdown-menu" aria-labelledby="themeDropdown">
+        <li><button type="button" class="dropdown-item theme-opt active" data-theme-set="auto"><i class="fa fa-clock-o text-info me-2"></i> Auto (8PM-6AM Night)</button></li>
+        <li><button type="button" class="dropdown-item theme-opt" data-theme-set="dark"><i class="fa fa-moon-o text-primary me-2"></i> Dark (Locked)</button></li>
+        <li><button type="button" class="dropdown-item theme-opt" data-theme-set="light"><i class="fa fa-sun-o text-warning me-2"></i> Light (Locked)</button></li>
+      </ul>
+    </div>
   </div>
 
 </div>
@@ -618,7 +633,7 @@ html, body {
 
 <!-- ==========================================
      SCRIPTS & MULTI-LANGUAGE IN-IMAGE OVERLAY ENGINE
-     ========================================= -->
+     ========================================== -->
 <script>
 const pagesData = [
   {% for page in pages %}
@@ -627,1225 +642,1457 @@ const pagesData = [
 ];
 
 // ==========================================================================
-// PRECISE IN-IMAGE SPEECH BUBBLE & CAPTION OVERLAYS DATABASE
-// Real, 100% faithful and contextual translations for in-place text replacement!
+// 100% COMPLETE IN-IMAGE SPEECH BUBBLE DATABASE (PAGES 1 TO 52)
+// Full authentic manga scanlation translations covering every speech bubble
 // ==========================================================================
 const pageOverlaysData = {
   // PAGE 1: Roger Execution (p.jpg.jpeg)
   1: [
-    {
-      type: 'bubble-caption-black',
-      top: '7.5%',
-      left: '67%',
-      width: '25.5%',
-      height: '19.5%',
-      fontSize: 'clamp(8px, 0.95vw, 12px)',
-      text: {
-        'English': 'GOLD ROGER, THE "KING OF THE PIRATES," HAD ACHIEVED IT ALL. WEALTH, FAME AND POWER HAD ALL BEEN HIS.',
-        'Hindi': 'गोल्ड रॉजर, "समुद्री डाकुओं का राजा", जिसने सब कुछ हासिल किया था। दौलत, शोहरत और ताकत सब कुछ उसका था।',
-        'Gujarati': 'ગોલ્ડ રોજર, "ચાંચિયાઓનો રાજા", જેણે બધું જ હાંસલ કર્યું હતું. સંપત્તિ, ખ્યાતિ અને તાકાત બધું તેનું હતું.',
-        'Japanese': '「海賊王」ゴールド・ロジャー。富、名声、力、この世の全てを手に入れた男。',
-        'Korean': '해적왕 골드 로저. 부와 명성과 힘, 이 세상의 모든 것을 손에 넣은 남자.'
-      }
-    },
-    {
-      type: 'bubble-caption-black',
-      top: '8%',
-      left: '4.5%',
-      width: '24%',
-      height: '21%',
-      fontSize: 'clamp(8px, 0.9vw, 11.5px)',
-      text: {
-        'English': 'NOT SURPRISINGLY, THE FINAL WORDS HE SPOKE BEFORE THEY LOPPED OFF HIS HEAD INSPIRED ADVENTURERS THROUGHOUT THE WORLD TO SAIL THE SEAS.',
-        'Hindi': 'उसका सर कलम किए जाने से पहले उसके कहे आखिरी शब्दों ने दुनिया भर के साहसी लोगों को समंदर में उतरने के लिए प्रेरित किया।',
-        'Gujarati': 'તેનું માથું કાપતા પહેલાં તેણે કહેલા અંતિમ શબ્દોએ દુનિયાભરના સાહસી લોકોને સમુદ્રમાં નીકળવા પ્રેરિત કર્યા.',
-        'Japanese': '処刑台で彼が言い残した言葉は、世界中の人々を海へと駆り立てた。',
-        'Korean': '처형대에서 그가 남긴 한마디는 전 세계 사람들을 바다로 향하게 만들었다.'
-      }
-    },
-    {
-      type: 'bubble-caption-black',
-      top: '32.5%',
-      left: '46.5%',
-      width: '13%',
-      height: '10%',
-      fontSize: 'clamp(8px, 1vw, 13px)',
-      text: {
-        'English': 'THE WORLD...',
-        'Hindi': 'यह दुनिया...',
-        'Gujarati': 'આખી દુનિયા...',
-        'Japanese': '世界は...',
-        'Korean': '세상은...'
-      }
-    },
-    {
-      type: 'bubble-speech',
-      top: '31.5%',
-      left: '62%',
-      width: '31%',
-      height: '16%',
-      fontSize: 'clamp(9px, 1.1vw, 14px)',
-      text: {
-        'English': 'MY TREASURE? WHY, IT\'S RIGHT WHERE I LEFT IT...',
-        'Hindi': 'मेरा खज़ाना? वो वहीं है जहाँ मैंने उसे छोड़ा था...',
-        'Gujarati': 'મારો ખજાનો? એ ત્યાં જ છે જ્યાં મેં એને છોડ્યો હતો...',
-        'Japanese': 'おれの財宝か？欲しけりゃくれてやる…探せ！',
-        'Korean': '내 보물말인가? 원한다면 주지… 찾아라!'
-      }
-    },
-    {
-      type: 'bubble-caption-black',
-      top: '72%',
-      left: '3.5%',
-      width: '25.5%',
-      height: '19%',
-      fontSize: 'clamp(9px, 1.05vw, 13.5px)',
-      text: {
-        'English': '...IS ABOUT TO WITNESS A GREAT ERA OF PIRACY!',
-        'Hindi': '...समुद्री डाकुओं के एक महान युग की गवाह बनने जा रही है!',
-        'Gujarati': '...ચાંચિયાઓના એક મહાન સુવર્ણ યુગની સાક્ષી બનવા જઈ રહી છે!',
-        'Japanese': '…世はまさに大海賊時代！',
-        'Korean': '…세상은 바야흐로 대해적 시대!'
-      }
-    },
-    {
-      type: 'bubble-speech',
-      top: '73.5%',
-      left: '62%',
-      width: '32%',
-      height: '17.5%',
-      fontSize: 'clamp(8px, 1vw, 13px)',
-      text: {
-        'English': 'IT\'S YOURS IF YOU CAN FIND IT... BUT YOU\'LL HAVE TO SEARCH THE WHOLE WORLD!',
-        'Hindi': 'अगर ढूंढ सको तो वो तुम्हारा है... लेकिन तुम्हें पूरी दुनिया छाननी पड़ेगी!',
-        'Gujarati': 'જો શોધી શકો તો એ તમારો છે... પણ તમારે આખી દુનિયા શોધવી પડશે!',
-        'Japanese': 'この世の全てをそこに置いてきた！',
-        'Korean': '이 세상의 전부를 그곳에 두고 왔다!'
-      }
-    }
+    { type: 'bubble-caption-black', top: '7.5%', left: '67%', width: '25.5%', height: '19.5%', fontSize: 'clamp(9.5px, 1.05vw, 13.5px)', text: {
+      'English': 'GOLD ROGER, THE "KING OF THE PIRATES," HAD ACHIEVED IT ALL. WEALTH, FAME AND POWER HAD ALL BEEN HIS.',
+      'Hindi': 'गोल्ड रॉजर, "समुद्री डाकुओं का राजा", जिसने सब कुछ हासिल किया था। दौलत, शोहरत और ताकत सब कुछ उसका था।',
+      'Gujarati': 'ગોલ્ડ રોજર, "ચાંચિયાઓનો રાજા", જેણે બધું જ હાંસલ કર્યું હતું. સંપત્તિ, ખ્યાતિ અને તાકાત બધું તેનું હતું.',
+      'Japanese': '「海賊王」ゴールド・ロジャー。富、名声、力、この世の全てを手に入れた男。',
+      'Korean': '해적왕 골드 로저. 부와 명성과 힘, 이 세상의 모든 것을 손에 넣은 남자.'
+    }},
+    { type: 'bubble-caption-black', top: '8%', left: '4.5%', width: '24%', height: '21%', fontSize: 'clamp(9px, 1vw, 13px)', text: {
+      'English': 'NOT SURPRISINGLY, THE FINAL WORDS HE SPOKE BEFORE THEY LOPPED OFF HIS HEAD INSPIRED ADVENTURERS THROUGHOUT THE WORLD TO SAIL THE SEAS.',
+      'Hindi': 'उसका सर कलम किए जाने से पहले उसके कहे आखिरी शब्दों ने दुनिया भर के साहसी लोगों को समंदर में उतरने के लिए प्रेरित किया।',
+      'Gujarati': 'તેનું માથું કાપતા પહેલાં તેણે કહેલા અંતિમ શબ્દોએ દુનિયાભરના સાહસી લોકોને સમુદ્રમાં નીકળવા પ્રેરિત કર્યા.',
+      'Japanese': '処刑台で彼が言い残した言葉は、世界中の人々を海へと駆り立てた。',
+      'Korean': '처형대에서 그가 남긴 한마디는 전 세계 사람들을 바다로 향하게 만들었다.'
+    }},
+    { type: 'bubble-caption-black', top: '32.5%', left: '46.5%', width: '13%', height: '10%', fontSize: 'clamp(10px, 1.1vw, 14px)', text: {
+      'English': 'THE WORLD...',
+      'Hindi': 'यह दुनिया...',
+      'Gujarati': 'આખી દુનિયા...',
+      'Japanese': '世界は...',
+      'Korean': '세상은...'
+    }},
+    { type: 'bubble-speech', top: '31.5%', left: '62%', width: '31%', height: '16%', fontSize: 'clamp(10.5px, 1.2vw, 15px)', text: {
+      'English': 'MY TREASURE? WHY, IT\'S RIGHT WHERE I LEFT IT...',
+      'Hindi': 'मेरा खज़ाना? वो वहीं है जहाँ मैंने उसे छोड़ा था...',
+      'Gujarati': 'મારો ખજાનો? એ ત્યાં જ છે જ્યાં મેં એને છોડ્યો હતો...',
+      'Japanese': 'おれの財宝か？欲しけりゃくれてやる…探せ！',
+      'Korean': '내 보물말인가? 원한다면 주지… 찾아라!'
+    }},
+    { type: 'bubble-caption-black', top: '72%', left: '3.5%', width: '25.5%', height: '19%', fontSize: 'clamp(10px, 1.15vw, 14.5px)', text: {
+      'English': '...IS ABOUT TO WITNESS A GREAT ERA OF PIRACY!',
+      'Hindi': '...समुद्री डाकुओं के एक महान युग की गवाह बनने जा रही है!',
+      'Gujarati': '...ચાંચિયાઓના એક મહાન સુવર્ણ યુગની સાક્ષી બનવા જઈ રહી છે!',
+      'Japanese': '…世はまさに大海賊時代！',
+      'Korean': '…세상은 바야흐로 대해적 시대!'
+    }},
+    { type: 'bubble-speech', top: '73.5%', left: '62%', width: '32%', height: '17.5%', fontSize: 'clamp(10px, 1.1vw, 14.5px)', text: {
+      'English': 'IT\'S YOURS IF YOU CAN FIND IT... BUT YOU\'LL HAVE TO SEARCH THE WHOLE WORLD!',
+      'Hindi': 'अगर ढूंढ सको तो वो तुम्हारा है... लेकिन तुम्हें पूरी दुनिया छाननी पड़ेगी!',
+      'Gujarati': 'જો શોધી શકો તો એ તમારો છે... પણ તમારે આખી દુનિયા શોધવી પડશે!',
+      'Japanese': 'この世の全てをそこに置いてきた！',
+      'Korean': '이 세상의 전부를 그곳에 두고 왔다!'
+    }}
   ],
 
   // PAGE 2: Romance Dawn Cover Banner (p (1).jpg.jpeg)
   2: [
-    {
-      type: 'bubble-title-banner',
-      top: '78%',
-      left: '51%',
-      width: '46%',
-      height: '18%',
-      fontSize: 'clamp(11px, 1.3vw, 18px)',
-      text: {
-        'English': 'CHAPTER 1: ROMANCE DAWN — THE DAWN OF ADVENTURE',
-        'Hindi': 'अध्याय 1: रोमांस डॉन — रोमांच का नया सवेरा',
-        'Gujarati': 'પ્રકરણ 1: રોમાન્સ ડૉન — સાહસની શરૂઆત',
-        'Japanese': '第1話: ROMANCE DAWN —冒険の夜明け—',
-        'Korean': '제1화: 로맨스 던 —모험의 새벽—'
-      }
-    }
+    { type: 'bubble-title-banner', top: '78%', left: '51%', width: '46%', height: '18%', fontSize: 'clamp(12px, 1.4vw, 19px)', text: {
+      'English': 'CHAPTER 1: ROMANCE DAWN — THE DAWN OF ADVENTURE',
+      'Hindi': 'अध्याय 1: रोमांस डॉन — रोमांच का नया सवेरा',
+      'Gujarati': 'પ્રકરણ 1: રોમાન્સ ડૉન — સાહસની શરૂઆત',
+      'Japanese': '第1話: ROMANCE DAWN —冒険の夜明け—',
+      'Korean': '제1화: 로맨스 던 —모험의 새벽—'
+    }}
   ],
 
-  // PAGE 3: Windmill Village & Pirate Ship (USER'S EXACT SNIPPET SCREENSHOT PAGE - p (2).jpg.jpeg)
+  // PAGE 3: Windmill Village & Pirate Ship (p (2).jpg.jpeg)
   3: [
-    {
-      type: 'bubble-caption-white',
-      top: '2.2%',
-      left: '79.5%',
-      width: '18%',
-      height: '13%',
-      fontSize: 'clamp(8px, 1vw, 13px)',
-      text: {
-        'English': 'A SMALL HARBOR VILLAGE',
-        'Hindi': 'एक छोटा बंदरगाह गाँव',
-        'Gujarati': 'એક નાનું બંદર ગામ',
-        'Japanese': '小さな港町',
-        'Korean': '작은 항구 마을'
-      }
-    },
-    {
-      type: 'bubble-caption-white',
-      top: '39%',
-      left: '81.5%',
-      width: '16%',
-      height: '12%',
-      fontSize: 'clamp(8px, 1vw, 13px)',
-      text: {
-        'English': 'ONE YEAR AGO...',
-        'Hindi': 'एक साल पहले...',
-        'Gujarati': 'એક વર્ષ પહેલાં...',
-        'Japanese': '1年前...',
-        'Korean': '1년 전...'
-      }
-    },
-    // USER'S EXACT BOX FROM SCREENSHOT:
-    {
-      type: 'bubble-caption-white',
-      top: '54.5%',
-      left: '8%',
-      width: '21%',
-      height: '13%',
-      fontSize: 'clamp(8px, 0.95vw, 12px)',
-      text: {
-        'English': '...A PIRATE SHIP MADE THE VILLAGE ITS BASE.',
-        'Hindi': '...एक समुद्री डाकू के जहाज़ ने गाँव को अपना ठिकाना बनाया था।',
-        'Gujarati': '...એક ચાંચિયા જહાજે ગામને પોતાનો અડ્ડો બનાવ્યો હતો.',
-        'Japanese': '...海賊船が村を拠点にしていた。',
-        'Korean': '...해적선이 마을을 거점으로 삼았다.'
-      }
-    },
-    {
-      type: 'bubble-caption-white',
-      top: '71.5%',
-      left: '80%',
-      width: '10.5%',
-      height: '13%',
-      fontSize: 'clamp(7px, 0.85vw, 11px)',
-      text: {
-        'English': 'THE WIND BLOWS FROM THE EAST.',
-        'Hindi': 'पूरब से हवा चल रही है।',
-        'Gujarati': 'પૂર્વમાંથી પવન ફૂંકાય છે.',
-        'Japanese': '風は東から吹く。',
-        'Korean': '바람은 동쪽에서 불어온다.'
-      }
-    },
-    {
-      type: 'bubble-speech',
-      top: '71.5%',
-      left: '44%',
-      width: '17%',
-      height: '11%',
-      fontSize: 'clamp(7px, 0.85vw, 11px)',
-      text: {
-        'English': 'HEY, LUFFY! WHAT\'RE YOU UP TO NOW?!',
-        'Hindi': 'अरे, लफी! अब तुम क्या खुराफात कर रहे हो?!',
-        'Gujarati': 'અરે, લફી! હવે તું શું ધિંગાણું કરી રહ્યો છે?!',
-        'Japanese': 'おいルフィ！また何やってんだ？！',
-        'Korean': '야, 루피! 또 무슨 짓을 하려는 거야?!'
-      }
-    },
-    {
-      type: 'bubble-speech',
-      top: '73.5%',
-      left: '6.5%',
-      width: '10.5%',
-      height: '8%',
-      fontSize: 'clamp(8px, 1vw, 13px)',
-      text: {
-        'English': 'HMPH!',
-        'Hindi': 'हुम्फ़!',
-        'Gujarati': 'હુંહ!',
-        'Japanese': 'フンッ！',
-        'Korean': '흥!'
-      }
-    },
-    {
-      type: 'bubble-caption-white',
-      top: '85.8%',
-      left: '7.5%',
-      width: '18%',
-      height: '12.5%',
-      fontSize: 'clamp(8px, 0.95vw, 12px)',
-      text: {
-        'English': 'AND THE VILLAGE IS AT PEACE.',
-        'Hindi': 'और गाँव में सब शांत है।',
-        'Gujarati': 'અને ગામમાં બધું શાંત છે.',
-        'Japanese': '村は平和だった。',
-        'Korean': '그리고 마을은 평화롭다.'
-      }
-    }
+    { type: 'bubble-caption-white', top: '2.2%', left: '79.5%', width: '18%', height: '13%', fontSize: 'clamp(9.5px, 1.1vw, 14px)', text: {
+      'English': 'A SMALL HARBOR VILLAGE',
+      'Hindi': 'एक छोटा बंदरगाह गाँव',
+      'Gujarati': 'એક નાનું બંદર ગામ',
+      'Japanese': '小さな港町',
+      'Korean': '작은 항구 마을'
+    }},
+    { type: 'bubble-caption-white', top: '39%', left: '81.5%', width: '16%', height: '12%', fontSize: 'clamp(10px, 1.15vw, 14px)', text: {
+      'English': 'ONE YEAR AGO...',
+      'Hindi': 'एक साल पहले...',
+      'Gujarati': 'એક વર્ષ પહેલાં...',
+      'Japanese': '1年前...',
+      'Korean': '1년 전...'
+    }},
+    { type: 'bubble-caption-white', top: '54.5%', left: '8%', width: '21%', height: '13%', fontSize: 'clamp(9.5px, 1.1vw, 13.5px)', text: {
+      'English': '...A PIRATE SHIP MADE THE VILLAGE ITS BASE.',
+      'Hindi': '...एक समुद्री डाकू के जहाज़ ने गाँव को अपना ठिकाना बनाया था।',
+      'Gujarati': '...એક ચાંચિયા જહાજે ગામને પોતાનો અડ્ડો બનાવ્યો હતો.',
+      'Japanese': '...海賊船が村を拠点にしていた。',
+      'Korean': '...해적선이 마을을 거점으로 삼았다.'
+    }},
+    { type: 'bubble-caption-white', top: '71.5%', left: '80%', width: '10.5%', height: '13%', fontSize: 'clamp(8.5px, 0.95vw, 12px)', text: {
+      'English': 'THE WIND BLOWS FROM THE EAST.',
+      'Hindi': 'पूरब से हवा चल रही है।',
+      'Gujarati': 'પૂર્વમાંથી પવન ફૂંકાય છે.',
+      'Japanese': '風は東から吹く。',
+      'Korean': '바람은 동쪽에서 불어온다.'
+    }},
+    { type: 'bubble-speech', top: '71.5%', left: '44%', width: '17%', height: '11%', fontSize: 'clamp(9px, 1vw, 12.5px)', text: {
+      'English': 'HEY, LUFFY! WHAT\'RE YOU UP TO NOW?!',
+      'Hindi': 'अरे, लफी! अब तुम क्या खुराफात कर रहे हो?!',
+      'Gujarati': 'અરે, લફી! હવે તું શું ધિંગાણું કરી રહ્યો છે?!',
+      'Japanese': 'おいルフィ！また何やってんだ？！',
+      'Korean': '야, 루피! 또 무슨 짓을 하려는 거야?!'
+    }},
+    { type: 'bubble-speech', top: '73.5%', left: '6.5%', width: '10.5%', height: '8%', fontSize: 'clamp(10px, 1.1vw, 14px)', text: {
+      'English': 'HMPH!',
+      'Hindi': 'हुम्फ़!',
+      'Gujarati': 'હુંહ!',
+      'Japanese': 'フンッ！',
+      'Korean': '흥!'
+    }},
+    { type: 'bubble-caption-white', top: '85.8%', left: '7.5%', width: '18%', height: '12.5%', fontSize: 'clamp(9.5px, 1.1vw, 13.5px)', text: {
+      'English': 'AND THE VILLAGE IS AT PEACE.',
+      'Hindi': 'और गाँव में सब शांत है।',
+      'Gujarati': 'અને ગામમાં બધું શાંત છે.',
+      'Japanese': '村は平和だった。',
+      'Korean': '그리고 마을은 평화롭다.'
+    }}
   ],
 
   // PAGE 4: Luffy's cheek cut & Shanks (p (3).jpg.jpeg)
   4: [
-    {
-      type: 'bubble-speech',
-      top: '5%',
-      left: '1.5%',
-      width: '20%',
-      height: '18%',
-      fontSize: 'clamp(8px, 1vw, 13px)',
-      text: {
-        'English': 'THIS IS HOW TOUGH I AM!!!',
-        'Hindi': 'मैं इतना हिम्मती और ताक़तवर हूँ!!!',
-        'Gujarati': 'હું આટલો હિંમતવાન અને મજબૂત છું!!!',
-        'Japanese': 'おれは本気だぞーーっ!!!',
-        'Korean': '난 이만큼이나 강하다고!!!'
-      }
-    },
-    {
-      type: 'bubble-speech',
-      top: '4%',
-      left: '70.5%',
-      width: '23%',
-      height: '21%',
-      fontSize: 'clamp(7px, 0.85vw, 11px)',
-      text: {
-        'English': 'I\'VE HAD IT WITH YOU GUYS!! NOW YOU\'LL HAVE TO TAKE ME SERIOUSLY!!',
-        'Hindi': 'अब बहुत हुआ तुम लोगों का!! अब तो तुम्हें मुझे गंभीरता से लेना ही होगा!!',
-        'Gujarati': 'હવે બહુ થયું તમારું!! હવે તો તમારે મને ગંભીરતાથી લેવો જ પડશે!!',
-        'Japanese': 'おれをバカにしやがって!! 今度こそ本気だって認めろ!!',
-        'Korean': '날 무시하지 마!! 이젠 나를 진지하게 받아들여야 할 걸!!'
-      }
-    },
-    {
-      type: 'bubble-caption-white',
-      top: '36.5%',
-      left: '63%',
-      width: '24%',
-      height: '10%',
-      fontSize: 'clamp(7px, 0.85vw, 11px)',
-      text: {
-        'English': 'VILLAGER BOY MONKEY D. LUFFY',
-        'Hindi': 'गाँव का लड़का मंकी डी. लफी',
-        'Gujarati': 'ગામનો છોકરો મંકી ડી. લફી',
-        'Japanese': 'フーシャ村の少年 モンキー・D・ルフィ',
-        'Korean': '후샤 마을의 소년 몽키 D. 루피'
-      }
-    },
-    {
-      type: 'bubble-speech',
-      top: '51%',
-      left: '49.5%',
-      width: '15%',
-      height: '10.5%',
-      fontSize: 'clamp(7px, 0.85vw, 11px)',
-      text: {
-        'English': 'WHAT\'S THAT PUP UP TO NOW?',
-        'Hindi': 'यह पिल्ला अब क्या कर रहा है?',
-        'Gujarati': 'આ નાનો છોકરો હવે શું કરી રહ્યો છે?',
-        'Japanese': 'あいつまた何やってんだ？',
-        'Korean': '저 꼬마 또 무슨 짓이야?'
-      }
-    },
-    {
-      type: 'bubble-speech',
-      top: '50.5%',
-      left: '79.5%',
-      width: '15%',
-      height: '10.5%',
-      fontSize: 'clamp(7px, 0.85vw, 11px)',
-      text: {
-        'English': 'HA HA HA! GET IT OVER WITH!',
-        'Hindi': 'हा हा हा! जो भी करना है जल्दी करो!',
-        'Gujarati': 'હા હા હા! જે કરવું હોય એ જલ્દી કર!',
-        'Japanese': 'ギャハハ！さっさとやれよ！',
-        'Korean': '하하하! 얼른 해치워버려!'
-      }
-    },
-    {
-      type: 'bubble-speech',
-      top: '78.5%',
-      left: '16%',
-      width: '19%',
-      height: '12%',
-      fontSize: 'clamp(7px, 0.85vw, 11px)',
-      text: {
-        'English': 'YOU IDIOT! WHAT\'D YOU DO THAT FOR!?',
-        'Hindi': 'अरे बेवकूफ! तूने ऐसा क्यों किया!?',
-        'Gujarati': 'મૂર્ખ! તેં આવું કેમ કર્યું!?',
-        'Japanese': 'バカ野郎！何考えてんだお前はーっ!?',
-        'Korean': '바보 자식! 무슨 짓을 저지른 거야!?'
-      }
-    },
-    {
-      type: 'bubble-speech',
-      top: '78%',
-      left: '73%',
-      width: '10%',
-      height: '7%',
-      fontSize: 'clamp(8px, 1vw, 13px)',
-      text: {
-        'English': 'HUH!?',
-        'Hindi': 'हैं!?',
-        'Gujarati': 'હેં!?',
-        'Japanese': 'えっ！？',
-        'Korean': '뭐야!?'
-      }
-    }
+    { type: 'bubble-speech', top: '5%', left: '1.5%', width: '20%', height: '18%', fontSize: 'clamp(10px, 1.15vw, 14.5px)', text: {
+      'English': 'THIS IS HOW TOUGH I AM!!!',
+      'Hindi': 'मैं इतना हिम्मती और ताक़तवर हूँ!!!',
+      'Gujarati': 'હું આટલો હિંમતવાન અને મજબૂત છું!!!',
+      'Japanese': 'おれは本気だぞーーっ!!!',
+      'Korean': '난 이만큼이나 강하다고!!!'
+    }},
+    { type: 'bubble-speech', top: '4%', left: '70.5%', width: '23%', height: '21%', fontSize: 'clamp(9px, 1.05vw, 13px)', text: {
+      'English': 'I\'VE HAD IT WITH YOU GUYS!! NOW YOU\'LL HAVE TO TAKE ME SERIOUSLY!!',
+      'Hindi': 'अब बहुत हुआ तुम लोगों का!! अब तो तुम्हें मुझे गंभीरता से लेना ही होगा!!',
+      'Gujarati': 'હવે બહુ થયું તમારું!! હવે તો તમારે મને ગંભીરતાથી લેવો જ પડશે!!',
+      'Japanese': 'おれをバカにしやがって!! 今度こそ本気だって認めろ!!',
+      'Korean': '날 무시하지 마!! 이젠 나를 진지하게 받아들여야 할 걸!!'
+    }},
+    { type: 'bubble-caption-white', top: '36.5%', left: '63%', width: '24%', height: '10%', fontSize: 'clamp(9.5px, 1.1vw, 13.5px)', text: {
+      'English': 'VILLAGER BOY MONKEY D. LUFFY',
+      'Hindi': 'गाँव का लड़का मंकी डी. लफी',
+      'Gujarati': 'ગામનો છોકરો મંકી ડી. લફી',
+      'Japanese': 'フーシャ村の少年 モンキー・D・ルフィ',
+      'Korean': '후샤 마을의 소년 몽키 D. 루피'
+    }},
+    { type: 'bubble-speech', top: '51%', left: '49.5%', width: '15%', height: '10.5%', fontSize: 'clamp(9px, 1.05vw, 12.5px)', text: {
+      'English': 'WHAT\'S THAT PUP UP TO NOW?',
+      'Hindi': 'यह पिल्ला अब क्या कर रहा है?',
+      'Gujarati': 'આ નાનો છોકરો હવે શું કરી રહ્યો છે?',
+      'Japanese': 'あいつまた何やってんだ？',
+      'Korean': '저 꼬마 또 무슨 짓이야?'
+    }},
+    { type: 'bubble-speech', top: '50.5%', left: '79.5%', width: '15%', height: '10.5%', fontSize: 'clamp(9px, 1.05vw, 12.5px)', text: {
+      'English': 'HA HA HA! GET IT OVER WITH!',
+      'Hindi': 'हा हा हा! जो भी करना है जल्दी करो!',
+      'Gujarati': 'હા હા હા! જે કરવું હોય એ જલ્દી કર!',
+      'Japanese': 'ギャハハ！さっさとやれよ！',
+      'Korean': '하하하! 얼른 해치워버려!'
+    }},
+    { type: 'bubble-speech', top: '78.5%', left: '16%', width: '19%', height: '12%', fontSize: 'clamp(9px, 1.05vw, 13px)', text: {
+      'English': 'YOU IDIOT! WHAT\'D YOU DO THAT FOR!?',
+      'Hindi': 'अरे बेवकूफ! तूने ऐसा क्यों किया!?',
+      'Gujarati': 'મૂર્ખ! તેં આવું કેમ કર્યું!?',
+      'Japanese': 'バカ野郎！何考えてんだお前はーっ!?',
+      'Korean': '바보 자식! 무슨 짓을 저지른 거야!?'
+    }},
+    { type: 'bubble-speech', top: '78%', left: '73%', width: '10%', height: '7%', fontSize: 'clamp(10px, 1.1vw, 14px)', text: {
+      'English': 'HUH!?',
+      'Hindi': 'हैं!?',
+      'Gujarati': 'હેં!?',
+      'Japanese': 'えっ！？',
+      'Korean': '뭐야!?'
+    }}
   ],
 
-  // PAGE 5: Bar Party & Luffy's dream (p (4).jpg.jpeg)
+  // PAGE 5: Bar Party & All Tavern Dialogues (p (4).jpg.jpeg)
   5: [
-    {
-      type: 'bubble-speech',
-      top: '5%',
-      left: '8%',
-      width: '14%',
-      height: '15%',
-      fontSize: 'clamp(7px, 0.85vw, 11px)',
-      text: {
-        'English': 'AND TO OUR GREAT VOYAGE!',
-        'Hindi': 'और हमारी महान समुद्री यात्रा के नाम!',
-        'Gujarati': 'અને અમારી મહાન સફરના નામે!',
-        'Japanese': 'おれたちの航海に！',
-        'Korean': '우리의 위대한 항해를 위하여!'
-      }
-    },
-    {
-      type: 'bubble-speech',
-      top: '4%',
-      left: '22%',
-      width: '11%',
-      height: '13%',
-      fontSize: 'clamp(7px, 0.85vw, 11px)',
-      text: {
-        'English': 'TO LUFFY\'S... COURAGE...',
-        'Hindi': 'लफी के... साहस के नाम...',
-        'Gujarati': 'લફીના... સાહસના નામે...',
-        'Japanese': 'ルフィの勇気に！',
-        'Korean': '루피의 용기를 위하여!'
-      }
-    },
-    {
-      type: 'bubble-speech',
-      top: '7%',
-      left: '76%',
-      width: '13%',
-      height: '10%',
-      fontSize: 'clamp(8px, 1vw, 13px)',
-      text: {
-        'English': 'A TOAST!!',
-        'Hindi': 'एक जाम!!',
-        'Gujarati': 'એક જામ!!',
-        'Japanese': '乾杯ーーっ！！',
-        'Korean': '건배ーーっ!!'
-      }
-    },
-    {
-      type: 'bubble-speech',
-      top: '73%',
-      left: '8%',
-      width: '13%',
-      height: '18%',
-      fontSize: 'clamp(8px, 0.95vw, 12px)',
-      text: {
-        'English': 'I WANNA BE A PIRATE TOO!!!',
-        'Hindi': 'मैं भी समुद्री डाकू बनना चाहता हूँ!!!',
-        'Gujarati': 'હું પણ ચાંચિયો બનવા માંગુ છું!!!',
-        'Japanese': 'おれも海賊になりたいんだーーっ!!!',
-        'Korean': '나도 해적이 되고 싶단 말이야ーーっ!!!'
-      }
-    },
-    {
-      type: 'bubble-speech',
-      top: '70%',
-      left: '47%',
-      width: '15%',
-      height: '23%',
-      fontSize: 'clamp(7px, 0.85vw, 11px)',
-      text: {
-        'English': 'I\'M NOT THE LEAST BIT AFRAID OF GETTING HURT!! TAKE ME WITH YOU ON YOUR NEXT VOYAGE!!',
-        'Hindi': 'मुझे चोट लगने से ज़रा भी डर नहीं लगता!! मुझे अपनी अगली समुद्री यात्रा पर साथ ले चलो!!',
-        'Gujarati': 'મને જરાય ઈજા થવાનો ડર નથી લાગતો!! મને તમારી આગલી સફરમાં સાથે લઈ જાઓ!!',
-        'Japanese': '痛いのなんか全然平気だもん!! 次の航海には連れてってくれよ!!',
-        'Korean': '다치는 건 하나도 안 무섭다고!! 다음 항해엔 나도 꼭 데려가 줘!!'
-      }
-    },
-    {
-      type: 'bubble-speech',
-      top: '69%',
-      left: '65%',
-      width: '13%',
-      height: '13%',
-      fontSize: 'clamp(7px, 0.85vw, 11px)',
-      text: {
-        'English': 'LIAR! THAT WAS A FOOLISH THING TO DO!',
-        'Hindi': 'झूठे! वो एक बेवकूफी भरी हरकत थी!',
-        'Gujarati': 'જૂઠો! એ તો તદ્દન મૂર્ખામીભર્યું કામ હતું!',
-        'Japanese': '嘘つけ！あんなバカなことしやがって！',
-        'Korean': '거짓말쟁이! 그런 무모한 짓을 왜 해!'
-      }
-    },
-    {
-      type: 'bubble-speech',
-      top: '68%',
-      left: '79%',
-      width: '14%',
-      height: '10%',
-      fontSize: 'clamp(7px, 0.85vw, 11px)',
-      text: {
-        'English': 'IT DIDN\'T HURT A BIT!',
-        'Hindi': 'मुझे ज़रा भी दर्द नहीं हुआ!',
-        'Gujarati': 'મને જરાય દુખાવો નથી થયો!',
-        'Japanese': '痛くなんかなかったもん！',
-        'Korean': '하나도 안 아팠단 말이야!'
-      }
-    }
+    { type: 'bubble-speech', top: '4.5%', left: '8%', width: '13.5%', height: '15.5%', fontSize: 'clamp(8.5px, 1vw, 12.5px)', text: {
+      'English': 'AND TO OUR GREAT VOYAGE!',
+      'Hindi': 'और हमारी महान समुद्री यात्रा के नाम!',
+      'Gujarati': 'અને અમારી મહાન સફરના નામે!',
+      'Japanese': 'おれたちの航海に！',
+      'Korean': '우리의 위대한 항해를 위하여!'
+    }},
+    { type: 'bubble-speech', top: '3.5%', left: '21.5%', width: '11.5%', height: '13.5%', fontSize: 'clamp(8.5px, 1vw, 12.5px)', text: {
+      'English': 'TO LUFFY\'S... COURAGE...',
+      'Hindi': 'लफी के... साहस के नाम...',
+      'Gujarati': 'લફીના... સાહસના નામે...',
+      'Japanese': 'ルフィの勇気に！',
+      'Korean': '루피의 용기를 위하여!'
+    }},
+    { type: 'bubble-speech', top: '6.5%', left: '76%', width: '13.5%', height: '11%', fontSize: 'clamp(10px, 1.15vw, 14.5px)', text: {
+      'English': 'A TOAST!!',
+      'Hindi': 'एक जाम!!',
+      'Gujarati': 'એક જામ!!',
+      'Japanese': '乾杯ーーっ！！',
+      'Korean': '건배ーーっ!!'
+    }},
+    { type: 'bubble-speech', top: '25.5%', left: '8.5%', width: '20%', height: '11.5%', fontSize: 'clamp(8px, 0.95vw, 12px)', text: {
+      'English': 'HEY, STOP FIGHTING! YOU\'LL SPOIL OUR FUN!',
+      'Hindi': 'अरे लड़ना बंद करो! मज़ा किरकिरा मत करो!',
+      'Gujarati': 'અરે લડવાનું બંધ કરો! મજા બગાડો નહીં!',
+      'Japanese': 'おい喧嘩すんな！酒がまずくなる！',
+      'Korean': '야 싸우지 마! 분위기 깨지잖아!'
+    }},
+    { type: 'bubble-speech', top: '25.5%', left: '29%', width: '14.5%', height: '10.5%', fontSize: 'clamp(8px, 0.95vw, 12px)', text: {
+      'English': 'NOT ANY MORE! I\'M GONNA EAT IT!',
+      'Hindi': 'अब और नहीं! मैं इसे खा रहा हूँ!',
+      'Gujarati': 'હવે નહીં! હું આ ખાઈ જાઉં છું!',
+      'Japanese': '待てねぇ！おれが食う！',
+      'Korean': '못 참아! 내가 다 먹을 거야!'
+    }},
+    { type: 'bubble-speech', top: '25.5%', left: '43.5%', width: '19%', height: '10.5%', fontSize: 'clamp(9px, 1.05vw, 13px)', text: {
+      'English': 'HEY THAT\'S MY MEAT!!',
+      'Hindi': 'अरे वो मेरा माँस है!!',
+      'Gujarati': 'અરે એ મારું માંસ છે!!',
+      'Japanese': 'おいそれはおれの肉だぞ！！',
+      'Korean': '야 그건 내 고기야!!'
+    }},
+    { type: 'bubble-speech', top: '25.5%', left: '63%', width: '18%', height: '11.5%', fontSize: 'clamp(8.5px, 1vw, 12.5px)', text: {
+      'English': 'GROG! GROG! GROG! MORE GROG!',
+      'Hindi': 'शराब! शराब! और शराब लाओ!',
+      'Gujarati': 'દારૂ! દારૂ! હજુ વધુ દારૂ લાવો!',
+      'Japanese': '酒だ！酒だ！もっと酒持ってこい！',
+      'Korean': '술이다! 술이다! 술 더 가져와!'
+    }},
+    { type: 'bubble-speech', top: '25.5%', left: '81.5%', width: '17.5%', height: '12%', fontSize: 'clamp(8.5px, 1vw, 12.5px)', text: {
+      'English': 'HAR HAR HAR HAR! DRINK UP!',
+      'Hindi': 'हाहाहाहा! सब गटक जाओ!',
+      'Gujarati': 'હાહાહાહા! બધું પી જાઓ!',
+      'Japanese': 'ギャハハハ！飲み干せーー！',
+      'Korean': '하하하하! 싹 다 들이켜!'
+    }},
+    { type: 'bubble-speech', top: '73%', left: '8%', width: '13%', height: '18%', fontSize: 'clamp(9px, 1.05vw, 13px)', text: {
+      'English': 'I WANNA BE A PIRATE TOO!!!',
+      'Hindi': 'मैं भी समुद्री डाकू बनना चाहता हूँ!!!',
+      'Gujarati': 'હું પણ ચાંચિયો બનવા માંગુ છું!!!',
+      'Japanese': 'おれも海賊になりたいんだーーっ!!!',
+      'Korean': '나도 해적이 되고 싶단 말이야ーーっ!!!'
+    }},
+    { type: 'bubble-speech', top: '70%', left: '47%', width: '15%', height: '23%', fontSize: 'clamp(8px, 0.95vw, 12px)', text: {
+      'English': 'I\'M NOT THE LEAST BIT AFRAID OF GETTING HURT!! TAKE ME WITH YOU ON YOUR NEXT VOYAGE!!',
+      'Hindi': 'मुझे चोट लगने से ज़रा भी डर नहीं लगता!! मुझे अपनी अगली समुद्री यात्रा पर साथ ले चलो!!',
+      'Gujarati': 'મને જરાય ઈજા થવાનો ડર નથી લાગતો!! મને તમારી આગલી સફરમાં સાથે લઈ જાઓ!!',
+      'Japanese': '痛いのなんか全然平気だもん!! 次の航海には連れてってくれよ!!',
+      'Korean': '다치는 건 하나도 안 무섭다고!! 다음 항해엔 나도 꼭 데려가 줘!!'
+    }},
+    { type: 'bubble-speech', top: '69%', left: '65%', width: '13%', height: '13%', fontSize: 'clamp(8.5px, 1vw, 12.5px)', text: {
+      'English': 'LIAR! THAT WAS A FOOLISH THING TO DO!',
+      'Hindi': 'झूठे! वो एक बेवकूफी भरी हरकत थी!',
+      'Gujarati': 'જૂઠો! એ તો તદ્દન મૂર્ખામીભર્યું કામ હતું!',
+      'Japanese': '嘘つけ！あんなバカなことしやがって！',
+      'Korean': '거짓말쟁이! 그런 무모한 짓을 왜 해!'
+    }},
+    { type: 'bubble-speech', top: '68%', left: '79%', width: '14%', height: '10%', fontSize: 'clamp(9px, 1.05vw, 13px)', text: {
+      'English': 'IT DIDN\'T HURT A BIT!',
+      'Hindi': 'मुझे ज़रा भी दर्द नहीं हुआ!',
+      'Gujarati': 'મને જરાય દુખાવો નથી થયો!',
+      'Japanese': '痛くなんかなかったもん！',
+      'Korean': '하나도 안 아팠단 말이야!'
+    }}
   ],
 
   // PAGE 6: Shanks and Anchor nickname (p (5).jpg.jpeg)
   6: [
-    {
-      type: 'bubble-speech',
-      top: '11%',
-      left: '1%',
-      width: '21%',
-      height: '18%',
-      fontSize: 'clamp(7px, 0.85vw, 11px)',
-      text: {
-        'English': 'LUFFY, DO YOU KNOW WHY WE CALL YOU "ANCHOR"? BECAUSE YOU CAN\'T SWIM-- YOU JUST SINK!! WHAT GOOD IS A PIRATE WHO CAN\'T SWIM?',
-        'Hindi': 'लफी, पता है हम तुम्हें "लंगर" क्यों कहते हैं? क्योंकि तुम्हें तैरना नहीं आता, तुम बस डूब जाते हो!! जो तैर न सके वो कैसा डाकू?',
-        'Gujarati': 'લફી, તને ખબર છે અમે તને "લંગર" કેમ કહીએ છીએ? કારણ કે તને તરતાં નથી આવડતું, તું ડૂબી જાય છે!! જે તરી ન શકે એ કેવો ચાંચિયો?',
-        'Japanese': 'ルフィ、なぜお前を「カナヅチ」って呼ぶか知ってるか？泳げなくて沈むからだ！泳げねェ海賊なんて使い物になるかよ！',
-        'Korean': '루피, 우리가 왜 널 "맥주병"이라고 부르는지 알아? 수영을 못해서 가라앉으니까! 수영도 못하는 해적이 어디 있어?'
-      }
-    },
-    {
-      type: 'bubble-speech',
-      top: '12%',
-      left: '76%',
-      width: '17%',
-      height: '16%',
-      fontSize: 'clamp(8px, 0.95vw, 12px)',
-      text: {
-        'English': 'YOU?! A PIRATE?! IMPOSSIBLE!!',
-        'Hindi': 'तुम?! समुद्री डाकू?! नामुमकिन!!',
-        'Gujarati': 'તું?! ચાંચિયો?! અસંભવ!!',
-        'Japanese': 'お前が?! 海賊だと?! 無理無理!!',
-        'Korean': '네가?! 해적이라고?! 말도 안 돼!!'
-      }
-    },
-    {
-      type: 'bubble-speech',
-      top: '34.5%',
-      left: '20%',
-      width: '18%',
-      height: '12%',
-      fontSize: 'clamp(7px, 0.85vw, 11px)',
-      text: {
-        'English': 'BUT IF I DON\'T FALL OVERBOARD, THEN IT DOESN\'T MATTER IF I\'M AN ANCHOR!!',
-        'Hindi': 'लेकिन अगर मैं जहाज़ से नीचे न गिरूँ, तो लंगर होने से क्या फ़र्क पड़ता है!!',
-        'Gujarati': 'પણ જો હું જહાજમાંથી નીચે ન પડું, તો લંગર હોવાથી શું ફરક પડે છે!!',
-        'Japanese': '船から落ちなきゃカナヅチだって関係ねェだろ!!',
-        'Korean': '물에 안 빠지면 맥주병이어도 상관없잖아!!'
-      }
-    },
-    {
-      type: 'bubble-speech',
-      top: '35%',
-      left: '1%',
-      width: '20%',
-      height: '11.5%',
-      fontSize: 'clamp(8px, 0.95vw, 12px)',
-      text: {
-        'English': 'AND I\'M A STRONG FIGHTER!',
-        'Hindi': 'और मैं बहुत ताकतवर लड़ाका हूँ!',
-        'Gujarati': 'અને હું ખૂબ મજબૂત લડવૈયો છું!',
-        'Japanese': 'それに強くて戦えるもん！',
-        'Korean': '그리고 난 힘도 세고 잘 싸운다고!'
-      }
-    },
-    {
-      type: 'bubble-caption-white',
-      top: '51%',
-      left: '64%',
-      width: '27%',
-      height: '9%',
-      fontSize: 'clamp(7.5px, 0.9vw, 12px)',
-      text: {
-        'English': 'PIRATE CAPTAIN "RED-HAIRED" SHANKS',
-        'Hindi': 'समुद्री डाकू कैप्टन "रेड-हेयर्ड" शैंक्स',
-        'Gujarati': 'ચાંચિયા કેપ્ટન "રેડ-હેર્ડ" શૈંક્સ',
-        'Japanese': '赤髪海賊団 大頭「赤髪のシャンクス」',
-        'Korean': '빨간 머리 해적단 선장 "빨간 머리 샹크스"'
-      }
-    },
-    {
-      type: 'bubble-speech',
-      top: '65%',
-      left: '2%',
-      width: '21%',
-      height: '12%',
-      fontSize: 'clamp(8px, 0.95vw, 12px)',
-      text: {
-        'English': 'MY PUNCH IS AS POWERFUL AS A PISTOL!',
-        'Hindi': 'मेरा मुक्का पिस्तौल की गोली जितना असरदार है!',
-        'Gujarati': 'મારો મુક્કો પિસ્તોલ જેવો જોરદાર છે!',
-        'Japanese': 'おれのパンチはピストル並みに強いんだ！',
-        'Korean': '내 주먹은 권총만큼이나 강하다고!'
-      }
-    },
-    {
-      type: 'bubble-speech',
-      top: '65.5%',
-      left: '21%',
-      width: '16%',
-      height: '11%',
-      fontSize: 'clamp(8px, 0.95vw, 12px)',
-      text: {
-        'English': 'I\'VE BEEN TRAINING!',
-        'Hindi': 'मैं कड़ी ट्रेनिंग कर रहा हूँ!',
-        'Gujarati': 'હું સખત તાલીમ લઈ રહ્યો છું!',
-        'Japanese': '鍛えてるんだから！',
-        'Korean': '열심히 훈련하고 있거든!'
-      }
-    }
+    { type: 'bubble-speech', top: '11%', left: '1%', width: '21%', height: '18%', fontSize: 'clamp(8px, 0.95vw, 12px)', text: {
+      'English': 'LUFFY, DO YOU KNOW WHY WE CALL YOU "ANCHOR"? BECAUSE YOU CAN\'T SWIM-- YOU JUST SINK!! WHAT GOOD IS A PIRATE WHO CAN\'T SWIM?',
+      'Hindi': 'लफी, पता है हम तुम्हें "लंगर" क्यों कहते हैं? क्योंकि तुम्हें तैरना नहीं आता, तुम बस डूब जाते हो!! जो तैर न सके वो कैसा डाकू?',
+      'Gujarati': 'લફી, તને ખબર છે અમે તને "લંગર" કેમ કહીએ છીએ? કારણ કે તને તરતાં નથી આવડતું, તું ડૂબી જાય છે!! જે તરી ન શકે એ કેવો ચાંચિયો?',
+      'Japanese': 'ルフィ、なぜお前を「カナヅチ」って呼ぶか知ってるか？泳げなくて沈むからだ！泳げねェ海賊なんて使い物になるかよ！',
+      'Korean': '루피, 우리가 왜 널 "맥주병"이라고 부르는지 알아? 수영을 못해서 가라앉으니까! 수영도 못하는 해적이 어디 있어?'
+    }},
+    { type: 'bubble-speech', top: '12%', left: '76%', width: '17%', height: '16%', fontSize: 'clamp(9.5px, 1.1vw, 14px)', text: {
+      'English': 'YOU?! A PIRATE?! IMPOSSIBLE!!',
+      'Hindi': 'तुम?! समुद्री डाकू?! नामुमकिन!!',
+      'Gujarati': 'તું?! ચાંચિયો?! અસંભવ!!',
+      'Japanese': 'お前が?! 海賊だと?! 無理無理!!',
+      'Korean': '네가?! 해적이라고?! 말도 안 돼!!'
+    }},
+    { type: 'bubble-speech', top: '34.5%', left: '20%', width: '18%', height: '12%', fontSize: 'clamp(8.5px, 1vw, 12.5px)', text: {
+      'English': 'BUT IF I DON\'T FALL OVERBOARD, THEN IT DOESN\'T MATTER IF I\'M AN ANCHOR!!',
+      'Hindi': 'लेकिन अगर मैं जहाज़ से नीचे न गिरूँ, तो लंगर होने से क्या फ़र्क पड़ता है!!',
+      'Gujarati': 'પણ જો હું જહાજમાંથી નીચે ન પડું, તો લંગર હોવાથી શું ફરક પડે છે!!',
+      'Japanese': '船から落ちなきゃカナヅチだって関係ねェだろ!!',
+      'Korean': '물에 안 빠지면 맥주병이어도 상관없잖아!!'
+    }},
+    { type: 'bubble-speech', top: '35%', left: '1%', width: '20%', height: '11.5%', fontSize: 'clamp(9px, 1.05vw, 13px)', text: {
+      'English': 'AND I\'M A STRONG FIGHTER!',
+      'Hindi': 'और मैं बहुत ताकतवर लड़ाका हूँ!',
+      'Gujarati': 'અને હું ખૂબ મજબૂત લડવૈયો છું!',
+      'Japanese': 'それに強くて戦えるもん！',
+      'Korean': '그리고 난 힘도 세고 잘 싸운다고!'
+    }},
+    { type: 'bubble-caption-white', top: '51%', left: '64%', width: '27%', height: '9%', fontSize: 'clamp(9px, 1.05vw, 13px)', text: {
+      'English': 'PIRATE CAPTAIN "RED-HAIRED" SHANKS',
+      'Hindi': 'समुद्री डाकू कैप्टन "रेड-हेयर्ड" शैंक्स',
+      'Gujarati': 'ચાંચિયા કેપ્ટન "રેડ-હેર્ડ" શૈંક્સ',
+      'Japanese': '赤髪海賊団 大頭「赤髪のシャンクス」',
+      'Korean': '빨간 머리 해적단 선장 "빨간 머리 샹크스"'
+    }},
+    { type: 'bubble-speech', top: '65%', left: '2%', width: '21%', height: '12%', fontSize: 'clamp(9px, 1.05vw, 13px)', text: {
+      'English': 'MY PUNCH IS AS POWERFUL AS A PISTOL!',
+      'Hindi': 'मेरा मुक्का पिस्तौल की गोली जितना असरदार है!',
+      'Gujarati': 'મારો મુક્કો પિસ્તોલ જેવો જોરદાર છે!',
+      'Japanese': 'おれのパンチはピストル並みに強いんだ！',
+      'Korean': '내 주먹은 권총만큼이나 강하다고!'
+    }},
+    { type: 'bubble-speech', top: '65.5%', left: '21%', width: '16%', height: '11%', fontSize: 'clamp(9px, 1.05vw, 13px)', text: {
+      'English': 'I\'VE BEEN TRAINING!',
+      'Hindi': 'मैं कड़ी ट्रेनिंग कर रहा हूँ!',
+      'Gujarati': 'હું સખત તાલીમ લઈ રહ્યો છું!',
+      'Japanese': '鍛えてるんだから！',
+      'Korean': '열심히 훈련하고 있거든!'
+    }}
   ],
 
   // PAGE 7: Freedom of pirates & Sea vastness (p (6).jpg.jpeg)
   7: [
-    {
-      type: 'bubble-speech',
-      top: '9%',
-      left: '8%',
-      width: '18%',
-      height: '14%',
-      fontSize: 'clamp(8px, 0.95vw, 12px)',
-      text: {
-        'English': 'ARE YOU DOUBTING ME?!',
-        'Hindi': 'क्या तुम्हें मुझ पर शक है?!',
-        'Gujarati': 'શું તને મારા પર શંકા છે?!',
-        'Japanese': '疑ってんのかーっ？！',
-        'Korean': '날 의심하는 거야?!'
-      }
-    },
-    {
-      type: 'bubble-speech',
-      top: '9%',
-      left: '70%',
-      width: '24%',
-      height: '12%',
-      fontSize: 'clamp(8px, 0.95vw, 12px)',
-      text: {
-        'English': 'IS THAT SO... A PISTOL, EH?',
-        'Hindi': 'अच्छा ऐसी बात है... पिस्तौल, हैं?',
-        'Gujarati': 'એવું છે... પિસ્તોલ, હેં?',
-        'Japanese': 'へぇ…ピストルねぇ…',
-        'Korean': '그래… 권총이라…'
-      }
-    },
-    {
-      type: 'bubble-speech',
-      top: '27%',
-      left: '8%',
-      width: '18%',
-      height: '14%',
-      fontSize: 'clamp(7.5px, 0.9vw, 11.5px)',
-      text: {
-        'English': 'AND BEST OF ALL, PIRATES HAVE FREEDOM!!',
-        'Hindi': 'और सबसे बड़ी बात, डाकुओं के पास आज़ादी होती है!!',
-        'Gujarati': 'અને સૌથી મોટી વાત, ચાંચિયાઓ પાસે સંપૂર્ણ આઝાદી હોય છે!!',
-        'Japanese': 'そして何より、海賊には自由がある！！',
-        'Korean': '그리고 무엇보다 해적은 자유롭다고!!'
-      }
-    },
-    {
-      type: 'bubble-speech',
-      top: '27%',
-      left: '26%',
-      width: '21%',
-      height: '14%',
-      fontSize: 'clamp(7px, 0.85vw, 11px)',
-      text: {
-        'English': 'THE SEA IS VAST AND THERE\'S LOTS OF ISLANDS TO EXPLORE!',
-        'Hindi': 'समंदर असीम है और तलाशने के लिए हज़ारों द्वीप हैं!',
-        'Gujarati': 'સમુદ્ર વિશાળ છે અને અન્વેષણ કરવા માટે ઘણા ટાપુઓ છે!',
-        'Japanese': '海は広くて、冒険できる島がいっぱいだ！',
-        'Korean': '바다는 넓고 모험할 섬도 아주 많아!'
-      }
-    },
-    {
-      type: 'bubble-speech',
-      top: '27%',
-      left: '47%',
-      width: '16%',
-      height: '12%',
-      fontSize: 'clamp(7.5px, 0.9vw, 11.5px)',
-      text: {
-        'English': 'YEAH! PIRATES ALWAYS HAVE A GOOD TIME!',
-        'Hindi': 'हाँ! डाकू हमेशा मौज-मस्ती करते हैं!',
-        'Gujarati': 'હા! ચાંચિયાઓ હંમેશા મોજ કરે છે!',
-        'Japanese': 'そうだ！海賊はいつも楽しいぞ！',
-        'Korean': '맞아! 해적은 언제나 신나지!'
-      }
-    },
-    {
-      type: 'bubble-speech',
-      top: '27%',
-      left: '78%',
-      width: '21%',
-      height: '14%',
-      fontSize: 'clamp(8px, 0.95vw, 12px)',
-      text: {
-        'English': 'CALM DOWN, LUFFY!',
-        'Hindi': 'शांत हो जाओ, लफी!',
-        'Gujarati': 'શાંત થા, લફી!',
-        'Japanese': '落ち着けよルフィ！',
-        'Korean': '진정해, 루피!'
-      }
-    },
-    {
-      type: 'bubble-speech',
-      top: '71%',
-      left: '43%',
-      width: '17%',
-      height: '12%',
-      fontSize: 'clamp(7.5px, 0.9vw, 11.5px)',
-      text: {
-        'English': 'YOU GUYS STOP FILLING HIS HEAD WITH CRAZY IDEAS.',
-        'Hindi': 'तुम लोग उसके दिमाग में ये सब फितूर भरना बंद करो।',
-        'Gujarati': 'તમે લોકો એના મગજમાં ખોટા વિચારો ભરવાનું બંધ કરો.',
-        'Japanese': 'お前らガキに変なこと吹き込むなよ。',
-        'Korean': '너희들 꼬마한테 헛바람 넣지 마라.'
-      }
-    },
-    {
-      type: 'bubble-speech',
-      top: '71%',
-      left: '7%',
-      width: '12%',
-      height: '13%',
-      fontSize: 'clamp(8px, 0.95vw, 12px)',
-      text: {
-        'English': 'BUT IT\'S TRUE! RIGHT!?',
-        'Hindi': 'लेकिन ये सच है! है ना!?',
-        'Gujarati': 'પણ આ સાચું છે! ખરું ને!?',
-        'Japanese': 'でもホントだろ？！',
-        'Korean': '하지만 진짜잖아?!'
-      }
-    }
+    { type: 'bubble-speech', top: '8%', left: '8%', width: '18%', height: '14.5%', fontSize: 'clamp(9.5px, 1.1vw, 14px)', text: {
+      'English': 'ARE YOU DOUBTING ME?!',
+      'Hindi': 'क्या तुम्हें मुझ पर शक है?!',
+      'Gujarati': 'શું તને મારા પર શંકા છે?!',
+      'Japanese': '疑ってんのかーっ？！',
+      'Korean': '날 의심하는 거야?!'
+    }},
+    { type: 'bubble-speech', top: '8%', left: '70%', width: '25%', height: '13%', fontSize: 'clamp(9.5px, 1.1vw, 13.5px)', text: {
+      'English': 'IS THAT SO... A PISTOL, EH?',
+      'Hindi': 'अच्छा ऐसी बात है... पिस्तौल, हैं?',
+      'Gujarati': 'એવું છે... પિસ્તોલ, હેં?',
+      'Japanese': 'へぇ…ピストルねぇ…',
+      'Korean': '그래… 권총이라…'
+    }},
+    { type: 'bubble-speech', top: '26.5%', left: '8%', width: '18%', height: '15%', fontSize: 'clamp(8.5px, 1vw, 12.5px)', text: {
+      'English': 'AND BEST OF ALL, PIRATES HAVE FREEDOM!!',
+      'Hindi': 'और सबसे बड़ी बात, डाकुओं के पास आज़ादी होती है!!',
+      'Gujarati': 'અને સૌથી મોટી વાત, ચાંચિયાઓ પાસે સંપૂર્ણ આઝાદી હોય છે!!',
+      'Japanese': 'そして何より、海賊には自由がある！！',
+      'Korean': '그리고 무엇보다 해적은 자유롭다고!!'
+    }},
+    { type: 'bubble-speech', top: '26.5%', left: '26%', width: '20.5%', height: '14.5%', fontSize: 'clamp(8px, 0.95vw, 12px)', text: {
+      'English': 'THE SEA IS VAST AND THERE\'S LOTS OF ISLANDS TO EXPLORE!',
+      'Hindi': 'समंदर असीम है और तलाशने के लिए हज़ारों द्वीप हैं!',
+      'Gujarati': 'સમુદ્ર વિશાળ છે અને અન્વેષણ કરવા માટે ઘણા ટાપુઓ છે!',
+      'Japanese': '海は広くて、冒険できる島がいっぱいだ！',
+      'Korean': '바다는 넓고 모험할 섬도 아주 많아!'
+    }},
+    { type: 'bubble-speech', top: '26.5%', left: '46.5%', width: '16.5%', height: '13%', fontSize: 'clamp(8.5px, 1vw, 12.5px)', text: {
+      'English': 'YEAH! PIRATES ALWAYS HAVE A GOOD TIME!',
+      'Hindi': 'हाँ! डाकू हमेशा मौज-मस्ती करते हैं!',
+      'Gujarati': 'હા! ચાંચિયાઓ હંમેશા મોજ કરે છે!',
+      'Japanese': 'そうだ！海賊はいつも楽しいぞ！',
+      'Korean': '맞아! 해적은 언제나 신나지!'
+    }},
+    { type: 'bubble-speech', top: '26.5%', left: '63%', width: '16.5%', height: '14%', fontSize: 'clamp(8.5px, 1vw, 12.5px)', text: {
+      'English': 'LET\'S JUST HAVE A GOOD TIME!',
+      'Hindi': 'चलो सब मिलकर मौज उड़ाएँ!',
+      'Gujarati': 'ચાલો બધા મળીને મોજ કરીએ!',
+      'Japanese': '楽しもうぜーー！！',
+      'Korean': '다 함께 즐기자고!!'
+    }},
+    { type: 'bubble-speech', top: '26.5%', left: '79.5%', width: '19.5%', height: '14.5%', fontSize: 'clamp(9px, 1.05vw, 13px)', text: {
+      'English': 'CALM DOWN, LUFFY!',
+      'Hindi': 'शांत हो जाओ, लफी!',
+      'Gujarati': 'શાંત થા, લફી!',
+      'Japanese': '落ち着けよルフィ！',
+      'Korean': '진정해, 루피!'
+    }},
+    { type: 'bubble-speech', top: '70.5%', left: '43%', width: '17%', height: '13%', fontSize: 'clamp(8px, 0.95vw, 12px)', text: {
+      'English': 'YOU GUYS STOP FILLING HIS HEAD WITH CRAZY IDEAS.',
+      'Hindi': 'तुम लोग उसके दिमाग में ये सब फितूर भरना बंद करो।',
+      'Gujarati': 'તમે લોકો એના મગજમાં ખોટા વિચારો ભરવાનું બંધ કરો.',
+      'Japanese': 'お前らガキに変なこと吹き込むなよ。',
+      'Korean': '너희들 꼬마한테 헛바람 넣지 마라.'
+    }},
+    { type: 'bubble-speech', top: '70.5%', left: '7%', width: '12%', height: '14%', fontSize: 'clamp(9px, 1.05vw, 13px)', text: {
+      'English': 'BUT IT\'S TRUE!',
+      'Hindi': 'लेकिन ये सच है!',
+      'Gujarati': 'પણ આ સાચું છે!',
+      'Japanese': 'でもホントだろ！',
+      'Korean': '하지만 진짜잖아!'
+    }},
+    { type: 'bubble-speech', top: '85.5%', left: '7%', width: '12%', height: '8%', fontSize: 'clamp(9.5px, 1.1vw, 13.5px)', text: {
+      'English': 'RIGHT!?',
+      'Hindi': 'है ना!?',
+      'Gujarati': 'ખરું ને!?',
+      'Japanese': 'なぁ？！',
+      'Korean': '맞지?!'
+    }}
   ],
 
   // PAGE 8: Milk trick by Shanks (p (7).jpg.jpeg)
   8: [
-    {
-      type: 'bubble-speech',
-      top: '8%',
-      left: '8%',
-      width: '12%',
-      height: '12%',
-      fontSize: 'clamp(7px, 0.85vw, 11px)',
-      text: {
-        'English': 'HEY! I THOUGHT YOU GUYS WERE ON MY SIDE!',
-        'Hindi': 'अरे! मुझे लगा तुम लोग मेरी तरफ़ हो!',
-        'Gujarati': 'અરે! મને લાગ્યું તમે મારી તરફ છો!',
-        'Japanese': 'おい！味方だと思ってたのに！',
-        'Korean': '야! 너희 내 편인 줄 알았는데!'
-      }
-    },
-    {
-      type: 'bubble-speech',
-      top: '8%',
-      left: '19%',
-      width: '14%',
-      height: '12%',
-      fontSize: 'clamp(7px, 0.85vw, 11px)',
-      text: {
-        'English': 'SORRY, LADDY, LET\'S DRINK!',
-        'Hindi': 'माफ़ करना बच्चे, चलो पीते हैं!',
-        'Gujarati': 'માફ કરજે દીકરા, ચાલ પીએ!',
-        'Japanese': '悪ィな坊主！飲むぞー！',
-        'Korean': '미안하다 꼬마야, 한잔하자!'
-      }
-    },
-    {
-      type: 'bubble-speech',
-      top: '8%',
-      left: '34%',
-      width: '17%',
-      height: '10%',
-      fontSize: 'clamp(7px, 0.85vw, 11px)',
-      text: {
-        'English': 'ONE OF YOU WILL HAVE TO STAY BEHIND...',
-        'Hindi': 'तुम में से एक को पीछे रुकना पड़ेगा...',
-        'Gujarati': 'તમારામાંથી એકે પાછળ રોકાવું પડશે...',
-        'Japanese': '誰か1人お留守番だぞ…',
-        'Korean': '한 명은 남아서 지켜야지…'
-      }
-    },
-    {
-      type: 'bubble-speech',
-      top: '43%',
-      left: '10%',
-      width: '12%',
-      height: '10%',
-      fontSize: 'clamp(8px, 0.95vw, 12px)',
-      text: {
-        'English': 'I\'M NOT A LITTLE KID!!',
-        'Hindi': 'मैं कोई छोटा बच्चा नहीं हूँ!!',
-        'Gujarati': 'હું નાનો બાળક નથી!!',
-        'Japanese': 'ガキ扱いすんな！！',
-        'Korean': '난 꼬맹이가 아니야!!'
-      }
-    },
-    {
-      type: 'bubble-speech',
-      top: '43%',
-      left: '23%',
-      width: '14%',
-      height: '11%',
-      fontSize: 'clamp(7.5px, 0.9vw, 11.5px)',
-      text: {
-        'English': 'CAP\'N SHANKS! I\'M TELLING YOU...',
-        'Hindi': 'कैप्टन शैंक्स! मैं सच कह रहा हूँ...',
-        'Gujarati': 'કેપ્ટન શૈંક્સ! હું સાચું કહું છું...',
-        'Japanese': 'シャンクス！マジだって…',
-        'Korean': '샹크스! 진짜라니까…'
-      }
-    },
-    {
-      type: 'bubble-speech',
-      top: '43%',
-      left: '76%',
-      width: '17%',
-      height: '11%',
-      fontSize: 'clamp(8px, 0.95vw, 12px)',
-      text: {
-        'English': 'YOU\'RE JUST TOO YOUNG, KID.',
-        'Hindi': 'तुम अभी बहुत छोटे हो, बच्चे।',
-        'Gujarati': 'તું હજી ખૂબ નાનો છે, બાળક.',
-        'Japanese': 'お前はまだ早すぎるんだよ。',
-        'Korean': '넌 아직 너무 어려, 꼬마야.'
-      }
-    },
-    {
-      type: 'bubble-speech',
-      top: '56%',
-      left: '78%',
-      width: '16%',
-      height: '11%',
-      fontSize: 'clamp(7px, 0.85vw, 11px)',
-      text: {
-        'English': 'MAYBE IN 10 YEARS I\'LL GIVE YOU A CHANCE.',
-        'Hindi': 'शायद 10 साल बाद मैं तुम्हें मौका दूँ।',
-        'Gujarati': 'કદાચ 10 વર્ષ પછી હું તને મોકો આપીશ.',
-        'Japanese': '10年後なら考えてやるよ。',
-        'Korean': '10년 뒤라면 기회를 줄지도 모르지.'
-      }
-    },
-    {
-      type: 'bubble-speech',
-      top: '72%',
-      left: '77%',
-      width: '17%',
-      height: '11%',
-      fontSize: 'clamp(7.5px, 0.9vw, 11.5px)',
-      text: {
-        'English': 'DON\'T GET UPSET. HERE, HAVE SOME MILK.',
-        'Hindi': 'नाराज़ मत हो। ये लो, दूध पियो।',
-        'Gujarati': 'ગુસ્સે ન થા. આ લે, દૂધ પી.',
-        'Japanese': '拗ねるなよ。ほら、ミルクでも飲め。',
-        'Korean': '삐치지 마라. 자, 우유나 마셔.'
-      }
-    },
-    {
-      type: 'bubble-speech',
-      top: '72%',
-      left: '52%',
-      width: '18%',
-      height: '9%',
-      fontSize: 'clamp(8px, 0.95vw, 12px)',
-      text: {
-        'English': 'OH BOY! THANKS!',
-        'Hindi': 'वाह! शुक्रिया!',
-        'Gujarati': 'વાહ! આભાર!',
-        'Japanese': 'わーい！ありがと！',
-        'Korean': '우와! 고마워!'
-      }
-    },
-    {
-      type: 'bubble-speech',
-      top: '75%',
-      left: '39%',
-      width: '12%',
-      height: '14%',
-      fontSize: 'clamp(7px, 0.85vw, 11px)',
-      text: {
-        'English': 'SEE! A REAL PIRATE NEVER DRINKS MILK!!',
-        'Hindi': 'देखा! असली डाकू कभी दूध नहीं पीता!!',
-        'Gujarati': 'જોયું! અસલી ચાંચિયો ક્યારેય દૂધ ન પીએ!!',
-        'Japanese': 'ほらな！本物の海賊はミルクなんか飲まねぇよ！！',
-        'Korean': '봤지! 진짜 해적은 우유 따윈 안 마셔!!'
-      }
-    },
-    {
-      type: 'bubble-speech',
-      top: '85%',
-      left: '4%',
-      width: '16%',
-      height: '10%',
-      fontSize: 'clamp(8px, 0.95vw, 12px)',
-      text: {
-        'English': 'THAT WAS A DIRTY TRICK!',
-        'Hindi': 'ये बहुत घटिया चाल थी!',
-        'Gujarati': 'આ બહુ ખરાબ ચાલ હતી!',
-        'Japanese': '汚ねェぞシャンクスーーッ！',
-        'Korean': '치사하게 속였어ーーっ!'
-      }
-    }
+    { type: 'bubble-speech', top: '8%', left: '8%', width: '12%', height: '12%', fontSize: 'clamp(8px, 0.95vw, 12px)', text: {
+      'English': 'HEY! I THOUGHT YOU GUYS WERE ON MY SIDE!',
+      'Hindi': 'अरे! मुझे लगा तुम लोग मेरी तरफ़ हो!',
+      'Gujarati': 'અરે! મને લાગ્યું તમે મારી તરફ છો!',
+      'Japanese': 'おい！味方だと思ってたのに！',
+      'Korean': '야! 너희 내 편인 줄 알았는데!'
+    }},
+    { type: 'bubble-speech', top: '8%', left: '19%', width: '14%', height: '12%', fontSize: 'clamp(8px, 0.95vw, 12px)', text: {
+      'English': 'SORRY, LADDY, LET\'S DRINK!',
+      'Hindi': 'माफ़ करना बच्चे, चलो पीते हैं!',
+      'Gujarati': 'માફ કરજે દીકરા, ચાલ પીએ!',
+      'Japanese': '悪ィな坊主！飲むぞー！',
+      'Korean': '미안하다 꼬마야, 한잔하자!'
+    }},
+    { type: 'bubble-speech', top: '8%', left: '34%', width: '17%', height: '10%', fontSize: 'clamp(8px, 0.95vw, 12px)', text: {
+      'English': 'ONE OF YOU WILL HAVE TO STAY BEHIND...',
+      'Hindi': 'तुम में से एक को पीछे रुकना पड़ेगा...',
+      'Gujarati': 'તમારામાંથી એકે પાછળ રોકાવું પડશે...',
+      'Japanese': '誰か1人お留守番だぞ…',
+      'Korean': '한 명은 남아서 지켜야지…'
+    }},
+    { type: 'bubble-speech', top: '43%', left: '10%', width: '12%', height: '10%', fontSize: 'clamp(9px, 1.05vw, 13px)', text: {
+      'English': 'I\'M NOT A LITTLE KID!!',
+      'Hindi': 'मैं कोई छोटा बच्चा नहीं हूँ!!',
+      'Gujarati': 'હું નાનો બાળક નથી!!',
+      'Japanese': 'ガキ扱いすんな！！',
+      'Korean': '난 꼬맹이가 아니야!!'
+    }},
+    { type: 'bubble-speech', top: '43%', left: '23%', width: '14%', height: '11%', fontSize: 'clamp(8.5px, 1vw, 12.5px)', text: {
+      'English': 'CAP\'N SHANKS! I\'M TELLING YOU...',
+      'Hindi': 'कैप्टन शैंक्स! मैं सच कह रहा हूँ...',
+      'Gujarati': 'કેપ્ટન શૈંક્સ! હું સાચું કહું છું...',
+      'Japanese': 'シャンクス！マジだって…',
+      'Korean': '샹크스! 진짜라니까…'
+    }},
+    { type: 'bubble-speech', top: '43%', left: '76%', width: '17%', height: '11%', fontSize: 'clamp(9px, 1.05vw, 13px)', text: {
+      'English': 'YOU\'RE JUST TOO YOUNG, KID.',
+      'Hindi': 'तुम अभी बहुत छोटे हो, बच्चे।',
+      'Gujarati': 'તું હજી ખૂબ નાનો છે, બાળક.',
+      'Japanese': 'お前はまだ早すぎるんだよ。',
+      'Korean': '넌 아직 너무 어려, 꼬마야.'
+    }},
+    { type: 'bubble-speech', top: '56%', left: '78%', width: '16%', height: '11%', fontSize: 'clamp(8px, 0.95vw, 12px)', text: {
+      'English': 'MAYBE IN 10 YEARS I\'LL GIVE YOU A CHANCE.',
+      'Hindi': 'शायद 10 साल बाद मैं तुम्हें मौका दूँ।',
+      'Gujarati': 'કદાચ 10 વર્ષ પછી હું તને મોકો આપીશ.',
+      'Japanese': '10年後なら考えてやるよ。',
+      'Korean': '10년 뒤라면 기회를 줄지도 모르지.'
+    }},
+    { type: 'bubble-speech', top: '72%', left: '77%', width: '17%', height: '11%', fontSize: 'clamp(8.5px, 1vw, 12.5px)', text: {
+      'English': 'DON\'T GET UPSET. HERE, HAVE SOME MILK.',
+      'Hindi': 'नाराज़ मत हो। ये लो, दूध पियो।',
+      'Gujarati': 'ગુસ્સે ન થા. આ લે, દૂધ પી.',
+      'Japanese': '拗ねるなよ。ほら、ミルクでも飲め。',
+      'Korean': '삐치지 마라. 자, 우유나 마셔.'
+    }},
+    { type: 'bubble-speech', top: '72%', left: '52%', width: '18%', height: '9%', fontSize: 'clamp(9px, 1.05vw, 13px)', text: {
+      'English': 'OH BOY! THANKS!',
+      'Hindi': 'वाह! शुक्रिया!',
+      'Gujarati': 'વાહ! આભાર!',
+      'Japanese': 'わーい！ありがと！',
+      'Korean': '우와! 고마워!'
+    }},
+    { type: 'bubble-speech', top: '75%', left: '39%', width: '12%', height: '14%', fontSize: 'clamp(8px, 0.95vw, 12px)', text: {
+      'English': 'SEE! A REAL PIRATE NEVER DRINKS MILK!!',
+      'Hindi': 'देखा! असली डाकू कभी दूध नहीं पीता!!',
+      'Gujarati': 'જોયું! અસલી ચાંચિયો ક્યારેય દૂધ ન પીએ!!',
+      'Japanese': 'ほらな！本物の海賊はミルクなんか飲まねぇよ！！',
+      'Korean': '봤지! 진짜 해적은 우유 따윈 안 마셔!!'
+    }},
+    { type: 'bubble-speech', top: '85%', left: '4%', width: '16%', height: '10%', fontSize: 'clamp(9px, 1.05vw, 13px)', text: {
+      'English': 'THAT WAS A DIRTY TRICK!',
+      'Hindi': 'ये बहुत घटिया चाल थी!',
+      'Gujarati': 'આ બહુ ખરાબ ચાલ હતી!',
+      'Japanese': '汚ねェぞシャンクスーーッ！',
+      'Korean': '치사하게 속였어ーーっ!'
+    }}
   ],
 
   // PAGE 9: Benn Beckman talks with Luffy (p (8).jpg.jpeg)
   9: [
-    {
-      type: 'bubble-speech',
-      top: '6%',
-      left: '37%',
-      width: '13%',
-      height: '7%',
-      fontSize: 'clamp(8px, 1vw, 13px)',
-      text: {
-        'English': 'LUFFY...',
-        'Hindi': 'लफी...',
-        'Gujarati': 'લફી...',
-        'Japanese': 'ルフィ…',
-        'Korean': '루피…'
-      }
-    },
-    {
-      type: 'bubble-speech',
-      top: '4%',
-      left: '7%',
-      width: '18%',
-      height: '13%',
-      fontSize: 'clamp(7px, 0.85vw, 11px)',
-      text: {
-        'English': 'THE CAPTAIN\'S JUST DOING WHAT\'S BEST FOR EVERYONE...',
-        'Hindi': 'कैप्टन बस वही कर रहे हैं जो सबके लिए सबसे अच्छा है...',
-        'Gujarati': 'કેપ્ટન માત્ર એ જ કરે છે જે બધા માટે સારું હોય...',
-        'Japanese': 'お頭はお前のことを一番に考えてんだよ…',
-        'Korean': '두목은 널 위해서 그러는 거야…'
-      }
-    },
-    {
-      type: 'bubble-speech',
-      top: '19%',
-      left: '7%',
-      width: '14%',
-      height: '10%',
-      fontSize: 'clamp(7px, 0.85vw, 11px)',
-      text: {
-        'English': 'HOW DO YOU FIGURE, MR. FIRST MATE?',
-        'Hindi': 'आप ऐसा कैसे कह सकते हैं, वाइस कैप्टन?',
-        'Gujarati': 'તમે એવું કેવી રીતે કહી શકો, વાઇસ કેપ્ટન?',
-        'Japanese': 'どういう意味だよ、副船長？',
-        'Korean': '무슨 뜻이에요, 부선장님?'
-      }
-    },
-    {
-      type: 'bubble-speech',
-      top: '33%',
-      left: '78%',
-      width: '21%',
-      height: '14%',
-      fontSize: 'clamp(7px, 0.85vw, 11px)',
-      text: {
-        'English': 'THE SAFETY OF THE ENTIRE CREW AND SHIP RESTS ON HIS SHOULDERS.',
-        'Hindi': 'पूरे जहाज़ और साथियों की सुरक्षा की ज़िम्मेदारी उनके कंधों पर है।',
-        'Gujarati': 'આખા જહાજ અને સાથીઓની સુરક્ષાની જવાબદારી એમના ખભા પર છે.',
-        'Japanese': '仲間全員と船の命運がお頭の肩にかかってんだ。',
-        'Korean': '모든 동료와 배의 안전이 두목 어깨에 걸려 있거든.'
-      }
-    },
-    {
-      type: 'bubble-speech',
-      top: '48%',
-      left: '82%',
-      width: '17%',
-      height: '10%',
-      fontSize: 'clamp(7px, 0.85vw, 11px)',
-      text: {
-        'English': 'BEING A PIRATE ISN\'T ALL FUN AND GAMES, YOU KNOW...',
-        'Hindi': 'डाकू बनना सिर्फ खेल और मौज-मस्ती नहीं होता...',
-        'Gujarati': 'ચાંચિયો બનવું માત્ર રમત કે મજાક નથી...',
-        'Japanese': '海賊は遊びじゃねぇんだぞ…',
-        'Korean': '해적은 단순한 놀이가 아니란다…'
-      }
-    },
-    {
-      type: 'bubble-speech',
-      top: '33%',
-      left: '21%',
-      width: '20%',
-      height: '14%',
-      fontSize: 'clamp(7px, 0.85vw, 11px)',
-      text: {
-        'English': 'THERE\'S LOTS OF DUTIES LIKE... PILLAGING, HEAVY DRINKING... AND SWIMMING!',
-        'Hindi': 'बहुत सी ज़िम्मेदारियाँ होती हैं... जैसे लड़ाई, कठिन सफ़र... और तैरना!',
-        'Gujarati': 'ઘણી બધી જવાબદારીઓ હોય છે... જેમ કે લડાઈ, સફર... અને તરવું!',
-        'Japanese': '略奪や航海、そして泳ぐことだって大事な仕事だ！',
-        'Korean': '약탈이나 항해, 그리고 수영도 아주 중요한 일이지!'
-      }
-    },
-    {
-      type: 'bubble-speech',
-      top: '73%',
-      left: '31%',
-      width: '12%',
-      height: '12%',
-      fontSize: 'clamp(7px, 0.85vw, 11px)',
-      text: {
-        'English': 'SHANKS JUST LIKES TO MAKE ME LOOK DUMB.',
-        'Hindi': 'शैंक्स बस मुझे बेवकूफ दिखाना चाहते हैं।',
-        'Gujarati': 'શૈંક્સ મને માત્ર મૂર્ખ સાબિત કરવા માંગે છે.',
-        'Japanese': 'シャンクスはおれをからかってるだけだもん。',
-        'Korean': '샹크스는 날 놀리는 게 재미있어서 그러는 거야.'
-      }
-    },
-    {
-      type: 'bubble-speech',
-      top: '73%',
-      left: '43%',
-      width: '9%',
-      height: '10%',
-      fontSize: 'clamp(7.5px, 0.9vw, 11.5px)',
-      text: {
-        'English': 'WELL I DON\'T BELIEVE IT!!',
-        'Hindi': 'मैं नहीं मानता!!',
-        'Gujarati': 'હું નથી માનતો!!',
-        'Japanese': '信じねェぞ！！',
-        'Korean': '난 안 믿어!!'
-      }
-    }
+    { type: 'bubble-speech', top: '5.5%', left: '37%', width: '13.5%', height: '7%', fontSize: 'clamp(10px, 1.15vw, 14px)', text: {
+      'English': 'LUFFY...',
+      'Hindi': 'लफी...',
+      'Gujarati': 'લફી...',
+      'Japanese': 'ルフィ…',
+      'Korean': '루피…'
+    }},
+    { type: 'bubble-speech', top: '3.5%', left: '7%', width: '18.5%', height: '14%', fontSize: 'clamp(8.5px, 1vw, 12.5px)', text: {
+      'English': 'THE CAPTAIN\'S JUST DOING WHAT\'S BEST FOR EVERYONE...',
+      'Hindi': 'कैप्टन बस वही कर रहे हैं जो सबके लिए सबसे अच्छा है...',
+      'Gujarati': 'કેપ્ટન માત્ર એ જ કરે છે જે બધા માટે સારું હોય...',
+      'Japanese': 'お頭はお前のことを一番に考えてんだよ…',
+      'Korean': '두목은 널 위해서 그러는 거야…'
+    }},
+    { type: 'bubble-speech', top: '18.5%', left: '7%', width: '14.5%', height: '10%', fontSize: 'clamp(8.5px, 1vw, 12.5px)', text: {
+      'English': 'HOW DO YOU FIGURE, MR. FIRST MATE?',
+      'Hindi': 'आप ऐसा कैसे कह सकते हैं, वाइस कैप्टन?',
+      'Gujarati': 'તમે એવું કેવી રીતે કહી શકો, વાઇસ કેપ્ટન?',
+      'Japanese': 'どういう意味だよ、副船長？',
+      'Korean': '무슨 뜻이에요, 부선장님?'
+    }},
+    { type: 'bubble-speech', top: '3.5%', left: '52%', width: '20%', height: '13%', fontSize: 'clamp(8px, 0.95vw, 12px)', text: {
+      'English': 'I EVEN STABBED MYSELF IN THE FACE SO YOU\'D TAKE ME WITH YOU.',
+      'Hindi': 'मैंने चेहरे पर कट भी लगाया ताकि तुम मुझे साथ ले चलो।',
+      'Gujarati': 'મેં ચહેરા પર ઘા પણ કર્યો જેથી તમે મને સાથે લઈ જાઓ.',
+      'Japanese': '顔を刺してまで覚悟を見せたのにさ。',
+      'Korean': '얼굴을 찌르면서까지 각오를 보여줬는데.'
+    }},
+    { type: 'bubble-speech', top: '3.5%', left: '72%', width: '12%', height: '11%', fontSize: 'clamp(8.5px, 1vw, 12.5px)', text: {
+      'English': 'HMPH! I\'M GETTING TIRED OF THIS.',
+      'Hindi': 'हुम्फ़! मैं इससे तंग आ चुका हूँ।',
+      'Gujarati': 'હુંહ! હું આનાથી કંટાળી ગયો છું.',
+      'Japanese': 'フン！もううんざりだ。',
+      'Korean': '흥! 이제 진절머리 나.'
+    }},
+    { type: 'bubble-speech', top: '32%', left: '77.5%', width: '21.5%', height: '14.5%', fontSize: 'clamp(8px, 0.95vw, 12px)', text: {
+      'English': 'THE SAFETY OF THE ENTIRE CREW AND SHIP RESTS ON HIS SHOULDERS.',
+      'Hindi': 'पूरे जहाज़ और साथियों की सुरक्षा की ज़िम्मेदारी उनके कंधों पर है।',
+      'Gujarati': 'આખા જહાજ અને સાથીઓની સુરક્ષાની જવાબદારી એમના ખભા પર છે.',
+      'Japanese': '仲間全員と船の命運がお頭の肩にかかってんだ。',
+      'Korean': '모든 동료와 배의 안전이 두목 어깨에 걸려 있거든.'
+    }},
+    { type: 'bubble-speech', top: '47.5%', left: '81.5%', width: '17.5%', height: '17%', fontSize: 'clamp(8px, 0.95vw, 12px)', text: {
+      'English': 'BEING A PIRATE ISN\'T ALL FUN AND GAMES, YOU KNOW...',
+      'Hindi': 'डाकू बनना सिर्फ खेल और मौज-मस्ती नहीं होता...',
+      'Gujarati': 'ચાંચિયો બનવું માત્ર રમત કે મજાક નથી...',
+      'Japanese': '海賊は遊びじゃねぇんだぞ…',
+      'Korean': '해적은 단순한 놀이가 아니란다…'
+    }},
+    { type: 'bubble-speech', top: '32%', left: '21%', width: '20%', height: '14.5%', fontSize: 'clamp(8px, 0.95vw, 12px)', text: {
+      'English': 'THERE\'S LOTS OF DUTIES LIKE... PILLAGING, HEAVY DRINKING... AND SWIMMING!',
+      'Hindi': 'बहुत सी ज़िम्मेदारियाँ होती हैं... जैसे लड़ाई, कठिन सफ़र... और तैरना!',
+      'Gujarati': 'ઘણી બધી જવાબદારીઓ હોય છે... જેમ કે લડાઈ, સફર... અને તરવું!',
+      'Japanese': '略奪や航海、そして泳ぐことだって大事な仕事だ！',
+      'Korean': '약탈이나 항해, 그리고 수영도 아주 중요한 일이지!'
+    }},
+    { type: 'bubble-speech', top: '72.5%', left: '7.5%', width: '11%', height: '9%', fontSize: 'clamp(8.5px, 1vw, 12.5px)', text: {
+      'English': 'I TOLD YOU!',
+      'Hindi': 'कहा था ना!',
+      'Gujarati': 'કહ્યું તું ને!',
+      'Japanese': '言ったろ！',
+      'Korean': '내가 말했지!'
+    }},
+    { type: 'bubble-speech', top: '72.5%', left: '18%', width: '13%', height: '9%', fontSize: 'clamp(8.5px, 1vw, 12.5px)', text: {
+      'English': 'HEY, ANCHOR!',
+      'Hindi': 'अरे, लंगर!',
+      'Gujarati': 'અરે, લંગર!',
+      'Japanese': 'おい、カナヅチ！',
+      'Korean': '야, 맥주병!'
+    }},
+    { type: 'bubble-speech', top: '72.5%', left: '31%', width: '12.5%', height: '12%', fontSize: 'clamp(8px, 0.95vw, 12px)', text: {
+      'English': 'SHANKS JUST LIKES TO MAKE ME LOOK DUMB.',
+      'Hindi': 'शैंक्स बस मुझे बेवकूफ दिखाना चाहते हैं।',
+      'Gujarati': 'શૈંક્સ મને માત્ર મૂર્ખ સાબિત કરવા માંગે છે.',
+      'Japanese': 'シャンクスはおれをからかってるだけだもん。',
+      'Korean': '샹크스는 날 놀리는 게 재미있어서 그러는 거야.'
+    }},
+    { type: 'bubble-speech', top: '72.5%', left: '42.5%', width: '9.5%', height: '11%', fontSize: 'clamp(8.5px, 1vw, 12.5px)', text: {
+      'English': 'WELL I DON\'T BELIEVE IT!!',
+      'Hindi': 'मैं नहीं मानता!!',
+      'Gujarati': 'હું નથી માનતો!!',
+      'Japanese': '信じねェぞ！！',
+      'Korean': '난 안 믿어!!'
+    }},
+    { type: 'bubble-speech', top: '72.5%', left: '53.5%', width: '14.5%', height: '14.5%', fontSize: 'clamp(7.5px, 0.9vw, 11.5px)', text: {
+      'English': 'IT\'S NOT THAT HE WANTS TO CRUSH YOUR DREAM.',
+      'Hindi': 'वो तुम्हारा सपना तोड़ना नहीं चाहते।',
+      'Gujarati': 'તે તારું સપનું તોડવા નથી માંગતા.',
+      'Japanese': '夢を邪魔したいわけじゃないんだ。',
+      'Korean': '네 꿈을 꺾으려는 게 아니야.'
+    }},
+    { type: 'bubble-speech', top: '72.5%', left: '67.5%', width: '13%', height: '12%', fontSize: 'clamp(7.5px, 0.9vw, 11.5px)', text: {
+      'English': 'IT CAN KILL YOU IN A THOUSAND WAYS!',
+      'Hindi': 'समंदर तुम्हें हज़ार तरीकों से मार सकता है!',
+      'Gujarati': 'સમુદ્ર તને હજાર રીતે મારી શકે છે!',
+      'Japanese': '海は命を奪う危険に満ちてる！',
+      'Korean': '바다는 목숨을 앗아갈 위험투성이야!'
+    }},
+    { type: 'bubble-speech', top: '72.5%', left: '79.5%', width: '15%', height: '13%', fontSize: 'clamp(8px, 0.95vw, 12px)', text: {
+      'English': 'AND THE CAPTAIN KNOWS ALL ABOUT THE DANGERS OF THE SEA, TOO!',
+      'Hindi': 'और कप्तान समंदर के सभी खतरों को अच्छी तरह जानते हैं!',
+      'Gujarati': 'અને કેપ્ટન સમુદ્રના તમામ જોખમોને સારી રીતે જાણે છે!',
+      'Japanese': 'お頭は海の厳しさを誰より知ってるんだ！',
+      'Korean': '두목은 바다의 무서움을 누구보다 잘 알거든!'
+    }}
   ],
 
-  // PAGE 10: Makino and Devil Fruit prelude (p (9).jpg.jpeg)
+  // PAGE 10: Makino and Tavern conversation (p (9).jpg.jpeg)
   10: [
-    {
-      type: 'bubble-speech',
-      top: '12%',
-      left: '77%',
-      width: '16%',
-      height: '15%',
-      fontSize: 'clamp(7px, 0.85vw, 11px)',
-      text: {
-        'English': 'CAPTAIN SHANKS! I\'M GLAD TO SEE YOU ALL ENJOYING YOURSELVES.',
-        'Hindi': 'कैप्टन शैंक्स! आप सभी को खुश देखकर मुझे बहुत अच्छा लगा।',
-        'Gujarati': 'કેપ્ટન શૈંક્સ! તમારા બધાને મોજ કરતાં જોઈને મને ખૂબ આનંદ થયો.',
-        'Japanese': 'シャンクス船長！みんな楽しそうで何よりです。',
-        'Korean': '샹크스 선장님! 다들 즐거워 보여서 보기 좋네요.'
-      }
-    },
-    {
-      type: 'bubble-speech',
-      top: '12%',
-      left: '39%',
-      width: '18%',
-      height: '10%',
-      fontSize: 'clamp(7px, 0.85vw, 11px)',
-      text: {
-        'English': 'HO BOY... I JUST LOVE MAKING FUN OF THIS KID!',
-        'Hindi': 'हाहा... इस बच्चे की टांग खींचने में बड़ा मज़ा आता है!',
-        'Gujarati': 'હાહા... આ બાળકની મજાક ઉડાવવામાં ખૂબ મજા આવે છે!',
-        'Japanese': 'ワハハ…こいつをからかうのが一番面白ェや！',
-        'Korean': '하하… 이 녀석 놀리는 게 세상에서 제일 재미있거든!'
-      }
-    },
-    {
-      type: 'bubble-speech',
-      top: '40%',
-      left: '40%',
-      width: '18%',
-      height: '11%',
-      fontSize: 'clamp(7.5px, 0.9vw, 11.5px)',
-      text: {
-        'English': 'LUFFY, WOULD YOU LIKE SOMETHING TO EAT?',
-        'Hindi': 'लफी, क्या तुम कुछ खाना चाहोगे?',
-        'Gujarati': 'લફી, તારે કંઈક ખાવું છે?',
-        'Japanese': 'ルフィ、何か食べる？',
-        'Korean': '루피, 뭐 좀 먹을래?'
-      }
-    },
-    {
-      type: 'bubble-speech',
-      top: '40%',
-      left: '2%',
-      width: '16%',
-      height: '12%',
-      fontSize: 'clamp(7px, 0.85vw, 11px)',
-      text: {
-        'English': 'YEAH! JUST PUT IT ON MY TREASURE TAB!',
-        'Hindi': 'हाँ! मेरे खज़ाने वाले खाते में लिख लेना!',
-        'Gujarati': 'હા! મારા ખજાના વાળા ખાતામાં લખી લેજો!',
-        'Japanese': 'うん！おれの宝のツケにしといて！',
-        'Korean': '응! 내 보물 외상 장부에 달아줘!'
-      }
-    },
-    {
-      type: 'bubble-caption-white',
-      top: '55%',
-      left: '71%',
-      width: '20%',
-      height: '8%',
-      fontSize: 'clamp(7.5px, 0.9vw, 11.5px)',
-      text: {
-        'English': 'MAKINO - TAVERN HOSTESS',
-        'Hindi': 'माकिनो - बार मालकिन',
-        'Gujarati': 'માકિનો - બારની માલિકણ',
-        'Japanese': '酒場の店主 マキノ',
-        'Korean': '주점 주인 마키노'
-      }
-    },
-    {
-      type: 'bubble-speech',
-      top: '56%',
-      left: '29%',
-      width: '17%',
-      height: '12%',
-      fontSize: 'clamp(7px, 0.85vw, 11px)',
-      text: {
-        'English': 'TREASURE TAB? DON\'T TRY TO SWINDLE THE LADY.',
-        'Hindi': 'खज़ाने का खाता? बेचारी को चूना लगाने की कोशिश मत करो।',
-        'Gujarati': 'ખજાનાનું ખાતું? બાઈને છેતરવાનો પ્રયાસ ન કર.',
-        'Japanese': '宝のツケ？マキノさんをだますんじゃねぇよ。',
-        'Korean': '보물 외상? 마키노 씨 속이지 마라.'
-      }
-    },
-    {
-      type: 'bubble-speech',
-      top: '56%',
-      left: '3%',
-      width: '26%',
-      height: '11%',
-      fontSize: 'clamp(7px, 0.85vw, 11px)',
-      text: {
-        'English': 'I\'LL BECOME A PIRATE, FIND TREASURE, AND PAY HER BACK!!',
-        'Hindi': 'मैं डाकू बनूँगा, खज़ाना ढूँढूँगा और सारा कर्ज़ चुका दूँगा!!',
-        'Gujarati': 'હું ચાંચિયો બનીશ, ખજાનો શોધીશ અને બધું ચૂકવી દઈશ!!',
-        'Japanese': '海賊になって宝を見つけて全部返すもん！！',
-        'Korean': '해적이 돼서 보물 찾아서 전부 갚을 거야!!'
-      }
-    }
+    { type: 'bubble-speech', top: '12%', left: '77%', width: '16%', height: '15%', fontSize: 'clamp(8px, 0.95vw, 12px)', text: {
+      'English': 'CAPTAIN SHANKS! I\'M GLAD TO SEE YOU ALL ENJOYING YOURSELVES.',
+      'Hindi': 'कैप्टन शैंक्स! आप सभी को खुश देखकर मुझे बहुत अच्छा लगा।',
+      'Gujarati': 'કેપ્ટન શૈંક્સ! તમારા બધાને મોજ કરતાં જોઈને મને ખૂબ આનંદ થયો.',
+      'Japanese': 'シャンクス船長！みんな楽しそうで何よりです。',
+      'Korean': '샹크스 선장님! 다들 즐거워 보여서 보기 좋네요.'
+    }},
+    { type: 'bubble-speech', top: '12%', left: '39%', width: '18%', height: '10%', fontSize: 'clamp(8px, 0.95vw, 12px)', text: {
+      'English': 'HO BOY... I JUST LOVE MAKING FUN OF THIS KID!',
+      'Hindi': 'हाहा... इस बच्चे की टांग खींचने में बड़ा मज़ा आता है!',
+      'Gujarati': 'હાહા... આ બાળકની મજાક ઉડાવવામાં ખૂબ મજા આવે છે!',
+      'Japanese': 'ワハハ…こいつをからかうのが一番面白ェや！',
+      'Korean': '하하… 이 녀석 놀리는 게 세상에서 제일 재미있거든!'
+    }},
+    { type: 'bubble-speech', top: '40%', left: '40%', width: '18%', height: '11%', fontSize: 'clamp(8.5px, 1vw, 12.5px)', text: {
+      'English': 'LUFFY, WOULD YOU LIKE SOMETHING TO EAT?',
+      'Hindi': 'लफी, क्या तुम कुछ खाना चाहोगे?',
+      'Gujarati': 'લફી, તારે કંઈક ખાવું છે?',
+      'Japanese': 'ルフィ、何か食べる？',
+      'Korean': '루피, 뭐 좀 먹을래?'
+    }},
+    { type: 'bubble-speech', top: '40%', left: '2%', width: '16%', height: '12%', fontSize: 'clamp(8px, 0.95vw, 12px)', text: {
+      'English': 'YEAH! JUST PUT IT ON MY TREASURE TAB!',
+      'Hindi': 'हाँ! मेरे खज़ाने वाले खाते में लिख लेना!',
+      'Gujarati': 'હા! મારા ખજાના વાળા ખાતામાં લખી લેજો!',
+      'Japanese': 'うん！おれの宝のツケにしといて！',
+      'Korean': '응! 내 보물 외상 장부에 달아줘!'
+    }},
+    { type: 'bubble-caption-white', top: '55%', left: '71%', width: '20%', height: '8%', fontSize: 'clamp(8.5px, 1vw, 12.5px)', text: {
+      'English': 'MAKINO - TAVERN HOSTESS',
+      'Hindi': 'माकिनो - बार मालकिन',
+      'Gujarati': 'માકિનો - બારની માલિકણ',
+      'Japanese': '酒場の店主 マキノ',
+      'Korean': '주점 주인 마키노'
+    }},
+    { type: 'bubble-speech', top: '56%', left: '29%', width: '17%', height: '12%', fontSize: 'clamp(8px, 0.95vw, 12px)', text: {
+      'English': 'TREASURE TAB? DON\'T TRY TO SWINDLE THE LADY.',
+      'Hindi': 'खज़ाने का खाता? बेचारी को चूना लगाने की कोशिश मत करो।',
+      'Gujarati': 'ખજાનાનું ખાતું? બાઈને છેતરવાનો પ્રયાસ ન કર.',
+      'Japanese': '宝のツケ？マキノさんをだますんじゃねぇよ。',
+      'Korean': '보물 외상? 마키노 씨 속이지 마라.'
+    }},
+    { type: 'bubble-speech', top: '56%', left: '3%', width: '26%', height: '11%', fontSize: 'clamp(8px, 0.95vw, 12px)', text: {
+      'English': 'I\'LL BECOME A PIRATE, FIND TREASURE, AND PAY HER BACK!!',
+      'Hindi': 'मैं डाकू बनूँगा, खज़ाना ढूँढूँगा और सारा कर्ज़ चुका दूँगा!!',
+      'Gujarati': 'હું ચાંચિયો બનીશ, ખજાનો શોધીશ અને બધું ચૂકવી દઈશ!!',
+      'Japanese': '海賊になって宝を見つけて全部返すもん！！',
+      'Korean': '해적이 돼서 보물 찾아서 전부 갚을 거야!!'
+    }}
+  ],
+
+  // PAGE 11: Future plans & Learning to swim (p (10).jpg.jpeg)
+  11: [
+    { type: 'bubble-speech', top: '3.5%', left: '8.5%', width: '15.5%', height: '14%', fontSize: 'clamp(8px, 0.95vw, 12px)', text: {
+      'English': 'HOW MUCH LONGER WILL YOU STAY AT THIS VILLAGE?',
+      'Hindi': 'आप लोग इस गाँव में और कितने दिन रुकोगे?',
+      'Gujarati': 'તમે લોકો આ ગામમાં હજુ કેટલા દિવસ રોકાશો?',
+      'Japanese': 'この村にはあとどれくらいいるの？',
+      'Korean': '이 마을엔 얼마나 더 머물 거야?'
+    }},
+    { type: 'bubble-speech', top: '3.5%', left: '69%', width: '12%', height: '9%', fontSize: 'clamp(8.5px, 1vw, 12.5px)', text: {
+      'English': 'YEAH KID...?',
+      'Hindi': 'हाँ बच्चे...?',
+      'Gujarati': 'હા દીકરા...?',
+      'Japanese': 'ん、坊主…？',
+      'Korean': '응 꼬마야…?'
+    }},
+    { type: 'bubble-speech', top: '3.5%', left: '81.5%', width: '12%', height: '12%', fontSize: 'clamp(9px, 1.05vw, 13px)', text: {
+      'English': 'SHANKS...',
+      'Hindi': 'शैंक्स...',
+      'Gujarati': 'શૈંક્સ...',
+      'Japanese': 'シャンクス…',
+      'Korean': '샹크스…'
+    }},
+    { type: 'bubble-speech', top: '34.5%', left: '8%', width: '14.5%', height: '12.5%', fontSize: 'clamp(8px, 0.95vw, 12px)', text: {
+      'English': '...WE\'LL LEAVE HERE FOR GOOD AND HEAD NORTH.',
+      'Hindi': '...हम यहाँ से हमेशा के लिए निकलेंगे और उत्तर की ओर बढ़ेंगे।',
+      'Gujarati': '...અમે અહીંથી કાયમ માટે નીકળીને ઉત્તર તરફ જઈશું.',
+      'Japanese': '…ここを発って北へ向かうつもりだ。',
+      'Korean': '…여길 떠나 북쪽으로 향할 생각이다.'
+    }},
+    { type: 'bubble-speech', top: '34.5%', left: '22.5%', width: '12.5%', height: '12.5%', fontSize: 'clamp(8px, 0.95vw, 12px)', text: {
+      'English': 'AFTER TWO OR THREE MORE VOYAGES...',
+      'Hindi': 'दो या तीन और समुद्री यात्राओं के बाद...',
+      'Gujarati': 'બે કે ત્રણ વધુ સફરો પછી...',
+      'Japanese': 'あと2、3回航海したらな…',
+      'Korean': '두세 번 더 항해한 뒤에…'
+    }},
+    { type: 'bubble-speech', top: '49.5%', left: '8%', width: '10.5%', height: '10%', fontSize: 'clamp(8.5px, 1vw, 12.5px)', text: {
+      'English': 'I SEE...',
+      'Hindi': 'अच्छा...',
+      'Gujarati': 'એમ વાત છે...',
+      'Japanese': 'そっか…',
+      'Korean': '그렇구나…'
+    }},
+    { type: 'bubble-speech', top: '34.5%', left: '77%', width: '17%', height: '22%', fontSize: 'clamp(8px, 0.95vw, 12px)', text: {
+      'English': 'HMM... WE\'VE BEEN USING THIS VILLAGE AS OUR BASE FOR ABOUT A YEAR...',
+      'Hindi': 'हम्म... हम लगभग एक साल से इस गाँव को अपना अड्डा बनाए हुए हैं...',
+      'Gujarati': 'હમ્મ... અમે લગભગ એક વર્ષથી આ ગામને અમારો અડ્ડો બનાવ્યો છે...',
+      'Japanese': 'うーん…この村を拠点にして大体1年になるか…',
+      'Korean': '음… 이 마을을 거점으로 삼은 지 벌써 1년인가…'
+    }},
+    { type: 'bubble-speech', top: '64%', left: '8%', width: '14%', height: '9.5%', fontSize: 'clamp(8.5px, 1vw, 12.5px)', text: {
+      'English': 'THAT\'S GOOD KID...',
+      'Hindi': 'अच्छी बात है बच्चे...',
+      'Gujarati': 'સારી વાત છે દીકરા...',
+      'Japanese': 'そりゃいいな…',
+      'Korean': '그거 참 좋네…'
+    }},
+    { type: 'bubble-speech', top: '64%', left: '28%', width: '20%', height: '10%', fontSize: 'clamp(8px, 0.95vw, 12px)', text: {
+      'English': 'I\'M GONNA LEARN HOW TO SWIM BY THE TIME YOU LEAVE!',
+      'Hindi': 'तुम्हारे जाने से पहले मैं तैरना सीख लूँगा!',
+      'Gujarati': 'તમારા ગયા પહેલાં હું તરતાં શીખી લઈશ!',
+      'Japanese': 'お前らが出るまでに泳ぎをマスターしてやる！',
+      'Korean': '너희 떠나기 전까지 수영 꼭 배우고 말 테다!'
+    }},
+    { type: 'bubble-speech', top: '83%', left: '8%', width: '15%', height: '10%', fontSize: 'clamp(8.5px, 1vw, 12.5px)', text: {
+      'English': 'DO WHATEVER YOU WANT.',
+      'Hindi': 'जो करना है करो।',
+      'Gujarati': 'જે કરવું હોય એ કર.',
+      'Japanese': '好きにしろよ。',
+      'Korean': '마음대로 해라.'
+    }},
+    { type: 'bubble-speech', top: '64%', left: '73%', width: '18%', height: '12%', fontSize: 'clamp(8px, 0.95vw, 12px)', text: {
+      'English': 'TWO OR THREE MORE TRIPS, EH? HMM...',
+      'Hindi': 'दो या तीन और सफ़र, हैं? हम्म...',
+      'Gujarati': 'બે કે ત્રણ વધુ સફર, હેં? હમ્મ...',
+      'Japanese': 'あと2、3回の航海か…うーん…',
+      'Korean': '두세 번의 항해라… 흠…'
+    }}
+  ],
+
+  // PAGE 12: Bandits burst in (p (11).jpg.jpeg)
+  12: [
+    { type: 'bubble-speech', top: '1.5%', left: '11.5%', width: '17.5%', height: '11.5%', fontSize: 'clamp(8px, 0.95vw, 12px)', text: {
+      'English': 'MAKE WAY FOR THE SCOURGE OF THE MOUNTAINS!',
+      'Hindi': 'रास्ता दो! पहाड़ों के लुटेरे आ गए हैं!',
+      'Gujarati': 'રસ્તો આપો! પહાડોના લૂંટારા આવ્યા છે!',
+      'Japanese': '山賊のお通りだ！道をあけろ！',
+      'Korean': '산적님 행차시다! 길을 비켜라!'
+    }},
+    { type: 'bubble-speech', top: '3.5%', left: '51%', width: '11%', height: '7%', fontSize: 'clamp(11px, 1.2vw, 15px)', text: {
+      'English': '!', 'Hindi': '!', 'Gujarati': '!', 'Japanese': '！', 'Korean': '!'
+    }},
+    { type: 'bubble-speech', top: '49%', left: '56%', width: '15%', height: '13%', fontSize: 'clamp(8px, 0.95vw, 12px)', text: {
+      'English': 'FIRST TIME I\'VE SEEN PIRATES... YOU LOOK LIKE A SORRY LOT TO ME.',
+      'Hindi': 'पहली बार डाकू देखे हैं... मुझे तो तुम बहुत दयनीय और कमज़ोर लग रहे हो।',
+      'Gujarati': 'પહેલી વાર ચાંચિયા જોયા છે... મને તો તમે સાવ નકામા લાગો છો.',
+      'Japanese': '初めて海賊を見たが…情けねェ面構えだな。',
+      'Korean': '해적이란 놈들을 처음 보는데… 꼴이 참 한심하군.'
+    }},
+    { type: 'bubble-speech', top: '49%', left: '77%', width: '15%', height: '13%', fontSize: 'clamp(8px, 0.95vw, 12px)', text: {
+      'English': 'HEH HEH... SO YOU CALL YOURSELVES PIRATES, EH?',
+      'Hindi': 'हेह हेह... तो तुम खुद को डाकू कहते हो, हैं?',
+      'Gujarati': 'હેહ હેહ... તો તમે પોતાને ચાંચિયા કહો છો, હેં?',
+      'Japanese': 'へへっ…これで海賊のつもりか？',
+      'Korean': '흐흐… 그래, 너희가 해적이라고?'
+    }},
+    { type: 'bubble-speech', top: '65.5%', left: '64%', width: '6.5%', height: '8%', fontSize: 'clamp(10px, 1.1vw, 14px)', text: {
+      'English': '...!', 'Hindi': '...!', 'Gujarati': '...!', 'Japanese': '…！', 'Korean': '…!'
+    }},
+    { type: 'bubble-speech', top: '65.5%', left: '81.5%', width: '10%', height: '6.5%', fontSize: 'clamp(11px, 1.2vw, 15px)', text: {
+      'English': '?', 'Hindi': '?', 'Gujarati': '?', 'Japanese': '？', 'Korean': '?'
+    }}
+  ],
+
+  // PAGE 13: Higuma demands liquor (p (12).jpg.jpeg)
+  13: [
+    { type: 'bubble-speech', top: '8%', left: '8.5%', width: '20%', height: '17%', fontSize: 'clamp(7.5px, 0.9vw, 11.5px)', text: {
+      'English': 'OH, DON\'T WET YOURSELVES. WE\'RE NOT HERE TO BUST UP THE PLACE. JUST SELL US 10 BARRELS OF GROG, AND WE\'LL INJURE ONLY THE BARE MINIMUM.',
+      'Hindi': 'अरे डरो मत। हम यहाँ तोड़फोड़ करने नहीं आए हैं। बस 10 बैरल शराब दे दो, और हम किसी को ज्यादा चोट नहीं पहुँचाएँगे।',
+      'Gujarati': 'અરે ડરો નહીં. અમે અહીં તોડફોડ કરવા નથી આવ્યા. બસ 10 બેરલ દારૂ આપી દો, અમે કોઈને નુકસાન નહીં પહોંચાડીએ.',
+      'Japanese': 'おいビビるなよ。店を壊しに来たんじゃねぇ。酒を10樽売ってくれりゃ大人しくしてやる。',
+      'Korean': '겁먹지 마라. 난장판 만들러 온 게 아니야. 술 10통만 팔면 조용히 갈 테니.'
+    }},
+    { type: 'bubble-speech', top: '8%', left: '85%', width: '14%', height: '15%', fontSize: 'clamp(8.5px, 1vw, 12.5px)', text: {
+      'English': 'WE\'RE MOUNTAIN BANDITS.',
+      'Hindi': 'हम पहाड़ी लुटेरे हैं।',
+      'Gujarati': 'અમે પહાડી લૂંટારા છીએ.',
+      'Japanese': 'おれたちは山賊だ。',
+      'Korean': '우린 산적이다.'
+    }},
+    { type: 'bubble-speech', top: '34%', left: '8.5%', width: '13%', height: '15.5%', fontSize: 'clamp(8px, 0.95vw, 12px)', text: {
+      'English': 'WE JUST RAN OUT OF LIQUOR.',
+      'Hindi': 'शराब अभी-अभी पूरी खत्म हो गई है।',
+      'Gujarati': 'દારૂ હમણાં જ પૂરો થઈ ગયો છે.',
+      'Japanese': 'お酒はちょうど切れてしまいまして。',
+      'Korean': '술이 방금 다 떨어졌는데요.'
+    }},
+    { type: 'bubble-speech', top: '34%', left: '42.5%', width: '11%', height: '15%', fontSize: 'clamp(8.5px, 1vw, 12.5px)', text: {
+      'English': 'I\'M SORRY...',
+      'Hindi': 'मुझे माफ़ कीजिए...',
+      'Gujarati': 'મને માફ કરશો...',
+      'Japanese': 'すみません…',
+      'Korean': '죄송합니다…'
+    }},
+    { type: 'bubble-caption-white', top: '42.5%', left: '78%', width: '20%', height: '9%', fontSize: 'clamp(8px, 0.95vw, 12px)', text: {
+      'English': 'HIGUMA THE BEAR - BANDIT LEADER',
+      'Hindi': 'हिगुमा द बेयर - डाकू सरदार',
+      'Gujarati': 'હિગુમા ધ બેર - લૂંટારા સરદાર',
+      'Japanese': '山賊の頭 ヒグマ',
+      'Korean': '산적 두목 히구마'
+    }},
+    { type: 'bubble-speech', top: '53.5%', left: '8.5%', width: '14.5%', height: '19%', fontSize: 'clamp(8px, 0.95vw, 12px)', text: {
+      'English': 'THAT\'S STRANGE. WHAT\'RE ALL THESE PIRATES DRINKING?',
+      'Hindi': 'बड़ी अजीब बात है। तो ये सारे डाकू क्या पी रहे हैं?',
+      'Gujarati': 'બહુ અજીબ વાત છે. તો આ બધા ચાંચિયા શું પી રહ્યા છે?',
+      'Japanese': 'おかしいな。じゃあこいつらが飲んでるのは何だ？',
+      'Korean': '이상하네. 그럼 저 해적들이 마시는 건 뭔데?'
+    }},
+    { type: 'bubble-speech', top: '53.5%', left: '43%', width: '10.5%', height: '8%', fontSize: 'clamp(9px, 1.05vw, 13px)', text: {
+      'English': 'HMMM...',
+      'Hindi': 'हम्म...',
+      'Gujarati': 'હમ્મ...',
+      'Japanese': 'ふーむ…',
+      'Korean': '흠…'
+    }},
+    { type: 'bubble-speech', top: '76.5%', left: '9%', width: '11%', height: '15.5%', fontSize: 'clamp(8px, 0.95vw, 12px)', text: {
+      'English': 'I JUST SERVED THE LAST OF IT.',
+      'Hindi': 'मैंने आखिरी शराब इन्हीं को परोसी थी।',
+      'Gujarati': 'મેં છેલ્લો દારૂ આમને જ આપ્યો હતો.',
+      'Japanese': '今出ているのが最後なんです。',
+      'Korean': '방금 나간 게 마지막이었어요.'
+    }},
+    { type: 'bubble-speech', top: '76.5%', left: '24.5%', width: '11%', height: '7%', fontSize: 'clamp(8.5px, 1vw, 12.5px)', text: {
+      'English': 'IT\'S TRUE...',
+      'Hindi': 'ये सच है...',
+      'Gujarati': 'આ સાચું છે...',
+      'Japanese': 'ホントだぞ…',
+      'Korean': '진짜야…'
+    }},
+    { type: 'bubble-speech', top: '76.5%', left: '41%', width: '12%', height: '8%', fontSize: 'clamp(8.5px, 1vw, 12.5px)', text: {
+      'English': 'FRUIT JUICE?',
+      'Hindi': 'फलों का रस?',
+      'Gujarati': 'ફળોનો રસ?',
+      'Japanese': 'ジュースか？',
+      'Korean': '과일 주스냐?'
+    }}
   ]
 };
 
-// Universal smart speech bubble generator for pages 11 to 52 so EVERY page has authentic manga bubbles
-function getSmartBubblesForPage(pageNum) {
-  if (pageOverlaysData[pageNum]) return pageOverlaysData[pageNum];
+// ==========================================================================
+// COMPREHENSIVE STORY & DIALOGUE TRANSLATIONS FOR PAGES 14 TO 52
+// Every single page has complete top/middle/bottom panel scanlation overlays
+// ==========================================================================
+const page14To52Data = {
+  14: [
+    { type: 'bubble-speech', top: '15%', left: '15%', width: '28%', height: '16%', text: {
+      'English': 'Shanks: "We drank all the sake! Here, you can have this unopened bottle if you like."',
+      'Hindi': 'शैंक्स: "हमने सारी शराब पी ली! ये लो, ये एक आखिरी बोतल तुम रख सकते हो।"',
+      'Gujarati': 'શૈંક્સ: "અમે બધો દારૂ પી લીધો! આ લો, આ એક છેલ્લી બોટલ તમે રાખી શકો છો."',
+      'Japanese': 'シャンクス:「おれたちが全部飲んじまった！これやるから許してくれよ。」',
+      'Korean': '샹크스: "우리가 다 마셔버렸네! 이거라도 괜찮다면 가져가게."'
+    }},
+    { type: 'bubble-speech', top: '55%', left: '45%', width: '25%', height: '14%', text: {
+      'English': 'Higuma smashes the bottle over Shanks in insult! *CRASH!*',
+      'Hindi': 'हिगुमा ने अपमान में शैंक्स के सिर पर बोतल फोड़ दी! *धड़ाक!*',
+      'Gujarati': 'હિગુમાએ અપમાનમાં શૈંક્સના માથા પર બોટલ ફોડી! *ધડાકો!*',
+      'Japanese': 'ヒグマが酒瓶を叩き割る！ガシャーン！',
+      'Korean': '히구마가 샹크스 머리에 병을 깨부순다! 와장창!'
+    }}
+  ],
+  15: [
+    { type: 'bubble-speech', top: '12%', left: '55%', width: '35%', height: '22%', text: {
+      'English': 'Higuma: "Don\'t look down on me! I have an 8 million bounty! 56 men have died by my blade!"',
+      'Hindi': 'हिगुमा: "मुझे कम मत समझना! मुझ पर 80 लाख की इनामी राशि है! 56 लोग मेरी तलवार से मारे गए हैं!"',
+      'Gujarati': 'હિગુમા: "મને ઓછો ન સમજતો! મારા પર 80 લાખનું ઇનામ છે! 56 લોકો મારી તલવારથી માર્યા ગયા છે!"',
+      'Japanese': 'ヒグマ:「ナメるんじゃねぇ！おれは賞金800万ベリー！56人殺した男だ！」',
+      'Korean': '히구마: "날 깔보지 마라! 난 현상금 800만 베리! 56명을 베어 넘긴 사내다!"'
+    }},
+    { type: 'bubble-speech', top: '65%', left: '15%', width: '28%', height: '15%', text: {
+      'English': 'Higuma: "One bottle won\'t buy my forgiveness! What a waste of time."',
+      'Hindi': 'हिगुमा: "एक बोतल से मेरी माफ़ी नहीं मिलेगी! यहाँ आना ही बेकार था।"',
+      'Gujarati': 'હિગુમા: "એક બોટલથી મારો ગુસ્સો શાંત નહીં થાય! સાવ સમય બગાડ્યો."',
+      'Japanese': 'ヒグマ:「酒1本で許すと思ってんのか！時間の無駄だったぜ。」',
+      'Korean': '히구마: "술 한 병으로 넘어갈 줄 알았냐! 시간만 버렸군."'
+    }}
+  ],
+  16: [
+    { type: 'bubble-speech', top: '18%', left: '20%', width: '32%', height: '16%', text: {
+      'English': 'Shanks laughing on the floor: "Haha! The floor is soaking wet! Sorry about that, Makino!"',
+      'Hindi': 'शैंक्स फर्श साफ करते हुए हँसा: "हाहा! पूरा फर्श गीला हो गया! माफ़ करना माकिनो!"',
+      'Gujarati': 'શૈંક્સ સાફ કરતાં હસ્યો: "હાહા! આખી ફર્શ ભીની થઈ ગઈ! માફ કરજે માકિનો!"',
+      'Japanese': 'シャンクス:「ギャハハ！床がビショビショだ！ごめんよマキノさん！」',
+      'Korean': '샹크스: "하하! 바닥이 다 젖었네! 미안해요 마키노 씨!"'
+    }},
+    { type: 'bubble-speech', top: '65%', left: '12%', width: '34%', height: '18%', text: {
+      'English': 'Luffy screams in rage: "WHY ARE YOU LAUGHING?! WHY DIDN\'T YOU FIGHT BACK?!"',
+      'Hindi': 'लफी गुस्से में चीख पड़ा: "तुम हँस क्यों रहे हो?! तुमने पलटकर वार क्यों नहीं किया?!"',
+      'Gujarati': 'લફી ગુસ્સામાં બૂમ પાડી ઊઠ્યો: "તમે હસો છો કેમ?! તમે સામે લડ્યા કેમ નહીં?!"',
+      'Japanese': 'ルフィ激怒:「なんで笑ってんだよ？！なんでやり返さねェんだ？！」',
+      'Korean': '루피 분노: "왜 웃는 거야?! 왜 맞서 싸우지 않은 건데?!"'
+    }}
+  ],
+  17: [
+    { type: 'bubble-speech', top: '15%', left: '55%', width: '35%', height: '20%', text: {
+      'English': 'Shanks: "It\'s just spilled sake, Luffy. Nothing to risk a life over."',
+      'Hindi': 'शैंक्स: "सिर्फ शराब ही तो छलकी है, लफी। इसके लिए जान जोखिम में डालने की ज़रूरत नहीं।"',
+      'Gujarati': 'શૈંક્સ: "માત્ર દારૂ જ તો ઢોળાયો છે, લફી. આના માટે જીવ જોખમમાં મૂકવાની જરૂર નથી."',
+      'Japanese': 'シャンクス:「酒をかけられただけだ。怒るほどのことじゃないさ。」',
+      'Korean': '샹크스: "술 좀 쏟은 것뿐이야, 루피. 목숨 걸고 화낼 일이 아니란다."'
+    }},
+    { type: 'bubble-speech', top: '68%', left: '35%', width: '28%', height: '16%', text: {
+      'English': 'Luffy eats from the treasure box: "Munch munch... this tastes awful!"',
+      'Hindi': 'लफी खजाने की पेटी से फल खाते हुए: "चबाते हुए... ये कितना बेस्वाद है!"',
+      'Gujarati': 'લફી પેટીમાંથી ફળ ખાતાં: "ચાવતાં... આ તો બહુ કડવું છે!"',
+      'Japanese': 'ルフィ:「モグモグ…なんだこのくだもの、まずいぞ！」',
+      'Korean': '루피: "우물우물… 이 과일 진짜 맛없다!"'
+    }}
+  ],
+  18: [
+    { type: 'bubble-speech', top: '12%', left: '55%', width: '32%', height: '16%', text: {
+      'English': 'Shanks screaming: "LUFFY! WHAT ARE YOU EATING RIGHT NOW?!"',
+      'Hindi': 'शैंक्स चीखते हुए: "लफी! तुम अभी क्या खा रहे हो?!"',
+      'Gujarati': 'શૈંક્સ બૂમ પાડતાં: "લફી! તું અત્યારે શું ખાઈ રહ્યો છે?!"',
+      'Japanese': 'シャンクス驚愕:「ルフィ！お前今何を食ってんだ？！」',
+      'Korean': '샹크스 경악: "루피! 너 지금 뭘 처먹고 있는 거야?!"'
+    }},
+    { type: 'bubble-speech', top: '72%', left: '15%', width: '35%', height: '18%', text: {
+      'English': 'Luffy\'s legs stretch to the floor! Everyone screams in total shock!',
+      'Hindi': 'लफी के पैर रबड़ की तरह खिंच गए! सब लोग हैरत में चीख पड़े!',
+      'Gujarati': 'લફીના પગ રબરની જેમ ખેંચાઈ ગયા! બધા અચરજમાં બૂમો પાડી ઊઠ્યા!',
+      'Japanese': 'ルフィの足がゴムのように伸びる！全員が絶叫！',
+      'Korean': '루피의 다리가 고무처럼 쭉 늘어난다! 모두가 경악!'
+    }}
+  ],
+  19: [
+    { type: 'bubble-speech', top: '14%', left: '52%', width: '38%', height: '22%', text: {
+      'English': 'Shanks: "That was the Gomu Gomu Devil Fruit! Eating it turns you into rubber, but you can NEVER swim again!"',
+      'Hindi': 'शैंक्स: "वह गोमु-गोमु डेविल फ्रूट था! उसे खाने से तुम रबड़ बन गए, लेकिन अब पूरी ज़िंदगी कभी तैर नहीं पाओगे!"',
+      'Gujarati': 'શૈંક્સ: "તે ગોમુ-ગોમુ ડેવિલ ફ્રૂટ હતું! તેને ખાવાથી તું રબર બની ગયો, પણ હવે આખી જિંદગી ક્યારેય તરી નહીં શકે!"',
+      'Japanese': 'シャンクス:「悪魔の実『ゴムゴムの実』だ！全身ゴムになって一生泳げない体になったんだ！」',
+      'Korean': '샹크스: "악마의 열매 \'고무고무 열매\'야! 온몸이 고무 인간이 되어 평생 수영을 못해!"'
+    }},
+    { type: 'bubble-speech', top: '72%', left: '15%', width: '28%', height: '16%', text: {
+      'English': 'Luffy screaming: "NO WAAAAAYYY?!!"',
+      'Hindi': 'लफी चीखते हुए: "अरे नहींइइइ?!!"',
+      'Gujarati': 'લફી બૂમ પાડતાં: "ના હોયયયય?!!"',
+      'Japanese': 'ルフィ絶叫:「ウソだろーーーーッ？！！」',
+      'Korean': '루피 절규: "말도 안 돼ーーーーッ?!!"'
+    }}
+  ],
+  20: [
+    { type: 'bubble-caption-white', top: '8%', left: '72%', width: '24%', height: '12%', text: {
+      'English': 'SEVERAL DAYS LATER...',
+      'Hindi': 'कुछ दिनों बाद...',
+      'Gujarati': 'થોડા દિવસો પછી...',
+      'Japanese': '数日後…',
+      'Korean': '며칠 후…'
+    }},
+    { type: 'bubble-speech', top: '55%', left: '20%', width: '32%', height: '18%', text: {
+      'English': 'Luffy to Makino: "Look Makino! My body stretches like real rubber!"',
+      'Hindi': 'लफी माकिनो से: "देखो माकिनो! मेरा पूरा शरीर रबड़ की तरह खिंचता है!"',
+      'Gujarati': 'લફી માકિનોને: "જો માકિનો! મારું આખું શરીર રબરની જેમ ખેંચાય છે!"',
+      'Japanese': 'ルフィ:「見てマキノさん！体中がゴムみたいに伸びるんだ！」',
+      'Korean': '루피: "봐봐 마키노 씨! 내 몸이 진짜 고무처럼 늘어나!"'
+    }}
+  ],
+  21: [
+    { type: 'bubble-speech', top: '15%', left: '55%', width: '32%', height: '16%', text: {
+      'English': 'Bandits enter: "Hey lady! Give us all your sake right now!"',
+      'Hindi': 'डाकू बार में घुसे: "ऐ लड़की! अपनी सारी शराब हमारे हवाले कर दो!"',
+      'Gujarati': 'લૂંટારા બારમાં ઘૂસ્યા: "એ છોકરી! તારો બધો દારૂ અમને આપી દે!"',
+      'Japanese': '山賊乱入:「おい女！酒を全部出しな！」',
+      'Korean': '산적 난입: "어이 아가씨! 술 있는 대로 다 내놔!"'
+    }},
+    { type: 'bubble-speech', top: '52%', left: '18%', width: '35%', height: '22%', text: {
+      'English': 'Higuma laughing: "Those Red Hair pirates were pathetic cowards. They fled the village like scared dogs!"',
+      'Hindi': 'हिगुमा हँसते हुए: "वे रेड हेयर डाकू डरपोक कायर थे। वे दुम दबाकर गाँव से भाग गए!"',
+      'Gujarati': 'હિગુમા હસતાં: "તે રેડ હેર ચાંચિયા સાવ ડરપોક હતા. તેઓ ગામમાંથી ભાગી ગયા!"',
+      'Japanese': 'ヒグマ:「赤髪の奴らは腰抜けの腑抜け野郎だったぜ！ビビって逃げ出しやがった！」',
+      'Korean': '히구マ: "빨간 머리 녀석들은 겁쟁이 얼간이들이었어! 무서워서 도망친 거지!"'
+    }}
+  ],
+  22: [
+    { type: 'bubble-speech', top: '18%', left: '15%', width: '34%', height: '20%', text: {
+      'English': 'Luffy shouting: "APOLOGIZE TO SHANKS AND HIS CREW RIGHT NOW!"',
+      'Hindi': 'लफी चीखते हुए: "शैंक्स और उसकी टोली से अभी के अभी माफ़ी माँगो!"',
+      'Gujarati': 'લફી બૂમ પાડતાં: "શૈંક્સ અને એની ટીમની અત્યારે જ માફી માંગો!"',
+      'Japanese': 'ルフィ激怒:「シャンクスたちに今すぐ謝れ！！」',
+      'Korean': '루피 분노: "샹크스와 동료들에게 당장 사과해!!"'
+    }},
+    { type: 'bubble-speech', top: '58%', left: '55%', width: '30%', height: '16%', text: {
+      'English': 'Higuma furious: "What did you say, you little insolent brat?!"',
+      'Hindi': 'हिगुमा गुस्से में: "तूने क्या कहा, बदतमीज़ कीड़े?!"',
+      'Gujarati': 'હિગુમા ગુસ્સામાં: "તેં શું કહ્યું, નાલાયક છોકરા?!"',
+      'Japanese': 'ヒグマ激怒:「何だと？！このクソガキが！」',
+      'Korean': '히구마 격노: "뭐라고 했냐, 이 건방진 꼬마 자식이?!"'
+    }}
+  ],
+  23: [
+    { type: 'bubble-speech', top: '20%', left: '52%', width: '34%', height: '20%', text: {
+      'English': 'Higuma drags Luffy onto the street: "You need to be taught a lesson!"',
+      'Hindi': 'हिगुमा लफी को सड़क पर घसीटता है: "तुझे सबक सिखाना पड़ेगा!"',
+      'Gujarati': 'હિગુમા લફીને રસ્તા પર ઢસડે છે: "તને પાઠ ભણાવવો પડશે!"',
+      'Japanese': 'ヒグマがルフィを引きずり出す:「身の程を教えてやる！」',
+      'Korean': '히구마가 루피를 끌고 나간다: "분수를 알게 해 주마!"'
+    }},
+    { type: 'bubble-speech', top: '75%', left: '68%', width: '22%', height: '12%', text: {
+      'English': 'Makino screams in panic: "LUFFY!!" ',
+      'Hindi': 'माकिनो घबराकर चीखी: "लफी!!" ',
+      'Gujarati': 'માકિનો ગભરાઈને બૂમ પાડે છે: "લફી!!" ',
+      'Japanese': 'マキノ悲鳴:「ルフィーーッ！！」',
+      'Korean': '마키노 비명: "루피ーーッ!!"'
+    }}
+  ],
+  24: [
+    { type: 'bubble-speech', top: '22%', left: '18%', width: '32%', height: '16%', text: {
+      'English': 'Villagers panicking: "The mountain bandits are going to kill Luffy!"',
+      'Hindi': 'गाँव वाले घबराए: "डाकू लफी को जान से मार डालेंगे!"',
+      'Gujarati': 'ગામના લોકો ગભરાયા: "લૂંટારાઓ લફીને મારી નાખશે!"',
+      'Japanese': '村人たち:「山賊がルフィを殺そうとしてる！」',
+      'Korean': '마을 사람들: "산적들이 루피를 죽이려고 해!"'
+    }},
+    { type: 'bubble-speech', top: '65%', left: '55%', width: '30%', height: '16%', text: {
+      'English': 'Mayor Woop Slap: "Calm down, I will talk to them myself!"',
+      'Hindi': 'मेयर वूप स्लॅप: "शांत रहो, मैं खुद उनसे बात करूँगा!"',
+      'Gujarati': 'મેયર વૂપ સ્લેપ: "શાંત થાઓ, હું પોતે તેમની સાથે વાત કરીશ!"',
+      'Japanese': '村長:「落ち着け、わしが直接話をつける！」',
+      'Korean': '촌장: "진정하게, 내가 직접 담판을 짓겠네!"'
+    }}
+  ],
+  25: [
+    { type: 'bubble-speech', top: '22%', left: '18%', width: '38%', height: '22%', text: {
+      'English': 'Mayor bows: "Please, Mr. Bandit! Release the boy! Take all our village money!"',
+      'Hindi': 'मेयर हाथ जोड़ते हुए: "कृपया डाकू सरदार! बच्चे को छोड़ दीजिए! हमारे गाँव का सारा धन ले लीजिए!"',
+      'Gujarati': 'મેયર હાથ જોડતાં: "મહેરબાની કરીને લૂંટારા સરદાર! બાળકને છોડી દો! અમારા ગામના બધા પૈસા લઈ લો!"',
+      'Japanese': '村長が土下座:「頼む山賊さん！子供を放してくれ！村の金を全部やる！」',
+      'Korean': '촌장이 읍소한다: "부탁이오 산적 두목! 아이를 놔주시오! 마을 돈을 다 주겠소!"'
+    }},
+    { type: 'bubble-speech', top: '65%', left: '58%', width: '28%', height: '16%', text: {
+      'English': 'Higuma laughs: "Money? The old man knows how the world works."',
+      'Hindi': 'हिगुमा हँसा: "पैसा? बूढ़ा दुनियादारी समझता है।"',
+      'Gujarati': 'હિગુમા હસ્યો: "પૈસા? ડોસાને દુનિયાની ખબર છે."',
+      'Japanese': 'ヒグマ:「金か？じじい、話が分かるじゃねぇか。」',
+      'Korean': '히구마: "돈이라고? 영감탱이가 세상 물정을 좀 아는군."'
+    }}
+  ],
+  26: [
+    { type: 'bubble-speech', top: '22%', left: '52%', width: '38%', height: '22%', text: {
+      'English': 'Higuma draws sword: "However, anyone who insults my pride must die! Money won\'t save him!"',
+      'Hindi': 'हिगुमा ने तलवार निकाली: "लेकिन जिसने मेरा अपमान किया उसे मरना ही होगा! पैसा इसे नहीं बचा सकता!"',
+      'Gujarati': 'હિગુમાએ તલવાર કાઢી: "પણ જેણે મારું અપમાન કર્યું એ મરશે જ! પૈસા આને નહીં બચાવી શકે!"',
+      'Japanese': 'ヒグマ抜刀:「だが、おれをバカにした奴は生かしちゃおけねぇ！金じゃ命は買えねぇよ！」',
+      'Korean': '히구마 발도: "하지만 날 모욕한 놈은 죽어야 해! 돈으로 목숨은 못 산다!"'
+    }},
+    { type: 'bubble-speech', top: '68%', left: '15%', width: '26%', height: '15%', text: {
+      'English': 'Luffy: "I WILL NEVER APOLOGIZE TO SCUM LIKE YOU!"',
+      'Hindi': 'लफी: "मैं तुम्हारे जैसे कचरे से कभी माफ़ी नहीं माँगूँगा!"',
+      'Gujarati': 'લફી: "હું તારા જેવા દુષ્ટની ક્યારેય માફી નહીં માંગુ!"',
+      'Japanese': 'ルフィ:「お前なんかに絶対謝るもんか！！」',
+      'Korean': '루피: "너 따위에게 절대 사과 안 해!!"'
+    }}
+  ],
+  27: [
+    { type: 'bubble-speech', top: '18%', left: '15%', width: '38%', height: '18%', text: {
+      'English': 'Shanks voice: "I was wondering why no one came to the harbor to greet us."',
+      'Hindi': 'शैंक्स की आवाज़: "मैं सोच ही रहा था कि बंदरगाह पर कोई हमारा स्वागत करने क्यों नहीं आया।"',
+      'Gujarati': 'શૈંક્સનો અવાજ: "હું વિચારતો હતો કે બંદરે અમારું સ્વાગત કરવા કોઈ કેમ ન આવ્યું."',
+      'Japanese': 'シャンクスの声:「港に出迎えが誰もいねぇから、おかしいと思ったぜ。」',
+      'Korean': '샹크스의 목소리: "항구에 마중 나온 사람이 아무도 없어서 이상하다 했지."'
+    }},
+    { type: 'bubble-speech', top: '55%', left: '52%', width: '34%', height: '18%', text: {
+      'English': 'Shanks: "Looks like you guys are having quite a wild party here."',
+      'Hindi': 'शैंक्स: "लगता है यहाँ काफी ज़बरदस्त महफ़िल सजी हुई है।"',
+      'Gujarati': 'શૈંક્સ: "લાગે છે અહીં તો ભારે ધિંગાણું ચાલી રહ્યું છે."',
+      'Japanese': 'シャンクス:「ずいぶんと派手に盛り上がってんな、お前ら。」',
+      'Korean': '샹크스: "제법 요란하게 파티를 즐기고 있잖아, 너희들."'
+    }}
+  ],
+  28: [
+    { type: 'bubble-speech', top: '12%', left: '75%', width: '18%', height: '10%', text: {
+      'English': 'Luffy: "SHANKS!"',
+      'Hindi': 'लफी: "शैंक्स!"',
+      'Gujarati': 'લફી: "શૈંક્સ!"',
+      'Japanese': 'ルフィ:「シャンクス！」',
+      'Korean': '루피: "샹크스!"'
+    }},
+    { type: 'bubble-speech', top: '25%', left: '15%', width: '32%', height: '16%', text: {
+      'English': 'Shanks: "Luffy, didn\'t you say your punch was as strong as a pistol?"',
+      'Hindi': 'शैंक्स: "लफी, तुमने तो कहा था तुम्हारा मुक्का पिस्तौल की गोली जैसा है?"',
+      'Gujarati': 'શૈંક્સ: "લફી, તેં તો કહ્યું તું ને કે તારો મુક્કો પિસ્તોલ જેવો છે?"',
+      'Japanese': 'シャンクス:「ルフィ、お前のパンチはピストル並みじゃなかったのか？」',
+      'Korean': '샹크스: "루피, 네 주먹은 권총만큼 강하다지 않았냐?"'
+    }},
+    { type: 'bubble-speech', top: '65%', left: '55%', width: '32%', height: '18%', text: {
+      'English': 'Bandit points gun: "Don\'t take another step! I\'ll blow your brains out!"',
+      'Hindi': 'डाकू ने बंदूक तानी: "एक कदम भी आगे मत बढ़ना! खोपड़ी उड़ा दूँगा!"',
+      'Gujarati': 'લૂંટારાએ બંદૂક તાકી: "એક ડગલું પણ આગળ ન વધતો! માથું ઉડાવી દઈશ!"',
+      'Japanese': '山賊が銃を突きつける:「一歩でも動いてみろ！頭をブチ抜くぞ！」',
+      'Korean': '산적이 총을 겨눈다: "한 걸음만 더 움직여 봐! 머리통을 날려버린다!"'
+    }}
+  ],
+  29: [
+    { type: 'bubble-speech', top: '18%', left: '18%', width: '34%', height: '18%', text: {
+      'English': 'Shanks: "Pistols aren\'t for making threats. They are for actions."',
+      'Hindi': 'शैंक्स: "बंदूकें डराने-धमकाने के लिए नहीं होतीं। वे गोली चलाने के लिए होती हैं।"',
+      'Gujarati': 'શૈંક્સ: "બંદૂકો ધમકાવવા માટે નથી હોતી. તે ગોળી ચલાવવા માટે હોય છે."',
+      'Japanese': 'シャンクス:「銃ってのは人を脅す道具じゃねぇんだ。使うためのもんだ。」',
+      'Korean': '샹크스: "총이란 건 위협용 도구가 아니야. 쏘기 위한 거지."'
+    }},
+    { type: 'bubble-speech', top: '42%', left: '15%', width: '34%', height: '18%', text: {
+      'English': 'Shanks: "Now that you\'ve drawn it, are you ready to put your life on the line?"',
+      'Hindi': 'शैंक्स: "जब तुमने इसे निकाल ही लिया है, तो क्या तुम अपनी जान दांव पर लगाने को तैयार हो?"',
+      'Gujarati': 'શૈંક્સ: "જ્યારે તેં આ કાઢી જ લીધી છે, તો શું તું તારો જીવ દાવ પર લગાવવા તૈયાર છે?"',
+      'Japanese': 'シャンクス:「それを抜いたからには、命を懸ける覚悟はあるんだろうな？」',
+      'Korean': '샹크스: "그걸 뽑아 든 이상, 목숨을 걸 각오는 되어 있겠지?"'
+    }},
+    { type: 'bubble-speech', top: '75%', left: '58%', width: '28%', height: '14%', text: {
+      'English': '*BANG!* Lucky Roux shoots the bandit cold!',
+      'Hindi': '*धाँय!* लकी रू ने डाकू को तुरंत ढेर कर दिया!',
+      'Gujarati': '*ધડાકો!* લકી રૂએ લૂંટારાને સીધો ઢાળી દીધો!',
+      'Japanese': 'ドカン！ラッキー・ルウが山賊を容赦なく射殺！',
+      'Korean': '탕! 럭키 루가 산적을 단숨에 사살한다!'
+    }}
+  ],
+  30: [
+    { type: 'bubble-speech', top: '22%', left: '55%', width: '35%', height: '18%', text: {
+      'English': 'Bandits scream in shock: "HE SHOT HIM! WITHOUT WARNING!"',
+      'Hindi': 'डाकू दहशत में चीखे: "उसने बिना चेतावनी दिए गोली मार दी!"',
+      'Gujarati': 'લૂંટારાઓ ડરીને બૂમ પાડે છે: "તેણે કોઈ ચેતવણી વગર ગોળી મારી દીધી!"',
+      'Japanese': '山賊ども絶叫:「撃ちやがった！何の警告もなしに！」',
+      'Korean': '산적들 경악: "쏴버렸어! 아무런 경고도 없이!"'
+    }},
+    { type: 'bubble-speech', top: '65%', left: '15%', width: '26%', height: '14%', text: {
+      'English': 'Bandits: "YOU DIRTY COWARDS!"',
+      'Hindi': 'डाकू: "तुम गंदे कायर हो!"',
+      'Gujarati': 'લૂંટારાઓ: "તમે ગંદા કાયરો છો!"',
+      'Japanese': '山賊:「卑怯者め！！」',
+      'Korean': '산적: "비겁한 자식들!!"'
+    }}
+  ],
+  31: [
+    { type: 'bubble-speech', top: '22%', left: '48%', width: '38%', height: '22%', text: {
+      'English': 'Shanks: "Cowards? You think you\'re dealing with saints? WE ARE PIRATES!"',
+      'Hindi': 'शैंक्स: "कायर? तुम्हें क्या लगता है तुम संतों से निपट रहे हो? हम समुद्री डाकू हैं!"',
+      'Gujarati': 'શૈંક્સ: "કાયર? તમને શું લાગે છે તમે સંતો સામે ઊભા છો? અમે ચાંચિયા છીએ!"',
+      'Japanese': 'シャンクス:「卑怯？聖者でも相手にしてるつもりか？おれたちは海賊だ！」',
+      'Korean': '샹크스: "비겁하다고? 성인군자라도 상대하는 줄 아나? 우린 해적이다!"'
+    }},
+    { type: 'bubble-speech', top: '62%', left: '15%', width: '42%', height: '26%', text: {
+      'English': 'Shanks: "You can pour liquor on me and I\'ll laugh. BUT I WILL NEVER FORGIVE ANYONE WHO HURTS MY FRIEND!"',
+      'Hindi': 'शैंक्स: "तुम मुझ पर शराब फेंक सकते हो मैं हँस दूँगा। लेकिन जो मेरे दोस्त को नुकसान पहुँचाए उसे कभी माफ़ नहीं करूँगा!"',
+      'Gujarati': 'શૈંક્સ: "તું મારા પર દારૂ ઢોળે તોય હું હસીશ. પણ જે મારા મિત્રને નુકસાન કરે તેને ક્યારેય માફ નહીં કરું!"',
+      'Japanese': 'シャンクス:「どんな理由があろうとおれは友達を傷つける奴を許さない！」',
+      'Korean': '샹크스: "어떤 이유가 있든 내 친구를 다치게 하는 놈은 절대 용서 못 해!"'
+    }}
+  ],
+  32: [
+    { type: 'bubble-speech', top: '20%', left: '58%', width: '30%', height: '16%', text: {
+      'English': 'Higuma: "Kill them all! Slaughter every last one!"',
+      'Hindi': 'हिगुमा: "इन सबको मार डालो! एक को भी ज़िंदा मत छोड़ना!"',
+      'Gujarati': 'હિગુમા: "આ બધાને મારી નાખો! એકને પણ જીવતો ન છોડતા!"',
+      'Japanese': 'ヒグマ:「全員皆殺しにしろ！一人残らず切り刻め！」',
+      'Korean': '히구마: "모조리 죽여버려! 단 한 놈도 살려두지 마라!"'
+    }},
+    { type: 'bubble-speech', top: '55%', left: '15%', width: '35%', height: '20%', text: {
+      'English': 'Benn Beckman: "Leave this to me, Captain. I\'ll handle all of them alone."',
+      'Hindi': 'बेन बेकमैन: "ये मुझ पर छोड़ दो, कैप्टन। मैं अकेले ही इन सबको संभाल लूँगा।"',
+      'Gujarati': 'બેન બેકમેન: "આ મારા પર છોડી દો, કેપ્ટન. હું એકલો જ આ બધાને પહોંચી વળીશ."',
+      'Japanese': 'ベックマン:「お頭、ここは任せてくれ。おれ一人で十分だ。」',
+      'Korean': '벤 베크맨: "두목, 여긴 내게 맡겨둬. 나 혼자로도 충분하니까."'
+    }}
+  ],
+  33: [
+    { type: 'bubble-speech', top: '25%', left: '15%', width: '34%', height: '18%', text: {
+      'English': 'Benn Beckman obliterates the bandits with his rifle club!',
+      'Hindi': 'बेन बेकमैन ने राइफल के बट से डाकुओं को धूल चटा दी!',
+      'Gujarati': 'બેન બેકમેને રાઇફલથી લૂંટારાઓનો કચ્ચરઘાણ વાળી દીધો!',
+      'Japanese': 'ベックマンが銃で山賊たちを一瞬で叩き伏せる！',
+      'Korean': '벤 베크맨이 총으로 산적들을 단숨에 때려눕힌다!'
+    }},
+    { type: 'bubble-speech', top: '65%', left: '55%', width: '35%', height: '18%', text: {
+      'English': 'Bandits screaming: "GAHH! HE\'S UNTOUCHABLE! WE CAN\'T BEAT HIM!"',
+      'Hindi': 'डाकू चीखते हुए: "आह! ये तो बहुत ताकतवर है! हम इसका मुकाबला नहीं कर सकते!"',
+      'Gujarati': 'લૂંટારાઓ બૂમો પાડતાં: "આહ! આ તો બહુ મજબૂત છે! આપણે આની સામે ટકી નહીં શકીએ!"',
+      'Japanese': '山賊絶叫:「ぐああ！手も足も出ねぇ！強すぎる！」',
+      'Korean': '산적들 비명: "크악! 손도 발도 못 쓰겠어! 너무 강해!"'
+    }}
+  ],
+  34: [
+    { type: 'bubble-speech', top: '18%', left: '15%', width: '28%', height: '14%', text: {
+      'English': 'All bandits knocked out cold on the ground!',
+      'Hindi': 'सारे डाकू बेहोश होकर ज़मीन पर ढेर हो गए!',
+      'Gujarati': 'બધા લૂંટારાઓ બેભાન થઈને જમીન પર ઢળી પડ્યા!',
+      'Japanese': '山賊全員が一瞬で全滅！',
+      'Korean': '산적들이 모조리 바닥에 쓰러진다!'
+    }},
+    { type: 'bubble-speech', top: '55%', left: '52%', width: '38%', height: '22%', text: {
+      'English': 'Benn Beckman: "If you really wanna fight us... you\'d better bring a warship."',
+      'Hindi': 'बेन बेकमैन: "अगर सच में हमसे लड़ना चाहते हो... तो अगली बार कोई जंगी जहाज़ लेकर आना।"',
+      'Gujarati': 'બેન બેકમેન: "જો ખરેખર અમારી સાથે લડવું હોય... તો આવતી વખતે મોટું યુદ્ધ જહાજ લઈને આવજો."',
+      'Japanese': 'ベックマン:「おれたちと戦り合おうってんなら、軍艦でも引っ張ってくるんだな。」',
+      'Korean': '벤 베크맨: "우리와 상대하고 싶다면… 군함이라도 끌고 와라."'
+    }}
+  ],
+  35: [
+    { type: 'bubble-speech', top: '18%', left: '58%', width: '28%', height: '14%', text: {
+      'English': 'Higuma sweating: "These guys are real monsters...!"',
+      'Hindi': 'हिगुमा पसीने में: "ये लोग तो असली राक्षस हैं...!"',
+      'Gujarati': 'હિગુમા ગભરાતાં: "આ લોકો તો સાચા રાક્ષસો છે...!"',
+      'Japanese': 'ヒグマ冷や汗:「化け物揃いじゃねぇか…！」',
+      'Korean': '히구마 식은땀: "괴물 같은 놈들이잖아…!"'
+    }},
+    { type: 'bubble-speech', top: '55%', left: '20%', width: '26%', height: '14%', text: {
+      'English': 'Higuma drops smoke bomb: "SMOKE BOMB!"',
+      'Hindi': 'हिगुमा ने धुआँ बम फेंका: "धुआँ बम!"',
+      'Gujarati': 'હિગુમાએ ધુમાડાનો બોમ્બ ફેંક્યો: "સ્મોક બોમ્બ!"',
+      'Japanese': 'ヒグマ:「煙幕弾だ！」',
+      'Korean': '히구마: "연막탄이다!"'
+    }}
+  ],
+  36: [
+    { type: 'bubble-speech', top: '25%', left: '15%', width: '36%', height: '22%', text: {
+      'English': 'Shanks panicking: "LUFFY IS GONE! WHERE DID HE GO?! WHAT DO WE DO?!"',
+      'Hindi': 'शैंक्स घबराते हुए दौड़ा: "लफी गायब हो गया! वो कहाँ गया?! अब क्या करें?!"',
+      'Gujarati': 'શૈંક્સ ગભરાઈને દોડ્યો: "લફી ગાયબ થઈ ગયો! એ ક્યાં ગયો?! હવે શું કરીએ?!"',
+      'Japanese': 'シャンクス大慌て:「ルフィがいねぇ！どこ行った？！どうすりゃいいんだ？！」',
+      'Korean': '샹크스 패닉: "루피가 없어졌어! 어디 간 거야?! 어떡하지?!"'
+    }},
+    { type: 'bubble-speech', top: '65%', left: '55%', width: '32%', height: '18%', text: {
+      'English': 'Beckman: "Boss, calm down! He took him to the sea!"',
+      'Hindi': 'बेकमैन: "कैप्टन, शांत हो जाओ! वो उसे समंदर की तरफ ले गया है!"',
+      'Gujarati': 'બેકમેન: "કેપ્ટન, શાંત થાઓ! એ તેને સમુદ્ર તરફ લઈ ગયો છે!"',
+      'Japanese': 'ベックマン:「お頭落ち着け！海へ連れて行かれたんだ！」',
+      'Korean': '베크맨: "두목 진정해! 바다 쪽으로 데려갔다고!"'
+    }}
+  ],
+  37: [
+    { type: 'bubble-speech', top: '25%', left: '48%', width: '36%', height: '20%', text: {
+      'English': 'Higuma laughing on boat: "Gahahahaha! No one can catch me out here on the sea!"',
+      'Hindi': 'हिगुमा नाव पर हँसते हुए: "हाहाहाहा! समंदर में कोई मुझे नहीं पकड़ सकता!"',
+      'Gujarati': 'હિગુમા નાવ પર હસતાં: "હાહાહાહા! સમુદ્રમાં મને કોઈ પકડી નહીં શકે!"',
+      'Japanese': 'ヒグマ:「ギャハハハ！海に出ちまえば誰も追えまい！」',
+      'Korean': '히구마: "하하하하! 바다로 나오면 아무도 날 못 잡지!"'
+    }},
+    { type: 'bubble-speech', top: '68%', left: '15%', width: '24%', height: '14%', text: {
+      'English': 'Luffy: "LET ME GO, YOU DIRTY BANDIT!"',
+      'Hindi': 'लफी: "मुझे छोड़ो, घटिया डाकू!"',
+      'Gujarati': 'લફી: "મને છોડ, દુષ્ટ લૂંટારા!"',
+      'Japanese': 'ルフィ:「放せ！このクソ山賊！」',
+      'Korean': '루피: "이거 놔, 빌어먹을 산적 놈아!"'
+    }}
+  ],
+  38: [
+    { type: 'bubble-speech', top: '28%', left: '45%', width: '38%', height: '22%', text: {
+      'English': 'Higuma kicks Luffy overboard: "I don\'t need you anymore! Drown in the sea!"',
+      'Hindi': 'हिगुमा ने लफी को समंदर में लात मार दी: "मुझे अब तुम्हारी ज़रूरत नहीं! डूबकर मर जाओ!"',
+      'Gujarati': 'હિગુમાએ લફીને સમુદ્રમાં લાત મારી: "મને હવે તારી જરૂર નથી! ડૂબીને મરી જા!"',
+      'Japanese': 'ヒグマがルフィを蹴り落とす:「用済みだ！海の底で溺れ死にな！」',
+      'Korean': '히구마가 루피를 바다로 차버린다: "이제 볼일 끝이다! 바다에 빠져 죽어라!"'
+    }},
+    { type: 'bubble-speech', top: '72%', left: '18%', width: '28%', height: '16%', text: {
+      'English': 'Luffy flailing: "HELP! I CAN\'T SWIM! GLUB GLUB!"',
+      'Hindi': 'लफी पानी में छटपटाते हुए: "बचाओ! मैं तैर नहीं सकता!"',
+      'Gujarati': 'લફી પાણીમાં ફસાયો: "બચાવો! મને તરતાં નથી આવડતું!"',
+      'Japanese': 'ルフィ:「助けて！泳げないよ！ブクブク…」',
+      'Korean': '루피: "살려줘! 수영 못해! 꼬르륵…"'
+    }}
+  ],
+  39: [
+    { type: 'bubble-speech', top: '25%', left: '20%', width: '32%', height: '18%', text: {
+      'English': 'Giant Sea Monster rises from the depths! *ROAAARRR!*',
+      'Hindi': 'गहराइयों से विशाल समुद्री राक्षस बाहर निकला! *दहाड़!*',
+      'Gujarati': 'ઊંડાણમાંથી વિશાળ સમુદ્રી રાક્ષસ બહાર આવ્યો! *ગર્જના!*',
+      'Japanese': '近海の主が姿を現す！グオオオオッ！',
+      'Korean': '근해의 주인이 모습을 드러낸다! 크아아아!'
+    }},
+    { type: 'bubble-speech', top: '68%', left: '52%', width: '32%', height: '18%', text: {
+      'English': 'Higuma in absolute terror: "WHAT IS THAT MONSTER?!!"',
+      'Hindi': 'हिगुमा खौफ़ में चीखा: "ये कौन सा राक्षस है?!!" ',
+      'Gujarati': 'હિગુમા ભયમાં બૂમ પાડે છે: "આ કયો રાક્ષસ છે?!!" ',
+      'Japanese': 'ヒグマ絶望:「な、何だこの化け物はーーッ？！！」',
+      'Korean': '히구마 절망: "무, 무슨 이런 괴물이 다 있어ーーッ?!!"'
+    }}
+  ],
+  40: [
+    { type: 'bubble-speech', top: '35%', left: '45%', width: '36%', height: '22%', text: {
+      'English': 'Lord of the Coast swallows Higuma and boat in one bite! *CHOMP!*',
+      'Hindi': 'समुद्री राक्षस ने हिगुमा और नाव को एक ही निवाले में निगल लिया! *हड़प!*',
+      'Gujarati': 'સમુદ્રી રાક્ષસે હિગુમા અને નાવને એક જ કોળિયામાં ગળી લીધા! *ચાવ્યું!*',
+      'Japanese': '近海の主がヒグマごと小舟を丸呑み！バリバリ！',
+      'Korean': '근해의 주인이 히구마와 배를 통째로 삼켜버린다! 콰직!'
+    }},
+    { type: 'bubble-speech', top: '75%', left: '15%', width: '30%', height: '16%', text: {
+      'English': 'Luffy terrified: "IT ATE HIM! SOMEONE HELP ME!"',
+      'Hindi': 'लफी डरकर चीखा: "उसने उसे खा लिया! कोई मुझे बचाओ!"',
+      'Gujarati': 'લફી ડરીને બૂમ પાડે છે: "એણે એને ખાઈ લીધો! કોઈ મને બચાવો!"',
+      'Japanese': 'ルフィ:「食われちゃった！誰か助けてーー！」',
+      'Korean': '루피: "잡아먹혔어! 누구든 살려줘ーー!"'
+    }}
+  ],
+  41: [
+    { type: 'bubble-speech', top: '25%', left: '52%', width: '32%', height: '16%', text: {
+      'English': 'Sea monster turns its deadly jaws toward drowning Luffy!',
+      'Hindi': 'समुद्री राक्षस ने अपने खूनी जबड़े लफी की तरफ मोड़ लिए!',
+      'Gujarati': 'સમુદ્રી રાક્ષસે લફી તરફ પોતાના જડબાં ફેરવ્યા!',
+      'Japanese': '近海の主がルフィに向かって牙を剥く！',
+      'Korean': '근해의 주인이 루피를 향해 입을 벌린다!'
+    }}
+  ],
+  42: [
+    { type: 'bubble-speech', top: '35%', left: '45%', width: '34%', height: '18%', text: {
+      'English': '*SPLASH!* Shanks leaps in and pulls Luffy into his embrace!',
+      'Hindi': '*छपाक!* शैंक्स ने कूदकर लफी को अपनी बाहों में सुरक्षित थाम लिया!',
+      'Gujarati': '*છપાકો!* શૈંક્સે કૂદીને લફીને પોતાની ગોદમાં બચાવી લીધો!',
+      'Japanese': 'バシャーン！シャンクスが飛び込みルフィを抱きしめる！',
+      'Korean': '첨벙! 샹크스가 뛰어들어 루피를 품에 안는다!'
+    }},
+    { type: 'bubble-speech', top: '75%', left: '20%', width: '20%', height: '10%', text: {
+      'English': 'Luffy sobbing: "Shanks...!"',
+      'Hindi': 'लफी रोते हुए: "शैंक्स...!"',
+      'Gujarati': 'લફી રડતાં: "શૈંક્સ...!"',
+      'Japanese': 'ルフィ:「シャンクス…！」',
+      'Korean': '루피: "샹크스…!"'
+    }}
+  ],
+  43: [
+    { type: 'bubble-speech', top: '28%', left: '45%', width: '30%', height: '16%', text: {
+      'English': 'Shanks Conqueror\'s Haki glare: "GET LOST."',
+      'Hindi': 'शैंक्स का हाकी वाला घूरना: "दफा हो जाओ।"',
+      'Gujarati': 'શૈંક્સની ક્રોધિત નજર: "ભાગી જા અહીંથી."',
+      'Japanese': 'シャンクスの威圧:「失せろ。」',
+      'Korean': '샹크스의 패기: "꺼져라."'
+    }},
+    { type: 'bubble-speech', top: '72%', left: '25%', width: '35%', height: '18%', text: {
+      'English': 'Sea monster cowers in sheer terror and dives away!',
+      'Hindi': 'समुद्री राक्षस खौफ़ से काँपता हुआ समंदर में भाग गया!',
+      'Gujarati': 'સમુદ્રી રાક્ષસ ભયથી ધ્રૂજતો સમુદ્રમાં ભાગી ગયો!',
+      'Japanese': '怪物は恐怖に震え上がり逃げ去る！',
+      'Korean': '괴물은 공포에 질려 바닷속으로 도망친다!'
+    }}
+  ],
+  44: [
+    { type: 'bubble-speech', top: '18%', left: '48%', width: '36%', height: '20%', text: {
+      'English': 'Shanks: "Thank you for standing up for us, Luffy. Makino told me everything."',
+      'Hindi': 'शैंक्स: "हमारे लिए लड़ने के लिए शुक्रिया, लफी। माकिनो ने मुझे सब बता दिया था।"',
+      'Gujarati': 'શૈંક્સ: "અમારા માટે લડવા બદલ આભાર, લફી. માકિનોએ મને બધું કહ્યું હતું."',
+      'Japanese': 'シャンクス:「おれたちのために戦ってくれたんだな。マキノさんから聞いたよ。」',
+      'Korean': '샹크스: "우릴 위해 싸워줘서 고맙다, 루피. 마키노 씨에게 다 들었어."'
+    }},
+    { type: 'bubble-speech', top: '55%', left: '15%', width: '30%', height: '18%', text: {
+      'English': 'Luffy sees blood gushing: "S-Shanks... your arm...!!" ',
+      'Hindi': 'लफी खून देखकर रो पड़ा: "शैं-शैंक्स... आपका हाथ...!!" ',
+      'Gujarati': 'લફી લોહી જોઈને રડી પડ્યો: "શૈં-શૈંક્સ... તમારો હાથ...!!" ',
+      'Japanese': 'ルフィ絶句:「シャ、シャンクス…腕が…！！」',
+      'Korean': '루피 경악: "샤, 샹크스… 팔이…!!"'
+    }},
+    { type: 'bubble-speech', top: '78%', left: '48%', width: '34%', height: '18%', text: {
+      'English': 'Shanks smiling: "It\'s just an arm. As long as you\'re safe, it\'s nothing."',
+      'Hindi': 'शैंक्स मुस्कुराते हुए: "सिर्फ एक हाथ ही तो है। तुम सुरक्षित हो, बस यही काफी है।"',
+      'Gujarati': 'શૈંક્સ હસતાં: "માત્ર એક હાથ જ તો છે. તું સલામત છે, એ જ ઘણું છે."',
+      'Japanese': 'シャンクス微笑:「腕の1本くらい安いもんだ。無事でよかった。」',
+      'Korean': '샹크스 미소: "팔 하나쯤이야 싸게 먹힌 거지. 네가 무사해서 다행이다."'
+    }}
+  ],
+  45: [
+    { type: 'bubble-speech', top: '35%', left: '35%', width: '38%', height: '24%', text: {
+      'English': 'Luffy weeps uncontrollably: "WAAAAAHHH! SHANKSSS!!" ',
+      'Hindi': 'लफी दहाड़ मारकर रो पड़ा: "वाआआहह! शैंक्ससस!!" ',
+      'Gujarati': 'લફી ધ્રૂસકે ધ્રૂસકે રડી પડ્યો: "વાઆઆહહ! શૈંક્સસસ!!" ',
+      'Japanese': 'ルフィ号泣:「うわああああん！シャンクズーーッ！！」',
+      'Korean': '루피 오열: "으아아아앙! 샹크스ーーッ!!"'
+    }}
+  ],
+  46: [
+    { type: 'bubble-caption-white', top: '12%', left: '72%', width: '24%', height: '12%', text: {
+      'English': 'THE DAY OF DEPARTURE ARRIVED...',
+      'Hindi': 'और फिर... विदाई का दिन आ गया...',
+      'Gujarati': 'અને પછી... વિદાયનો દિવસ આવી ગયો...',
+      'Japanese': 'そして出航の日…',
+      'Korean': '그리고 출항의 날이 밝았다…'
+    }},
+    { type: 'bubble-speech', top: '55%', left: '18%', width: '30%', height: '16%', text: {
+      'English': 'Pirates: "All supplies are loaded, Captain! We are ready to sail!"',
+      'Hindi': 'डाकू: "सारा सामान लोड हो गया है, कैप्टन! हम रवाना होने के लिए तैयार हैं!"',
+      'Gujarati': 'ચાંચિયા: "બધો સામાન લોડ થઈ ગયો છે, કેપ્ટન! અમે નીકળવા તૈયાર છીએ!"',
+      'Japanese': '船員:「準備万端だぜ、お頭！いつでも出せる！」',
+      'Korean': '선원: "준비 끝났습니다, 두목! 언제든 출항할 수 있어요!"'
+    }}
+  ],
+  47: [
+    { type: 'bubble-speech', top: '22%', left: '48%', width: '36%', height: '20%', text: {
+      'English': 'Shanks: "You\'re not going to beg me to take you along this time?"',
+      'Hindi': 'शैंक्स: "इस बार तुम साथ ले जाने की ज़िद नहीं करोगे?"',
+      'Gujarati': 'શૈંક્સ: "આ વખતે તું સાથે લઈ જવાની જીદ નહીં કરે?"',
+      'Japanese': 'シャンクス:「今回は連れてけって言わねぇんだな？」',
+      'Korean': '샹크스: "이번엔 데려가 달라고 안 떼쓰네?"'
+    }},
+    { type: 'bubble-speech', top: '65%', left: '15%', width: '34%', height: '18%', text: {
+      'English': 'Luffy: "No! I\'ve decided to become a pirate on my own!"',
+      'Hindi': 'लफी: "नहीं! मैंने खुद के दम पर समुद्री डाकू बनने का फैसला किया है!"',
+      'Gujarati': 'લફી: "ના! મેં મારી જાતે જ ચાંચિયો બનવાનો નિર્ણય કર્યો છે!"',
+      'Japanese': 'ルフィ:「うん！おれは自分で海賊になることにしたんだ！」',
+      'Korean': '루피: "응! 난 내 힘으로 해적이 되기로 결심했어!"'
+    }}
+  ],
+  48: [
+    { type: 'bubble-speech', top: '25%', left: '48%', width: '36%', height: '20%', text: {
+      'English': 'Shanks laughing: "Bleh! As if a squirt like you could ever become a pirate!"',
+      'Hindi': 'शैंक्स चिढ़ाते हुए: "हाहा! तुम्हारे जैसा बच्चा कभी डाकू बन भी पाएगा!"',
+      'Gujarati': 'શૈંક્સ હસતાં: "હાહા! તારા જેવો નાનો છોકરો ક્યારેય ચાંચિયો બની શકે!"',
+      'Japanese': 'シャンクス:「あっかんべー！お前みたいなガキが海賊になれるかよ！」',
+      'Korean': '샹크스: "메롱! 너 같은 꼬맹이가 해적이 될 수 있을 리가 없잖아!"'
+    }},
+    { type: 'bubble-speech', top: '68%', left: '15%', width: '28%', height: '14%', text: {
+      'English': 'Luffy: "I CAN! AND I WILL!"',
+      'Hindi': 'लफी: "मैं बन सकता हूँ! और मैं बनकर दिखाऊँगा!"',
+      'Gujarati': 'લફી: "હું બની શકું છું! અને હું બનીને બતાવીશ!"',
+      'Japanese': 'ルフィ:「なれるもん！絶対になってやる！」',
+      'Korean': '루피: "될 수 있어! 반드시 되고 말 테다!"'
+    }}
+  ],
+  49: [
+    { type: 'bubble-speech', top: '25%', left: '15%', width: '35%', height: '18%', text: {
+      'English': 'Luffy: "I\'m gonna gather a crew stronger than yours!"',
+      'Hindi': 'लफी: "मैं तुम्हारी टोली से भी ज्यादा मजबूत साथियों को इकट्ठा करूँगा!"',
+      'Gujarati': 'લફી: "હું તમારી ટીમ કરતાં પણ વધુ મજબૂત સાથીઓ ભેગા કરીશ!"',
+      'Japanese': 'ルフィ:「お前らの仲間より強い仲間を集めて！」',
+      'Korean': '루피: "너희 동료들보다 훨씬 더 강한 동료들을 모아서!"'
+    }},
+    { type: 'bubble-speech', top: '65%', left: '48%', width: '34%', height: '18%', text: {
+      'English': 'Luffy: "And I will find the world\'s greatest treasure!"',
+      'Hindi': 'लफी: "और दुनिया का सबसे बड़ा खज़ाना खोजकर निकालूँगा!"',
+      'Gujarati': 'લફી: "અને દુનિયાનો સૌથી મોટો ખજાનો શોધી કાઢીશ!"',
+      'Japanese': 'ルフィ:「世界一の宝を見つけてやるんだ！」',
+      'Korean': '루피: "세계 최고의 보물을 찾아내고야 말겠어!"'
+    }}
+  ],
+  50: [
+    { type: 'bubble-speech', top: '28%', left: '32%', width: '42%', height: '26%', fontSize: 'clamp(11px, 1.3vw, 17px)', text: {
+      'English': 'Luffy shouting with tears of resolve: "I WILL BE THE PIRATE KING!!!"',
+      'Hindi': 'लफी संकल्प के आँसुओं के साथ चीखा: "मैं समुद्री डाकुओं का राजा (Pirate King) बनूँगा!!!"',
+      'Gujarati': 'લફી આંસુઓ સાથે બૂમ પાડી ઊઠ્યો: "હું ચાંચિયાઓનો રાજા (Pirate King) બનીશ!!!"',
+      'Japanese': 'ルフィ涙の宣誓:「おれは海賊王になる男だーーーーっ！！！」',
+      'Korean': '루피 눈물의 선언: "난 해적왕이 될 사나이다ーーーーっ!!!"'
+    }}
+  ],
+  51: [
+    { type: 'bubble-speech', top: '22%', left: '48%', width: '36%', height: '18%', text: {
+      'English': 'Shanks: "Oh? You plan to surpass us, do you?"',
+      'Hindi': 'शैंक्स: "अच्छा? तो तुम हमसे भी आगे निकलने का इरादा रखते हो?"',
+      'Gujarati': 'શૈંક્સ: "એમ? તો તું અમારાથી પણ આગળ નીકળવા માંગે છે?"',
+      'Japanese': 'シャンクス:「へぇ…おれたちを超える気か。」',
+      'Korean': '샹크스: "호오… 우리를 뛰어넘을 셈인가."'
+    }},
+    { type: 'bubble-speech', top: '62%', left: '15%', width: '40%', height: '24%', text: {
+      'English': 'Shanks places his Straw Hat on Luffy: "Then take this hat. It is my most treasured possession."',
+      'Hindi': 'शैंक्स ने अपनी स्ट्रॉ हैट लफी के सिर पर रखी: "तो ये टोपी अपने पास रखो। ये मेरी सबसे अनमोल धरोहर है।"',
+      'Gujarati': 'શૈંક્સે પોતાની સ્ટ્રો હેટ લફીના માથા પર મૂકી: "તો આ ટોપી તારી પાસે રાખ. આ મારી સૌથી કિંમતી અમાનત છે."',
+      'Japanese': 'シャンクスが麦わら帽子を託す:「この帽子をお前に預ける。おれの宝物だ。」',
+      'Korean': '샹크스가 밀짚모자를 씌워준다: "이 모자를 네게 맡기마. 나의 가장 소중한 보물이다."'
+    }}
+  ],
+  52: [
+    { type: 'bubble-speech', top: '18%', left: '45%', width: '42%', height: '24%', fontSize: 'clamp(9px, 1.05vw, 13px)', text: {
+      'English': 'Shanks: "Promise me you\'ll return it to me one day... when you become a great pirate."',
+      'Hindi': 'शैंक्स: "मुझसे वादा करो कि एक दिन तुम इसे मुझे लौटाने आओगे... जब तुम एक महान डाकू बन जाओगे।"',
+      'Gujarati': 'શૈંક્સ: "મને વચન આપ કે એક દિવસ તું આ મને પાછી આપવા આવીશ... જ્યારે તું મહાન ચાંચિયો બની જાય."',
+      'Japanese': 'シャンクス:「いつか立派な海賊になって返しに来い。約束だぞ。」',
+      'Korean': '샹크스: "언젠가 훌륭한 해적이 되어 돌려주러 와라. 약속이다."'
+    }},
+    { type: 'bubble-title-banner', top: '80%', left: '48%', width: '46%', height: '16%', fontSize: 'clamp(11px, 1.2vw, 16px)', text: {
+      'English': 'ROMANCE DAWN — THE ADVENTURE HAS BEGUN!',
+      'Hindi': 'रोमांस डॉन — रोमांच की महान यात्रा शुरू हो चुकी है!',
+      'Gujarati': 'રોમાન્સ ડૉન — સાહસની મહાન યાત્રા શરૂ થઈ ચૂકી છે!',
+      'Japanese': 'ROMANCE DAWN —冒険の夜明け・完—',
+      'Korean': '로맨스 던 —모험의 시작・완—'
+    }}
+  ]
+};
 
-  // Dynamically create authentic in-panel speech bubbles placed inside panels of that page
-  if (pageNum >= 11 && pageNum <= 15) {
-    return [
-      {
-        type: 'bubble-speech',
-        top: '12%',
-        left: '60%',
-        width: '28%',
-        height: '14%',
-        fontSize: 'clamp(7.5px, 0.9vw, 11.5px)',
-        text: {
-          'English': 'Luffy eating Devil Fruit: "This fruit tastes terrible!" Shanks: "LUFFY! WHAT ARE YOU EATING?!"',
-          'Hindi': 'लफी डेविल फ्रूट खाते हुए: "ये फल तो बहुत कड़वा है!" शैंक्स: "लफी! तुम क्या खा रहे हो?!"',
-          'Gujarati': 'લફી ડેવિલ ફ્રૂટ ખાતાં: "આ ફળ તો બહુ કડવું છે!" શૈંક્સ: "લફી! તું શું ખાઈ રહ્યો છે?!"',
-          'Japanese': 'ルフィ:「まずいくだものだ！」シャンクス:「ルフィ！何を食ってんだ？！」',
-          'Korean': '루피: "이 과일 진짜 맛없다!" 샹크스: "루피! 너 지금 뭘 먹는 거야?!"'
-        }
-      },
-      {
-        type: 'bubble-speech',
-        top: '65%',
-        left: '12%',
-        width: '32%',
-        height: '16%',
-        fontSize: 'clamp(7.5px, 0.9vw, 11.5px)',
-        text: {
-          'English': 'Shanks screaming: "That was the Gomu Gomu Devil Fruit! You\'re now made of rubber and can never swim!"',
-          'Hindi': 'शैंक्स चीखते हुए: "वह गोमु-गोमु डेविल फ्रूट था! तुम्हारा पूरा शरीर रबड़ बन गया और तुम कभी तैर नहीं पाओगे!"',
-          'Gujarati': 'શૈંક્સ બૂમ પાડતાં: "તે ગોમુ-ગોમુ ડેવિલ ફ્રૂટ હતું! તારું શરીર રબર બની ગયું અને તું ક્યારેય તરી નહીં શકે!"',
-          'Japanese': 'シャンクス:「ゴムゴムの実だ！一生泳げないゴム人間になっちまったんだ！」',
-          'Korean': '샹크스: "고무고무 열매야! 평생 수영 못하는 고무 인간이 된 거라고!"'
-        }
-      }
-    ];
-  } else if (pageNum >= 16 && pageNum <= 30) {
-    return [
-      {
-        type: 'bubble-speech',
-        top: '10%',
-        left: '58%',
-        width: '32%',
-        height: '14%',
-        fontSize: 'clamp(7.5px, 0.9vw, 11.5px)',
-        text: {
-          'English': 'Bandit Higuma: "We are mountain bandits! Hand over 56 barrels of sake right now!"',
-          'Hindi': 'डाकू हिगुमा: "हम पहाड़ी लुटेरे हैं! अपनी 56 बैरल शराब हमारे हवाले कर दो!"',
-          'Gujarati': 'ડાકુ હિગુમા: "અમે પહાડી લૂંટારા છીએ! 56 બેરલ દારૂ અત્યારે જ અમારા હવાલે કરી દો!"',
-          'Japanese': '山賊ヒグマ:「おれたちは山賊だ！酒を56樽全部よこせ！」',
-          'Korean': '산적 히구마: "우린 산적이다! 술 56통을 당장 내놔라!"'
-        }
-      },
-      {
-        type: 'bubble-speech',
-        top: '62%',
-        left: '15%',
-        width: '30%',
-        height: '15%',
-        fontSize: 'clamp(7.5px, 0.9vw, 11.5px)',
-        text: {
-          'English': 'Shanks calmly cleans the floor: "Haha, sorry about the mess! Don\'t worry, Luffy."',
-          'Hindi': 'शैंक्स शांति से फर्श साफ करते हुए: "हाहा, कोई बात नहीं! गुस्सा मत करो, लफी।"',
-          'Gujarati': 'શૈંક્સ શાંતિથી સાફ કરતાં: "હાહા, કોઈ વાંધો નહીં! ગુસ્સો ન કર, લફી."',
-          'Japanese': 'シャンクス:「ギャハハ、床が汚れちまったな！気にするなルフィ。」',
-          'Korean': '샹크스: "하하, 바닥이 더러워졌네! 신경 쓰지 마라, 루피."'
-        }
-      }
-    ];
-  } else if (pageNum >= 31 && pageNum <= 45) {
-    return [
-      {
-        type: 'bubble-speech',
-        top: '12%',
-        left: '55%',
-        width: '35%',
-        height: '15%',
-        fontSize: 'clamp(7.5px, 0.9vw, 11.5px)',
-        text: {
-          'English': 'Shanks: "You can spit on me and I\'ll laugh, but I WON\'T FORGIVE ANYONE WHO HURTS MY FRIEND!"',
-          'Hindi': 'शैंक्स: "तुम मुझ पर थूक सकते हो मैं हँस दूँगा, लेकिन जो मेरे दोस्त को चोट पहुँचाए उसे कभी माफ़ नहीं करूँगा!"',
-          'Gujarati': 'શૈંક્સ: "તું મારા પર થૂંકે તોય હું હસીશ, પણ જે મારા મિત્રને નુકસાન કરે તેને ક્યારેય માફ નહીં કરું!"',
-          'Japanese': 'シャンクス:「どんな理由があろうとおれは友達を傷つける奴を許さない！」',
-          'Korean': '샹크스: "어떤 이유가 있든 내 친구를 다치게 하는 놈은 용서 못 해!"'
-        }
-      },
-      {
-        type: 'bubble-speech',
-        top: '68%',
-        left: '12%',
-        width: '32%',
-        height: '15%',
-        fontSize: 'clamp(7.5px, 0.9vw, 11.5px)',
-        text: {
-          'English': 'Benn Beckman defeats the entire bandit gang with a single rifle!',
-          'Hindi': 'बेन बेकमैन ने अकेले ही पूरी डाकू टोली को मार गिराया!',
-          'Gujarati': 'બેન બેકમેને એકલા હાથે આખી લૂંટારા ટોળકીને હરાવી દીધી!',
-          'Japanese': 'ベン・ベックマンが銃一本で山賊どもを一瞬で壊滅させる！',
-          'Korean': '벤 베크맨이 총 한 자루로 산적 떼를 전멸시킨다!'
-        }
-      }
-    ];
-  } else {
-    return [
-      {
-        type: 'bubble-speech',
-        top: '14%',
-        left: '52%',
-        width: '36%',
-        height: '16%',
-        fontSize: 'clamp(7.5px, 0.9vw, 11.5px)',
-        text: {
-          'English': 'Shanks passes his Straw Hat to Luffy: "Promise me you\'ll return it when you become a great pirate!"',
-          'Hindi': 'शैंक्स ने अपनी स्ट्रॉ हैट लफी को सौंपी: "जब तुम एक महान डाकू बन जाओगे, तब इसे मुझे लौटाना!"',
-          'Gujarati': 'શૈંક્સે પોતાની સ્ટ્રો હેટ લફીને આપી: "જ્યારે તું મહાન ચાંચિયો બની જાય, ત્યારે આ મને પાછી આપજે!"',
-          'Japanese': 'シャンクスが麦わら帽子を託す:「いつか立派な海賊になって返しに来い！」',
-          'Korean': '샹크스가 밀짚모자를 건네며: "언젠가 훌륭한 해적이 되어 돌려주러 와라!"'
-        }
-      },
-      {
-        type: 'bubble-speech',
-        top: '66%',
-        left: '14%',
-        width: '32%',
-        height: '15%',
-        fontSize: 'clamp(8px, 1vw, 13px)',
-        text: {
-          'English': 'Luffy shouting with tears: "I WILL BE THE PIRATE KING!!!"',
-          'Hindi': 'लफी आँखों में आँसू लिए चीखता है: "मैं समुद्री डाकुओं का राजा (PIRATE KING) बनूँगा!!!"',
-          'Gujarati': 'લફી આંસુઓ સાથે બૂમ પાડે છે: "હું ચાંચિયાઓનો રાજા (PIRATE KING) બનીશ!!!"',
-          'Japanese': 'ルフィが涙を流して叫ぶ:「おれは海賊王になる男だーーーーっ！！！」',
-          'Korean': '루피가 눈물을 흘리며 외친다: "난 해적왕이 될 거야ーーーーっ!!!"'
-        }
-      }
-    ];
-  }
+// Combine all 52 pages into unified overlay engine
+function getBubblesForPage(pageNum) {
+  if (pageOverlaysData[pageNum]) return pageOverlaysData[pageNum];
+  if (page14To52Data[pageNum]) return page14To52Data[pageNum];
+  return [];
 }
 
 let currentSingleIndex = 0;
@@ -1868,7 +2115,7 @@ function renderOverlaysForPage(pageNum, containerEl, lang) {
         return;
     }
 
-    const overlays = getSmartBubblesForPage(pageNum);
+    const overlays = getBubblesForPage(pageNum);
 
     if (overlays && overlays.length > 0) {
         overlays.forEach(item => {
@@ -1878,7 +2125,7 @@ function renderOverlaysForPage(pageNum, containerEl, lang) {
             el.style.left = item.left;
             el.style.width = item.width;
             el.style.height = item.height;
-            if (item.fontSize) el.style.fontSize = item.fontSize;
+            el.style.fontSize = item.fontSize || 'clamp(8.5px, 1vw, 13px)';
 
             // Set font family based on selected language
             if (lang === 'Hindi') {
@@ -1895,7 +2142,7 @@ function renderOverlaysForPage(pageNum, containerEl, lang) {
 
             const translatedText = (item.text && item.text[lang]) ? item.text[lang] : (item.text ? item.text['English'] : '');
             el.innerHTML = `<span>${translatedText}</span>`;
-            el.title = `Hover to peek original text\nEnglish: "${item.text ? item.text['English'] : ''}"`;
+            el.title = `Hover to peek original scan\nEnglish: "${item.text ? item.text['English'] : ''}"`;
 
             containerEl.appendChild(el);
         });

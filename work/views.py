@@ -1,12 +1,27 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import ShopProduct
+from .models import (
+    ShopProduct, Codata, Product, page, sidata, DeletedAccount,
+    UserOrder, OrderItem, ReadingHistory, OrderReturnRequest
+)
 import re
+import random
+from django.utils import timezone
 from urllib import request 
 from django.http import JsonResponse
 from django.contrib import messages
 from django.utils.safestring import mark_safe
-from work.models import Codata, Product, page, sidata
-from .models import DeletedAccount
+
+def get_current_user(request):
+    email = request.session.get('email')
+    fullname = request.session.get('fullname')
+    if email:
+        user = sidata.objects.filter(email__iexact=email).first()
+        if user:
+            return user
+    if fullname:
+        return sidata.objects.filter(Fullname=fullname).first()
+    return None
+
 
 # Create your views here.
 
@@ -227,6 +242,8 @@ def sipage(request):
 
             obj.save()
             request.session['fullname'] = h
+            request.session['email'] = k
+            request.session['phone'] = m
 
             messages.success(
                   request,
@@ -279,7 +296,10 @@ def logincheck(request):
       if user.exists():
 
             # SAVE SESSION
-            request.session['fullname'] = user.first().Fullname
+            u_obj = user.first()
+            request.session['fullname'] = u_obj.Fullname
+            request.session['email'] = u_obj.email
+            request.session['phone'] = u_obj.phonnumber
 
             messages.success(
                   request,
@@ -563,40 +583,73 @@ def DeleteAccount(request):
 
 # LIVE SEARCH
 def live_search(request):
-
-    query = request.GET.get('q')
-
+    query = request.GET.get('q', '').strip()
     products = []
+    seen_names = set()
 
     if query:
-
-        # 1. Search in ShopProduct (links directly to dynamic manga detail page)
+        # 1. Search in ShopProduct (Primary catalog with chapters and prices)
         shop_matches = ShopProduct.objects.filter(
             name__icontains=query
         )
 
         for sp in shop_matches:
-            products.append({
-                'name': sp.name,
-                'image': sp.image.url if sp.image else '',
-                'page': f'/manga/{sp.id}/',
-                'chapter': f'{sp.chapter} Chapters',
-                'price': sp.price,
-            })
+            name_clean = sp.name.strip().lower()
+            if name_clean not in seen_names:
+                seen_names.add(name_clean)
 
-        # 2. Search Product for backward compatibility
+                # Format chapters count cleanly
+                ch_val = str(sp.chapter).strip()
+                if 'chapter' not in ch_val.lower() and 'vol' not in ch_val.lower():
+                    ch_display = f"{ch_val} Chapters"
+                else:
+                    ch_display = ch_val
+
+                # Format price cleanly
+                price_val = str(sp.price).replace('$', '').replace('₹', '').replace('%', '').strip()
+                price_display = f"${price_val}" if price_val else "$10"
+
+                products.append({
+                    'name': sp.name,
+                    'image': sp.image.url if sp.image else '',
+                    'page': f'/manga/{sp.id}/',
+                    'chapter': ch_display,
+                    'price': price_display,
+                })
+
+        # 2. Search Product for backward compatibility & ensure chapter/price are populated
         legacy_matches = Product.objects.filter(
             name__icontains=query
         )
 
         for product in legacy_matches:
-            if not any(p['name'].lower() == product.name.lower() for p in products):
+            name_clean = product.name.strip().lower()
+            if name_clean not in seen_names:
+                seen_names.add(name_clean)
+
+                matching_sp = ShopProduct.objects.filter(name__icontains=product.name.strip()).first()
+                if matching_sp:
+                    ch_val = str(matching_sp.chapter).strip()
+                    if 'chapter' not in ch_val.lower() and 'vol' not in ch_val.lower():
+                        ch_display = f"{ch_val} Chapters"
+                    else:
+                        ch_display = ch_val
+                    price_val = str(matching_sp.price).replace('$', '').replace('₹', '').replace('%', '').strip()
+                    price_display = f"${price_val}" if price_val else "$10"
+                    target_page = f'/manga/{matching_sp.id}/'
+                    target_image = matching_sp.image.url if matching_sp.image else (product.image.url if product.image else '')
+                else:
+                    ch_display = "12 Chapters"
+                    price_display = "$10"
+                    target_page = product.page if product.page else '/Shop/'
+                    target_image = product.image.url if product.image else ''
+
                 products.append({
                     'name': product.name,
-                    'image': product.image.url if product.image else '',
-                    'page': product.page,
-                    'chapter': '',
-                    'price': '',
+                    'image': target_image,
+                    'page': target_page,
+                    'chapter': ch_display,
+                    'price': price_display,
                 })
 
     return JsonResponse({
@@ -620,6 +673,22 @@ def manga_detail(request, id):
     # Recommended / Related manga from same category
     related_products = ShopProduct.objects.filter(category=product.category).exclude(id=product.id)[:4]
 
+    # Track reading history if user is logged in
+    curr_user = get_current_user(request)
+    if curr_user:
+        try:
+            ReadingHistory.objects.update_or_create(
+                user=curr_user,
+                manga=product,
+                defaults={
+                    'manga_name': product.name,
+                    'last_chapter': 1,
+                    'manga_image': product.image.url if product.image else ''
+                }
+            )
+        except Exception as e:
+            print(f"Reading history error: {e}")
+
     return render(request, 'manga_detail.html', {
         'product': product,
         'total_chapters': total_chapters,
@@ -629,7 +698,7 @@ def manga_detail(request, id):
 
 
 # DEDICATED HIGH-PERFORMANCE MANGA READER
-def manga_chapter_reader(request, id, chapter_num):
+def manga_chapter_reader(request, id, chapter_num=1):
     product = get_object_or_404(ShopProduct, id=id)
 
     # Extract total chapters count accurately
@@ -672,12 +741,28 @@ def manga_chapter_reader(request, id, chapter_num):
         # For Dragon Ball, Naruto, etc. or other chapters, show that manga's own cover image
         pages.append({
             'page_num': 1,
-            'url': product.image.url if product.image else '/static/img/back.jpg',
+            'url': product.image.url if product.image else '/media/anime/first.jpg',
             'title': f'{product.name} - Chapter {chapter_num} Preview'
         })
 
     prev_chapter = chapter_num - 1 if chapter_num > 1 else None
     next_chapter = chapter_num + 1 if chapter_num < total_chapters else None
+
+    # Track reading history with exact chapter
+    curr_user = get_current_user(request)
+    if curr_user:
+        try:
+            ReadingHistory.objects.update_or_create(
+                user=curr_user,
+                manga=product,
+                defaults={
+                    'manga_name': product.name,
+                    'last_chapter': int(chapter_num),
+                    'manga_image': product.image.url if product.image else ''
+                }
+            )
+        except Exception as e:
+            print(f"Reading history error: {e}")
 
     return render(request, 'manga_reader.html', {
         'product': product,
@@ -689,4 +774,264 @@ def manga_chapter_reader(request, id, chapter_num):
         'has_full_chapter': has_full_chapter,
         'prev_chapter': prev_chapter,
         'next_chapter': next_chapter,
-    })
+    })
+
+
+# USER PROFILE DASHBOARD
+def user_profile(request):
+    user = get_current_user(request)
+    if not user:
+        messages.warning(request, "Please Login or Signup to view your Profile 🔐")
+        return redirect('/Account/')
+
+    # Reading History
+    reading_history = ReadingHistory.objects.filter(user=user).select_related('manga').order_by('-last_read_at')
+    last_read = reading_history.first()
+
+    # Orders
+    orders = UserOrder.objects.filter(user=user).prefetch_related('items').order_by('-created_at')
+
+    # Total Read & Orders Stats
+    total_read_manga = reading_history.count()
+    total_orders = orders.count()
+
+    return render(request, 'profile.html', {
+        'user_obj': user,
+        'reading_history': reading_history,
+        'last_read': last_read,
+        'orders': orders,
+        'total_read_manga': total_read_manga,
+        'total_orders': total_orders,
+    })
+
+
+# PLACE ORDER (COD & ONLINE)
+def place_order(request):
+    if request.method != "POST":
+        return redirect('/Cart/')
+
+    cart = request.session.get('cart', {})
+    if not cart:
+        messages.warning(request, "Your cart is empty! Add manga to cart first 🛒")
+        return redirect('/Cart/')
+
+    customer_name = request.POST.get('customer_name', '').strip()
+    email = request.POST.get('email', '').strip()
+    phone = request.POST.get('phone', '').strip()
+    shipping_address = request.POST.get('shipping_address', '').strip()
+    preferred_date = request.POST.get('preferred_date', '').strip() or None
+    payment_method = request.POST.get('payment_method', 'Cash on Delivery (COD)').strip() or 'Cash on Delivery (COD)'
+
+    if not customer_name or not phone or not shipping_address:
+        messages.error(request, "Please provide your Full Name, Phone Number, and Delivery Address ⚠️")
+        return redirect('/Cart/')
+
+    user = get_current_user(request)
+
+    # Calculate Grand Total
+    grand_total = 0
+    for key, item in cart.items():
+        clean_price = str(item.get('price', 0)).replace('₹', '').replace('$', '').replace('%', '').strip()
+        try:
+            price = float(clean_price)
+        except ValueError:
+            price = 10.0
+        qty = int(item.get('quantity', 1))
+        grand_total += (price * qty)
+
+    # Generate Unique Order Number
+    order_num = f"MAB-{random.randint(10000, 99999)}"
+    while UserOrder.objects.filter(order_number=order_num).exists():
+        order_num = f"MAB-{random.randint(10000, 99999)}"
+
+    # Create Order
+    order = UserOrder.objects.create(
+        order_number=order_num,
+        user=user,
+        full_name=customer_name,
+        email=email or (user.email if user else ''),
+        phone=phone,
+        shipping_address=shipping_address,
+        country=user.country if (user and user.country) else 'India',
+        preferred_date=preferred_date,
+        total_amount=grand_total,
+        status='Placed',
+        payment_method=payment_method
+    )
+
+    # Create Order Items
+    for key, item in cart.items():
+        clean_price = str(item.get('price', 0)).replace('₹', '').replace('$', '').replace('%', '').strip()
+        try:
+            price = float(clean_price)
+        except ValueError:
+            price = 10.0
+        qty = int(item.get('quantity', 1))
+        subtotal = price * qty
+
+        OrderItem.objects.create(
+            order=order,
+            manga_name=item.get('name', 'Manga Edition'),
+            chapter=item.get('chapter', 'Volume 1'),
+            price=price,
+            quantity=qty,
+            subtotal=subtotal,
+            image=item.get('image', '')
+        )
+
+    # Clear Cart Session
+    request.session['cart'] = {}
+
+    messages.success(
+        request,
+        mark_safe(
+            f"🎉 <b>Order Placed Successfully!</b><br>"
+            f"Order ID: <b>#{order.order_number}</b> | Total: <b>${order.total_amount:.2f}</b><br>"
+            f"Payment Mode: <b>{order.payment_method}</b>. You can track your shipment live below! 🚀"
+        )
+    )
+
+    return redirect('/MyOrders/')
+
+
+# LIVE ORDER TRACKING & MANAGEMENT
+def my_orders(request):
+    user = get_current_user(request)
+    user_email = request.session.get('email')
+    user_phone = request.session.get('phone')
+
+    orders = []
+    if user:
+        orders = UserOrder.objects.filter(user=user).prefetch_related('items').order_by('-created_at')
+    elif user_email:
+        orders = UserOrder.objects.filter(email__iexact=user_email).prefetch_related('items').order_by('-created_at')
+    elif user_phone:
+        orders = UserOrder.objects.filter(phone=user_phone).prefetch_related('items').order_by('-created_at')
+
+    # Order search by ID
+    search_q = request.GET.get('track', '').strip()
+    if search_q:
+        searched = UserOrder.objects.filter(order_number__icontains=search_q).prefetch_related('items')
+        if searched.exists():
+            orders = searched
+
+    return render(request, 'manage_order.html', {
+        'orders': orders,
+        'user_obj': user,
+        'search_q': search_q
+    })
+
+
+# UPDATE DELIVERY ADDRESS & DETAILS
+def update_order(request, order_id):
+    if request.method != "POST":
+        return redirect('/MyOrders/')
+
+    order = get_object_or_404(UserOrder, id=order_id)
+
+    if order.status not in ['Placed', 'Processing']:
+        messages.error(request, f"Order #{order.order_number} cannot be modified because it is {order.get_status_display()} ⚠️")
+        return redirect('/MyOrders/')
+
+    new_address = request.POST.get('shipping_address', '').strip()
+    new_phone = request.POST.get('phone', '').strip()
+
+    if not new_address or not new_phone:
+        messages.error(request, "Delivery Address and Contact Number cannot be empty ⚠️")
+        return redirect('/MyOrders/')
+
+    order.shipping_address = new_address
+    order.phone = new_phone
+    order.save()
+
+    messages.success(request, f"Order #{order.order_number} delivery details updated successfully! ✅")
+    return redirect('/MyOrders/')
+
+
+# CANCEL ORDER (ONLY ALLOWED BEFORE DISPATCH)
+def cancel_order(request, order_id):
+    if request.method != "POST":
+        return redirect('/MyOrders/')
+
+    order = get_object_or_404(UserOrder, id=order_id)
+
+    # Prevent cancellation once out for delivery or delivered
+    if order.status in ['Out for Delivery', 'Delivered']:
+        messages.error(
+            request,
+            f"Order #{order.order_number} is already '{order.status}'. Cancellation is not possible after dispatch! You can apply for return/replacement once received ⚠️"
+        )
+        return redirect('/MyOrders/')
+
+    if order.status not in ['Placed', 'Processing']:
+        messages.error(request, f"Order #{order.order_number} cannot be cancelled as it is already {order.get_status_display()} ⚠️")
+        return redirect('/MyOrders/')
+
+    order.status = 'Cancelled'
+    order.save()
+
+    messages.warning(request, f"Order #{order.order_number} has been cancelled successfully 🛑")
+    return redirect('/MyOrders/')
+
+
+# SUBMIT RETURN / REPLACEMENT REQUEST (AFTER DELIVERY)
+def submit_return_request(request, order_id):
+    if request.method != "POST":
+        return redirect('/MyOrders/')
+
+    order = get_object_or_404(UserOrder, id=order_id)
+
+    eligible_statuses = ['Delivered', 'Return Requested', 'Replacement Requested', 'Return Approved', 'Replacement Approved']
+    if order.status not in eligible_statuses:
+        messages.error(request, f"Return or Replacement can only be requested after the order is Delivered ⚠️")
+        return redirect('/MyOrders/')
+
+    request_type = request.POST.get('request_type', 'Return').strip()
+    reason = request.POST.get('reason', '').strip()
+    is_damaged = request.POST.get('is_damaged') == 'on' or request.POST.get('is_damaged') == 'true'
+    description = request.POST.get('description', '').strip()
+    refund_payment_method = request.POST.get('refund_payment_method', 'Cash on Pickup').strip()
+    refund_details = request.POST.get('refund_details', '').strip()
+    damage_image = request.FILES.get('damage_image')
+
+    if not reason or not description:
+        messages.error(request, "Please select a reason and provide description for your request ⚠️")
+        return redirect('/MyOrders/')
+
+    user = get_current_user(request) or order.user
+
+    # Create or update return request record
+    return_obj, created = OrderReturnRequest.objects.update_or_create(
+        order=order,
+        defaults={
+            'user': user,
+            'request_type': request_type,
+            'reason': reason,
+            'is_damaged': is_damaged,
+            'description': description,
+            'refund_payment_method': refund_payment_method,
+            'refund_details': refund_details,
+            'status': 'Pending Verification',
+        }
+    )
+
+    if damage_image:
+        return_obj.damage_image = damage_image
+        return_obj.save()
+
+    # Update order status
+    order.status = 'Return Requested' if request_type == 'Return' else 'Replacement Requested'
+    order.save()
+
+    damage_note = " (Damage Claimed for Cash Refund)" if (request_type == 'Return' and is_damaged) else ""
+    messages.success(
+        request,
+        mark_safe(
+            f"📬 <b>{request_type} Request Submitted for Order #{order.order_number}!{damage_note}</b><br>"
+            f"Reason: <b>{reason}</b> | Mode: <b>{refund_payment_method}</b><br>"
+            f"Backend Admin will verify the reason. Check Admin reply & decision right on this page! 💬"
+        )
+    )
+
+    return redirect(f'/MyOrders/?track={order.order_number}')
+

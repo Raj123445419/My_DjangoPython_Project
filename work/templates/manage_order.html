@@ -1,0 +1,648 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track & Manage Orders - My Anime Book</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <!-- Google Fonts: Sora (Headings), Poppins (Body/Text), Outfit (Buttons/Nav) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800&family=Sora:wght@600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Centralized Stylesheets & Theme Engine -->
+    <link rel="stylesheet" href="{% static 'main.css' %}">
+    <link rel="stylesheet" href="{% static 'theme.css' %}">
+    <script src="{% static 'theme.js' %}"></script>
+</head>
+
+<body>
+<div class="main-bg" style="background-image: linear-gradient(180deg, rgba(8, 14, 28, 0.5) 0%, rgba(6, 12, 24, 0.75) 100%), url(/static/img/Cart_Main_Background.png); background-position: center; background-repeat: no-repeat; background-size: cover; background-attachment: fixed; min-height: 100vh;">
+
+<!-- ==========================================
+     UNIFIED HEADER NAVBAR
+     ========================================== -->
+<nav class="navbar navbar-expand-lg app-navbar">
+  <div class="container-fluid px-3 px-md-4">
+    
+    <a class="navbar-brand d-flex align-items-center" href="/">
+      <span class="font-brand">My Anime book</span>
+    </a>
+
+    {% if request.session.fullname %}
+    <div class="d-lg-none ms-auto me-2">
+      <a href="/Profile/" class="profile-avatar" title="View Profile">
+        {{ request.session.fullname|slice:":1"|upper }}{{ request.session.fullname.split|last|slice:":1"|upper }}
+      </a>
+    </div>
+    {% endif %}
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#headerNavbar">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse justify-content-end" id="headerNavbar">
+      <ul class="navbar-nav align-items-center gap-1 font-nav">
+        <li class="nav-item">
+          <a class="nav-link nav-link-custom" href="/Home/">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link nav-link-custom" href="/Shop/">Shop</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link nav-link-custom" href="/Aboutus/">About us</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link nav-link-custom" href="/Contect/">Contect</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link nav-link-custom active-nav-link" href="/MyOrders/">Orders</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link cart-nav-link" href="/Cart/" title="View Cart">
+            <i class="fa fa-cart-plus" aria-hidden="true"></i>
+          </a>
+        </li>
+
+        {% if request.session.fullname %}
+        <li class="nav-item d-none d-lg-block ms-2">
+          <a href="/Profile/" class="profile-avatar" title="View Profile">
+            {{ request.session.fullname|slice:":1"|upper }}{{ request.session.fullname.split|last|slice:":1"|upper }}
+          </a>
+        </li>
+        <li class="nav-item ms-lg-2 mt-2 mt-lg-0">
+          <a class="btn-auth-logout" href="/Logout/">Log Out</a>
+        </li>
+        {% else %}
+        <li class="nav-item ms-lg-2 mt-2 mt-lg-0">
+          <a class="btn-auth-login" href="/Account/">Log In</a>
+        </li>
+        {% endif %}
+
+        <!-- Theme Mode Switcher -->
+        <li class="nav-item ms-lg-2 mt-2 mt-lg-0 my-lg-auto theme-dropdown-wrap dropdown">
+          <button class="theme-toggle-btn dropdown-toggle" type="button" id="themeDropdown" data-bs-toggle="dropdown" aria-expanded="false" title="Theme Mode">
+            <i class="fa fa-clock-o me-1 theme-icon-indicator text-info"></i>
+            <span class="theme-label-indicator">Auto</span>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end theme-dropdown-menu" aria-labelledby="themeDropdown">
+            <li><button type="button" class="dropdown-item theme-opt active" data-theme-set="auto"><i class="fa fa-clock-o text-info me-2"></i> Auto (8PM-6AM Night)</button></li>
+            <li><button type="button" class="dropdown-item theme-opt" data-theme-set="dark"><i class="fa fa-moon-o text-primary me-2"></i> Dark (Locked)</button></li>
+            <li><button type="button" class="dropdown-item theme-opt" data-theme-set="light"><i class="fa fa-sun-o text-warning me-2"></i> Light (Locked)</button></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+
+  </div>
+</nav>
+
+<!-- ==========================================
+     NOTIFICATION ALERTS
+     ========================================== -->
+<div class="alert-box">
+{% for message in messages %}
+<div class="alert alert-{{message.tags}} alert-dismissible show myalert" role="alert">
+    {{ message }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+</div>
+{% endfor %}
+</div>
+
+<!-- ==========================================
+     ORDERS HEADER & SEARCH BAR
+     ========================================== -->
+<div class="cart-header-banner">
+  <div class="container">
+    <div class="row align-items-center gy-3">
+      <div class="col-12 col-md-7">
+        <h1 class="cart-header-title mb-1">Live Order Tracking & Management</h1>
+        <p class="text-muted mb-0">Track real-time shipment status, modify delivery addresses, or review order history</p>
+      </div>
+      <div class="col-12 col-md-5">
+        <form method="GET" action="/MyOrders/" class="d-flex gap-2">
+          <input type="text" name="track" value="{{ search_q }}" placeholder="Search by Order ID (e.g. MAB-12345)" class="form-control order-search-input">
+          <button type="submit" class="btn-checkout py-2 px-3"><i class="fa fa-search"></i></button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==========================================
+     ORDERS LIST CONTAINER
+     ========================================== -->
+<div class="container py-4 mb-5">
+
+  {% if orders %}
+    {% for order in orders %}
+    <div class="order-card-container mb-4">
+      
+      <!-- Order Card Header -->
+      <div class="order-card-header d-flex flex-wrap justify-content-between align-items-center gap-3">
+        <div>
+          <div class="d-flex align-items-center gap-2 mb-1">
+            <span class="order-id-label">Order</span>
+            <span class="order-id-val">#{{ order.order_number }}</span>
+            {% if order.status == 'Placed' or order.status == 'PLACED' %}
+              <span class="badge status-badge status-placed"><i class="fa fa-clock-o me-1"></i> Placed</span>
+            {% elif order.status == 'Processing' or order.status == 'PROCESSING' %}
+              <span class="badge status-badge status-processing"><i class="fa fa-cogs me-1"></i> Processing</span>
+            {% elif order.status == 'Out for Delivery' or order.status == 'OUT_FOR_DELIVERY' %}
+              <span class="badge status-badge status-shipped"><i class="fa fa-truck me-1"></i> Out for Delivery</span>
+            {% elif order.status == 'Delivered' or order.status == 'DELIVERED' %}
+              <span class="badge status-badge status-delivered"><i class="fa fa-check-circle me-1"></i> Delivered</span>
+            {% elif 'Return Requested' in order.status %}
+              <span class="badge status-badge status-return-req"><i class="fa fa-reply me-1"></i> Return Requested</span>
+            {% elif 'Replacement Requested' in order.status %}
+              <span class="badge status-badge status-replacement-req"><i class="fa fa-refresh me-1"></i> Replacement Requested</span>
+            {% elif 'Approved' in order.status %}
+              <span class="badge status-badge status-approved"><i class="fa fa-check me-1"></i> {{ order.status }}</span>
+            {% elif 'Refunded' in order.status or 'Dispatched' in order.status %}
+              <span class="badge status-badge status-delivered"><i class="fa fa-check-circle me-1"></i> {{ order.status }}</span>
+            {% else %}
+              <span class="badge status-badge status-cancelled"><i class="fa fa-times-circle me-1"></i> {{ order.status }}</span>
+            {% endif %}
+          </div>
+          <div class="order-date-text text-muted small">
+            <i class="fa fa-calendar me-1"></i> Placed on {{ order.created_at|date:"d M Y, h:i A" }} · Payment: <strong>{{ order.payment_method }}</strong>
+          </div>
+        </div>
+
+        <div class="text-md-end">
+          <span class="text-muted small d-block">Grand Total:</span>
+          <span class="order-total-amount">${{ order.total_amount }}</span>
+        </div>
+      </div>
+
+      <!-- Live Tracking Timeline Progress Stepper -->
+      {% if order.status != 'Cancelled' and order.status != 'CANCELLED' %}
+      <div class="order-stepper-wrap px-3 py-4">
+        <div class="order-stepper">
+          
+          <!-- Step 1: Placed -->
+          <div class="step-item active">
+            <div class="step-circle"><i class="fa fa-check"></i></div>
+            <div class="step-label">Order Placed</div>
+            <div class="step-time">{{ order.created_at|date:"d M, h:i A" }}</div>
+          </div>
+
+          <!-- Step 2: Processing -->
+          <div class="step-item {% if order.status == 'Processing' or order.status == 'PROCESSING' or order.status == 'Out for Delivery' or order.status == 'OUT_FOR_DELIVERY' or order.status == 'Delivered' or order.status == 'DELIVERED' %}active{% endif %}">
+            <div class="step-circle">
+              {% if order.status == 'Processing' or order.status == 'PROCESSING' or order.status == 'Out for Delivery' or order.status == 'OUT_FOR_DELIVERY' or order.status == 'Delivered' or order.status == 'DELIVERED' %}
+                <i class="fa fa-check"></i>
+              {% else %}
+                <i class="fa fa-cogs"></i>
+              {% endif %}
+            </div>
+            <div class="step-label">Processing</div>
+            <div class="step-time">Packaging & Verification</div>
+          </div>
+
+          <!-- Step 3: Out for Delivery -->
+          <div class="step-item {% if order.status == 'Out for Delivery' or order.status == 'OUT_FOR_DELIVERY' or order.status == 'Delivered' or order.status == 'DELIVERED' %}active{% endif %}">
+            <div class="step-circle">
+              {% if order.status == 'Delivered' or order.status == 'DELIVERED' %}
+                <i class="fa fa-check"></i>
+              {% else %}
+                <i class="fa fa-truck"></i>
+              {% endif %}
+            </div>
+            <div class="step-label">Out for Delivery</div>
+            <div class="step-time">With Courier Partner</div>
+          </div>
+
+          <!-- Step 4: Delivered -->
+          <div class="step-item {% if order.status == 'Delivered' or order.status == 'DELIVERED' %}active{% endif %}">
+            <div class="step-circle">
+              <i class="fa fa-home"></i>
+            </div>
+            <div class="step-label">Delivered</div>
+            <div class="step-time">Doorstep Handover</div>
+          </div>
+
+        </div>
+      </div>
+      {% else %}
+      <div class="alert alert-danger m-3 mb-0 d-flex align-items-center gap-2">
+        <i class="fa fa-ban fa-2x"></i>
+        <div>
+          <h5 class="mb-0 fw-bold">This Order Was Cancelled</h5>
+          <span class="small text-danger-emphasis">No payment was charged. If you wish to re-order, explore the catalog!</span>
+        </div>
+      </div>
+      {% endif %}
+
+      <!-- Order Details Body: Shipping Address & Items Grid -->
+      <div class="order-card-body p-3 p-md-4">
+        <div class="row g-4">
+          
+          <!-- Shipping & Customer Info -->
+          <div class="col-12 col-lg-5">
+            <div class="order-info-box h-100">
+              <h5 class="info-box-title"><i class="fa fa-map-marker text-danger me-2"></i> Shipping & Contact Details</h5>
+              <div class="info-detail-line"><strong>Recipient:</strong> {{ order.full_name }}</div>
+              <div class="info-detail-line"><strong>Contact Phone:</strong> {{ order.phone }}</div>
+              <div class="info-detail-line"><strong>Email:</strong> {{ order.email|default:"Not Provided" }}</div>
+              <div class="info-detail-line"><strong>Delivery Address:</strong> {{ order.shipping_address }}</div>
+              {% if order.country %}
+              <div class="info-detail-line"><strong>Country:</strong> {{ order.country }}</div>
+              {% endif %}
+              {% if order.preferred_date %}
+              <div class="info-detail-line"><strong>Preferred Date:</strong> {{ order.preferred_date }}</div>
+              {% endif %}
+
+              <!-- Action Buttons & Status Notices -->
+              {% if order.status == 'Placed' or order.status == 'Processing' or order.status == 'PLACED' or order.status == 'PROCESSING' %}
+              <div class="d-flex gap-2 mt-3 pt-3 border-top border-secondary border-opacity-25 flex-wrap">
+                <button type="button" class="btn btn-sm btn-outline-info" data-bs-toggle="modal" data-bs-target="#editOrderModal{{ order.id }}">
+                  <i class="fa fa-edit me-1"></i> Edit Address / Phone
+                </button>
+                <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#cancelOrderModal{{ order.id }}">
+                  <i class="fa fa-times me-1"></i> Cancel Order
+                </button>
+              </div>
+              {% elif order.status == 'Out for Delivery' or order.status == 'OUT_FOR_DELIVERY' %}
+              <div class="mt-3 pt-3 border-top border-secondary border-opacity-25">
+                <div class="alert alert-info py-2 px-3 mb-0 small font-outfit d-flex align-items-center gap-2">
+                  <i class="fa fa-truck fa-lg"></i>
+                  <span><strong>Out for Delivery:</strong> Order is with our delivery agent. Cancellation is locked. You can apply for return/replacement upon delivery.</span>
+                </div>
+              </div>
+              {% elif order.status == 'Delivered' or order.status == 'DELIVERED' or order.return_request %}
+              <div class="mt-3 pt-3 border-top border-secondary border-opacity-25">
+                {% if order.return_request %}
+                <!-- Existing Return / Replacement Status & Admin Reply Box -->
+                <div class="return-status-card p-3 rounded" style="background: rgba(14, 26, 56, 0.9); border: 1.5px solid rgba(0, 240, 255, 0.4);">
+                  <div class="d-flex justify-content-between align-items-center mb-2">
+                    <span class="badge bg-primary font-outfit px-3 py-1">{{ order.return_request.request_type }} Request</span>
+                    <span class="badge {% if 'Approved' in order.return_request.status %}bg-success{% elif 'Rejected' in order.return_request.status %}bg-danger{% else %}bg-warning text-dark{% endif %} font-outfit px-2 py-1">
+                      {{ order.return_request.status }}
+                    </span>
+                  </div>
+                  
+                  <div class="small text-muted mb-1">
+                    <strong>Reason:</strong> {{ order.return_request.reason }}
+                    {% if order.return_request.is_damaged %}
+                      <span class="badge bg-danger ms-1">Damage Claimed ⚠️</span>
+                    {% endif %}
+                  </div>
+                  
+                  <div class="small text-muted mb-2">
+                    <strong>Refund Mode:</strong> {{ order.return_request.refund_payment_method }}
+                    {% if order.return_request.refund_details %} ({{ order.return_request.refund_details }}){% endif %}
+                  </div>
+
+                  <!-- Admin Official Reply Message Box -->
+                  <div class="admin-reply-box p-2 mt-2 rounded" style="background: rgba(6, 12, 26, 0.85); border-left: 3px solid #00f0ff;">
+                    <div class="d-flex align-items-center gap-2 text-info small fw-bold font-sora mb-1">
+                      <i class="fa fa-shield"></i> Official Admin Verification & Decision:
+                    </div>
+                    {% if order.return_request.admin_reply %}
+                      <p class="mb-0 font-poppins small text-light" style="line-height: 1.4;">
+                        {{ order.return_request.admin_reply }}
+                      </p>
+                    {% else %}
+                      <p class="mb-0 font-poppins small text-muted fst-italic">
+                        ⏳ Admin is currently inspecting your request reason. Check back shortly for approval & dispatch instructions.
+                      </p>
+                    {% endif %}
+                  </div>
+                </div>
+                {% else %}
+                <!-- Apply for Return or Replacement Button -->
+                <button type="button" class="btn btn-sm btn-outline-warning w-100 py-2 font-outfit fw-bold" data-bs-toggle="modal" data-bs-target="#returnModal{{ order.id }}">
+                  <i class="fa fa-reply me-1"></i> Request Return / Replacement
+                </button>
+                <div class="text-muted small mt-1 text-center font-poppins">
+                  *Cash refund available for damaged products. Replacements available for other issues.
+                </div>
+                {% endif %}
+              </div>
+              {% endif %}
+            </div>
+          </div>
+
+          <!-- Items Ordered Table -->
+          <div class="col-12 col-lg-7">
+            <div class="order-info-box h-100">
+              <h5 class="info-box-title"><i class="fa fa-book text-info me-2"></i> Ordered Manga Volumes ({{ order.items.count }})</h5>
+              <div class="table-responsive">
+                <table class="table table-borderless align-middle mb-0 order-items-table">
+                  <tbody>
+                    {% for item in order.items.all %}
+                    <tr>
+                      <td style="width: 60px;">
+                        {% if item.image %}
+                        <img src="{{ item.image }}" alt="{{ item.manga_name }}" class="order-item-thumb">
+                        {% else %}
+                        <div class="order-item-thumb-placeholder"><i class="fa fa-book"></i></div>
+                        {% endif %}
+                      </td>
+                      <td>
+                        <div class="fw-bold font-sora item-name">{{ item.manga_name }}</div>
+                        <span class="text-muted small"><i class="fa fa-bookmark-o me-1"></i>{{ item.chapter }}</span>
+                      </td>
+                      <td class="text-center">
+                        <span class="badge bg-dark text-info">Qty: {{ item.quantity }}</span>
+                      </td>
+                      <td class="text-end font-outfit fw-bold" style="color: #00ffcc;">
+                        ${{ item.subtotal }}
+                      </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                      <td colspan="4" class="text-muted text-center py-2">No individual item details found.</td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Edit Order Modal for Order #{{ order.order_number }} -->
+    {% if order.status == 'Placed' or order.status == 'Processing' or order.status == 'PLACED' or order.status == 'PROCESSING' %}
+    <div class="modal fade" id="editOrderModal{{ order.id }}" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content delete-modal-content">
+          <div class="modal-header border-0 pb-0">
+            <h5 class="modal-title font-sora text-info">
+              <i class="fa fa-edit me-2"></i> Update Order #{{ order.order_number }}
+            </h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body pt-3">
+            <p class="text-muted small mb-3">
+              You can update your delivery destination and contact phone before dispatch. Changes will update in real-time in Admin!
+            </p>
+            <form action="/UpdateOrder/{{ order.id }}/" method="POST">
+              {% csrf_token %}
+              <div class="mb-3">
+                <label class="form-label small text-uppercase fw-semibold">Delivery Address</label>
+                <textarea name="shipping_address" class="form-control delete-input" rows="3" required>{{ order.shipping_address }}</textarea>
+              </div>
+              <div class="mb-3">
+                <label class="form-label small text-uppercase fw-semibold">Contact Phone Number</label>
+                <input type="tel" name="phone" value="{{ order.phone }}" class="form-control delete-input" required>
+              </div>
+              <div class="d-flex justify-content-end gap-2 mt-4">
+                <button type="button" class="btn btn-secondary px-3" data-bs-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-info px-4">Save Changes</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cancel Order Modal for Order #{{ order.order_number }} -->
+    <div class="modal fade" id="cancelOrderModal{{ order.id }}" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content delete-modal-content">
+          <div class="modal-header border-0 pb-0">
+            <h5 class="modal-title font-sora text-danger">
+              <i class="fa fa-exclamation-triangle me-2"></i> Cancel Order #{{ order.order_number }}
+            </h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body pt-3">
+            <p class="text-muted mb-3">
+              Are you sure you want to cancel Order <strong>#{{ order.order_number }}</strong>? This action cannot be undone.
+            </p>
+            <form action="/CancelOrder/{{ order.id }}/" method="POST">
+              {% csrf_token %}
+              <div class="d-flex justify-content-end gap-2 mt-4">
+                <button type="button" class="btn btn-secondary px-3" data-bs-dismiss="modal">Keep Order</button>
+                <button type="submit" class="btn btn-danger px-4">Yes, Cancel Order</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- Return & Replacement Modal for Order #{{ order.order_number }} -->
+    <div class="modal fade" id="returnModal{{ order.id }}" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content delete-modal-content">
+          <div class="modal-header border-0 pb-0">
+            <div>
+              <h4 class="modal-title font-sora text-warning">
+                <i class="fa fa-reply-all me-2"></i> Apply for Return / Replacement
+              </h4>
+              <span class="text-muted small">Order <strong>#{{ order.order_number }}</strong> (Delivered)</span>
+            </div>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <form action="/ReturnRequest/{{ order.id }}/" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="modal-body pt-3">
+              
+              <!-- Policy Guidance Notice -->
+              <div class="p-3 mb-3 rounded" style="background: rgba(255, 170, 0, 0.1); border: 1px solid rgba(255, 170, 0, 0.35);">
+                <div class="d-flex align-items-start gap-2">
+                  <i class="fa fa-info-circle text-warning mt-1"></i>
+                  <div class="small font-poppins text-light">
+                    <strong>Return & Refund Policy:</strong> Direct cash/bank refunds are eligible if the manga has physical transit damage or torn pages. For minor printing variations or wrong editions, we dispatch a fresh <strong>Replacement</strong>. Our Admin backend will verify your request and reply to you directly!
+                  </div>
+                </div>
+              </div>
+
+              <div class="row g-3">
+                <!-- Request Type -->
+                <div class="col-12 col-md-6">
+                  <label class="form-label small text-uppercase fw-semibold">Request Type <span class="text-danger">*</span></label>
+                  <select name="request_type" class="form-select delete-input" required>
+                    <option value="Return" selected>Return (Refund)</option>
+                    <option value="Replacement">Replacement (Exchange for New Copy)</option>
+                  </select>
+                </div>
+
+                <!-- Reason -->
+                <div class="col-12 col-md-6">
+                  <label class="form-label small text-uppercase fw-semibold">Primary Reason <span class="text-danger">*</span></label>
+                  <select name="reason" class="form-select delete-input" required>
+                    <option value="Damaged Product / Pages Torn" selected>Damaged Product / Pages Torn</option>
+                    <option value="Defective Printing / Missing Pages">Defective Printing / Missing Pages</option>
+                    <option value="Wrong Manga Volume Delivered">Wrong Manga Volume Delivered</option>
+                    <option value="Language / Edition Mismatch">Language / Edition Mismatch</option>
+                    <option value="Other Issue">Other Issue</option>
+                  </select>
+                </div>
+
+                <!-- Physical Damage Confirmation Checkbox -->
+                <div class="col-12">
+                  <div class="form-check p-3 rounded" style="background: rgba(255, 255, 255, 0.05); border: 1px dashed rgba(255, 255, 255, 0.2);">
+                    <input class="form-check-input ms-0 me-2" type="checkbox" name="is_damaged" id="isDamagedCheck{{ order.id }}" checked>
+                    <label class="form-check-label font-outfit fw-bold text-light cursor-pointer" for="isDamagedCheck{{ order.id }}">
+                      ⚠️ Product is physically damaged (Required for Cash / Bank Refund approval)
+                    </label>
+                  </div>
+                </div>
+
+                <!-- Upload Damage Image Proof -->
+                <div class="col-12 col-md-6">
+                  <label class="form-label small text-uppercase fw-semibold">Upload Photo Proof (Optional / Recommended)</label>
+                  <input type="file" name="damage_image" accept="image/*" class="form-control delete-input">
+                  <span class="text-muted small">Upload a photo of damaged parcel, cover, or torn pages for instant verification</span>
+                </div>
+
+                <!-- Preferred Refund Mode -->
+                <div class="col-12 col-md-6">
+                  <label class="form-label small text-uppercase fw-semibold">Refund Method (For Returns)</label>
+                  <select name="refund_payment_method" class="form-select delete-input">
+                    <option value="Cash on Pickup" selected>💵 Cash on Pickup (Delivery Agent Handover)</option>
+                    <option value="UPI Transfer">📱 Online UPI (GPay / PhonePe / Paytm)</option>
+                    <option value="Bank Account Transfer">🏦 Bank Account Transfer</option>
+                  </select>
+                </div>
+
+                <!-- Refund Details (UPI / Phone / Bank No) -->
+                <div class="col-12">
+                  <label class="form-label small text-uppercase fw-semibold">UPI ID / Account Details (If Online Refund Selected)</label>
+                  <input type="text" name="refund_details" class="form-control delete-input" placeholder="e.g. yourname@upi or Account Number + IFSC">
+                </div>
+
+                <!-- Detailed Description -->
+                <div class="col-12">
+                  <label class="form-label small text-uppercase fw-semibold">Describe the Issue in Detail <span class="text-danger">*</span></label>
+                  <textarea name="description" class="form-control delete-input" rows="3" placeholder="Please describe why you want to return or replace this order..." required></textarea>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="modal-footer border-0 pt-0">
+              <button type="button" class="btn btn-secondary px-3" data-bs-dismiss="modal">Cancel</button>
+              <button type="submit" class="btn btn-warning px-4 font-outfit fw-bold">
+                <i class="fa fa-paper-plane me-1"></i> Submit Request for Verification
+              </button>
+            </div>
+          </form>
+
+        </div>
+      </div>
+    </div>
+
+    {% endfor %}
+
+  {% else %}
+    <!-- Empty Orders State -->
+    <div class="empty-cart-card">
+      <div class="empty-icon">
+        <i class="fa fa-truck"></i>
+      </div>
+      <h2 class="empty-cart-title">No Orders Found</h2>
+      <p class="empty-cart-desc">
+        {% if search_q %}
+        No orders match your search query "{{ search_q }}". Please check your Order ID and try again.
+        {% else %}
+        You haven't placed any manga orders yet. Place an order from your cart with Cash on Delivery to track it live here!
+        {% endif %}
+      </p>
+      <div class="d-flex gap-3 justify-content-center flex-wrap">
+        <a href="/Shop/" class="btn-checkout" style="display: inline-flex;">
+          <i class="fa fa-book me-2"></i> Explore Manga Catalog
+        </a>
+        <a href="/Cart/" class="btn-auth-login px-4 py-2" style="font-size: 16px;">
+          <i class="fa fa-shopping-cart me-2"></i> View Cart
+        </a>
+      </div>
+    </div>
+  {% endif %}
+
+</div>
+
+<!-- ==========================================
+     UNIFIED FOOTER
+     ========================================== -->
+<footer class="app-footer">
+  <div class="container-fluid px-3 px-md-4">
+    <div class="row align-items-center gy-3">
+      
+      <div class="col-12 col-md-4 text-center text-md-start">
+        <span class="font-brand" style="font-size: 20px;">My Anime book</span>
+        <p class="footer-copyright small mb-0 mt-1">© 2026 My Anime book. All rights reserved.</p>
+      </div>
+
+      <div class="col-12 col-md-8 text-center text-md-end">
+        <ul class="list-inline mb-0 font-nav">
+          <li class="list-inline-item"><a class="nav-link-custom" href="/Home/">Home</a></li>
+          <li class="list-inline-item"><a class="nav-link-custom" href="/Shop/">Shop</a></li>
+          <li class="list-inline-item"><a class="nav-link-custom" href="/Aboutus/">About us</a></li>
+          <li class="list-inline-item"><a class="nav-link-custom" href="/Contect/">Contect</a></li>
+          <li class="list-inline-item"><a class="nav-link-custom" href="/MyOrders/">Orders</a></li>
+          
+          {% if request.session.fullname %}
+          <li class="list-inline-item ms-md-2 mt-2 mt-md-0">
+            <button type="button" class="btn-delete-account" data-bs-toggle="modal" data-bs-target="#feedbackModal">
+              Delete Account
+            </button>
+          </li>
+          {% endif %}
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</footer>
+
+<!-- Delete Account Modal -->
+<div class="modal fade" id="feedbackModal" tabindex="-1" aria-labelledby="feedbackModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content delete-modal-content">
+      <div class="modal-header border-0 pb-0">
+        <h5 class="modal-title font-sora text-danger" id="feedbackModalLabel">
+          <i class="fa fa-exclamation-triangle me-2"></i> Delete Account
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body pt-3">
+        <p class="text-muted small mb-3">
+          Enter your registered credentials to confirm permanent account deletion.
+        </p>
+        <form action="/DeleteAccount/" method="POST">
+          {% csrf_token %}
+          <div class="mb-3">
+            <label class="form-label small text-uppercase fw-semibold">Email Address</label>
+            <input type="email" name="email" class="form-control delete-input" placeholder="Registered Email" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label small text-uppercase fw-semibold">Password</label>
+            <input type="password" name="password" class="form-control delete-input" placeholder="Your Password" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label small text-uppercase fw-semibold">Phone Number</label>
+            <input type="tel" name="phnumber" class="form-control delete-input" placeholder="Registered Phone Number" required>
+          </div>
+          <div class="d-flex justify-content-end gap-2 mt-4">
+            <button type="button" class="btn btn-secondary px-3" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-danger px-3">Delete Permanently</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+</body>
+</html>

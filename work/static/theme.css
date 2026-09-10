@@ -1,0 +1,968 @@
+/* ==========================================================================
+   MY ANIME BOOK - ADVANCED THEME ENGINE (theme.css)
+   Modes:
+     - Dark Mode: Deep Anime Night, Light High-Contrast Text
+     - Light Mode: Balanced Anime Slate, Crisp Dark Text
+     - Auto Mode: 8:00 PM to 6:00 AM Night schedule
+   Typography Standards:
+     - Headings: Sora
+     - Body Text: Poppins
+     - Buttons/Nav: Outfit
+   ========================================================================== */
+
+:root {
+    --theme-transition: background-color 0.35s ease, color 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
+}
+
+/* ==========================================================================
+   THEME TOGGLE BUTTON & DROPDOWN STYLES (Z-INDEX 100000+ ALWAYS ON TOP)
+   ========================================================================== */
+.theme-dropdown-wrap {
+    position: relative;
+    display: inline-block;
+    z-index: 100000 !important;
+}
+
+.theme-toggle-btn {
+    background: rgba(0, 240, 255, 0.15) !important;
+    border: 1.5px solid rgba(0, 240, 255, 0.45) !important;
+    color: #00f0ff !important;
+    border-radius: 30px !important;
+    padding: 6px 16px !important;
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 15px !important;
+    font-weight: 700 !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 6px !important;
+    cursor: pointer !important;
+    text-decoration: none !important;
+    backdrop-filter: blur(8px);
+}
+
+.theme-toggle-btn:hover,
+.theme-toggle-btn:focus {
+    background: rgba(0, 240, 255, 0.3) !important;
+    box-shadow: 0 0 16px rgba(0, 240, 255, 0.5) !important;
+    color: #ffffff !important;
+    transform: translateY(-2px);
+}
+
+.theme-dropdown-menu {
+    background: rgba(8, 14, 32, 0.98) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    border: 1.5px solid rgba(0, 240, 255, 0.4) !important;
+    border-radius: 16px !important;
+    box-shadow: 0 15px 45px rgba(0, 0, 0, 0.85), 0 0 25px rgba(0, 240, 255, 0.25) !important;
+    padding: 8px !important;
+    min-width: 220px !important;
+    position: absolute !important;
+    z-index: 100005 !important;
+}
+
+.theme-dropdown-menu .dropdown-item {
+    color: #f1f5f9 !important;
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 14.5px !important;
+    font-weight: 600 !important;
+    padding: 9px 14px !important;
+    border-radius: 10px !important;
+    transition: all 0.2s ease !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    cursor: pointer !important;
+}
+
+.theme-dropdown-menu .dropdown-item:hover,
+.theme-dropdown-menu .dropdown-item.active {
+    background: linear-gradient(135deg, rgba(0, 240, 255, 0.25), rgba(0, 119, 255, 0.35)) !important;
+    color: #00f0ff !important;
+    transform: translateX(4px);
+}
+
+/* ==========================================================================
+   DARK THEME (NIGHT / DEFAULT)
+   High Contrast Light Text on Dark Backgrounds
+   ========================================================================== */
+html[data-theme="dark"],
+body[data-theme="dark"],
+html:not([data-theme="light"]),
+html:not([data-theme="light"]) body {
+    background-color: #080e1c;
+    color: #ffffff !important;
+}
+
+/* Dark Mode Headings */
+html[data-theme="dark"] h1, html[data-theme="dark"] h2, html[data-theme="dark"] h3, 
+html[data-theme="dark"] h4, html[data-theme="dark"] h5, html[data-theme="dark"] h6,
+html:not([data-theme="light"]) h1, html:not([data-theme="light"]) h2, html:not([data-theme="light"]) h3,
+html:not([data-theme="light"]) h4, html:not([data-theme="light"]) h5, html:not([data-theme="light"]) h6 {
+    color: #ffffff !important;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
+}
+
+html[data-theme="dark"] p,
+html:not([data-theme="light"]) p {
+    color: #f1f5f9 !important;
+}
+
+html[data-theme="dark"] .card-title,
+html:not([data-theme="light"]) .card-title {
+    color: #ffffff !important;
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.85);
+}
+
+html[data-theme="dark"] .card-author,
+html:not([data-theme="light"]) .card-author {
+    color: #cbd5e1 !important;
+}
+
+/* Dark Navbar Links */
+html[data-theme="dark"] nav.app-navbar .nav-link-custom,
+html:not([data-theme="light"]) nav.app-navbar .nav-link-custom {
+    color: #f8fafc !important;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.7);
+}
+
+html[data-theme="dark"] nav.app-navbar .nav-link-custom:hover,
+html:not([data-theme="light"]) nav.app-navbar .nav-link-custom:hover {
+    color: #00f0ff !important;
+    text-shadow: 0 0 12px rgba(0, 240, 255, 0.6);
+}
+
+html[data-theme="dark"] nav.app-navbar .nav-link-custom.active-page,
+html:not([data-theme="light"]) nav.app-navbar .nav-link-custom.active-page {
+    color: #00f0ff !important;
+    background: rgba(0, 240, 255, 0.18) !important;
+    border: 1px solid rgba(0, 240, 255, 0.45) !important;
+}
+
+html[data-theme="dark"] .form-label-custom,
+html:not([data-theme="light"]) .form-label-custom {
+    color: #ffffff !important;
+    font-weight: 600;
+}
+
+html[data-theme="dark"] .form-control-custom,
+html[data-theme="dark"] .input-glow,
+html:not([data-theme="light"]) .form-control-custom,
+html:not([data-theme="light"]) .input-glow {
+    background: rgba(10, 18, 38, 0.85) !important;
+    color: #ffffff !important;
+    border: 1.5px solid rgba(0, 240, 255, 0.35) !important;
+}
+
+html[data-theme="dark"] .story-title,
+html[data-theme="dark"] .contact-title,
+html[data-theme="dark"] .cart-header-title,
+html:not([data-theme="light"]) .story-title,
+html:not([data-theme="light"]) .contact-title,
+html:not([data-theme="light"]) .cart-header-title {
+    color: #ffffff !important;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
+}
+
+html[data-theme="dark"] .story-text,
+html[data-theme="dark"] .contact-subtitle,
+html:not([data-theme="light"]) .story-text,
+html:not([data-theme="light"]) .contact-subtitle {
+    color: #e2e8f0 !important;
+}
+
+/* ==========================================================================
+   FOOTER (ALWAYS DARK ACROSS BOTH MODES - WHITE TEXT)
+   ========================================================================== */
+footer.app-footer,
+html[data-theme="light"] footer.app-footer,
+html[data-theme="dark"] footer.app-footer {
+    background-image: linear-gradient(180deg, rgba(0, 0, 0, 0.10) 0%, rgba(5, 10, 22, 0.30) 100%), url('/static/img/Footer_Background.png') !important;
+    background-size: cover !important;
+    background-position: center 25% !important;
+    background-repeat: no-repeat !important;
+    padding: 16px 0 !important;
+    min-height: 70px !important;
+}
+
+footer.app-footer,
+footer.app-footer p,
+footer.app-footer span,
+footer.app-footer .footer-copyright,
+html[data-theme="light"] footer.app-footer,
+html[data-theme="light"] footer.app-footer p,
+html[data-theme="light"] footer.app-footer span,
+html[data-theme="light"] footer.app-footer .footer-copyright {
+    color: #ffffff !important;
+    font-size: 13.5px !important;
+    font-weight: 500 !important;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.95), 0 0 12px rgba(0, 0, 0, 0.9) !important;
+}
+
+footer.app-footer .font-brand,
+html[data-theme="light"] footer.app-footer .font-brand {
+    background: linear-gradient(135deg, #00f0ff 0%, #ffffff 60%, #ff007f 100%) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    text-shadow: 0 0 20px rgba(0, 240, 255, 0.5) !important;
+}
+
+footer.app-footer .nav-link-custom,
+html[data-theme="light"] footer.app-footer .nav-link-custom {
+    color: #ffffff !important;
+    font-weight: 600 !important;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.95), 0 0 10px rgba(0, 0, 0, 0.85) !important;
+}
+
+footer.app-footer .nav-link-custom:hover,
+html[data-theme="light"] footer.app-footer .nav-link-custom:hover {
+    color: #00f0ff !important;
+    text-shadow: 0 0 15px rgba(0, 240, 255, 0.9) !important;
+    background: rgba(0, 240, 255, 0.15) !important;
+}
+
+/* ==========================================================================
+   BALANCED MEDIUM LIGHT THEME (LIGHT / DAY)
+   Medium Anime Slate - Wallpapers Stay Visible, Crisp Readability
+   ========================================================================== */
+html[data-theme="light"],
+html[data-theme="light"] body {
+    background-color: #b0c2d6 !important;
+    color: #0f172a !important;
+    transition: var(--theme-transition);
+}
+
+/* Soft light overlay for body wallpapers without breaking layout positioning */
+html[data-theme="light"] .main-bg {
+    background-color: rgba(180, 200, 225, 0.3) !important;
+}
+
+/* Light Navbar Header */
+html[data-theme="light"] nav.app-navbar {
+    background: rgba(240, 246, 255, 0.95) !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+    border-bottom: 1.5px solid rgba(0, 119, 255, 0.3) !important;
+    box-shadow: 0 6px 25px rgba(0, 40, 90, 0.12) !important;
+}
+
+html[data-theme="light"] nav.app-navbar .nav-link-custom {
+    color: #0f172a !important;
+    font-weight: 700 !important;
+    text-shadow: none !important;
+}
+
+html[data-theme="light"] nav.app-navbar .nav-link-custom:hover {
+    color: #0055b3 !important;
+    background: rgba(0, 119, 255, 0.15) !important;
+    box-shadow: 0 0 12px rgba(0, 119, 255, 0.2) !important;
+}
+
+html[data-theme="light"] nav.app-navbar .nav-link-custom.active-page {
+    color: #ffffff !important;
+    background: linear-gradient(135deg, #0077ff 0%, #00c6ff 100%) !important;
+    border: 1px solid rgba(0, 119, 255, 0.5) !important;
+    box-shadow: 0 0 16px rgba(0, 119, 255, 0.35) !important;
+}
+
+html[data-theme="light"] .theme-toggle-btn {
+    background: rgba(0, 102, 204, 0.15) !important;
+    border: 1.5px solid rgba(0, 102, 204, 0.45) !important;
+    color: #0055b3 !important;
+}
+
+html[data-theme="light"] .theme-toggle-btn:hover {
+    background: rgba(0, 102, 204, 0.28) !important;
+    color: #003380 !important;
+}
+
+html[data-theme="light"] .theme-dropdown-menu {
+    background: rgba(245, 250, 255, 0.98) !important;
+    border: 1.5px solid rgba(0, 119, 255, 0.35) !important;
+    box-shadow: 0 15px 45px rgba(0, 40, 100, 0.25) !important;
+}
+
+html[data-theme="light"] .theme-dropdown-menu .dropdown-item {
+    color: #0f172a !important;
+}
+
+html[data-theme="light"] .theme-dropdown-menu .dropdown-item:hover,
+html[data-theme="light"] .theme-dropdown-menu .dropdown-item.active {
+    background: rgba(0, 119, 255, 0.18) !important;
+    color: #004499 !important;
+}
+
+/* ==========================================================================
+   LIGHT MODE CARDS (NO THICK WHITE OVERLAY - CRISP ARTWORK PRESERVED)
+   ========================================================================== */
+html[data-theme="light"] .cardbox {
+    background: rgba(235, 244, 255, 0.92) !important;
+    backdrop-filter: blur(14px) !important;
+    border: 1.5px solid rgba(0, 119, 255, 0.3) !important;
+    box-shadow: 0 12px 30px rgba(0, 30, 80, 0.15) !important;
+}
+
+html[data-theme="light"] .cardbox:hover {
+    border-color: rgba(0, 119, 255, 0.8) !important;
+    box-shadow: 0 20px 40px rgba(0, 119, 255, 0.3), 0 0 20px rgba(255, 0, 127, 0.2) !important;
+    background: rgba(245, 250, 255, 0.98) !important;
+}
+
+/* Gradient overlay preserves anime artwork with clear dark fade at bottom */
+html[data-theme="light"] .imgbox::after {
+    background: linear-gradient(
+        to top,
+        rgba(6, 12, 24, 0.92) 0%,
+        rgba(6, 12, 24, 0.55) 35%,
+        transparent 68%
+    ) !important;
+}
+
+html[data-theme="light"] .cardcontent .manga-name,
+html[data-theme="light"] .card-title {
+    color: #ffffff !important;
+    font-weight: 800 !important;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.95) !important;
+}
+
+html[data-theme="light"] .cardcontent span,
+html[data-theme="light"] .card-author {
+    color: #e2e8f0 !important;
+    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.85) !important;
+}
+
+html[data-theme="light"] .chapter-badge {
+    background: rgba(0, 119, 255, 0.18) !important;
+    color: #004499 !important;
+    border: 1px solid rgba(0, 119, 255, 0.4) !important;
+}
+
+html[data-theme="light"] .card-price {
+    color: #00f0ff !important;
+    text-shadow: 0 0 12px rgba(0, 240, 255, 0.6) !important;
+}
+
+/* Light Search */
+html[data-theme="light"] .search-input-custom {
+    background: rgba(245, 250, 255, 0.96) !important;
+    backdrop-filter: blur(12px) !important;
+    border: 1.5px solid rgba(0, 119, 255, 0.4) !important;
+    color: #0f172a !important;
+    box-shadow: 0 8px 25px rgba(0, 30, 80, 0.12) !important;
+}
+
+html[data-theme="light"] .search-input-custom:focus {
+    border-color: #0077ff !important;
+    box-shadow: 0 0 22px rgba(0, 119, 255, 0.4) !important;
+    background: #ffffff !important;
+}
+
+html[data-theme="light"] .search-icon-inside {
+    color: #0066cc !important;
+}
+
+html[data-theme="light"] .search-results {
+    background: rgba(245, 250, 255, 0.98) !important;
+    border: 1px solid rgba(0, 119, 255, 0.3) !important;
+    box-shadow: 0 15px 40px rgba(0, 40, 100, 0.2) !important;
+}
+
+html[data-theme="light"] .search-item {
+    color: #0f172a !important;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
+}
+
+html[data-theme="light"] .search-item:hover {
+    background: rgba(0, 119, 255, 0.12) !important;
+}
+
+html[data-theme="light"] .search-item-title {
+    color: #004499 !important;
+    font-weight: 700 !important;
+}
+
+html[data-theme="light"] .search-item:hover .search-item-title {
+    color: #0066cc !important;
+}
+
+html[data-theme="light"] .search-item-meta {
+    color: #475569 !important;
+}
+
+html[data-theme="light"] .search-empty-msg {
+    color: #475569 !important;
+}
+
+/* Light Announcement Ticker */
+html[data-theme="light"] .marquee-wrapper,
+html[data-theme="light"] .ticker-wrap {
+    background: linear-gradient(90deg, #c7d9ee 0%, #dbe8f7 50%, #c7d9ee 100%) !important;
+    border-color: rgba(0, 119, 255, 0.3) !important;
+    box-shadow: 0 4px 15px rgba(0, 30, 80, 0.1) !important;
+}
+
+html[data-theme="light"] .marquee-text,
+html[data-theme="light"] .ticker-text {
+    color: #004499 !important;
+    text-shadow: none !important;
+}
+
+/* ==========================================================================
+   LIGHT MODE CARDS & CONTAINERS (DARK TEXT ON LIGHT CONTAINERS)
+   ========================================================================== */
+
+/* 1. About Us & Feature Cards */
+html[data-theme="light"] .story-card {
+    background: rgba(240, 246, 254, 0.94) !important;
+    backdrop-filter: blur(16px) !important;
+    border: 1.5px solid rgba(0, 119, 255, 0.3) !important;
+    box-shadow: 0 15px 40px rgba(0, 30, 80, 0.12) !important;
+}
+
+html[data-theme="light"] .story-card h1,
+html[data-theme="light"] .story-card h2,
+html[data-theme="light"] .story-card h3,
+html[data-theme="light"] .story-card .story-title,
+html[data-theme="light"] .story-title {
+    color: #091b38 !important;
+    text-shadow: none !important;
+    font-weight: 800 !important;
+}
+
+html[data-theme="light"] .story-card p,
+html[data-theme="light"] .story-card .story-text,
+html[data-theme="light"] .story-text {
+    color: #1e293b !important;
+    text-shadow: none !important;
+    font-weight: 500 !important;
+}
+
+html[data-theme="light"] .feature-box {
+    background: rgba(240, 246, 254, 0.92) !important;
+    border: 1.5px solid rgba(0, 119, 255, 0.28) !important;
+    box-shadow: 0 10px 25px rgba(0, 30, 80, 0.1) !important;
+}
+
+html[data-theme="light"] .feature-title {
+    color: #091b38 !important;
+    text-shadow: none !important;
+    font-weight: 700 !important;
+}
+
+html[data-theme="light"] .feature-desc {
+    color: #334155 !important;
+}
+
+html[data-theme="light"] .feature-icon {
+    color: #0066cc !important;
+    text-shadow: 0 0 12px rgba(0, 102, 204, 0.3) !important;
+}
+
+/* 2. Light Mode Buttons */
+html[data-theme="light"] .btn-auth-login,
+html[data-theme="light"] .story-card .btn-auth-login {
+    background: rgba(0, 119, 255, 0.12) !important;
+    border: 2px solid #0066cc !important;
+    color: #004499 !important;
+    font-weight: 700 !important;
+}
+
+html[data-theme="light"] .btn-auth-login:hover,
+html[data-theme="light"] .story-card .btn-auth-login:hover {
+    background: linear-gradient(135deg, #0077ff, #00c6ff) !important;
+    color: #ffffff !important;
+}
+
+html[data-theme="light"] .btn-auth-logout,
+html[data-theme="light"] .story-card .btn-auth-logout {
+    background: rgba(230, 0, 92, 0.10) !important;
+    border: 2px solid #e6005c !important;
+    color: #c4004f !important;
+    font-weight: 700 !important;
+}
+
+html[data-theme="light"] .btn-auth-logout:hover,
+html[data-theme="light"] .story-card .btn-auth-logout:hover {
+    background: linear-gradient(135deg, #ff007f, #ff3366) !important;
+    color: #ffffff !important;
+}
+
+/* 3. Light Cart Page & Grand Total */
+html[data-theme="light"] .cart-table-wrapper {
+    background: rgba(240, 246, 254, 0.94) !important;
+    border: 1.5px solid rgba(0, 119, 255, 0.3) !important;
+}
+
+html[data-theme="light"] .cart-header-title {
+    color: #091b38 !important;
+    text-shadow: none !important;
+}
+
+html[data-theme="light"] .cart-header-banner p {
+    color: #334155 !important;
+}
+
+html[data-theme="light"] .cart-custom-table th {
+    color: #004499 !important;
+    background: rgba(220, 235, 252, 0.8) !important;
+    border-bottom: 2px solid rgba(0, 119, 255, 0.4) !important;
+}
+
+html[data-theme="light"] .cart-custom-table td {
+    background: #ffffff !important;
+    color: #091b38 !important;
+    border-bottom: 1px solid rgba(0, 119, 255, 0.15) !important;
+}
+
+html[data-theme="light"] .cart-item-title {
+    color: #091b38 !important;
+    font-weight: 700 !important;
+}
+
+html[data-theme="light"] .cart-item-chapters {
+    color: #0055b3 !important;
+}
+
+html[data-theme="light"] .cart-item-price {
+    color: #004499 !important;
+    font-weight: 700 !important;
+}
+
+html[data-theme="light"] .qty-counter-box {
+    background: #eef5fc !important;
+    border: 1.5px solid rgba(0, 119, 255, 0.35) !important;
+}
+
+html[data-theme="light"] .qty-btn {
+    background: #d8e8f8 !important;
+    color: #004499 !important;
+}
+
+html[data-theme="light"] .qty-btn:hover {
+    background: #0077ff !important;
+    color: #ffffff !important;
+}
+
+html[data-theme="light"] .qty-number {
+    color: #091b38 !important;
+    font-weight: 700 !important;
+}
+
+html[data-theme="light"] .grand-total-card {
+    background: rgba(240, 246, 254, 0.94) !important;
+    border: 1.5px solid rgba(0, 119, 255, 0.3) !important;
+}
+
+html[data-theme="light"] .grand-total-label {
+    color: #091b38 !important;
+    font-weight: 700 !important;
+}
+
+html[data-theme="light"] .grand-total-val {
+    color: #004499 !important;
+    font-weight: 800 !important;
+    text-shadow: none !important;
+}
+
+html[data-theme="light"] .empty-cart-card {
+    background: rgba(240, 246, 254, 0.94) !important;
+    border: 1.5px solid rgba(0, 119, 255, 0.3) !important;
+}
+
+html[data-theme="light"] .empty-cart-card h2,
+html[data-theme="light"] .empty-cart-title {
+    color: #091b38 !important;
+    text-shadow: none !important;
+    font-weight: 800 !important;
+}
+
+html[data-theme="light"] .empty-cart-card p,
+html[data-theme="light"] .empty-cart-desc {
+    color: #334155 !important;
+}
+
+/* 4. Light Contact & Auth Cards */
+html[data-theme="light"] .contact-card,
+html[data-theme="light"] .auth-card {
+    background: rgba(240, 246, 254, 0.94) !important;
+    border: 1.5px solid rgba(0, 119, 255, 0.3) !important;
+    box-shadow: 0 15px 40px rgba(0, 30, 80, 0.12) !important;
+}
+
+html[data-theme="light"] .contact-title,
+html[data-theme="light"] .auth-title {
+    color: #091b38 !important;
+    text-shadow: none !important;
+    font-weight: 800 !important;
+}
+
+html[data-theme="light"] .contact-subtitle,
+html[data-theme="light"] .auth-subtitle {
+    color: #334155 !important;
+}
+
+html[data-theme="light"] .form-label-custom {
+    color: #091b38 !important;
+    font-weight: 700 !important;
+}
+
+html[data-theme="light"] .input-glow,
+html[data-theme="light"] .form-control-custom {
+    background: #ffffff !important;
+    border: 1.5px solid rgba(0, 119, 255, 0.35) !important;
+    color: #091b38 !important;
+}
+
+html[data-theme="light"] .input-glow:focus,
+html[data-theme="light"] .form-control-custom:focus {
+    border-color: #0077ff !important;
+    box-shadow: 0 0 18px rgba(0, 119, 255, 0.3) !important;
+    background: #ffffff !important;
+    color: #091b38 !important;
+}
+
+html[data-theme="light"] .auth-link {
+    color: #0055b3 !important;
+    font-weight: 600 !important;
+}
+
+/* 5. Light Manga Details & Chapters */
+html[data-theme="light"] .manga-detail-hero {
+    background: rgba(240, 246, 254, 0.94) !important;
+    border: 1.5px solid rgba(0, 119, 255, 0.3) !important;
+}
+
+html[data-theme="light"] .manga-header-title {
+    color: #091b38 !important;
+    text-shadow: none !important;
+}
+
+html[data-theme="light"] .manga-detail-hero p {
+    color: #1e293b !important;
+}
+
+html[data-theme="light"] .chapters-container {
+    background: rgba(240, 246, 254, 0.94) !important;
+    border: 1.5px solid rgba(0, 119, 255, 0.3) !important;
+}
+
+html[data-theme="light"] .chapters-title {
+    color: #091b38 !important;
+    text-shadow: none !important;
+    font-weight: 800 !important;
+}
+
+html[data-theme="light"] .chapters-subtitle {
+    color: #334155 !important;
+}
+
+html[data-theme="light"] .chapter-search-box {
+    background: #ffffff !important;
+    border: 1.5px solid rgba(0, 119, 255, 0.35) !important;
+    color: #091b38 !important;
+}
+
+html[data-theme="light"] .chapter-row {
+    background: #ffffff !important;
+    border: 1px solid rgba(0, 119, 255, 0.2) !important;
+}
+
+html[data-theme="light"] .chapter-row:hover {
+    background: rgba(0, 119, 255, 0.08) !important;
+    border-color: #0077ff !important;
+}
+
+html[data-theme="light"] .chapter-name {
+    color: #091b38 !important;
+}
+
+html[data-theme="light"] .chapter-meta {
+    color: #475569 !important;
+}
+
+html[data-theme="light"] .chapter-num-badge {
+    background: linear-gradient(135deg, #0077ff, #00c6ff) !important;
+    color: #ffffff !important;
+}
+
+html[data-theme="light"] .chapter-pagination-wrapper {
+    background: rgba(220, 235, 252, 0.85) !important;
+    border: 1.5px solid rgba(0, 119, 255, 0.3) !important;
+    box-shadow: 0 4px 15px rgba(0, 30, 80, 0.08) !important;
+}
+
+html[data-theme="light"] .chapter-page-info {
+    color: #004499 !important;
+}
+
+html[data-theme="light"] .chapter-range-select {
+    background: #ffffff !important;
+    border: 1.5px solid rgba(0, 119, 255, 0.35) !important;
+    color: #004499 !important;
+}
+
+html[data-theme="light"] .chapter-range-select option {
+    background: #ffffff !important;
+    color: #091b38 !important;
+}
+
+html[data-theme="light"] .chapter-page-btn {
+    background: #ffffff !important;
+    border: 1.5px solid rgba(0, 119, 255, 0.3) !important;
+    color: #004499 !important;
+}
+
+html[data-theme="light"] .chapter-page-btn:hover:not(:disabled) {
+    background: rgba(0, 119, 255, 0.15) !important;
+    color: #003380 !important;
+    border-color: #0077ff !important;
+}
+
+html[data-theme="light"] .chapter-page-btn.active {
+    background: linear-gradient(135deg, #0077ff 0%, #00c6ff 100%) !important;
+    border-color: #0077ff !important;
+    color: #ffffff !important;
+    box-shadow: 0 0 15px rgba(0, 119, 255, 0.35) !important;
+}
+
+/* 6. Light Shop Page Filter & Pagination */
+html[data-theme="light"] .shop-filter-bar {
+    background: rgba(240, 246, 254, 0.94) !important;
+    border: 1.5px solid rgba(0, 119, 255, 0.3) !important;
+}
+
+html[data-theme="light"] .genre-select-custom {
+    background: #ffffff !important;
+    border: 1.5px solid rgba(0, 119, 255, 0.35) !important;
+    color: #004499 !important;
+}
+
+html[data-theme="light"] .page-link-custom {
+    background: rgba(240, 246, 254, 0.92) !important;
+    border: 1.5px solid rgba(0, 119, 255, 0.3) !important;
+    color: #091b38 !important;
+}
+
+html[data-theme="light"] .page-link-custom.active,
+html[data-theme="light"] .page-link-custom:hover {
+    background: linear-gradient(135deg, #0077ff, #00c6ff) !important;
+    color: #ffffff !important;
+    border-color: #0077ff !important;
+}
+
+/* 7. Light Index Page Hero (Clean Transparent Background) */
+html[data-theme="light"] .hero-center-box {
+    background: transparent !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+html[data-theme="light"] .hero-main-title {
+    background: linear-gradient(135deg, #051428 0%, #004499 50%, #c4005b 100%) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    filter: drop-shadow(0 2px 6px rgba(255, 255, 255, 0.9)) drop-shadow(0 4px 14px rgba(0, 0, 0, 0.35)) !important;
+    text-shadow: none !important;
+}
+
+html[data-theme="light"] .hero-sub-text {
+    color: #061124 !important;
+    text-shadow: 0 1px 8px rgba(255, 255, 255, 0.95), 0 2px 18px rgba(255, 255, 255, 0.9) !important;
+    font-weight: 700 !important;
+}
+
+/* 8. Light Modals */
+html[data-theme="light"] .modal-content {
+    background: rgba(245, 250, 255, 0.98) !important;
+    color: #0f172a !important;
+    border: 2px solid rgba(0, 119, 255, 0.35) !important;
+    box-shadow: 0 20px 50px rgba(0, 40, 100, 0.25) !important;
+}
+
+html[data-theme="light"] .popup-title {
+    color: #0f172a !important;
+    text-shadow: none !important;
+}
+
+html[data-theme="light"] .popup-btn {
+    background: linear-gradient(135deg, #d8e6f5, #c3d9ed) !important;
+    color: #0f172a !important;
+    border: 1px solid rgba(0, 119, 255, 0.25) !important;
+    font-weight: 600 !important;
+}
+
+html[data-theme="light"] .popup-btn:hover {
+    background: linear-gradient(135deg, #0077ff, #00c6ff) !important;
+    color: #ffffff !important;
+}
+
+/* ==========================================================================
+   9. LIGHT THEME: PROFILE & ORDER MANAGEMENT
+   ========================================================================== */
+html[data-theme="light"] .profile-hero-card {
+    background: rgba(255, 255, 255, 0.92) !important;
+    border-color: rgba(0, 102, 204, 0.3) !important;
+    box-shadow: 0 20px 50px rgba(0, 40, 100, 0.15) !important;
+}
+
+html[data-theme="light"] .profile-user-name {
+    color: #091b38 !important;
+}
+
+html[data-theme="light"] .meta-item {
+    color: #334155 !important;
+}
+
+html[data-theme="light"] .meta-item strong {
+    color: #091b38 !important;
+}
+
+html[data-theme="light"] .stat-glass-card {
+    background: rgba(255, 255, 255, 0.9) !important;
+    border-color: rgba(0, 102, 204, 0.25) !important;
+    box-shadow: 0 10px 30px rgba(0, 40, 100, 0.1) !important;
+}
+
+html[data-theme="light"] .stat-value {
+    color: #091b38 !important;
+}
+
+html[data-theme="light"] .stat-label {
+    color: #475569 !important;
+}
+
+html[data-theme="light"] .section-container {
+    background: rgba(255, 255, 255, 0.9) !important;
+    border-color: rgba(0, 102, 204, 0.25) !important;
+    box-shadow: 0 15px 40px rgba(0, 40, 100, 0.1) !important;
+}
+
+html[data-theme="light"] .section-title {
+    color: #091b38 !important;
+}
+
+html[data-theme="light"] .last-read-card {
+    background: linear-gradient(135deg, #f0f7ff 0%, #e2effc 100%) !important;
+    border-color: rgba(0, 102, 204, 0.35) !important;
+    box-shadow: 0 12px 30px rgba(0, 40, 100, 0.12) !important;
+}
+
+html[data-theme="light"] .last-read-title {
+    color: #091b38 !important;
+}
+
+html[data-theme="light"] .last-read-chapter {
+    color: #0284c7 !important;
+}
+
+html[data-theme="light"] .history-item-card {
+    background: rgba(248, 251, 255, 0.95) !important;
+    border-color: rgba(0, 102, 204, 0.2) !important;
+}
+
+html[data-theme="light"] .history-item-title {
+    color: #091b38 !important;
+}
+
+html[data-theme="light"] .history-item-chap {
+    color: #0284c7 !important;
+}
+
+html[data-theme="light"] .history-read-btn {
+    color: #0066cc !important;
+}
+
+html[data-theme="light"] .order-card-container {
+    background: rgba(255, 255, 255, 0.94) !important;
+    border-color: rgba(0, 102, 204, 0.3) !important;
+    box-shadow: 0 15px 45px rgba(0, 40, 100, 0.12) !important;
+}
+
+html[data-theme="light"] .order-card-header {
+    background: rgba(240, 246, 255, 0.95) !important;
+    border-bottom-color: rgba(0, 102, 204, 0.2) !important;
+}
+
+html[data-theme="light"] .order-id-label {
+    color: #64748b !important;
+}
+
+html[data-theme="light"] .order-id-val {
+    color: #0066cc !important;
+}
+
+html[data-theme="light"] .order-total-amount {
+    color: #00875a !important;
+}
+
+html[data-theme="light"] .order-stepper-wrap {
+    background: rgba(241, 245, 249, 0.8) !important;
+    border-bottom-color: rgba(0, 102, 204, 0.15) !important;
+}
+
+html[data-theme="light"] .order-stepper::before {
+    background: rgba(0, 0, 0, 0.12) !important;
+}
+
+html[data-theme="light"] .step-circle {
+    background: #ffffff !important;
+    border-color: #cbd5e1 !important;
+    color: #94a3b8 !important;
+}
+
+html[data-theme="light"] .step-item.active .step-circle {
+    background: linear-gradient(135deg, #0077ff 0%, #00c6ff 100%) !important;
+    border-color: #0055bb !important;
+    color: #ffffff !important;
+    box-shadow: 0 0 15px rgba(0, 119, 255, 0.5) !important;
+}
+
+html[data-theme="light"] .step-label {
+    color: #64748b !important;
+}
+
+html[data-theme="light"] .step-item.active .step-label {
+    color: #091b38 !important;
+    font-weight: 800 !important;
+}
+
+html[data-theme="light"] .order-info-box {
+    background: rgba(245, 249, 255, 0.85) !important;
+    border-color: rgba(0, 102, 204, 0.2) !important;
+}
+
+html[data-theme="light"] .info-box-title {
+    color: #091b38 !important;
+    border-bottom-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+html[data-theme="light"] .info-detail-line {
+    color: #334155 !important;
+}
+
+html[data-theme="light"] .info-detail-line strong {
+    color: #091b38 !important;
+}
+
+html[data-theme="light"] .order-search-input {
+    background: #ffffff !important;
+    border-color: rgba(0, 102, 204, 0.35) !important;
+    color: #091b38 !important;
+}
+
+html[data-theme="light"] .order-summary-box-modal {
+    background: rgba(240, 246, 255, 0.8) !important;
+    border-color: rgba(0, 102, 204, 0.25) !important;
+}
+
+html[data-theme="light"] .order-items-table .item-name {
+    color: #091b38 !important;
+}
+

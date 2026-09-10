@@ -75,8 +75,15 @@ urlpatterns = [
     path('remove-cart-item/<int:id>/', views.remove_cart_item),
     path('manga/<int:id>/', views.manga_detail, name='manga_detail'),
     path('manga/<int:id>/chapter/<int:chapter_num>/', views.manga_chapter_reader, name='manga_chapter_reader'),
+    path('manga/<int:id>/read/<int:chapter_num>/', views.manga_chapter_reader, name='manga_chapter_reader_read'),
+    path('manga/<int:id>/read/', views.manga_chapter_reader, {'chapter_num': 1}, name='manga_reader_default'),
     path('DeleteAccount/', views.DeleteAccount, name='DeleteAccount'),
-
+    path('Profile/', views.user_profile, name='user_profile'),
+    path('PlaceOrder/', views.place_order, name='place_order'),
+    path('MyOrders/', views.my_orders, name='my_orders'),
+    path('UpdateOrder/<int:order_id>/', views.update_order, name='update_order'),
+    path('CancelOrder/<int:order_id>/', views.cancel_order, name='cancel_order'),
+    path('ReturnRequest/<int:order_id>/', views.submit_return_request, name='submit_return_request'),
 ]
 
 

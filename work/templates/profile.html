@@ -1,0 +1,440 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ user_obj.Fullname }}'s Profile - My Anime Book</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <!-- Google Fonts: Sora (Headings), Poppins (Body/Text), Outfit (Buttons/Nav) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800&family=Sora:wght@600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Centralized Stylesheets & Theme Engine -->
+    <link rel="stylesheet" href="{% static 'main.css' %}">
+    <link rel="stylesheet" href="{% static 'theme.css' %}">
+    <script src="{% static 'theme.js' %}"></script>
+</head>
+
+<body>
+<div class="main-bg" style="background-image: linear-gradient(180deg, rgba(8, 14, 28, 0.5) 0%, rgba(6, 12, 24, 0.75) 100%), url(/static/img/First_page_hero_background_images.jpg); background-position: center; background-repeat: no-repeat; background-size: cover; background-attachment: fixed; min-height: 100vh;">
+
+<!-- ==========================================
+     UNIFIED HEADER NAVBAR
+     ========================================== -->
+<nav class="navbar navbar-expand-lg app-navbar">
+  <div class="container-fluid px-3 px-md-4">
+    
+    <a class="navbar-brand d-flex align-items-center" href="/">
+      <span class="font-brand">My Anime book</span>
+    </a>
+
+    {% if request.session.fullname %}
+    <div class="d-lg-none ms-auto me-2">
+      <a href="/Profile/" class="profile-avatar active-nav-avatar" title="View Profile">
+        {{ request.session.fullname|slice:":1"|upper }}{{ request.session.fullname.split|last|slice:":1"|upper }}
+      </a>
+    </div>
+    {% endif %}
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#headerNavbar">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse justify-content-end" id="headerNavbar">
+      <ul class="navbar-nav align-items-center gap-1 font-nav">
+        <li class="nav-item">
+          <a class="nav-link nav-link-custom" href="/Home/">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link nav-link-custom" href="/Shop/">Shop</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link nav-link-custom" href="/Aboutus/">About us</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link nav-link-custom" href="/Contect/">Contect</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link nav-link-custom" href="/MyOrders/">Orders</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link cart-nav-link" href="/Cart/" title="View Cart">
+            <i class="fa fa-cart-plus" aria-hidden="true"></i>
+          </a>
+        </li>
+
+        {% if request.session.fullname %}
+        <li class="nav-item d-none d-lg-block ms-2">
+          <a href="/Profile/" class="profile-avatar active-nav-avatar" title="View Profile">
+            {{ request.session.fullname|slice:":1"|upper }}{{ request.session.fullname.split|last|slice:":1"|upper }}
+          </a>
+        </li>
+        <li class="nav-item ms-lg-2 mt-2 mt-lg-0">
+          <a class="btn-auth-logout" href="/Logout/">Log Out</a>
+        </li>
+        {% else %}
+        <li class="nav-item ms-lg-2 mt-2 mt-lg-0">
+          <a class="btn-auth-login" href="/Account/">Log In</a>
+        </li>
+        {% endif %}
+
+        <!-- Theme Mode Switcher -->
+        <li class="nav-item ms-lg-2 mt-2 mt-lg-0 my-lg-auto theme-dropdown-wrap dropdown">
+          <button class="theme-toggle-btn dropdown-toggle" type="button" id="themeDropdown" data-bs-toggle="dropdown" aria-expanded="false" title="Theme Mode">
+            <i class="fa fa-clock-o me-1 theme-icon-indicator text-info"></i>
+            <span class="theme-label-indicator">Auto</span>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end theme-dropdown-menu" aria-labelledby="themeDropdown">
+            <li><button type="button" class="dropdown-item theme-opt active" data-theme-set="auto"><i class="fa fa-clock-o text-info me-2"></i> Auto (8PM-6AM Night)</button></li>
+            <li><button type="button" class="dropdown-item theme-opt" data-theme-set="dark"><i class="fa fa-moon-o text-primary me-2"></i> Dark (Locked)</button></li>
+            <li><button type="button" class="dropdown-item theme-opt" data-theme-set="light"><i class="fa fa-sun-o text-warning me-2"></i> Light (Locked)</button></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+
+  </div>
+</nav>
+
+<!-- ==========================================
+     NOTIFICATION ALERTS
+     ========================================== -->
+<div class="alert-box">
+{% for message in messages %}
+<div class="alert alert-{{message.tags}} alert-dismissible show myalert" role="alert">
+    {{ message }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+</div>
+{% endfor %}
+</div>
+
+<!-- ==========================================
+     USER PROFILE HERO & DETAILS
+     ========================================== -->
+<div class="container py-4">
+
+  <!-- Profile Card Banner -->
+  <div class="profile-hero-card mb-4">
+    <div class="row align-items-center gy-4">
+      <div class="col-auto">
+        <div class="profile-large-avatar">
+          {{ user_obj.Fullname|slice:":1"|upper }}{{ user_obj.Fullname.split|last|slice:":1"|upper }}
+        </div>
+      </div>
+      <div class="col">
+        <div class="d-flex flex-wrap align-items-center gap-2 mb-1">
+          <h1 class="profile-user-name mb-0">{{ user_obj.Fullname }}</h1>
+          <span class="profile-badge"><i class="fa fa-star text-warning me-1"></i> Manga Explorer</span>
+        </div>
+        <div class="profile-meta-grid">
+          <div class="meta-item"><i class="fa fa-envelope text-info me-2"></i><strong>Email:</strong> {{ user_obj.email }}</div>
+          <div class="meta-item"><i class="fa fa-phone text-success me-2"></i><strong>Phone:</strong> {{ user_obj.phonnumber }}</div>
+          <div class="meta-item"><i class="fa fa-globe text-primary me-2"></i><strong>Country:</strong> {{ user_obj.country|default:"Global" }}</div>
+          <div class="meta-item"><i class="fa fa-birthday-cake text-warning me-2"></i><strong>Age:</strong> {{ user_obj.Age|default:"-" }}</div>
+        </div>
+      </div>
+      <div class="col-12 col-md-auto d-flex flex-wrap gap-2">
+        <a href="/MyOrders/" class="btn-checkout py-2 px-3">
+          <i class="fa fa-truck me-1"></i> Track Orders ({{ total_orders }})
+        </a>
+        <a href="/Shop/" class="btn-auth-login py-2 px-3">
+          <i class="fa fa-book me-1"></i> Browse Manga
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats Grid -->
+  <div class="row g-3 mb-4">
+    <div class="col-12 col-sm-6 col-lg-4">
+      <div class="stat-glass-card">
+        <div class="stat-icon icon-read">
+          <i class="fa fa-bookmark"></i>
+        </div>
+        <div>
+          <div class="stat-value">{{ total_read_manga }}</div>
+          <div class="stat-label">Manga in Reading List</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-sm-6 col-lg-4">
+      <div class="stat-glass-card">
+        <div class="stat-icon icon-orders">
+          <i class="fa fa-shopping-bag"></i>
+        </div>
+        <div>
+          <div class="stat-value">{{ total_orders }}</div>
+          <div class="stat-label">Total Manga Orders</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-sm-12 col-lg-4">
+      <div class="stat-glass-card">
+        <div class="stat-icon icon-tier">
+          <i class="fa fa-diamond"></i>
+        </div>
+        <div>
+          <div class="stat-value">Otaku Master</div>
+          <div class="stat-label">Account Tier: Verified</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       LAST READ MANGA HIGHLIGHT
+       ========================================== -->
+  <div class="section-container mb-4">
+    <div class="section-header-wrap d-flex justify-content-between align-items-center mb-3">
+      <h2 class="section-title mb-0"><i class="fa fa-clock-o text-warning me-2"></i> Last Read Manga</h2>
+      <span class="text-muted small">Auto-saved reading progress</span>
+    </div>
+
+    {% if last_read %}
+    <div class="last-read-card">
+      <div class="row g-4 align-items-center">
+        <div class="col-auto">
+          {% if last_read.manga.image %}
+          <img src="{{ last_read.manga.image.url }}" alt="{{ last_read.manga_name }}" class="last-read-cover">
+          {% else %}
+          <div class="last-read-cover-placeholder"><i class="fa fa-book"></i></div>
+          {% endif %}
+        </div>
+        <div class="col">
+          <div class="d-flex flex-wrap align-items-center gap-2 mb-2">
+            <span class="badge bg-primary px-3 py-1 font-outfit">RECENT ACTIVITY</span>
+            <span class="text-muted small"><i class="fa fa-calendar me-1"></i>{{ last_read.last_read_at|date:"D, d M Y · h:i A" }}</span>
+          </div>
+          <h3 class="last-read-title">{{ last_read.manga_name }}</h3>
+          <p class="last-read-chapter text-info mb-3">
+            <i class="fa fa-bookmark-o me-1"></i> Current Progress: <strong>Chapter {{ last_read.last_chapter }}</strong>
+          </p>
+          <div class="d-flex gap-3 flex-wrap">
+            <a href="/manga/{{ last_read.manga.id }}/read/{{ last_read.last_chapter }}/" class="btn-continue-reading">
+              <i class="fa fa-play-circle me-1"></i> Continue Reading
+            </a>
+            <a href="/manga/{{ last_read.manga.id }}/" class="btn-auth-login py-2 px-3">
+              <i class="fa fa-list me-1"></i> All Chapters
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% else %}
+    <div class="empty-section-card text-center py-5">
+      <i class="fa fa-book-open fa-3x text-muted mb-3"></i>
+      <h4>No Reading History Yet</h4>
+      <p class="text-muted">Start reading any manga from the shop or catalog, and your progress will automatically appear here!</p>
+      <a href="/Shop/" class="btn-checkout mt-2"><i class="fa fa-compass me-1"></i> Explore Manga Library</a>
+    </div>
+    {% endif %}
+  </div>
+
+  <!-- ==========================================
+       COMPLETE READING HISTORY LIST
+       ========================================== -->
+  <div class="section-container mb-4">
+    <div class="section-header-wrap d-flex justify-content-between align-items-center mb-3">
+      <h2 class="section-title mb-0"><i class="fa fa-history text-info me-2"></i> Full Reading History</h2>
+      <span class="badge bg-dark-subtle text-info font-outfit">{{ reading_history.count }} Titles</span>
+    </div>
+
+    {% if reading_history %}
+    <div class="row g-3">
+      {% for item in reading_history %}
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="history-item-card">
+          <div class="d-flex gap-3 align-items-center">
+            {% if item.manga.image %}
+            <img src="{{ item.manga.image.url }}" alt="{{ item.manga_name }}" class="history-item-thumb">
+            {% else %}
+            <div class="history-item-placeholder"><i class="fa fa-book"></i></div>
+            {% endif %}
+            <div class="flex-grow-1 overflow-hidden">
+              <h4 class="history-item-title text-truncate" title="{{ item.manga_name }}">{{ item.manga_name }}</h4>
+              <p class="history-item-chap mb-1"><i class="fa fa-bookmark text-warning me-1"></i> Chapter {{ item.last_chapter }}</p>
+              <div class="history-item-date text-muted small"><i class="fa fa-clock-o me-1"></i> {{ item.last_read_at|date:"d M Y, h:i A" }}</div>
+            </div>
+          </div>
+          <div class="mt-3 pt-2 border-top border-secondary border-opacity-25 d-flex justify-content-between align-items-center">
+            <a href="/manga/{{ item.manga.id }}/read/{{ item.last_chapter }}/" class="history-read-btn">
+              <i class="fa fa-play me-1"></i> Read Now
+            </a>
+            <a href="/manga/{{ item.manga.id }}/" class="text-muted small text-decoration-none hover-light">
+              Details <i class="fa fa-angle-right"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-section-card text-center py-4">
+      <p class="text-muted mb-0">Your manga reading list is empty. Read chapters online to build your collection!</p>
+    </div>
+    {% endif %}
+  </div>
+
+  <!-- ==========================================
+       RECENT ORDERS OVERVIEW
+       ========================================== -->
+  <div class="section-container mb-4">
+    <div class="section-header-wrap d-flex justify-content-between align-items-center mb-3">
+      <h2 class="section-title mb-0"><i class="fa fa-cube text-success me-2"></i> Recent Order Status</h2>
+      <a href="/MyOrders/" class="text-decoration-none font-outfit text-info">View All Orders <i class="fa fa-arrow-right"></i></a>
+    </div>
+
+    {% if orders %}
+    <div class="table-responsive">
+      <table class="cart-custom-table align-middle">
+        <thead>
+          <tr>
+            <th>Order ID</th>
+            <th>Placed On</th>
+            <th>Items</th>
+            <th>Total Amount</th>
+            <th>Status</th>
+            <th class="text-end">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for order in orders|slice:":5" %}
+          <tr>
+            <td>
+              <strong class="font-outfit text-info">#{{ order.order_number }}</strong>
+            </td>
+            <td>
+              <span class="text-muted small">{{ order.created_at|date:"d M Y, h:i A" }}</span>
+            </td>
+            <td>
+              <span>{{ order.items.count }} Manga Editions</span>
+            </td>
+            <td>
+              <strong style="color: #00ffcc;">${{ order.total_amount }}</strong>
+            </td>
+            <td>
+              {% if order.status == 'Placed' or order.status == 'PLACED' %}
+                <span class="badge status-badge status-placed">Order Placed</span>
+              {% elif order.status == 'Processing' or order.status == 'PROCESSING' %}
+                <span class="badge status-badge status-processing">Processing</span>
+              {% elif order.status == 'Out for Delivery' or order.status == 'OUT_FOR_DELIVERY' %}
+                <span class="badge status-badge status-shipped">Out for Delivery</span>
+              {% elif order.status == 'Delivered' or order.status == 'DELIVERED' %}
+                <span class="badge status-badge status-delivered">Delivered</span>
+              {% elif 'Return Requested' in order.status %}
+                <span class="badge status-badge status-return-req">Return Requested</span>
+              {% elif 'Replacement Requested' in order.status %}
+                <span class="badge status-badge status-replacement-req">Replacement Requested</span>
+              {% elif 'Approved' in order.status %}
+                <span class="badge status-badge status-approved">{{ order.status }}</span>
+              {% elif 'Refunded' in order.status or 'Dispatched' in order.status %}
+                <span class="badge status-badge status-delivered">{{ order.status }}</span>
+              {% else %}
+                <span class="badge status-badge status-cancelled">{{ order.status }}</span>
+              {% endif %}
+            </td>
+            <td class="text-end">
+              <a href="/MyOrders/?track={{ order.order_number }}" class="btn-auth-login py-1 px-3" style="font-size: 13px;">
+                <i class="fa fa-search me-1"></i> Track & Manage
+              </a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+    <div class="empty-section-card text-center py-4">
+      <p class="text-muted mb-2">You haven't placed any physical manga orders yet.</p>
+      <a href="/Cart/" class="btn-checkout py-2 px-3"><i class="fa fa-shopping-cart me-1"></i> View Cart & Checkout</a>
+    </div>
+    {% endif %}
+  </div>
+
+</div>
+
+<!-- ==========================================
+     UNIFIED FOOTER
+     ========================================== -->
+<footer class="app-footer">
+  <div class="container-fluid px-3 px-md-4">
+    <div class="row align-items-center gy-3">
+      
+      <div class="col-12 col-md-4 text-center text-md-start">
+        <span class="font-brand" style="font-size: 20px;">My Anime book</span>
+        <p class="footer-copyright small mb-0 mt-1">© 2026 My Anime book. All rights reserved.</p>
+      </div>
+
+      <div class="col-12 col-md-8 text-center text-md-end">
+        <ul class="list-inline mb-0 font-nav">
+          <li class="list-inline-item"><a class="nav-link-custom" href="/Home/">Home</a></li>
+          <li class="list-inline-item"><a class="nav-link-custom" href="/Shop/">Shop</a></li>
+          <li class="list-inline-item"><a class="nav-link-custom" href="/Aboutus/">About us</a></li>
+          <li class="list-inline-item"><a class="nav-link-custom" href="/Contect/">Contect</a></li>
+          <li class="list-inline-item"><a class="nav-link-custom" href="/MyOrders/">Orders</a></li>
+          
+          {% if request.session.fullname %}
+          <li class="list-inline-item ms-md-2 mt-2 mt-md-0">
+            <button type="button" class="btn-delete-account" data-bs-toggle="modal" data-bs-target="#feedbackModal">
+              Delete Account
+            </button>
+          </li>
+          {% endif %}
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</footer>
+
+<!-- Delete Account Modal -->
+<div class="modal fade" id="feedbackModal" tabindex="-1" aria-labelledby="feedbackModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content delete-modal-content">
+      <div class="modal-header border-0 pb-0">
+        <h5 class="modal-title font-sora text-danger" id="feedbackModalLabel">
+          <i class="fa fa-exclamation-triangle me-2"></i> Delete Account
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body pt-3">
+        <p class="text-muted small mb-3">
+          Enter your registered credentials to confirm permanent account deletion.
+        </p>
+        <form action="/DeleteAccount/" method="POST">
+          {% csrf_token %}
+          <div class="mb-3">
+            <label class="form-label small text-uppercase fw-semibold">Email Address</label>
+            <input type="email" name="email" class="form-control delete-input" placeholder="Registered Email" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label small text-uppercase fw-semibold">Password</label>
+            <input type="password" name="password" class="form-control delete-input" placeholder="Your Password" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label small text-uppercase fw-semibold">Phone Number</label>
+            <input type="tel" name="phnumber" class="form-control delete-input" placeholder="Registered Phone Number" required>
+          </div>
+          <div class="d-flex justify-content-end gap-2 mt-4">
+            <button type="button" class="btn btn-secondary px-3" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-danger px-3">Delete Permanently</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+</body>
+</html>
