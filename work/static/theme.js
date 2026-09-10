@@ -88,6 +88,9 @@
                 }
             });
         });
+
+        // Initialize alert auto-dismiss & timer bars
+        initAnimeAlerts();
     });
 
     // 6. Automatic background interval: checks every 30 seconds for scheduled transition in 'auto' mode
@@ -97,4 +100,79 @@
             window.applyAnimeTheme('auto');
         }
     }, 30000);
+
+    // 7. Auto-Dismiss Alert Messages with Timer & Contained Close Animation
+    function initAnimeAlerts() {
+        const alerts = document.querySelectorAll('.myalert');
+        alerts.forEach(alert => {
+            // Append timer bar if not already present
+            if (!alert.querySelector('.alert-timer-bar')) {
+                const timerBar = document.createElement('div');
+                timerBar.className = 'alert-timer-bar';
+                alert.appendChild(timerBar);
+            }
+
+            let dismissTimeout;
+            const startDismissTimer = () => {
+                dismissTimeout = setTimeout(() => {
+                    dismissAlert(alert);
+                }, 4500);
+            };
+
+            const clearDismissTimer = () => {
+                if (dismissTimeout) {
+                    clearTimeout(dismissTimeout);
+                }
+            };
+
+            // Start initial timer
+            startDismissTimer();
+
+            // Pause on hover
+            alert.addEventListener('mouseenter', () => {
+                clearDismissTimer();
+                const bar = alert.querySelector('.alert-timer-bar');
+                if (bar) bar.style.animationPlayState = 'paused';
+            });
+
+            // Resume on mouse leave
+            alert.addEventListener('mouseleave', () => {
+                startDismissTimer();
+                const bar = alert.querySelector('.alert-timer-bar');
+                if (bar) bar.style.animationPlayState = 'running';
+            });
+
+            // Handle close button click
+            const closeBtn = alert.querySelector('.btn-close');
+            if (closeBtn) {
+                closeBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    clearDismissTimer();
+                    dismissAlert(alert);
+                });
+            }
+        });
+    }
+
+    function dismissAlert(alert) {
+        if (!alert || alert.dataset.dismissing === 'true') return;
+        alert.dataset.dismissing = 'true';
+        alert.style.transition = 'all 0.35s cubic-bezier(0.4, 0, 0.2, 1)';
+        alert.style.opacity = '0';
+        alert.style.transform = 'translateY(-20px) scale(0.95)';
+        alert.style.maxHeight = alert.scrollHeight + 'px';
+        setTimeout(() => {
+            alert.style.maxHeight = '0px';
+            alert.style.paddingTop = '0px';
+            alert.style.paddingBottom = '0px';
+            alert.style.marginTop = '0px';
+            alert.style.marginBottom = '0px';
+            alert.style.borderWidth = '0px';
+        }, 150);
+        setTimeout(() => {
+            if (alert.parentNode) {
+                alert.parentNode.removeChild(alert);
+            }
+        }, 400);
+    }
 })();

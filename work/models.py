@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 # Create your models here.
 
@@ -24,12 +25,11 @@ class sidata(models.Model):
     email=models.EmailField(max_length=40)
     password=models.CharField(max_length=6)
     phonnumber=models.CharField(max_length=11)
-
+    profile_pic=models.ImageField(upload_to='profile_pics/', blank=True, null=True)
 
     def __str__(self):
         return self.Fullname
 
-    pass
 
 
 
@@ -150,6 +150,19 @@ class UserOrder(models.Model):
 
     class Meta:
         ordering = ['-created_at']
+
+    def save(self, *args, **kwargs):
+        if not self.order_number:
+            today_str = timezone.now().strftime('%Y%m%d')
+            prefix = f"ORD-{today_str}-"
+            today_count = UserOrder.objects.filter(order_number__startswith=prefix).count()
+            seq = today_count + 1
+            generated_num = f"{prefix}{seq:04d}"
+            while UserOrder.objects.filter(order_number=generated_num).exists():
+                seq += 1
+                generated_num = f"{prefix}{seq:04d}"
+            self.order_number = generated_num
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f"Order #{self.order_number} - {self.full_name} ({self.status})"

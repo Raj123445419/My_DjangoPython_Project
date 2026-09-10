@@ -19,9 +19,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800&family=Sora:wght@600;700;800;900&display=swap" rel="stylesheet">
 
     <!-- Centralized Stylesheets & Theme Engine -->
-    <link rel="stylesheet" href="{% static 'main.css' %}">
-    <link rel="stylesheet" href="{% static 'theme.css' %}">
-    <script src="{% static 'theme.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'main.css' %}?v=3.5">
+    <link rel="stylesheet" href="{% static 'theme.css' %}?v=3.5">
+    <script src="{% static 'theme.js' %}?v=3.5"></script>
+    <script src="{% static 'world_currencies.js' %}?v=4.0"></script>
 </head>
 
 <body>
@@ -39,9 +40,19 @@
 
     {% if request.session.fullname %}
     <div class="d-lg-none ms-auto me-2">
+      {% if current_user.profile_pic %}
+      <a href="/Profile/" class="profile-avatar-img-wrap" title="View Profile">
+        <img src="{{ current_user.profile_pic.url }}" alt="{{ request.session.fullname }}" class="profile-avatar-img">
+      </a>
+      {% elif request.session.profile_pic_url %}
+      <a href="/Profile/" class="profile-avatar-img-wrap" title="View Profile">
+        <img src="{{ request.session.profile_pic_url }}" alt="{{ request.session.fullname }}" class="profile-avatar-img">
+      </a>
+      {% else %}
       <a href="/Profile/" class="profile-avatar" title="View Profile">
         {{ request.session.fullname|slice:":1"|upper }}{{ request.session.fullname.split|last|slice:":1"|upper }}
       </a>
+      {% endif %}
     </div>
     {% endif %}
 
@@ -75,9 +86,19 @@
 
         {% if request.session.fullname %}
         <li class="nav-item d-none d-lg-block ms-2">
+          {% if current_user.profile_pic %}
+          <a href="/Profile/" class="profile-avatar-img-wrap" title="View Profile">
+            <img src="{{ current_user.profile_pic.url }}" alt="{{ request.session.fullname }}" class="profile-avatar-img">
+          </a>
+          {% elif request.session.profile_pic_url %}
+          <a href="/Profile/" class="profile-avatar-img-wrap" title="View Profile">
+            <img src="{{ request.session.profile_pic_url }}" alt="{{ request.session.fullname }}" class="profile-avatar-img">
+          </a>
+          {% else %}
           <a href="/Profile/" class="profile-avatar" title="View Profile">
             {{ request.session.fullname|slice:":1"|upper }}{{ request.session.fullname.split|last|slice:":1"|upper }}
           </a>
+          {% endif %}
         </li>
         <li class="nav-item ms-lg-2 mt-2 mt-lg-0">
           <a class="btn-auth-logout" href="/Logout/">Log Out</a>
@@ -129,9 +150,14 @@
         <p class="text-muted mb-0">Track real-time shipment status, modify delivery addresses, or review order history</p>
       </div>
       <div class="col-12 col-md-5">
-        <form method="GET" action="/MyOrders/" class="d-flex gap-2">
-          <input type="text" name="track" value="{{ search_q }}" placeholder="Search by Order ID (e.g. MAB-12345)" class="form-control order-search-input">
-          <button type="submit" class="btn-checkout py-2 px-3"><i class="fa fa-search"></i></button>
+        <form method="GET" action="/MyOrders/" id="orderSearchForm" class="d-flex gap-2 position-relative">
+          <div class="search-container position-relative flex-grow-1">
+            <input type="text" id="orderSearchInput" name="track" placeholder="Search by Order ID (e.g. 20260910, 0001, ORD...)" class="form-control order-search-input" autocomplete="off">
+            <div id="orderSearchResults" class="search-results"></div>
+          </div>
+          <button type="submit" id="btnOrderSearch" class="btn-checkout py-2 px-3"><i class="fa fa-search"></i></button>
+        </form>
+
         </form>
       </div>
     </div>
@@ -141,237 +167,290 @@
 <!-- ==========================================
      ORDERS LIST CONTAINER
      ========================================== -->
-<div class="container py-4 mb-5">
+<div class="container py-4 mb-5" id="ordersContainer">
 
   {% if orders %}
     {% for order in orders %}
-    <div class="order-card-container mb-4">
+    <div class="order-card-container mb-4 {% if highlight_order_id == order.id %}order-card-highlighted{% endif %}" id="orderCard{{ order.id }}" data-order-id="{{ order.id }}" data-order-number="{{ order.order_number }}" data-order-name="{{ order.full_name }}" data-order-phone="{{ order.phone }}" data-order-status="{{ order.status }}" data-order-amount="{{ order.total_amount }}" data-order-count="{{ order.items.count }}" data-order-date="{{ order.created_at|date:'d M Y' }}">
       
-      <!-- Order Card Header -->
-      <div class="order-card-header d-flex flex-wrap justify-content-between align-items-center gap-3">
-        <div>
-          <div class="d-flex align-items-center gap-2 mb-1">
+      <!-- Unified Clean Order Bar (Order ID, Status, Items Count, Total & Show All Details Button) -->
+      <div class="order-card-header d-flex flex-wrap justify-content-between align-items-center gap-3 p-3 px-md-4">
+        
+        <!-- Left: Order ID + Status Badge + Items Count -->
+        <div class="d-flex align-items-center gap-2 gap-md-3 flex-wrap">
+          <div class="d-flex align-items-center gap-2">
             <span class="order-id-label">Order</span>
             <span class="order-id-val">#{{ order.order_number }}</span>
-            {% if order.status == 'Placed' or order.status == 'PLACED' %}
-              <span class="badge status-badge status-placed"><i class="fa fa-clock-o me-1"></i> Placed</span>
-            {% elif order.status == 'Processing' or order.status == 'PROCESSING' %}
-              <span class="badge status-badge status-processing"><i class="fa fa-cogs me-1"></i> Processing</span>
-            {% elif order.status == 'Out for Delivery' or order.status == 'OUT_FOR_DELIVERY' %}
-              <span class="badge status-badge status-shipped"><i class="fa fa-truck me-1"></i> Out for Delivery</span>
-            {% elif order.status == 'Delivered' or order.status == 'DELIVERED' %}
-              <span class="badge status-badge status-delivered"><i class="fa fa-check-circle me-1"></i> Delivered</span>
-            {% elif 'Return Requested' in order.status %}
-              <span class="badge status-badge status-return-req"><i class="fa fa-reply me-1"></i> Return Requested</span>
-            {% elif 'Replacement Requested' in order.status %}
-              <span class="badge status-badge status-replacement-req"><i class="fa fa-refresh me-1"></i> Replacement Requested</span>
-            {% elif 'Approved' in order.status %}
-              <span class="badge status-badge status-approved"><i class="fa fa-check me-1"></i> {{ order.status }}</span>
-            {% elif 'Refunded' in order.status or 'Dispatched' in order.status %}
-              <span class="badge status-badge status-delivered"><i class="fa fa-check-circle me-1"></i> {{ order.status }}</span>
-            {% else %}
-              <span class="badge status-badge status-cancelled"><i class="fa fa-times-circle me-1"></i> {{ order.status }}</span>
-            {% endif %}
           </div>
-          <div class="order-date-text text-muted small">
-            <i class="fa fa-calendar me-1"></i> Placed on {{ order.created_at|date:"d M Y, h:i A" }} · Payment: <strong>{{ order.payment_method }}</strong>
-          </div>
+
+          <!-- Status Badge -->
+          {% if order.status == 'Placed' or order.status == 'PLACED' %}
+            <span class="badge status-badge status-placed"><i class="fa fa-clock-o me-1"></i> Placed</span>
+          {% elif order.status == 'Processing' or order.status == 'PROCESSING' %}
+            <span class="badge status-badge status-processing"><i class="fa fa-cogs me-1"></i> Processing</span>
+          {% elif order.status == 'Out for Delivery' or order.status == 'OUT_FOR_DELIVERY' %}
+            <span class="badge status-badge status-shipped"><i class="fa fa-truck me-1"></i> Out for Delivery</span>
+          {% elif order.status == 'Delivered' or order.status == 'DELIVERED' %}
+            <span class="badge status-badge status-delivered"><i class="fa fa-check-circle me-1"></i> Delivered</span>
+          {% elif 'Return Requested' in order.status %}
+            <span class="badge status-badge status-return-req"><i class="fa fa-reply me-1"></i> Return Requested</span>
+          {% elif 'Replacement Requested' in order.status %}
+            <span class="badge status-badge status-replacement-req"><i class="fa fa-refresh me-1"></i> Replacement Requested</span>
+          {% elif 'Approved' in order.status %}
+            <span class="badge status-badge status-approved"><i class="fa fa-check me-1"></i> {{ order.status }}</span>
+          {% elif 'Refunded' in order.status or 'Dispatched' in order.status %}
+            <span class="badge status-badge status-delivered"><i class="fa fa-check-circle me-1"></i> {{ order.status }}</span>
+          {% else %}
+            <span class="badge status-badge status-cancelled"><i class="fa fa-times-circle me-1"></i> {{ order.status }}</span>
+          {% endif %}
+
+          <!-- Total Items Count Badge -->
+          <span class="badge order-items-count-badge font-outfit px-3 py-1">
+            <i class="fa fa-book me-1"></i> {{ order.items.count }} Manga
+          </span>
         </div>
 
-        <div class="text-md-end">
-          <span class="text-muted small d-block">Grand Total:</span>
-          <span class="order-total-amount">${{ order.total_amount }}</span>
+        <!-- Right: Grand Total + Country Currency Toggle + Show All Details Button -->
+        <div class="d-flex align-items-center gap-2 gap-md-3 ms-auto flex-wrap">
+          <div class="text-end">
+            <span class="text-muted small d-block" style="font-size: 11.5px;">Grand Total:</span>
+            <div class="d-flex align-items-center gap-2 flex-wrap justify-content-end">
+              <span class="order-total-amount price-convertible" data-usd="{{ order.total_amount }}">${{ order.total_amount }}</span>
+              <button type="button" class="btn-toggle-country-currency font-outfit" data-order-id="{{ order.id }}" data-country="{{ order.country|default:user_country|default:'India' }}" data-state="usd" title="Click to view in {{ order.country|default:user_country|default:'India' }} currency or revert to USD">
+                <i class="fa fa-bolt text-warning me-1"></i> <span class="btn-currency-text">View in {{ order.country|default:user_country|default:'India' }} Currency</span>
+              </button>
+            </div>
+            <span class="converted-total-hint font-outfit small" data-usd="{{ order.total_amount }}" style="display: none;"></span>
+          </div>
+
+          <button type="button" class="btn-show-details" data-bs-toggle="collapse" data-bs-target="#orderDetailsCollapse{{ order.id }}" aria-expanded="false" aria-controls="orderDetailsCollapse{{ order.id }}" id="btnToggle{{ order.id }}">
+            <span class="btn-toggle-text">Show All Details</span>
+            <i class="fa fa-chevron-down ms-1 toggle-icon"></i>
+          </button>
         </div>
+
       </div>
 
-      <!-- Live Tracking Timeline Progress Stepper -->
-      {% if order.status != 'Cancelled' and order.status != 'CANCELLED' %}
-      <div class="order-stepper-wrap px-3 py-4">
-        <div class="order-stepper">
-          
-          <!-- Step 1: Placed -->
-          <div class="step-item active">
-            <div class="step-circle"><i class="fa fa-check"></i></div>
-            <div class="step-label">Order Placed</div>
-            <div class="step-time">{{ order.created_at|date:"d M, h:i A" }}</div>
-          </div>
-
-          <!-- Step 2: Processing -->
-          <div class="step-item {% if order.status == 'Processing' or order.status == 'PROCESSING' or order.status == 'Out for Delivery' or order.status == 'OUT_FOR_DELIVERY' or order.status == 'Delivered' or order.status == 'DELIVERED' %}active{% endif %}">
-            <div class="step-circle">
-              {% if order.status == 'Processing' or order.status == 'PROCESSING' or order.status == 'Out for Delivery' or order.status == 'OUT_FOR_DELIVERY' or order.status == 'Delivered' or order.status == 'DELIVERED' %}
-                <i class="fa fa-check"></i>
-              {% else %}
-                <i class="fa fa-cogs"></i>
-              {% endif %}
-            </div>
-            <div class="step-label">Processing</div>
-            <div class="step-time">Packaging & Verification</div>
-          </div>
-
-          <!-- Step 3: Out for Delivery -->
-          <div class="step-item {% if order.status == 'Out for Delivery' or order.status == 'OUT_FOR_DELIVERY' or order.status == 'Delivered' or order.status == 'DELIVERED' %}active{% endif %}">
-            <div class="step-circle">
-              {% if order.status == 'Delivered' or order.status == 'DELIVERED' %}
-                <i class="fa fa-check"></i>
-              {% else %}
-                <i class="fa fa-truck"></i>
-              {% endif %}
-            </div>
-            <div class="step-label">Out for Delivery</div>
-            <div class="step-time">With Courier Partner</div>
-          </div>
-
-          <!-- Step 4: Delivered -->
-          <div class="step-item {% if order.status == 'Delivered' or order.status == 'DELIVERED' %}active{% endif %}">
-            <div class="step-circle">
-              <i class="fa fa-home"></i>
-            </div>
-            <div class="step-label">Delivered</div>
-            <div class="step-time">Doorstep Handover</div>
-          </div>
-
+      <!-- Collapsible Detailed Section (Opens on 'Show All Details') -->
+      <div class="collapse" id="orderDetailsCollapse{{ order.id }}">
+        
+        <!-- Order Date & Payment Details Bar Inside Collapse -->
+        <div class="order-meta-bar px-3 px-md-4 py-2 d-flex flex-wrap justify-content-between align-items-center gap-2 small">
+          <div><i class="fa fa-calendar me-1 meta-icon-cal"></i> <span class="meta-label">Placed on:</span> <strong class="meta-val">{{ order.created_at|date:"d M Y, h:i A" }}</strong></div>
+          <div><i class="fa fa-credit-card me-1 meta-icon-card"></i> <span class="meta-label">Payment Mode:</span> <strong class="meta-val">{{ order.payment_method }}</strong></div>
         </div>
-      </div>
-      {% else %}
-      <div class="alert alert-danger m-3 mb-0 d-flex align-items-center gap-2">
-        <i class="fa fa-ban fa-2x"></i>
-        <div>
-          <h5 class="mb-0 fw-bold">This Order Was Cancelled</h5>
-          <span class="small text-danger-emphasis">No payment was charged. If you wish to re-order, explore the catalog!</span>
-        </div>
-      </div>
-      {% endif %}
+        
+        <!-- Live Tracking Timeline Progress Stepper -->
+        {% if order.status != 'Cancelled' and order.status != 'CANCELLED' %}
+        <div class="order-stepper-wrap px-3 py-4">
+          <div class="order-stepper">
+            
+            <!-- Step 1: Placed -->
+            <div class="step-item active">
+              <div class="step-circle"><i class="fa fa-check"></i></div>
+              <div class="step-label">Order Placed</div>
+              <div class="step-time">{{ order.created_at|date:"d M, h:i A" }}</div>
+            </div>
 
-      <!-- Order Details Body: Shipping Address & Items Grid -->
-      <div class="order-card-body p-3 p-md-4">
-        <div class="row g-4">
-          
-          <!-- Shipping & Customer Info -->
-          <div class="col-12 col-lg-5">
-            <div class="order-info-box h-100">
-              <h5 class="info-box-title"><i class="fa fa-map-marker text-danger me-2"></i> Shipping & Contact Details</h5>
-              <div class="info-detail-line"><strong>Recipient:</strong> {{ order.full_name }}</div>
-              <div class="info-detail-line"><strong>Contact Phone:</strong> {{ order.phone }}</div>
-              <div class="info-detail-line"><strong>Email:</strong> {{ order.email|default:"Not Provided" }}</div>
-              <div class="info-detail-line"><strong>Delivery Address:</strong> {{ order.shipping_address }}</div>
-              {% if order.country %}
-              <div class="info-detail-line"><strong>Country:</strong> {{ order.country }}</div>
-              {% endif %}
-              {% if order.preferred_date %}
-              <div class="info-detail-line"><strong>Preferred Date:</strong> {{ order.preferred_date }}</div>
-              {% endif %}
-
-              <!-- Action Buttons & Status Notices -->
-              {% if order.status == 'Placed' or order.status == 'Processing' or order.status == 'PLACED' or order.status == 'PROCESSING' %}
-              <div class="d-flex gap-2 mt-3 pt-3 border-top border-secondary border-opacity-25 flex-wrap">
-                <button type="button" class="btn btn-sm btn-outline-info" data-bs-toggle="modal" data-bs-target="#editOrderModal{{ order.id }}">
-                  <i class="fa fa-edit me-1"></i> Edit Address / Phone
-                </button>
-                <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#cancelOrderModal{{ order.id }}">
-                  <i class="fa fa-times me-1"></i> Cancel Order
-                </button>
-              </div>
-              {% elif order.status == 'Out for Delivery' or order.status == 'OUT_FOR_DELIVERY' %}
-              <div class="mt-3 pt-3 border-top border-secondary border-opacity-25">
-                <div class="alert alert-info py-2 px-3 mb-0 small font-outfit d-flex align-items-center gap-2">
-                  <i class="fa fa-truck fa-lg"></i>
-                  <span><strong>Out for Delivery:</strong> Order is with our delivery agent. Cancellation is locked. You can apply for return/replacement upon delivery.</span>
-                </div>
-              </div>
-              {% elif order.status == 'Delivered' or order.status == 'DELIVERED' or order.return_request %}
-              <div class="mt-3 pt-3 border-top border-secondary border-opacity-25">
-                {% if order.return_request %}
-                <!-- Existing Return / Replacement Status & Admin Reply Box -->
-                <div class="return-status-card p-3 rounded" style="background: rgba(14, 26, 56, 0.9); border: 1.5px solid rgba(0, 240, 255, 0.4);">
-                  <div class="d-flex justify-content-between align-items-center mb-2">
-                    <span class="badge bg-primary font-outfit px-3 py-1">{{ order.return_request.request_type }} Request</span>
-                    <span class="badge {% if 'Approved' in order.return_request.status %}bg-success{% elif 'Rejected' in order.return_request.status %}bg-danger{% else %}bg-warning text-dark{% endif %} font-outfit px-2 py-1">
-                      {{ order.return_request.status }}
-                    </span>
-                  </div>
-                  
-                  <div class="small text-muted mb-1">
-                    <strong>Reason:</strong> {{ order.return_request.reason }}
-                    {% if order.return_request.is_damaged %}
-                      <span class="badge bg-danger ms-1">Damage Claimed ⚠️</span>
-                    {% endif %}
-                  </div>
-                  
-                  <div class="small text-muted mb-2">
-                    <strong>Refund Mode:</strong> {{ order.return_request.refund_payment_method }}
-                    {% if order.return_request.refund_details %} ({{ order.return_request.refund_details }}){% endif %}
-                  </div>
-
-                  <!-- Admin Official Reply Message Box -->
-                  <div class="admin-reply-box p-2 mt-2 rounded" style="background: rgba(6, 12, 26, 0.85); border-left: 3px solid #00f0ff;">
-                    <div class="d-flex align-items-center gap-2 text-info small fw-bold font-sora mb-1">
-                      <i class="fa fa-shield"></i> Official Admin Verification & Decision:
-                    </div>
-                    {% if order.return_request.admin_reply %}
-                      <p class="mb-0 font-poppins small text-light" style="line-height: 1.4;">
-                        {{ order.return_request.admin_reply }}
-                      </p>
-                    {% else %}
-                      <p class="mb-0 font-poppins small text-muted fst-italic">
-                        ⏳ Admin is currently inspecting your request reason. Check back shortly for approval & dispatch instructions.
-                      </p>
-                    {% endif %}
-                  </div>
-                </div>
+            <!-- Step 2: Processing -->
+            <div class="step-item {% if order.status == 'Processing' or order.status == 'PROCESSING' or order.status == 'Out for Delivery' or order.status == 'OUT_FOR_DELIVERY' or order.status == 'Delivered' or order.status == 'DELIVERED' %}active{% endif %}">
+              <div class="step-circle">
+                {% if order.status == 'Processing' or order.status == 'PROCESSING' or order.status == 'Out for Delivery' or order.status == 'OUT_FOR_DELIVERY' or order.status == 'Delivered' or order.status == 'DELIVERED' %}
+                  <i class="fa fa-check"></i>
                 {% else %}
-                <!-- Apply for Return or Replacement Button -->
-                <button type="button" class="btn btn-sm btn-outline-warning w-100 py-2 font-outfit fw-bold" data-bs-toggle="modal" data-bs-target="#returnModal{{ order.id }}">
-                  <i class="fa fa-reply me-1"></i> Request Return / Replacement
-                </button>
-                <div class="text-muted small mt-1 text-center font-poppins">
-                  *Cash refund available for damaged products. Replacements available for other issues.
+                  <i class="fa fa-cogs"></i>
+                {% endif %}
+              </div>
+              <div class="step-label">Processing</div>
+              <div class="step-time">Packaging & Verification</div>
+            </div>
+
+            <!-- Step 3: Out for Delivery -->
+            <div class="step-item {% if order.status == 'Out for Delivery' or order.status == 'OUT_FOR_DELIVERY' or order.status == 'Delivered' or order.status == 'DELIVERED' %}active{% endif %}">
+              <div class="step-circle">
+                {% if order.status == 'Delivered' or order.status == 'DELIVERED' %}
+                  <i class="fa fa-check"></i>
+                {% else %}
+                  <i class="fa fa-truck"></i>
+                {% endif %}
+              </div>
+              <div class="step-label">Out for Delivery</div>
+              <div class="step-time">With Courier Partner</div>
+            </div>
+
+            <!-- Step 4: Delivered -->
+            <div class="step-item {% if order.status == 'Delivered' or order.status == 'DELIVERED' %}active{% endif %}">
+              <div class="step-circle"><i class="fa fa-check"></i></div>
+              <div class="step-label">Delivered</div>
+              <div class="step-time">{% if order.status == 'Delivered' or order.status == 'DELIVERED' %}Completed{% else %}Pending Arrival{% endif %}</div>
+            </div>
+
+          </div>
+        </div>
+        {% else %}
+        <div class="alert alert-danger m-3 mb-0 d-flex align-items-center gap-2">
+          <i class="fa fa-ban fa-2x"></i>
+          <div>
+            <h5 class="mb-0 fw-bold">This Order Was Cancelled</h5>
+            <span class="small text-danger-emphasis">No payment was charged. If you wish to re-order, explore the catalog!</span>
+          </div>
+        </div>
+        {% endif %}
+
+        <!-- Order Details Body: Shipping Address & Items Grid -->
+        <div class="order-card-body p-3 p-md-4">
+          <div class="row g-4">
+            
+            <!-- Shipping & Customer Info -->
+            <div class="col-12 col-lg-5">
+              <div class="order-info-box h-100">
+                <h5 class="info-box-title"><i class="fa fa-map-marker text-danger me-2"></i> Shipping & Contact Details</h5>
+                <div class="info-detail-line"><strong>Recipient:</strong> {{ order.full_name }}</div>
+                <div class="info-detail-line"><strong>Contact Phone:</strong> {{ order.phone }}</div>
+                <div class="info-detail-line"><strong>Email:</strong> {{ order.email|default:"Not Provided" }}</div>
+                <div class="info-detail-line"><strong>Delivery Address:</strong> {{ order.shipping_address }}</div>
+                {% if order.country %}
+                <div class="info-detail-line d-flex align-items-center justify-content-between flex-wrap gap-2">
+                  <div><strong>Country:</strong> {{ order.country }}</div>
+                  <button type="button" class="btn-toggle-country-currency font-outfit" data-country="{{ order.country|default:user_country|default:'India' }}" data-order-id="{{ order.id }}" data-state="usd" title="Click to view in {{ order.country }} currency or revert to USD">
+                    <i class="fa fa-bolt text-warning me-1"></i> <span class="btn-currency-text">View in {{ order.country }} Currency</span>
+                  </button>
+                </div>
+                {% endif %}
+                {% if order.preferred_date %}
+                <div class="info-detail-line"><strong>Placed Order Date:</strong> {{ order.preferred_date }}</div>
+                {% else %}
+                <div class="info-detail-line"><strong>Placed Order Date:</strong> {{ order.created_at|date:"d M Y" }}</div>
+                {% endif %}
+
+                <!-- Action Buttons & Status Notices -->
+                {% if order.status == 'Placed' or order.status == 'Processing' or order.status == 'PLACED' or order.status == 'PROCESSING' %}
+                <div class="d-flex gap-2 mt-3 pt-3 border-top border-secondary border-opacity-25 flex-wrap">
+                  <button type="button" class="btn btn-sm btn-outline-info" data-bs-toggle="modal" data-bs-target="#editOrderModal{{ order.id }}">
+                    <i class="fa fa-edit me-1"></i> Edit Address / Phone
+                  </button>
+                  <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#cancelOrderModal{{ order.id }}">
+                    <i class="fa fa-times me-1"></i> Cancel Order
+                  </button>
+                </div>
+                {% elif order.status == 'Out for Delivery' or order.status == 'OUT_FOR_DELIVERY' %}
+                <div class="mt-3 pt-3 border-top border-secondary border-opacity-25">
+                  <div class="alert alert-info py-2 px-3 mb-0 small font-outfit d-flex align-items-center gap-2">
+                    <i class="fa fa-truck fa-lg"></i>
+                    <span><strong>Out for Delivery:</strong> Order is with our delivery agent. Cancellation is locked. You can apply for return/replacement upon delivery.</span>
+                  </div>
+                </div>
+                {% elif order.status == 'Delivered' or order.status == 'DELIVERED' or order.return_request %}
+                <div class="mt-3 pt-3 border-top border-secondary border-opacity-25">
+                  {% if order.return_request %}
+                  <!-- Existing Return / Replacement Status & Admin Reply Box -->
+                  <div class="return-status-card p-3 rounded">
+                    <div class="d-flex justify-content-between align-items-center mb-2 flex-wrap gap-2">
+                      <span class="badge badge-return-type font-outfit px-3 py-1">{{ order.return_request.request_type }} Request</span>
+                      <span class="badge {% if 'Approved' in order.return_request.status %}badge-status-approved{% elif 'Rejected' in order.return_request.status %}badge-status-rejected{% else %}badge-status-pending{% endif %} font-outfit px-2 py-1">
+                        {{ order.return_request.status }}
+                      </span>
+                    </div>
+                    
+                    <div class="return-info-line mb-1">
+                      <strong>Reason:</strong> <span>{{ order.return_request.reason }}</span>
+                      {% if order.return_request.is_damaged %}
+                        <span class="badge bg-danger ms-1">Damage Claimed ⚠️</span>
+                      {% endif %}
+                    </div>
+                    
+                    <div class="return-info-line mb-2">
+                      <strong>Refund Mode:</strong> <span>{{ order.return_request.refund_payment_method }}</span>
+                      {% if order.return_request.refund_details %} <span>({{ order.return_request.refund_details }})</span>{% endif %}
+                    </div>
+
+                    <!-- Admin Official Reply Message Box -->
+                    <div class="admin-reply-box p-3 mt-2 rounded">
+                      <div class="d-flex align-items-center gap-2 admin-reply-title small fw-bold font-sora mb-1">
+                        <i class="fa fa-shield"></i> Official Admin Verification & Decision:
+                      </div>
+                      {% if order.return_request.admin_reply %}
+                        <p class="mb-0 font-poppins small admin-reply-text" style="line-height: 1.5;">
+                          {{ order.return_request.admin_reply }}
+                        </p>
+                      {% else %}
+                        <p class="mb-0 font-poppins small admin-reply-pending fst-italic">
+                          ⏳ Admin is currently inspecting your request reason. Check back shortly for approval & dispatch instructions.
+                        </p>
+                      {% endif %}
+                    </div>
+                  </div>
+                  {% else %}
+                  <!-- Apply for Return or Replacement Button -->
+                  <button type="button" class="btn btn-sm btn-outline-warning w-100 py-2 font-outfit fw-bold" data-bs-toggle="modal" data-bs-target="#returnModal{{ order.id }}">
+                    <i class="fa fa-reply me-1"></i> Request Return / Replacement
+                  </button>
+                  <div class="text-muted small mt-1 text-center font-poppins">
+                    *Cash refund available for damaged products. Replacements available for other issues.
+                  </div>
+                  {% endif %}
                 </div>
                 {% endif %}
               </div>
-              {% endif %}
             </div>
-          </div>
 
-          <!-- Items Ordered Table -->
-          <div class="col-12 col-lg-7">
-            <div class="order-info-box h-100">
-              <h5 class="info-box-title"><i class="fa fa-book text-info me-2"></i> Ordered Manga Volumes ({{ order.items.count }})</h5>
-              <div class="table-responsive">
-                <table class="table table-borderless align-middle mb-0 order-items-table">
-                  <tbody>
-                    {% for item in order.items.all %}
-                    <tr>
-                      <td style="width: 60px;">
+            <!-- Items Ordered (Stylish Dynamic Cards) -->
+            <div class="col-12 col-lg-7">
+              <div class="order-info-box h-100">
+                <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+                  <h5 class="info-box-title mb-0">
+                    <i class="fa fa-book text-info me-2"></i> Ordered Manga ({{ order.items.count }})
+                  </h5>
+                  <span class="badge order-items-total-pill font-outfit price-convertible" data-usd="{{ order.total_amount }}" data-prefix="Total: ">
+                    Total: ${{ order.total_amount }}
+                  </span>
+                </div>
+                
+                <div class="order-manga-list d-flex flex-column gap-2">
+                  {% for item in order.items.all %}
+                  <div class="order-manga-card d-flex align-items-center justify-content-between gap-3 p-2 px-3 rounded">
+                    
+                    <!-- Left: Poster + Title + Chapter -->
+                    <div class="d-flex align-items-center gap-3 flex-grow-1 min-w-0">
+                      <div class="order-manga-thumb-wrap">
                         {% if item.image %}
-                        <img src="{{ item.image }}" alt="{{ item.manga_name }}" class="order-item-thumb">
+                        <img src="{{ item.image }}" alt="{{ item.manga_name }}" class="order-manga-thumb">
                         {% else %}
-                        <div class="order-item-thumb-placeholder"><i class="fa fa-book"></i></div>
+                        <div class="order-manga-thumb-placeholder"><i class="fa fa-book"></i></div>
                         {% endif %}
-                      </td>
-                      <td>
-                        <div class="fw-bold font-sora item-name">{{ item.manga_name }}</div>
-                        <span class="text-muted small"><i class="fa fa-bookmark-o me-1"></i>{{ item.chapter }}</span>
-                      </td>
-                      <td class="text-center">
-                        <span class="badge bg-dark text-info">Qty: {{ item.quantity }}</span>
-                      </td>
-                      <td class="text-end font-outfit fw-bold" style="color: #00ffcc;">
+                      </div>
+
+                      <div class="min-w-0">
+                        <h6 class="order-manga-name text-truncate mb-1 font-sora">{{ item.manga_name }}</h6>
+                        <span class="badge-manga-chapter font-poppins">
+                          <i class="fa fa-bookmark me-1 text-info"></i>{{ item.chapter }}
+                        </span>
+                      </div>
+                    </div>
+
+                    <!-- Right: Quantity Badge + Subtotal Price -->
+                    <div class="d-flex align-items-center gap-3 text-end flex-shrink-0">
+                      <span class="order-qty-pill font-outfit">
+                        Qty: <strong>{{ item.quantity }}</strong>
+                      </span>
+                      <span class="order-item-price-tag font-outfit price-convertible" data-usd="{{ item.subtotal }}">
                         ${{ item.subtotal }}
-                      </td>
-                    </tr>
-                    {% empty %}
-                    <tr>
-                      <td colspan="4" class="text-muted text-center py-2">No individual item details found.</td>
-                    </tr>
-                    {% endfor %}
-                  </tbody>
-                </table>
+                      </span>
+                    </div>
+
+                  </div>
+                  {% empty %}
+                  <div class="text-muted text-center py-4 font-poppins small">
+                    No individual item details found.
+                  </div>
+                  {% endfor %}
+                </div>
               </div>
             </div>
-          </div>
 
+          </div>
         </div>
+
       </div>
 
     </div>
@@ -393,6 +472,14 @@
             </p>
             <form action="/UpdateOrder/{{ order.id }}/" method="POST">
               {% csrf_token %}
+              <div class="mb-3">
+                <label class="form-label small text-uppercase fw-semibold">Destination Country</label>
+                <select name="country" class="form-select delete-input">
+                  {% for c_name, c_curr, c_flag in world_countries_list %}
+                    <option value="{{ c_name }}" {% if order.country|lower == c_name|lower %}selected{% endif %}>{{ c_flag }} {{ c_name }} ({{ c_curr }})</option>
+                  {% endfor %}
+                </select>
+              </div>
               <div class="mb-3">
                 <label class="form-label small text-uppercase fw-semibold">Delivery Address</label>
                 <textarea name="shipping_address" class="form-control delete-input" rows="3" required>{{ order.shipping_address }}</textarea>
@@ -644,5 +731,306 @@
 </div>
 
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // 1. Collapse show/hide button text & icon toggles
+    var collapses = document.querySelectorAll('.collapse');
+    collapses.forEach(function(col) {
+        col.addEventListener('show.bs.collapse', function() {
+            var btn = document.querySelector('[data-bs-target="#' + this.id + '"]');
+            if (btn) {
+                var textSpan = btn.querySelector('.btn-toggle-text');
+                var icon = btn.querySelector('.toggle-icon');
+                if (textSpan) textSpan.textContent = 'Hide Details';
+                if (icon) {
+                    icon.classList.remove('fa-chevron-down');
+                    icon.classList.add('fa-chevron-up');
+                }
+            }
+        });
+        col.addEventListener('hide.bs.collapse', function() {
+            var btn = document.querySelector('[data-bs-target="#' + this.id + '"]');
+            if (btn) {
+                var textSpan = btn.querySelector('.btn-toggle-text');
+                var icon = btn.querySelector('.toggle-icon');
+                if (textSpan) textSpan.textContent = 'Show All Details';
+                if (icon) {
+                    icon.classList.remove('fa-chevron-up');
+                    icon.classList.add('fa-chevron-down');
+                }
+            }
+        });
+    });
+
+    // Auto-scroll and highlight if an order was matched via server-side search
+    var serverHighlighted = document.querySelector('.order-card-highlighted');
+    if (serverHighlighted) {
+        serverHighlighted.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        var targetCollapse = serverHighlighted.querySelector('.collapse');
+        if (targetCollapse && typeof bootstrap !== 'undefined') {
+            new bootstrap.Collapse(targetCollapse, { toggle: false }).show();
+        }
+    }
+
+    // 2. LIVE ORDER SEARCH DROPDOWN & CLIENT-SIDE INSTANT REORDERING
+    var searchInput = document.getElementById('orderSearchInput');
+    var resultsBox = document.getElementById('orderSearchResults');
+    var searchForm = document.getElementById('orderSearchForm');
+    var ordersContainer = document.getElementById('ordersContainer');
+    var orderCards = document.querySelectorAll('.order-card-container');
+
+    function highlightAndMoveToTop(orderCard) {
+        if (!orderCard || !ordersContainer) return;
+
+        // Move to the very top of orders container
+        ordersContainer.prepend(orderCard);
+
+        // Remove old highlight and re-trigger glowing pulse animation
+        orderCard.classList.remove('order-card-highlighted');
+        void orderCard.offsetWidth; // Force reflow
+        orderCard.classList.add('order-card-highlighted');
+
+        // Smooth scroll to top of card
+        setTimeout(function() {
+            orderCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 80);
+
+        // Auto open details
+        var collapseEl = orderCard.querySelector('.collapse');
+        if (collapseEl && typeof bootstrap !== 'undefined') {
+            new bootstrap.Collapse(collapseEl, { toggle: false }).show();
+        }
+
+        // Hide results dropdown
+        if (resultsBox) resultsBox.style.display = 'none';
+    }
+
+    if (searchInput && resultsBox) {
+        searchInput.addEventListener('input', function() {
+            var q = this.value.trim().toLowerCase();
+            if (!q) {
+                resultsBox.style.display = 'none';
+                resultsBox.innerHTML = '';
+                return;
+            }
+
+            var matches = [];
+            orderCards.forEach(function(card) {
+                var orderNum = (card.getAttribute('data-order-number') || '').toLowerCase();
+                var customerName = (card.getAttribute('data-order-name') || '').toLowerCase();
+                var phone = (card.getAttribute('data-order-phone') || '').toLowerCase();
+                var dateStr = (card.getAttribute('data-order-date') || '').toLowerCase();
+                var status = card.getAttribute('data-order-status') || '';
+                var amount = card.getAttribute('data-order-amount') || '';
+                var count = card.getAttribute('data-order-count') || '1';
+
+                // Check if any part matches (order number, date, phone, name)
+                if (orderNum.includes(q) || customerName.includes(q) || phone.includes(q) || dateStr.includes(q) || q.includes(orderNum)) {
+                    matches.push({
+                        id: card.getAttribute('data-order-id'),
+                        orderNum: card.getAttribute('data-order-number'),
+                        customerName: card.getAttribute('data-order-name'),
+                        phone: card.getAttribute('data-order-phone'),
+                        date: card.getAttribute('data-order-date'),
+                        status: status,
+                        amount: amount,
+                        count: count,
+                        element: card
+                    });
+                }
+            });
+
+            if (matches.length > 0) {
+                var html = '';
+                matches.forEach(function(m) {
+                    var statusBadgeClass = 'bg-primary';
+                    if (m.status.includes('Placed')) statusBadgeClass = 'status-placed';
+                    else if (m.status.includes('Processing')) statusBadgeClass = 'status-processing';
+                    else if (m.status.includes('Out for Delivery')) statusBadgeClass = 'status-shipped';
+                    else if (m.status.includes('Delivered')) statusBadgeClass = 'status-delivered';
+                    else if (m.status.includes('Return')) statusBadgeClass = 'status-return-req';
+                    else if (m.status.includes('Replacement')) statusBadgeClass = 'status-replacement-req';
+                    else if (m.status.includes('Cancelled')) statusBadgeClass = 'status-cancelled';
+
+                    html += `
+                    <div class="search-item cursor-pointer live-order-item" data-order-card-id="orderCard${m.id}">
+                        <div class="d-flex align-items-center justify-content-between w-100">
+                            <div>
+                                <div class="search-item-title font-sora">
+                                    <i class="fa fa-hashtag text-info me-1"></i>${m.orderNum}
+                                </div>
+                                <div class="search-item-meta">
+                                    <span class="text-light">${m.customerName}</span> • ${m.count} Items • <i class="fa fa-calendar-o"></i> ${m.date}
+                                </div>
+                            </div>
+                            <div class="text-end ms-3">
+                                <span class="badge ${statusBadgeClass} font-outfit mb-1" style="font-size: 11px;">${m.status}</span>
+                                <div class="font-outfit fw-bold" style="color: #00ffcc; font-size: 14px;">$${m.amount}</div>
+                            </div>
+                        </div>
+                    </div>`;
+                });
+                resultsBox.innerHTML = html;
+                resultsBox.style.display = 'block';
+
+                // Attach click handlers to dropdown items
+                resultsBox.querySelectorAll('.live-order-item').forEach(function(item) {
+                    item.addEventListener('click', function() {
+                        var cardId = this.getAttribute('data-order-card-id');
+                        var cardEl = document.getElementById(cardId);
+                        if (cardEl) {
+                            highlightAndMoveToTop(cardEl);
+                        }
+                    });
+                });
+            } else {
+                resultsBox.innerHTML = `<div class="search-empty-msg"><i class="fa fa-search me-2 text-warning"></i> No order found matching "<strong>${q}</strong>"</div>`;
+                resultsBox.style.display = 'block';
+            }
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!searchInput.contains(e.target) && !resultsBox.contains(e.target)) {
+                resultsBox.style.display = 'none';
+            }
+        });
+    }
+
+    // Form Submission (Enter key or Search Button Click)
+    if (searchForm) {
+        searchForm.addEventListener('submit', function(e) {
+            var q = searchInput.value.trim().toLowerCase();
+            if (q && orderCards.length > 0) {
+                // Check if we can find and highlight in client DOM first
+                var matchedCard = null;
+                for (var i = 0; i < orderCards.length; i++) {
+                    var card = orderCards[i];
+                    var orderNum = (card.getAttribute('data-order-number') || '').toLowerCase();
+                    var customerName = (card.getAttribute('data-order-name') || '').toLowerCase();
+                    var phone = (card.getAttribute('data-order-phone') || '').toLowerCase();
+                    if (orderNum.includes(q) || customerName.includes(q) || phone.includes(q)) {
+                        matchedCard = card;
+                        break;
+                    }
+                }
+                if (matchedCard) {
+                    e.preventDefault(); // Don't reload, keep all orders on page!
+                    highlightAndMoveToTop(matchedCard);
+                    return false;
+                }
+            }
+        });
+    }
+
+    // ==========================================
+    // 2-WAY DYNAMIC WORLD CURRENCY TOGGLE ENGINE (ZERO-ERROR)
+    // ==========================================
+    // Floating Toast Alert
+    function showCurrencyToast(msg) {
+        let toast = document.getElementById('currencyToast');
+        if (!toast) {
+            toast = document.createElement('div');
+            toast.id = 'currencyToast';
+            toast.className = 'currency-toast-popup';
+            document.body.appendChild(toast);
+        }
+        toast.innerHTML = msg;
+        toast.classList.add('show');
+        clearTimeout(toast._timer);
+        toast._timer = setTimeout(() => {
+            toast.classList.remove('show');
+        }, 3200);
+    }
+
+    // 2-Way Toggle Logic for Order Cards
+    document.querySelectorAll('.btn-toggle-country-currency').forEach(function(btn) {
+        btn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const orderId = this.getAttribute('data-order-id');
+            const country = this.getAttribute('data-country') || 'India';
+            
+            // Resolve Currency Code from Global 195+ Countries Engine
+            const targetCurrency = typeof resolveCountryCurrencyCode === 'function' 
+                ? resolveCountryCurrencyCode(country) 
+                : 'USD';
+
+            const curInfo = (typeof WORLD_CURRENCY_RATES !== 'undefined' && WORLD_CURRENCY_RATES[targetCurrency]) 
+                ? WORLD_CURRENCY_RATES[targetCurrency] 
+                : { symbol: '$', rate: 1.0, decimals: 2, label: 'US Dollar', flag: '🌍' };
+
+            const card = document.getElementById(`orderCard${orderId}`) || this.closest('.order-card-container');
+            if (!card) return;
+
+            const currentState = this.getAttribute('data-state') || 'usd';
+            const allCardButtons = card.querySelectorAll('.btn-toggle-country-currency');
+
+            if (currentState === 'usd') {
+                // 1st Click -> Convert THIS order card to Country Currency
+                card.querySelectorAll('.price-convertible').forEach(function(el) {
+                    const usd = parseFloat(el.getAttribute('data-usd') || '0');
+                    const prefix = el.getAttribute('data-prefix') || '';
+                    if (!isNaN(usd)) {
+                        const formatted = typeof formatWorldCurrency === 'function'
+                            ? formatWorldCurrency(usd, targetCurrency)
+                            : `$${usd.toFixed(2)}`;
+                        el.textContent = `${prefix}${formatted}`;
+                        el.classList.remove('price-glow-anim');
+                        void el.offsetWidth;
+                        el.classList.add('price-glow-anim');
+                    }
+                });
+
+                // Show original USD amount hint
+                card.querySelectorAll('.converted-total-hint').forEach(function(hint) {
+                    const usd = parseFloat(hint.getAttribute('data-usd') || '0');
+                    if (!isNaN(usd)) {
+                        hint.style.display = 'block';
+                        hint.textContent = `Original: $${usd.toFixed(2)} USD`;
+                    }
+                });
+
+                // Update all buttons in this card to "Revert to USD ($)"
+                allCardButtons.forEach(b => {
+                    b.setAttribute('data-state', 'converted');
+                    b.classList.add('btn-currency-active');
+                    b.innerHTML = `<i class="fa fa-undo text-info me-1"></i> <span class="btn-currency-text">Revert to USD ($)</span>`;
+                });
+
+                showCurrencyToast(`<span>${curInfo.flag || '🌍'}</span> Prices converted to <strong>${curInfo.label} (${curInfo.symbol.trim()})</strong> • 1 USD ≈ ${curInfo.symbol}${curInfo.rate}`);
+
+            } else {
+                // 2nd Click -> Revert THIS order card back to Original USD ($)
+                card.querySelectorAll('.price-convertible').forEach(function(el) {
+                    const usd = parseFloat(el.getAttribute('data-usd') || '0');
+                    const prefix = el.getAttribute('data-prefix') || '';
+                    if (!isNaN(usd)) {
+                        el.textContent = `${prefix}$${usd.toFixed(2)}`;
+                        el.classList.remove('price-glow-anim');
+                        void el.offsetWidth;
+                        el.classList.add('price-glow-anim');
+                    }
+                });
+
+                // Hide original USD hint
+                card.querySelectorAll('.converted-total-hint').forEach(function(hint) {
+                    hint.style.display = 'none';
+                    hint.textContent = '';
+                });
+
+                // Update all buttons in this card back to "View in [Country]"
+                allCardButtons.forEach(b => {
+                    b.setAttribute('data-state', 'usd');
+                    b.classList.remove('btn-currency-active');
+                    b.innerHTML = `<i class="fa fa-bolt text-warning me-1"></i> <span class="btn-currency-text">View in ${country} Currency</span>`;
+                });
+
+                showCurrencyToast(`<span>🇺🇸</span> Prices reverted to <strong>Original USD ($)</strong>`);
+            }
+        });
+    });
+});
+</script>
 </body>
 </html>

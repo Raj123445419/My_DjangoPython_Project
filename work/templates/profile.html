@@ -19,9 +19,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800&family=Sora:wght@600;700;800;900&display=swap" rel="stylesheet">
 
     <!-- Centralized Stylesheets & Theme Engine -->
-    <link rel="stylesheet" href="{% static 'main.css' %}">
-    <link rel="stylesheet" href="{% static 'theme.css' %}">
-    <script src="{% static 'theme.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'main.css' %}?v=2.7">
+    <link rel="stylesheet" href="{% static 'theme.css' %}?v=2.7">
+    <script src="{% static 'theme.js' %}?v=2.7"></script>
 </head>
 
 <body>
@@ -39,9 +39,19 @@
 
     {% if request.session.fullname %}
     <div class="d-lg-none ms-auto me-2">
+      {% if current_user.profile_pic %}
+      <a href="/Profile/" class="profile-avatar-img-wrap active-nav-avatar" title="View Profile">
+        <img src="{{ current_user.profile_pic.url }}" alt="{{ request.session.fullname }}" class="profile-avatar-img">
+      </a>
+      {% elif request.session.profile_pic_url %}
+      <a href="/Profile/" class="profile-avatar-img-wrap active-nav-avatar" title="View Profile">
+        <img src="{{ request.session.profile_pic_url }}" alt="{{ request.session.fullname }}" class="profile-avatar-img">
+      </a>
+      {% else %}
       <a href="/Profile/" class="profile-avatar active-nav-avatar" title="View Profile">
         {{ request.session.fullname|slice:":1"|upper }}{{ request.session.fullname.split|last|slice:":1"|upper }}
       </a>
+      {% endif %}
     </div>
     {% endif %}
 
@@ -75,9 +85,19 @@
 
         {% if request.session.fullname %}
         <li class="nav-item d-none d-lg-block ms-2">
+          {% if current_user.profile_pic %}
+          <a href="/Profile/" class="profile-avatar-img-wrap active-nav-avatar" title="View Profile">
+            <img src="{{ current_user.profile_pic.url }}" alt="{{ request.session.fullname }}" class="profile-avatar-img">
+          </a>
+          {% elif request.session.profile_pic_url %}
+          <a href="/Profile/" class="profile-avatar-img-wrap active-nav-avatar" title="View Profile">
+            <img src="{{ request.session.profile_pic_url }}" alt="{{ request.session.fullname }}" class="profile-avatar-img">
+          </a>
+          {% else %}
           <a href="/Profile/" class="profile-avatar active-nav-avatar" title="View Profile">
             {{ request.session.fullname|slice:":1"|upper }}{{ request.session.fullname.split|last|slice:":1"|upper }}
           </a>
+          {% endif %}
         </li>
         <li class="nav-item ms-lg-2 mt-2 mt-lg-0">
           <a class="btn-auth-logout" href="/Logout/">Log Out</a>
@@ -127,8 +147,17 @@
   <div class="profile-hero-card mb-4">
     <div class="row align-items-center gy-4">
       <div class="col-auto">
-        <div class="profile-large-avatar">
-          {{ user_obj.Fullname|slice:":1"|upper }}{{ user_obj.Fullname.split|last|slice:":1"|upper }}
+        <div class="profile-large-avatar-wrap">
+          {% if user_obj.profile_pic %}
+            <img src="{{ user_obj.profile_pic.url }}" alt="{{ user_obj.Fullname }}" class="profile-large-avatar-img">
+          {% else %}
+            <div class="profile-large-avatar">
+              {{ user_obj.Fullname|slice:":1"|upper }}{{ user_obj.Fullname.split|last|slice:":1"|upper }}
+            </div>
+          {% endif %}
+          <button type="button" class="profile-avatar-edit-btn" data-bs-toggle="modal" data-bs-target="#profilePicModal" title="Change Profile Photo">
+            <i class="fa fa-camera"></i>
+          </button>
         </div>
       </div>
       <div class="col">
@@ -144,6 +173,9 @@
         </div>
       </div>
       <div class="col-12 col-md-auto d-flex flex-wrap gap-2">
+        <button type="button" class="btn-auth-login py-2 px-3" data-bs-toggle="modal" data-bs-target="#profilePicModal">
+          <i class="fa fa-camera me-1"></i> {% if user_obj.profile_pic %}Change Photo{% else %}Add Photo{% endif %}
+        </button>
         <a href="/MyOrders/" class="btn-checkout py-2 px-3">
           <i class="fa fa-truck me-1"></i> Track Orders ({{ total_orders }})
         </a>
@@ -344,7 +376,7 @@
               {% endif %}
             </td>
             <td class="text-end">
-              <a href="/MyOrders/?track={{ order.order_number }}" class="btn-auth-login py-1 px-3" style="font-size: 13px;">
+              <a href="/MyOrders/" class="btn-auth-login py-1 px-3" style="font-size: 13px;">
                 <i class="fa fa-search me-1"></i> Track & Manage
               </a>
             </td>
@@ -434,6 +466,139 @@
     </div>
   </div>
 </div>
+
+<!-- ==========================================
+     PROFILE PHOTO UPLOAD / CHANGE / REMOVE MODAL
+     ========================================== -->
+<div class="modal fade" id="profilePicModal" tabindex="-1" aria-labelledby="profilePicModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered photo-modal-dialog">
+    <div class="modal-content photo-modal-content">
+      <div class="modal-header border-0 pb-0">
+        <h5 class="modal-title font-sora text-info d-flex align-items-center gap-2" id="profilePicModalLabel">
+          <i class="fa fa-camera"></i> {% if user_obj.profile_pic %}Change Profile Photo{% else %}Add Profile Photo{% endif %}
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body pt-3">
+        
+        <!-- Current / Live Preview -->
+        <div class="text-center mb-4">
+          <div id="previewContainer" class="position-relative d-inline-block">
+            {% if user_obj.profile_pic %}
+              <img id="profilePhotoPreview" src="{{ user_obj.profile_pic.url }}" alt="Profile Preview" class="photo-preview-circle">
+            {% else %}
+              <div id="defaultAvatarCircle" class="profile-large-avatar mx-auto" style="width: 120px; height: 120px; font-size: 42px;">
+                {{ user_obj.Fullname|slice:":1"|upper }}{{ user_obj.Fullname.split|last|slice:":1"|upper }}
+              </div>
+              <img id="profilePhotoPreview" src="" alt="Profile Preview" class="photo-preview-circle d-none">
+            {% endif %}
+          </div>
+          <p class="text-muted small mt-2 mb-0" id="previewStatusLabel">
+            {% if user_obj.profile_pic %}Current Custom Profile Photo{% else %}Default Initials Avatar{% endif %}
+          </p>
+        </div>
+
+        <!-- Upload Form -->
+        <form action="/UploadProfilePic/" method="POST" enctype="multipart/form-data" id="profilePhotoForm">
+          {% csrf_token %}
+          <div class="photo-upload-zone mb-3" onclick="document.getElementById('profilePicInput').click();" id="photoDropZone">
+            <i class="fa fa-cloud-upload fa-2x text-info mb-2"></i>
+            <div class="fw-semibold">Click to choose or drag & drop photo</div>
+            <div class="text-muted small">PNG, JPG, JPEG, WEBP or GIF (Max 5MB)</div>
+            <input type="file" id="profilePicInput" name="profile_pic" accept="image/*" class="d-none" onchange="previewSelectedImage(this);" required>
+          </div>
+
+          <div id="selectedFileName" class="text-info small text-center mb-3 fw-semibold d-none">
+            <i class="fa fa-check-circle me-1"></i> <span id="fileNameText"></span>
+          </div>
+
+          <div class="d-grid gap-2 mb-2">
+            <button type="submit" class="btn-checkout py-2" id="uploadSubmitBtn">
+              <i class="fa fa-upload me-1"></i> {% if user_obj.profile_pic %}Update Profile Photo{% else %}Save Profile Photo{% endif %}
+            </button>
+          </div>
+        </form>
+
+        {% if user_obj.profile_pic %}
+        <!-- Remove Form -->
+        <form action="/RemoveProfilePic/" method="POST" onsubmit="return confirm('Are you sure you want to remove your profile photo and restore default avatar?');" class="mt-2 text-center">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-link text-danger text-decoration-none small">
+            <i class="fa fa-trash me-1"></i> Remove Photo & Restore Default Avatar
+          </button>
+        </form>
+        {% endif %}
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function previewSelectedImage(input) {
+  if (input.files && input.files[0]) {
+    const file = input.files[0];
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const previewImg = document.getElementById('profilePhotoPreview');
+      const defaultCircle = document.getElementById('defaultAvatarCircle');
+      const fileNameDisplay = document.getElementById('selectedFileName');
+      const fileNameText = document.getElementById('fileNameText');
+      const statusLabel = document.getElementById('previewStatusLabel');
+
+      if (previewImg) {
+        previewImg.src = e.target.result;
+        previewImg.classList.remove('d-none');
+      }
+      if (defaultCircle) {
+        defaultCircle.classList.add('d-none');
+      }
+      if (fileNameDisplay && fileNameText) {
+        fileNameText.textContent = file.name;
+        fileNameDisplay.classList.remove('d-none');
+      }
+      if (statusLabel) {
+        statusLabel.textContent = "New Selected Photo Preview";
+        statusLabel.className = "text-info small mt-2 mb-0 fw-semibold";
+      }
+    };
+    reader.readAsDataURL(file);
+  }
+}
+
+// Drag & drop support
+document.addEventListener('DOMContentLoaded', function() {
+  const dropZone = document.getElementById('photoDropZone');
+  const fileInput = document.getElementById('profilePicInput');
+
+  if (dropZone && fileInput) {
+    ['dragenter', 'dragover'].forEach(eventName => {
+      dropZone.addEventListener(eventName, (e) => {
+        e.preventDefault();
+        dropZone.classList.add('dragover');
+      }, false);
+    });
+
+    ['dragleave', 'drop'].forEach(eventName => {
+      dropZone.addEventListener(eventName, (e) => {
+        e.preventDefault();
+        dropZone.classList.remove('dragover');
+      }, false);
+    });
+
+    dropZone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropZone.classList.remove('dragover');
+      const dt = e.dataTransfer;
+      const files = dt.files;
+      if (files && files.length > 0) {
+        fileInput.files = files;
+        previewSelectedImage(fileInput);
+      }
+    });
+  }
+});
+</script>
 
 </div>
 </body>

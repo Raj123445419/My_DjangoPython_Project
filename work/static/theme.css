@@ -156,6 +156,14 @@ html:not([data-theme="light"]) .input-glow {
     border: 1.5px solid rgba(0, 240, 255, 0.35) !important;
 }
 
+html[data-theme="dark"] input::placeholder,
+html[data-theme="dark"] textarea::placeholder,
+html:not([data-theme="light"]) input::placeholder,
+html:not([data-theme="light"]) textarea::placeholder {
+    color: #94a3b8 !important;
+    opacity: 0.9 !important;
+}
+
 html[data-theme="dark"] .story-title,
 html[data-theme="dark"] .contact-title,
 html[data-theme="dark"] .cart-header-title,
@@ -500,8 +508,10 @@ html[data-theme="light"] .cart-header-title {
     text-shadow: none !important;
 }
 
-html[data-theme="light"] .cart-header-banner p {
-    color: #334155 !important;
+html[data-theme="light"] .cart-header-banner p,
+html[data-theme="light"] .cart-header-subtitle {
+    color: #ffffff !important;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.7) !important;
 }
 
 html[data-theme="light"] .cart-custom-table th {
@@ -609,18 +619,65 @@ html[data-theme="light"] .form-label-custom {
 }
 
 html[data-theme="light"] .input-glow,
-html[data-theme="light"] .form-control-custom {
+html[data-theme="light"] .form-control-custom,
+html[data-theme="light"] .delete-input {
     background: #ffffff !important;
     border: 1.5px solid rgba(0, 119, 255, 0.35) !important;
     color: #091b38 !important;
+    box-shadow: 0 2px 8px rgba(0, 50, 120, 0.05) !important;
 }
 
 html[data-theme="light"] .input-glow:focus,
-html[data-theme="light"] .form-control-custom:focus {
+html[data-theme="light"] .form-control-custom:focus,
+html[data-theme="light"] .delete-input:focus {
     border-color: #0077ff !important;
     box-shadow: 0 0 18px rgba(0, 119, 255, 0.3) !important;
     background: #ffffff !important;
     color: #091b38 !important;
+}
+
+html[data-theme="light"] .input-glow::placeholder,
+html[data-theme="light"] .form-control-custom::placeholder,
+html[data-theme="light"] .delete-input::placeholder {
+    color: #64748b !important;
+    opacity: 0.95 !important;
+}
+
+/* Fix Native Date Inputs & Calendar Picker Icons in Light Mode */
+html[data-theme="light"] input[type="date"],
+html[data-theme="light"] input[type="datetime-local"],
+html[data-theme="light"] input[type="time"] {
+    color-scheme: light !important;
+    color: #0f172a !important;
+}
+
+html[data-theme="light"] input[type="date"]::-webkit-calendar-picker-indicator,
+html[data-theme="light"] input[type="datetime-local"]::-webkit-calendar-picker-indicator,
+html[data-theme="light"] input[type="time"]::-webkit-calendar-picker-indicator {
+    cursor: pointer !important;
+    filter: invert(0.25) sepia(1) saturate(5) hue-rotate(185deg) brightness(0.85) !important;
+    opacity: 0.9 !important;
+    padding: 4px !important;
+    border-radius: 4px !important;
+    transition: all 0.2s ease !important;
+}
+
+html[data-theme="light"] input[type="date"]::-webkit-calendar-picker-indicator:hover,
+html[data-theme="light"] input[type="datetime-local"]::-webkit-calendar-picker-indicator:hover,
+html[data-theme="light"] input[type="time"]::-webkit-calendar-picker-indicator:hover {
+    filter: invert(0.1) sepia(1) saturate(7) hue-rotate(190deg) brightness(0.7) !important;
+    transform: scale(1.15) !important;
+    opacity: 1 !important;
+}
+
+html[data-theme="light"] input[type="date"]::-webkit-datetime-edit,
+html[data-theme="light"] input[type="date"]::-webkit-datetime-edit-fields-wrapper,
+html[data-theme="light"] input[type="date"]::-webkit-datetime-edit-text,
+html[data-theme="light"] input[type="date"]::-webkit-datetime-edit-month-field,
+html[data-theme="light"] input[type="date"]::-webkit-datetime-edit-day-field,
+html[data-theme="light"] input[type="date"]::-webkit-datetime-edit-year-field {
+    color: #0f172a !important;
+    font-weight: 500 !important;
 }
 
 html[data-theme="light"] .auth-link {
@@ -957,6 +1014,14 @@ html[data-theme="light"] .order-search-input {
     color: #091b38 !important;
 }
 
+html[data-theme="light"] .order-search-input::placeholder,
+html[data-theme="light"] .order-search-input::-webkit-input-placeholder,
+html[data-theme="light"] .order-search-input::-moz-placeholder,
+html[data-theme="light"] .order-search-input:-ms-input-placeholder {
+    color: #64748b !important;
+    opacity: 0.95 !important;
+}
+
 html[data-theme="light"] .order-summary-box-modal {
     background: rgba(240, 246, 255, 0.8) !important;
     border-color: rgba(0, 102, 204, 0.25) !important;
@@ -965,4 +1030,333 @@ html[data-theme="light"] .order-summary-box-modal {
 html[data-theme="light"] .order-items-table .item-name {
     color: #091b38 !important;
 }
+
+html[data-theme="light"] .order-summary-preview {
+    background: rgba(240, 246, 255, 0.9) !important;
+    border-bottom-color: rgba(0, 102, 204, 0.18) !important;
+}
+
+html[data-theme="light"] .btn-show-details {
+    background: rgba(0, 102, 204, 0.08) !important;
+    border-color: rgba(0, 102, 204, 0.4) !important;
+    color: #0055bb !important;
+}
+
+html[data-theme="light"] .btn-show-details:hover {
+    background: linear-gradient(135deg, #0077ff 0%, #00c6ff 100%) !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 15px rgba(0, 102, 204, 0.4) !important;
+}
+
+/* Order Items Count Badge in Light Mode */
+html[data-theme="light"] .order-items-count-badge {
+    background: rgba(0, 102, 204, 0.12) !important;
+    border: 1px solid rgba(0, 102, 204, 0.35) !important;
+    color: #0055bb !important;
+    font-size: 13px !important;
+}
+
+/* Order Meta Bar in Light Mode (Placed Date & Payment Mode) */
+html[data-theme="light"] .order-meta-bar {
+    background: linear-gradient(135deg, #f1f6fc 0%, #e4eefb 100%) !important;
+    border-bottom: 1.5px solid rgba(0, 102, 204, 0.25) !important;
+    color: #0f172a !important;
+}
+
+html[data-theme="light"] .order-meta-bar .meta-icon-cal {
+    color: #0284c7 !important;
+}
+
+html[data-theme="light"] .order-meta-bar .meta-icon-card {
+    color: #16a34a !important;
+}
+
+html[data-theme="light"] .order-meta-bar .meta-label,
+html[data-theme="light"] .order-meta-bar span {
+    color: #475569 !important;
+    font-weight: 600 !important;
+}
+
+html[data-theme="light"] .order-meta-bar .meta-val,
+html[data-theme="light"] .order-meta-bar strong {
+    color: #0052cc !important;
+    font-weight: 700 !important;
+}
+
+/* Return & Replacement Status Card in Light Mode */
+html[data-theme="light"] .return-status-card {
+    background: linear-gradient(135deg, #ffffff 0%, #f4f8ff 100%) !important;
+    border: 1.5px solid #93c5fd !important;
+    color: #0f172a !important;
+    box-shadow: 0 8px 25px rgba(0, 50, 120, 0.08) !important;
+    border-radius: 12px !important;
+}
+
+html[data-theme="light"] .badge-return-type {
+    background: linear-gradient(135deg, #0066cc 0%, #0284c7 100%) !important;
+    color: #ffffff !important;
+    font-weight: 700 !important;
+}
+
+html[data-theme="light"] .return-info-line {
+    color: #0f172a !important;
+    font-size: 13.5px !important;
+    line-height: 1.6 !important;
+}
+
+html[data-theme="light"] .return-info-line strong {
+    color: #004499 !important; /* Deep Blue Label */
+    font-weight: 700 !important;
+}
+
+html[data-theme="light"] .return-info-line span {
+    color: #0f172a !important; /* High contrast dark navy value */
+    font-weight: 600 !important;
+}
+
+/* Admin Reply Box in Light Mode */
+html[data-theme="light"] .admin-reply-box {
+    background: #f0f9ff !important;
+    border-left: 4px solid #0284c7 !important;
+    border-top: 1px solid #bae6fd !important;
+    border-right: 1px solid #bae6fd !important;
+    border-bottom: 1px solid #bae6fd !important;
+    box-shadow: 0 4px 15px rgba(2, 132, 199, 0.08) !important;
+    border-radius: 8px !important;
+}
+
+html[data-theme="light"] .admin-reply-title {
+    color: #0369a1 !important;
+    font-weight: 700 !important;
+    font-size: 13px !important;
+}
+
+html[data-theme="light"] .admin-reply-text {
+    color: #0f172a !important;
+    font-weight: 500 !important;
+    font-size: 13.5px !important;
+}
+
+html[data-theme="light"] .admin-reply-pending {
+    color: #475569 !important;
+    font-size: 13px !important;
+}
+
+/* Checkout & Order Modals in Light Mode */
+html[data-theme="light"] .delete-modal-content {
+    background: #ffffff !important;
+    border: 1.5px solid rgba(0, 102, 204, 0.35) !important;
+    box-shadow: 0 15px 40px rgba(0, 40, 100, 0.2) !important;
+    border-radius: 16px !important;
+    color: #0f172a !important;
+    overflow: hidden !important;
+}
+
+html[data-theme="light"] .delete-modal-content .btn-close {
+    filter: none !important;
+    opacity: 0.7 !important;
+}
+
+html[data-theme="light"] .delete-modal-content .btn-close:hover {
+    opacity: 1 !important;
+}
+
+html[data-theme="light"] .modal-header-desc {
+    color: #475569 !important;
+    font-family: 'Poppins', sans-serif !important;
+    font-size: 12.5px !important;
+}
+
+html[data-theme="light"] .payment-method-box {
+    background: #f8faff !important;
+    border: 1.5px solid rgba(0, 102, 204, 0.25) !important;
+    border-radius: 10px !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+}
+
+html[data-theme="light"] .payment-method-box:hover {
+    border-color: #0077ff !important;
+    background: rgba(0, 102, 204, 0.08) !important;
+}
+
+html[data-theme="light"] .payment-method-label {
+    color: #091b38 !important;
+    font-size: 12.5px !important;
+}
+
+html[data-theme="light"] .order-summary-box-modal {
+    background: rgba(240, 246, 255, 0.95) !important;
+    border: 1px solid rgba(0, 102, 204, 0.25) !important;
+    border-radius: 10px !important;
+}
+
+html[data-theme="light"] .summary-label {
+    color: #475569 !important;
+    font-size: 12px !important;
+}
+
+html[data-theme="light"] .summary-val-info {
+    color: #0055bb !important;
+}
+
+html[data-theme="light"] .summary-total-label {
+    color: #091b38 !important;
+    font-size: 12.5px !important;
+}
+
+html[data-theme="light"] .summary-total-val {
+    color: #00875a !important;
+}
+
+/* Dynamic Manga Items in Light Mode */
+html[data-theme="light"] .order-manga-card {
+    background: #ffffff !important;
+    border: 1.5px solid rgba(0, 102, 204, 0.22) !important;
+    box-shadow: 0 3px 10px rgba(0, 40, 120, 0.05) !important;
+}
+
+html[data-theme="light"] .order-manga-card:hover {
+    border-color: #0077ff !important;
+    transform: translateY(-3px) !important;
+    background: #f8fbff !important;
+    box-shadow: 0 8px 25px rgba(0, 102, 204, 0.18) !important;
+}
+
+html[data-theme="light"] .order-manga-thumb-wrap {
+    border: 1.5px solid rgba(0, 102, 204, 0.3) !important;
+    box-shadow: 0 3px 10px rgba(0, 40, 100, 0.15) !important;
+    background: #f1f5f9 !important;
+}
+
+html[data-theme="light"] .order-manga-name {
+    color: #091b38 !important;
+}
+
+html[data-theme="light"] .badge-manga-chapter {
+    background: rgba(0, 102, 204, 0.08) !important;
+    border: 1px solid rgba(0, 102, 204, 0.2) !important;
+    color: #334155 !important;
+}
+
+html[data-theme="light"] .order-qty-pill {
+    background: rgba(0, 102, 204, 0.1) !important;
+    border: 1px solid rgba(0, 102, 204, 0.3) !important;
+    color: #0055bb !important;
+}
+
+html[data-theme="light"] .order-item-price-tag {
+    color: #00875a !important;
+    text-shadow: none !important;
+}
+
+html[data-theme="light"] .order-items-total-pill {
+    background: rgba(0, 135, 90, 0.1) !important;
+    border: 1px solid rgba(0, 135, 90, 0.3) !important;
+    color: #00875a !important;
+}
+
+/* Multi-Currency Converter (Light Mode) */
+html[data-theme="light"] .currency-switch-bar {
+    background: rgba(255, 255, 255, 0.95) !important;
+    border: 1.5px solid rgba(0, 102, 204, 0.3) !important;
+    box-shadow: 0 4px 15px rgba(0, 50, 150, 0.08) !important;
+}
+
+html[data-theme="light"] .currency-bar-label {
+    color: #091b38 !important;
+}
+
+html[data-theme="light"] .currency-select-dropdown {
+    background: #ffffff !important;
+    color: #091b38 !important;
+    border: 1.5px solid rgba(0, 102, 204, 0.35) !important;
+}
+
+html[data-theme="light"] .currency-select-dropdown:focus {
+    border-color: #0077ff !important;
+    box-shadow: 0 0 10px rgba(0, 119, 255, 0.3) !important;
+}
+
+html[data-theme="light"] .currency-select-dropdown option {
+    background: #ffffff;
+    color: #091b38;
+}
+
+html[data-theme="light"] .currency-hint-text {
+    color: #0055bb !important;
+}
+
+html[data-theme="light"] .live-rate-badge {
+    background: rgba(0, 102, 204, 0.08) !important;
+    border: 1px solid rgba(0, 102, 204, 0.3) !important;
+    color: #0055bb !important;
+    box-shadow: 0 2px 8px rgba(0, 102, 204, 0.1) !important;
+}
+
+html[data-theme="light"] .live-pulse-dot {
+    background: #0077ff !important;
+    box-shadow: 0 0 8px #0077ff !important;
+}
+
+html[data-theme="light"] .currency-pill-btn {
+    background: #f1f5f9 !important;
+    border: 1px solid rgba(0, 102, 204, 0.2) !important;
+    color: #475569 !important;
+}
+
+html[data-theme="light"] .currency-pill-btn:hover {
+    background: #e2e8f0 !important;
+    border-color: #0077ff !important;
+    color: #0055bb !important;
+}
+
+html[data-theme="light"] .currency-pill-btn.active {
+    background: linear-gradient(135deg, #0077ff 0%, #0055bb 100%) !important;
+    border-color: #0055bb !important;
+    color: #ffffff !important;
+    box-shadow: 0 2px 8px rgba(0, 119, 255, 0.35) !important;
+}
+
+html[data-theme="light"] .btn-toggle-country-currency,
+html[data-theme="light"] .btn-toggle-cart-currency,
+html[data-theme="light"] .btn-quick-convert-country {
+    background: rgba(0, 102, 204, 0.08) !important;
+    border: 1.5px solid rgba(0, 102, 204, 0.3) !important;
+    color: #0055bb !important;
+}
+
+html[data-theme="light"] .btn-toggle-country-currency:hover,
+html[data-theme="light"] .btn-toggle-cart-currency:hover,
+html[data-theme="light"] .btn-quick-convert-country:hover {
+    background: #0077ff !important;
+    border-color: #0077ff !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 12px rgba(0, 119, 255, 0.3) !important;
+}
+
+html[data-theme="light"] .btn-currency-active {
+    background: linear-gradient(135deg, #0077ff 0%, #0055bb 100%) !important;
+    border-color: #0055bb !important;
+    color: #ffffff !important;
+    box-shadow: 0 2px 8px rgba(0, 119, 255, 0.35) !important;
+}
+
+
+html[data-theme="light"] .converted-total-hint {
+    color: #64748b !important;
+}
+
+html[data-theme="light"] .currency-toast-popup {
+    background: rgba(255, 255, 255, 0.98) !important;
+    border: 1.5px solid #0077ff !important;
+    color: #091b38 !important;
+    box-shadow: 0 10px 30px rgba(0, 50, 150, 0.2) !important;
+}
+
+
+
+
+
+
 

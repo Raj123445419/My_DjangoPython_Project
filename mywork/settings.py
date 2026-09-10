@@ -30,6 +30,16 @@ ALLOWED_HOSTS = [
     "my-djangopython-project-5.onrender.com", # Added this since it was in your list
     "127.0.0.1",
     "localhost",
+    "*",
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    "http://127.0.0.1:8001",
+    "http://localhost:8001",
+    "http://127.0.0.1:8000",
+    "http://localhost:8000",
+    "https://my-djangopython-project.onrender.com",
+    "https://my-djangopython-project-5.onrender.com",
 ]
 
 
@@ -49,6 +59,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     "whitenoise.middleware.WhiteNoiseMiddleware",
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'work.middleware.UserSessionSyncMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -72,6 +83,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'work.context_processors.user_country_context',
             ],
         },
     },

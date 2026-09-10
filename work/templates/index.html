@@ -38,9 +38,19 @@
 
     {% if request.session.fullname %}
     <div class="d-lg-none ms-auto me-2">
+      {% if current_user.profile_pic %}
+      <a href="/Profile/" class="profile-avatar-img-wrap" title="View Profile">
+        <img src="{{ current_user.profile_pic.url }}" alt="{{ request.session.fullname }}" class="profile-avatar-img">
+      </a>
+      {% elif request.session.profile_pic_url %}
+      <a href="/Profile/" class="profile-avatar-img-wrap" title="View Profile">
+        <img src="{{ request.session.profile_pic_url }}" alt="{{ request.session.fullname }}" class="profile-avatar-img">
+      </a>
+      {% else %}
       <a href="/Profile/" class="profile-avatar" title="View Profile">
         {{ request.session.fullname|slice:":1"|upper }}{{ request.session.fullname.split|last|slice:":1"|upper }}
       </a>
+      {% endif %}
     </div>
     {% endif %}
 
@@ -74,9 +84,19 @@
 
         {% if request.session.fullname %}
         <li class="nav-item d-none d-lg-block ms-2">
+          {% if current_user.profile_pic %}
+          <a href="/Profile/" class="profile-avatar-img-wrap" title="View Profile">
+            <img src="{{ current_user.profile_pic.url }}" alt="{{ request.session.fullname }}" class="profile-avatar-img">
+          </a>
+          {% elif request.session.profile_pic_url %}
+          <a href="/Profile/" class="profile-avatar-img-wrap" title="View Profile">
+            <img src="{{ request.session.profile_pic_url }}" alt="{{ request.session.fullname }}" class="profile-avatar-img">
+          </a>
+          {% else %}
           <a href="/Profile/" class="profile-avatar" title="View Profile">
             {{ request.session.fullname|slice:":1"|upper }}{{ request.session.fullname.split|last|slice:":1"|upper }}
           </a>
+          {% endif %}
         </li>
         <li class="nav-item ms-lg-2 mt-2 mt-lg-0">
           <a class="btn-auth-logout" href="/Logout/">Log Out</a>
@@ -132,18 +152,5 @@
 </div>
 
 </div>
-
-<!-- Scripts -->
-<script>
-setTimeout(function(){
-    let alerts = document.querySelectorAll('.myalert');
-    alerts.forEach(function(alert){
-        alert.style.opacity = "0";
-        alert.style.transform = "translateY(-20px)";
-        setTimeout(function(){ alert.remove(); }, 500);
-    });
-}, 5000);
-</script>
-
 </body>
 </html>

@@ -84,6 +84,8 @@ urlpatterns = [
     path('UpdateOrder/<int:order_id>/', views.update_order, name='update_order'),
     path('CancelOrder/<int:order_id>/', views.cancel_order, name='cancel_order'),
     path('ReturnRequest/<int:order_id>/', views.submit_return_request, name='submit_return_request'),
+    path('UploadProfilePic/', views.upload_profile_pic, name='upload_profile_pic'),
+    path('RemoveProfilePic/', views.remove_profile_pic, name='remove_profile_pic'),
 ]
 
 

@@ -14,12 +14,30 @@ class OrderItemInline(admin.TabularInline):
 
 @admin.register(UserOrder)
 class UserOrderAdmin(admin.ModelAdmin):
-    list_display = ('order_number', 'full_name', 'phone', 'total_amount', 'payment_method', 'status', 'created_at')
-    list_filter = ('status', 'created_at', 'payment_method')
-    search_fields = ('order_number', 'full_name', 'email', 'phone', 'shipping_address')
+    list_display = ('order_number', 'full_name', 'country', 'phone', 'total_amount', 'payment_method', 'status', 'created_at')
+    list_filter = ('status', 'country', 'created_at', 'payment_method')
+    search_fields = ('order_number', 'full_name', 'email', 'phone', 'country', 'shipping_address')
     list_editable = ('status',)
     inlines = [OrderItemInline]
     ordering = ('-created_at',)
+
+
+@admin.register(sidata)
+class sidataAdmin(admin.ModelAdmin):
+    list_display = ('Fullname', 'country', 'email', 'phonnumber', 'Age')
+    search_fields = ('Fullname', 'email', 'phonnumber', 'country')
+    list_filter = ('country',)
+
+    def save_model(self, request, obj, form, change):
+        from django.db.models import Q
+        super().save_model(request, obj, form, change)
+        if obj.country:
+            clean_c = obj.country.strip()
+            UserOrder.objects.filter(
+                Q(user=obj) | 
+                (Q(email__iexact=obj.email) if obj.email else Q(pk__in=[])) | 
+                (Q(phone=obj.phonnumber) if obj.phonnumber else Q(pk__in=[]))
+            ).update(country=clean_c, user=obj)
 
 
 @admin.register(OrderReturnRequest)
@@ -41,7 +59,6 @@ class ReadingHistoryAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Codata)
-admin.site.register(sidata)
 admin.site.register(Product)
 admin.site.register(page)
 admin.site.register(ShopProduct)

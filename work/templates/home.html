@@ -18,10 +18,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800&family=Sora:wght@600;700;800;900&display=swap" rel="stylesheet">
 
-    <!-- Unified Design System & Theme Engine -->
-    <link rel="stylesheet" href="{% static 'main.css' %}">
-    <link rel="stylesheet" href="{% static 'theme.css' %}">
-    <script src="{% static 'theme.js' %}"></script>
+    <!-- Centralized Stylesheets & Theme Engine -->
+    <link rel="stylesheet" href="{% static 'main.css' %}?v=2.8">
+    <link rel="stylesheet" href="{% static 'theme.css' %}?v=2.8">
+    <script src="{% static 'theme.js' %}?v=2.8"></script>
 </head>
 
 <body>
@@ -39,9 +39,19 @@
 
     {% if request.session.fullname %}
     <div class="d-lg-none ms-auto me-2">
+      {% if current_user.profile_pic %}
+      <a href="/Profile/" class="profile-avatar-img-wrap" title="View Profile">
+        <img src="{{ current_user.profile_pic.url }}" alt="{{ request.session.fullname }}" class="profile-avatar-img">
+      </a>
+      {% elif request.session.profile_pic_url %}
+      <a href="/Profile/" class="profile-avatar-img-wrap" title="View Profile">
+        <img src="{{ request.session.profile_pic_url }}" alt="{{ request.session.fullname }}" class="profile-avatar-img">
+      </a>
+      {% else %}
       <a href="/Profile/" class="profile-avatar" title="View Profile">
         {{ request.session.fullname|slice:":1"|upper }}{{ request.session.fullname.split|last|slice:":1"|upper }}
       </a>
+      {% endif %}
     </div>
     {% endif %}
 
@@ -75,9 +85,19 @@
 
         {% if request.session.fullname %}
         <li class="nav-item d-none d-lg-block ms-2">
+          {% if current_user.profile_pic %}
+          <a href="/Profile/" class="profile-avatar-img-wrap" title="View Profile">
+            <img src="{{ current_user.profile_pic.url }}" alt="{{ request.session.fullname }}" class="profile-avatar-img">
+          </a>
+          {% elif request.session.profile_pic_url %}
+          <a href="/Profile/" class="profile-avatar-img-wrap" title="View Profile">
+            <img src="{{ request.session.profile_pic_url }}" alt="{{ request.session.fullname }}" class="profile-avatar-img">
+          </a>
+          {% else %}
           <a href="/Profile/" class="profile-avatar" title="View Profile">
             {{ request.session.fullname|slice:":1"|upper }}{{ request.session.fullname.split|last|slice:":1"|upper }}
           </a>
+          {% endif %}
         </li>
         <li class="nav-item ms-lg-2 mt-2 mt-lg-0">
           <a class="btn-auth-logout" href="/Logout/">Log Out</a>
@@ -232,7 +252,7 @@
           <li class="list-inline-item"><a class="nav-link-custom" href="/Shop/">Shop</a></li>
           <li class="list-inline-item"><a class="nav-link-custom" href="/Aboutus/">About us</a></li>
           <li class="list-inline-item"><a class="nav-link-custom" href="/Contect/">Contect</a></li>
-          <li class="list-inline-item"><a class="nav-link-custom" href="/Account/">Account</a></li>
+          <li class="list-inline-item"><a class="nav-link-custom" href="/MyOrders/">Orders</a></li>
           
           {% if request.session.fullname %}
           <li class="list-inline-item ms-md-2 mt-2 mt-md-0">
@@ -299,15 +319,6 @@
 
 <!-- Scripts -->
 <script>
-setTimeout(function(){
-    let alerts = document.querySelectorAll('.myalert');
-    alerts.forEach(function(alert){
-        alert.style.opacity = "0";
-        alert.style.transform = "translateY(-20px)";
-        setTimeout(function(){ alert.remove(); }, 500);
-    });
-}, 5000);
-
 document.addEventListener("DOMContentLoaded", function(){
     document.querySelectorAll('.reason-btn').forEach(btn => {
         btn.addEventListener('click', function(){

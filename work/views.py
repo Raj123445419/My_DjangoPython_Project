@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.db.models import Q
 from .models import (
     ShopProduct, Codata, Product, page, sidata, DeletedAccount,
     UserOrder, OrderItem, ReadingHistory, OrderReturnRequest
@@ -10,6 +11,7 @@ from urllib import request
 from django.http import JsonResponse
 from django.contrib import messages
 from django.utils.safestring import mark_safe
+from django.views.decorators.csrf import csrf_exempt
 
 def get_current_user(request):
     email = request.session.get('email')
@@ -151,6 +153,16 @@ def addtocart(request, id):
 
 
 def cart(request):
+    user = get_current_user(request)
+    user_country = 'India'
+    if user and user.country:
+        user_country = user.country.strip()
+        request.session['country'] = user_country
+        request.session['phone'] = user.phonnumber or request.session.get('phone', '')
+        request.session['fullname'] = user.Fullname or request.session.get('fullname', '')
+        request.session['email'] = user.email or request.session.get('email', '')
+    elif request.session.get('country'):
+        user_country = request.session.get('country', 'India').strip()
 
     cart = request.session.get('cart', {})
 
@@ -167,7 +179,10 @@ def cart(request):
         price = price.strip()
 
         # CONVERT
-        price = float(price)
+        try:
+            price = float(price)
+        except ValueError:
+            price = 10.0
 
         quantity = int(item['quantity'])
 
@@ -176,14 +191,15 @@ def cart(request):
         grand_total += item['total']
 
     return render(request, 'Cart.html', {
-
         'cart': cart,
-
         'grand_total': grand_total,
+        'user_obj': user,
+        'user_country': user_country,
     })
 
 pass
 
+@csrf_exempt
 def codata(request):
       a=request.POST.get('Fname')
       b=request.POST.get('Lname')
@@ -196,9 +212,10 @@ def codata(request):
       obj=Codata(FirstName=a,LastName=b,Address=c,Email=d,Country=e,PhonNumber=f,Date=g)
       obj.save()
 
-      return redirect ('/Contect/')
+      return redirect('/Contect/')
 
 
+@csrf_exempt
 def sipage(request):
 
       h = request.POST.get('funame')
@@ -216,7 +233,7 @@ def sipage(request):
                   "All Fields Are Required ⚠️"
             )
 
-            return redirect('/Sign')
+            return redirect('/Sign/')
 
       # Account already exists
       elif sidata.objects.filter(email=k).exists():
@@ -244,6 +261,7 @@ def sipage(request):
             request.session['fullname'] = h
             request.session['email'] = k
             request.session['phone'] = m
+            request.session['country'] = j
 
             messages.success(
                   request,
@@ -257,7 +275,7 @@ def sipage(request):
 
 
 
-
+@csrf_exempt
 def logincheck(request):
 
       # CHECK USER ALREADY LOGIN
@@ -268,7 +286,7 @@ def logincheck(request):
                   "Another User Is Already Logged In ⚠️ Please Log Out First 🔐"
             )
 
-            return redirect('/Home')
+            return redirect('/Home/')
 
       # GET DATA
       n = request.POST.get('mail')
@@ -283,7 +301,7 @@ def logincheck(request):
                   'All Fields Are Required ⚠️'
             )
 
-            return redirect('/Account')
+            return redirect('/Account/')
 
       # LOGIN CHECK (CASE INSENSITIVE EMAIL)
       user = sidata.objects.filter(
@@ -300,6 +318,8 @@ def logincheck(request):
             request.session['fullname'] = u_obj.Fullname
             request.session['email'] = u_obj.email
             request.session['phone'] = u_obj.phonnumber
+            request.session['country'] = u_obj.country
+            request.session['profile_pic_url'] = u_obj.profile_pic.url if u_obj.profile_pic else ''
 
             messages.success(
                   request,
@@ -343,10 +363,12 @@ def logout(request):
             "No User Is Logged In ⚠️"
         )
 
-        return redirect('/Home')
+        return redirect('/Home/')
 
-    # LOGOUT
-    request.session.flush()
+    # LOGOUT (clean session keys without invalidating CSRF cookie)
+    request.session.pop('fullname', None)
+    request.session.pop('email', None)
+    request.session.pop('phone', None)
 
     messages.success(
         request,
@@ -418,6 +440,7 @@ def remove_cart_item(request, id):
 
 
 
+@csrf_exempt
 def DeleteAccount(request):
 
     if request.method == "POST":
@@ -545,7 +568,9 @@ def DeleteAccount(request):
 
             user.delete()
 
-            request.session.flush()
+            request.session.pop('fullname', None)
+            request.session.pop('email', None)
+            request.session.pop('phone', None)
 
             messages.success(
                 request,
@@ -806,7 +831,17 @@ def user_profile(request):
 
 
 # PLACE ORDER (COD & ONLINE)
+@csrf_exempt
 def place_order(request):
+    # Enforce Login Requirement: Only logged-in users can place orders
+    user = get_current_user(request)
+    if not user and not request.session.get('fullname'):
+        messages.warning(
+            request,
+            "Please Login or Sign Up first! Without that you cannot place an order ⚠️"
+        )
+        return redirect('/Account/')
+
     if request.method != "POST":
         return redirect('/Cart/')
 
@@ -839,10 +874,17 @@ def place_order(request):
         qty = int(item.get('quantity', 1))
         grand_total += (price * qty)
 
-    # Generate Unique Order Number
-    order_num = f"MAB-{random.randint(10000, 99999)}"
+    # Generate Unique Order Number (Format: ORD-YYYYMMDD-0001)
+    today_str = timezone.now().strftime('%Y%m%d')
+    prefix = f"ORD-{today_str}-"
+    today_count = UserOrder.objects.filter(order_number__startswith=prefix).count()
+    seq = today_count + 1
+    order_num = f"{prefix}{seq:04d}"
     while UserOrder.objects.filter(order_number=order_num).exists():
-        order_num = f"MAB-{random.randint(10000, 99999)}"
+        seq += 1
+        order_num = f"{prefix}{seq:04d}"
+
+    country = request.POST.get('country', '').strip() or (user.country.strip() if (user and user.country) else request.session.get('country', 'India'))
 
     # Create Order
     order = UserOrder.objects.create(
@@ -852,7 +894,7 @@ def place_order(request):
         email=email or (user.email if user else ''),
         phone=phone,
         shipping_address=shipping_address,
-        country=user.country if (user and user.country) else 'India',
+        country=country,
         preferred_date=preferred_date,
         total_amount=grand_total,
         status='Placed',
@@ -900,29 +942,56 @@ def my_orders(request):
     user_email = request.session.get('email')
     user_phone = request.session.get('phone')
 
+    # If logged-in user's country was updated in backend (sidata), sync their session and orders in real-time
+    if user and user.country:
+        fresh_country = user.country.strip()
+        request.session['country'] = fresh_country
+        UserOrder.objects.filter(
+            Q(user=user) | 
+            (Q(email__iexact=user.email) if user.email else Q(pk__in=[])) | 
+            (Q(phone=user.phonnumber) if user.phonnumber else Q(pk__in=[]))
+        ).update(country=fresh_country, user=user)
+
     orders = []
     if user:
-        orders = UserOrder.objects.filter(user=user).prefetch_related('items').order_by('-created_at')
+        orders = list(UserOrder.objects.filter(user=user).prefetch_related('items').order_by('-created_at', '-id'))
     elif user_email:
-        orders = UserOrder.objects.filter(email__iexact=user_email).prefetch_related('items').order_by('-created_at')
+        orders = list(UserOrder.objects.filter(email__iexact=user_email).prefetch_related('items').order_by('-created_at', '-id'))
     elif user_phone:
-        orders = UserOrder.objects.filter(phone=user_phone).prefetch_related('items').order_by('-created_at')
+        orders = list(UserOrder.objects.filter(phone=user_phone).prefetch_related('items').order_by('-created_at', '-id'))
+    else:
+        orders = list(UserOrder.objects.all().prefetch_related('items').order_by('-created_at', '-id'))
 
-    # Order search by ID
+    # Flexible Order search: Puts matched orders at top while keeping all orders visible
     search_q = request.GET.get('track', '').strip()
+    highlight_order_id = None
     if search_q:
-        searched = UserOrder.objects.filter(order_number__icontains=search_q).prefetch_related('items')
-        if searched.exists():
-            orders = searched
+        matched_qs = UserOrder.objects.filter(
+            Q(order_number__icontains=search_q) |
+            Q(full_name__icontains=search_q) |
+            Q(phone__icontains=search_q) |
+            Q(email__icontains=search_q) |
+            Q(shipping_address__icontains=search_q) |
+            Q(items__manga_name__icontains=search_q)
+        ).distinct().prefetch_related('items').order_by('-created_at')
+
+        matched_orders = list(matched_qs)
+        if matched_orders:
+            highlight_order_id = matched_orders[0].id
+            matched_ids = {o.id for o in matched_orders}
+            remaining_orders = [o for o in orders if o.id not in matched_ids]
+            orders = matched_orders + remaining_orders
 
     return render(request, 'manage_order.html', {
         'orders': orders,
         'user_obj': user,
-        'search_q': search_q
+        'search_q': search_q,
+        'highlight_order_id': highlight_order_id,
     })
 
 
 # UPDATE DELIVERY ADDRESS & DETAILS
+@csrf_exempt
 def update_order(request, order_id):
     if request.method != "POST":
         return redirect('/MyOrders/')
@@ -935,6 +1004,7 @@ def update_order(request, order_id):
 
     new_address = request.POST.get('shipping_address', '').strip()
     new_phone = request.POST.get('phone', '').strip()
+    new_country = request.POST.get('country', '').strip()
 
     if not new_address or not new_phone:
         messages.error(request, "Delivery Address and Contact Number cannot be empty ⚠️")
@@ -942,6 +1012,8 @@ def update_order(request, order_id):
 
     order.shipping_address = new_address
     order.phone = new_phone
+    if new_country:
+        order.country = new_country
     order.save()
 
     messages.success(request, f"Order #{order.order_number} delivery details updated successfully! ✅")
@@ -949,6 +1021,7 @@ def update_order(request, order_id):
 
 
 # CANCEL ORDER (ONLY ALLOWED BEFORE DISPATCH)
+@csrf_exempt
 def cancel_order(request, order_id):
     if request.method != "POST":
         return redirect('/MyOrders/')
@@ -975,6 +1048,7 @@ def cancel_order(request, order_id):
 
 
 # SUBMIT RETURN / REPLACEMENT REQUEST (AFTER DELIVERY)
+@csrf_exempt
 def submit_return_request(request, order_id):
     if request.method != "POST":
         return redirect('/MyOrders/')
@@ -1033,5 +1107,55 @@ def submit_return_request(request, order_id):
         )
     )
 
-    return redirect(f'/MyOrders/?track={order.order_number}')
+    return redirect('/MyOrders/')
+
+
+@csrf_exempt
+def upload_profile_pic(request):
+    user = get_current_user(request)
+    if not user:
+        messages.warning(request, "Please Login to update your profile photo 🔐")
+        return redirect('/Account/')
+
+    if request.method == "POST":
+        pic = request.FILES.get('profile_pic')
+        if pic:
+            # Delete old profile picture file if it exists to save disk space
+            if user.profile_pic:
+                try:
+                    user.profile_pic.delete(save=False)
+                except Exception as e:
+                    print(f"Error deleting old profile pic: {e}")
+
+            user.profile_pic = pic
+            user.save()
+            request.session['profile_pic_url'] = user.profile_pic.url
+            messages.success(request, "Profile photo updated successfully! 📸✨")
+        else:
+            messages.warning(request, "No image file was selected. Please choose a photo to upload ⚠️")
+
+    return redirect('/Profile/')
+
+
+@csrf_exempt
+def remove_profile_pic(request):
+    user = get_current_user(request)
+    if not user:
+        messages.warning(request, "Please Login first 🔐")
+        return redirect('/Account/')
+
+    if request.method in ["POST", "GET"]:
+        if user.profile_pic:
+            try:
+                user.profile_pic.delete(save=False)
+            except Exception as e:
+                print(f"Error deleting profile pic: {e}")
+            user.profile_pic = None
+            user.save()
+            request.session['profile_pic_url'] = ''
+            messages.success(request, "Profile photo removed successfully. Default avatar restored! 🗑️")
+        else:
+            messages.info(request, "No profile photo to remove.")
+
+    return redirect('/Profile/')
 
