@@ -3459,11 +3459,555 @@ input[type="date"]::-webkit-datetime-edit-year-field {
     pointer-events: auto;
 }
 
+/* ==========================================================================
+   GLOBAL MULTI-DEVICE RESPONSIVE SYSTEM (Mobile, Tablet, Laptop, Desktop, 4K)
+   ========================================================================== */
 
+/* --------------------------------------------------------------------------
+   1. Universal Viewport & Overflow Protection
+   -------------------------------------------------------------------------- */
+html, body {
+    width: 100%;
+    max-width: 100vw;
+    overflow-x: hidden !important;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
 
+img, video, canvas, svg {
+    max-width: 100%;
+    height: auto;
+}
 
+/* --------------------------------------------------------------------------
+   2. Ultra-Wide Displays & 4K Monitors (min-width: 1600px)
+   -------------------------------------------------------------------------- */
+@media (min-width: 1600px) {
+    .container {
+        max-width: 1480px !important;
+    }
+    .carousel-item {
+        height: 520px !important;
+    }
+    .home-search-bar, .shop-filter-bar {
+        max-width: 860px;
+    }
+}
 
+/* --------------------------------------------------------------------------
+   3. Large Laptops & Standard Desktops (1200px - 1599px)
+   -------------------------------------------------------------------------- */
+@media (max-width: 1400px) {
+    .container {
+        max-width: 1200px;
+    }
+    .cardbox {
+        height: 440px;
+    }
+}
 
+@media (max-width: 1200px) {
+    .container {
+        max-width: 960px;
+    }
+    .font-brand {
+        font-size: 22px !important;
+    }
+    .font-nav {
+        font-size: 16px !important;
+    }
+    .poster-frame {
+        max-width: 290px;
+        height: 400px;
+    }
+    .cardbox {
+        height: 430px;
+    }
+}
 
+/* --------------------------------------------------------------------------
+   4. Tablets & Small Laptops (992px - 1199px)
+   -------------------------------------------------------------------------- */
+@media (max-width: 991px) {
+    /* Navbar Collapse Container */
+    .app-navbar {
+        padding: 10px 16px !important;
+        min-height: 64px;
+    }
 
+    .app-navbar .navbar-collapse {
+        background: rgba(8, 14, 30, 0.98) !important;
+        backdrop-filter: blur(24px) !important;
+        -webkit-backdrop-filter: blur(24px) !important;
+        border: 1.5px solid rgba(0, 240, 255, 0.3) !important;
+        border-radius: 20px !important;
+        padding: 20px 16px !important;
+        margin-top: 12px !important;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8), 0 0 25px rgba(0, 240, 255, 0.2) !important;
+    }
 
+    html[data-theme="light"] .app-navbar .navbar-collapse {
+        background: rgba(255, 255, 255, 0.98) !important;
+        border-color: rgba(2, 132, 199, 0.3) !important;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15) !important;
+    }
+
+    .app-navbar .navbar-nav {
+        width: 100% !important;
+        text-align: center !important;
+        gap: 6px !important;
+    }
+
+    .app-navbar .nav-item {
+        width: 100% !important;
+        display: flex !important;
+        justify-content: center !important;
+    }
+
+    .app-navbar .nav-link-custom {
+        width: 100% !important;
+        padding: 10px 16px !important;
+        border-radius: 12px !important;
+        font-size: 16px !important;
+        justify-content: center !important;
+        text-align: center !important;
+    }
+
+    .btn-auth-login,
+    .btn-auth-logout {
+        width: 100% !important;
+        justify-content: center !important;
+        padding: 10px 20px !important;
+        font-size: 16px !important;
+        border-radius: 25px !important;
+        margin-top: 6px !important;
+    }
+
+    .theme-dropdown-wrap {
+        width: 100% !important;
+        margin-top: 6px !important;
+    }
+
+    .theme-toggle-btn {
+        width: 100% !important;
+        justify-content: center !important;
+        padding: 9px !important;
+        border-radius: 25px !important;
+    }
+
+    /* Manga Detail Hero Adjustment */
+    .manga-detail-hero {
+        padding: 24px !important;
+    }
+
+    .poster-frame {
+        max-width: 270px;
+        height: 380px;
+        margin: 0 auto;
+    }
+
+    /* Story Card on About Us */
+    .story-card .row {
+        gap: 20px;
+    }
+    .story-img-frame {
+        min-height: 280px;
+    }
+}
+
+/* --------------------------------------------------------------------------
+   5. Small Tablets & Large Phones (577px - 768px)
+   -------------------------------------------------------------------------- */
+@media (max-width: 768px) {
+    .container, .container-fluid {
+        padding-left: 14px !important;
+        padding-right: 14px !important;
+    }
+
+    .font-brand {
+        font-size: 20px !important;
+    }
+
+    /* Hero Carousel */
+    .carousel-item {
+        height: clamp(240px, 45vw, 360px) !important;
+    }
+    .carousel-control-prev, .carousel-control-next {
+        width: 38px;
+        height: 38px;
+        margin: 0 8px;
+    }
+
+    /* Search & Filter Bar */
+    .home-search-bar, .shop-filter-bar {
+        margin: 10px auto 20px auto;
+        padding: 12px 16px;
+        border-radius: 18px;
+    }
+
+    .search-input-custom {
+        padding: 10px 18px 10px 44px;
+        font-size: 14px;
+    }
+    .search-icon-inside {
+        left: 16px;
+        font-size: 16px;
+    }
+
+    .genre-select-custom {
+        height: 44px;
+        font-size: 14.5px;
+        padding: 0 16px;
+    }
+
+    /* Manga Cards Grid */
+    .cardbox {
+        height: clamp(390px, 85vw, 440px);
+        border-radius: 18px;
+        margin-bottom: 20px;
+    }
+
+    .cardcontent {
+        padding: 12px 14px;
+    }
+
+    .manga-name {
+        font-size: 17px;
+    }
+
+    .btn-read, .btn-buy {
+        height: 38px;
+        font-size: 13.5px;
+        border-radius: 10px;
+    }
+
+    /* Manga Detail Hero */
+    .manga-header-title {
+        font-size: 28px !important;
+        text-align: center;
+    }
+
+    .manga-detail-hero .badge-tag {
+        font-size: 13px;
+        padding: 4px 12px;
+    }
+
+    .manga-detail-hero .d-flex.flex-wrap.gap-2 {
+        justify-content: center;
+    }
+
+    .manga-detail-hero p.text-muted {
+        text-align: center;
+        font-size: 15px !important;
+    }
+
+    .manga-detail-hero .btn-action-cart,
+    .manga-detail-hero .btn-action-read {
+        flex: 1 1 calc(50% - 8px);
+        min-width: 140px;
+        justify-content: center;
+        font-size: 15px;
+        padding: 10px 16px;
+    }
+
+    /* Chapters Directory */
+    .chapters-container {
+        padding: 20px 16px;
+        border-radius: 20px;
+    }
+
+    .chapter-row {
+        padding: 12px 16px;
+        border-radius: 12px;
+    }
+
+    .chapter-num-badge {
+        font-size: 15px;
+    }
+
+    .chapter-name {
+        font-size: 14.5px;
+    }
+
+    .btn-read-chapter {
+        padding: 5px 14px;
+        font-size: 13px;
+    }
+
+    .chapter-pagination-wrapper {
+        padding: 10px 14px;
+        border-radius: 16px;
+    }
+
+    /* Cart Table & Grand Total Card */
+    .cart-table-wrapper {
+        padding: 16px;
+        border-radius: 18px;
+    }
+
+    .cart-custom-table th, .cart-custom-table td {
+        padding: 10px 10px !important;
+        font-size: 13.5px !important;
+    }
+
+    .cart-item-img {
+        width: 46px;
+        height: 62px;
+    }
+
+    .grand-total-card {
+        padding: 18px 20px;
+        border-radius: 18px;
+        flex-direction: column;
+        align-items: stretch;
+        text-align: center;
+        gap: 16px;
+    }
+
+    .grand-total-card .d-flex.align-items-center.gap-2 {
+        justify-content: center;
+    }
+
+    .grand-total-card .btn-auth-login,
+    .grand-total-card .btn-checkout {
+        width: 100%;
+        justify-content: center;
+        padding: 10px 20px;
+        font-size: 16px;
+    }
+
+    /* Order Tracking & Stepper */
+    .order-card-container {
+        border-radius: 18px;
+    }
+
+    .order-card-header {
+        padding: 14px 16px;
+    }
+
+    .order-id-val {
+        font-size: 17px;
+    }
+
+    .order-total-amount {
+        font-size: 20px;
+    }
+
+    .order-stepper::before {
+        top: 16px;
+        left: 20px;
+        right: 20px;
+    }
+
+    .step-circle {
+        width: 34px;
+        height: 34px;
+        font-size: 13px;
+    }
+
+    .step-label {
+        font-size: 12px;
+    }
+
+    .step-time {
+        font-size: 10.5px;
+    }
+
+    /* Auth & Contact Cards */
+    .contact-card, .auth-card {
+        padding: 24px 18px;
+        border-radius: 20px;
+    }
+
+    .contact-title, .auth-title {
+        font-size: 28px !important;
+    }
+}
+
+/* --------------------------------------------------------------------------
+   6. Standard Phones (Portrait 360px - 576px)
+   -------------------------------------------------------------------------- */
+@media (max-width: 576px) {
+    .container, .container-fluid {
+        padding-left: 10px !important;
+        padding-right: 10px !important;
+    }
+
+    .navbar-brand .font-brand {
+        font-size: 18.5px !important;
+    }
+
+    .profile-avatar-img-wrap, .profile-avatar {
+        width: 34px !important;
+        height: 34px !important;
+        font-size: 13px !important;
+    }
+
+    /* Manga Grid */
+    .cardbox {
+        max-width: 360px;
+        margin-left: auto;
+        margin-right: auto;
+        height: clamp(380px, 86vw, 420px);
+    }
+
+    /* Detail Page Hero Actions */
+    .manga-detail-hero {
+        padding: 16px !important;
+        border-radius: 18px !important;
+    }
+
+    .poster-frame {
+        max-width: 220px;
+        height: 310px;
+    }
+
+    .manga-detail-hero .btn-action-cart,
+    .manga-detail-hero .btn-action-read {
+        flex: 1 1 100%;
+        width: 100%;
+        justify-content: center;
+        font-size: 15px;
+        padding: 10px 14px;
+    }
+
+    /* Chapter Row Compact */
+    .chapter-row {
+        padding: 10px 12px;
+    }
+    .chapter-meta {
+        font-size: 11.5px;
+    }
+    .btn-read-chapter {
+        padding: 4px 10px;
+        font-size: 12px;
+    }
+
+    /* Chapter Pagination Buttons */
+    .chapter-page-btn {
+        min-width: 32px;
+        height: 32px;
+        padding: 0 8px;
+        font-size: 12px;
+    }
+
+    /* Live Tracking Progress Stepper (Compact Stacked Grid on Phones) */
+    .order-stepper {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    .order-stepper::before {
+        display: none; /* Hide horizontal line on 2x2 grid */
+    }
+
+    .step-item {
+        background: rgba(10, 20, 42, 0.7);
+        border: 1px solid rgba(0, 240, 255, 0.2);
+        border-radius: 12px;
+        padding: 10px 8px;
+    }
+
+    .step-item.active {
+        border-color: #00f0ff;
+        background: rgba(0, 240, 255, 0.08);
+    }
+
+    /* Modals Safe Fit */
+    .modal-dialog {
+        margin: 8px auto !important;
+        max-width: calc(100% - 16px) !important;
+    }
+
+    .modal-content {
+        padding: 16px !important;
+        border-radius: 18px !important;
+        max-height: 94vh;
+        overflow-y: auto;
+    }
+
+    .modal-checkout-dialog {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    /* Alerts */
+    .alert-box {
+        top: 72px;
+        width: 96%;
+        max-width: 96%;
+    }
+
+    .myalert {
+        padding: 10px 38px 10px 14px !important;
+        font-size: 13.5px;
+        border-radius: 10px !important;
+    }
+
+    /* Footer */
+    footer.app-footer {
+        padding: 14px 0 !important;
+    }
+    footer.app-footer .font-brand {
+        font-size: 18px !important;
+    }
+    footer.app-footer .nav-link-custom {
+        font-size: 13.5px !important;
+        padding: 3px 8px !important;
+    }
+}
+
+/* --------------------------------------------------------------------------
+   7. Extra Small Phones (320px - 400px, e.g. iPhone SE, Galaxy Fold)
+   -------------------------------------------------------------------------- */
+@media (max-width: 400px) {
+    .container, .container-fluid {
+        padding-left: 8px !important;
+        padding-right: 8px !important;
+    }
+
+    .navbar-brand .font-brand {
+        font-size: 17px !important;
+        letter-spacing: 0;
+    }
+
+    .profile-avatar-img-wrap, .profile-avatar {
+        width: 30px !important;
+        height: 30px !important;
+        font-size: 12px !important;
+    }
+
+    .btn, button, a.btn {
+        min-height: 36px;
+        font-size: 13px;
+    }
+
+    .poster-frame {
+        max-width: 190px;
+        height: 270px;
+    }
+
+    .cardbox {
+        height: 370px;
+    }
+
+    .manga-name {
+        font-size: 15.5px;
+    }
+
+    .manga-price {
+        font-size: 15px;
+        padding: 2px 8px;
+    }
+
+    .grand-total-val {
+        font-size: 24px;
+    }
+
+    .btn-toggle-country-currency,
+    .btn-toggle-cart-currency {
+        font-size: 10.5px !important;
+        padding: 2px 8px !important;
+    }
+}

@@ -155,6 +155,143 @@
       color: #ffffff;
     }
 
+    /* =========================================================
+       RESPONSIVE DESIGN BREAKPOINTS FOR ALL DEVICES
+       (Mobiles 320px-576px, Tablets 577px-991px, Desktops 992px+)
+       ========================================================= */
+
+    /* Small Mobile Phones (320px to 480px) */
+    @media (max-width: 480px) {
+      .container {
+        padding-left: 12px !important;
+        padding-right: 12px !important;
+      }
+      .profile-hero-custom-card {
+        padding: 16px 14px !important;
+        border-radius: 18px !important;
+      }
+      .profile-avatar-glow-wrap {
+        width: 76px !important;
+        height: 76px !important;
+        margin: 0 auto;
+      }
+      .profile-avatar-glow-img,
+      .profile-avatar-glow-default {
+        width: 76px !important;
+        height: 76px !important;
+        font-size: 26px !important;
+      }
+      .profile-avatar-camera-badge {
+        width: 24px !important;
+        height: 24px !important;
+        font-size: 10px !important;
+      }
+      .profile-hero-user-header {
+        justify-content: center !important;
+        flex-wrap: wrap !important;
+      }
+      .profile-hero-user-header h2 {
+        font-size: 22px !important;
+        text-align: center;
+      }
+      .profile-meta-row {
+        gap: 6px 14px !important;
+        font-size: 13px !important;
+        justify-content: center !important;
+        text-align: center;
+      }
+      .profile-meta-row > div {
+        word-break: break-word !important;
+      }
+      .profile-hero-btn-row {
+        flex-direction: column !important;
+        gap: 10px !important;
+      }
+      .profile-hero-custom-card .btn-profile-hero-outline,
+      .profile-hero-custom-card .btn-profile-hero-primary {
+        width: 100% !important;
+        justify-content: center !important;
+        padding: 10px 16px !important;
+        font-size: 14px !important;
+        text-align: center;
+      }
+      .stat-glass-card {
+        padding: 14px !important;
+      }
+      .stat-value {
+        font-size: 22px !important;
+      }
+      .section-title {
+        font-size: 17px !important;
+      }
+      .last-read-cover,
+      .last-read-cover-placeholder {
+        width: 80px !important;
+        height: 110px !important;
+      }
+      .last-read-title {
+        font-size: 17px !important;
+      }
+    }
+
+    /* Phablets & Large Mobile (481px to 767px) */
+    @media (min-width: 481px) and (max-width: 767px) {
+      .profile-hero-custom-card {
+        padding: 20px 18px !important;
+      }
+      .profile-avatar-glow-wrap {
+        width: 82px !important;
+        height: 82px !important;
+      }
+      .profile-avatar-glow-img,
+      .profile-avatar-glow-default {
+        width: 82px !important;
+        height: 82px !important;
+        font-size: 28px !important;
+      }
+      .profile-hero-user-header h2 {
+        font-size: 24px !important;
+      }
+      .profile-meta-row {
+        gap: 8px 18px !important;
+        font-size: 13.5px !important;
+      }
+      .profile-hero-btn-row {
+        gap: 10px !important;
+      }
+      .profile-hero-custom-card .btn-profile-hero-outline,
+      .profile-hero-custom-card .btn-profile-hero-primary {
+        flex: 1 1 calc(50% - 10px);
+        justify-content: center !important;
+        padding: 9px 18px !important;
+      }
+      .profile-hero-custom-card .btn-profile-hero-primary {
+        flex: 1 1 100%;
+      }
+    }
+
+    /* Tablets (768px to 991px) */
+    @media (min-width: 768px) and (max-width: 991px) {
+      .profile-hero-custom-card {
+        padding: 22px 24px !important;
+      }
+      .profile-meta-row {
+        gap: 8px 20px !important;
+      }
+      .profile-hero-custom-card .btn-profile-hero-outline,
+      .profile-hero-custom-card .btn-profile-hero-primary {
+        padding: 8px 20px !important;
+        font-size: 13.5px !important;
+      }
+    }
+
+    /* Desktops (992px+) */
+    @media (min-width: 992px) {
+      .profile-hero-custom-card {
+        padding: 26px 30px !important;
+      }
+    }
+
     /* Reading History Custom Buttons - Dark & Light Mode */
     .btn-history-clear-all {
       background: rgba(255, 51, 102, 0.12) !important;
@@ -446,7 +583,7 @@
 
           <!-- Right: Name, Badge, and Meta Details in 2 Rows -->
           <div class="flex-grow-1">
-            <div class="d-flex align-items-center gap-2 mb-2">
+            <div class="d-flex align-items-center gap-2 mb-2 profile-hero-user-header">
               <h2 class="fw-bold text-white mb-0 font-sora" style="font-size: 28px;">{{ user_obj.Fullname }}</h2>
               <span class="badge" style="background: rgba(255, 193, 7, 0.15); border: 1px solid rgba(255, 193, 7, 0.6); color: #ffc107; font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 13px; padding: 4px 12px; border-radius: 20px;">
                 <i class="fa fa-star text-warning me-1"></i> Manga Explorer
@@ -454,21 +591,21 @@
             </div>
 
             <!-- Meta Row 1: Email, Phone, Country -->
-            <div class="d-flex flex-wrap align-items-center gap-4 text-light small mb-2" style="font-family: 'Outfit', sans-serif; font-size: 14.5px;">
+            <div class="d-flex flex-wrap align-items-center gap-4 text-light small mb-2 profile-meta-row" style="font-family: 'Outfit', sans-serif; font-size: 14.5px;">
               <div><i class="fa fa-envelope text-info me-1"></i> <strong class="text-white">Email:</strong> {{ user_obj.email }}</div>
               <div><i class="fa fa-phone text-success me-1"></i> <strong class="text-white">Phone:</strong> {{ user_obj.phonnumber }}</div>
               <div><i class="fa fa-globe text-primary me-1"></i> <strong class="text-white">Country:</strong> {{ user_obj.country|default:"India" }}</div>
             </div>
 
             <!-- Meta Row 2: Age -->
-            <div class="d-flex flex-wrap align-items-center gap-4 text-light small" style="font-family: 'Outfit', sans-serif; font-size: 14.5px;">
+            <div class="d-flex flex-wrap align-items-center gap-4 text-light small profile-meta-row" style="font-family: 'Outfit', sans-serif; font-size: 14.5px;">
               <div><i class="fa fa-birthday-cake text-warning me-1"></i> <strong class="text-white">Age:</strong> {{ user_obj.Age|default:"20" }}</div>
             </div>
           </div>
         </div>
 
         <!-- Bottom Row: 3 Action Buttons -->
-        <div class="d-flex flex-wrap align-items-center gap-3 mt-4 pt-1">
+        <div class="d-flex flex-wrap align-items-center gap-3 mt-4 pt-1 profile-hero-btn-row">
           <button type="button" class="btn-profile-hero-outline" data-bs-toggle="modal" data-bs-target="#profilePicModal">
             <i class="fa fa-camera me-2"></i> {% if user_obj.profile_pic %}Change Photo{% else %}Add Photo{% endif %}
           </button>
