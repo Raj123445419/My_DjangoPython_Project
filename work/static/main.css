@@ -2042,27 +2042,96 @@ input[type="date"]::-webkit-datetime-edit-year-field {
    16. RESPONSIVE MEDIA QUERIES
    ========================================================================== */
 @media (max-width: 991px) {
-    #headerNavbar.collapse.navbar-collapse,
-    #headerNavbar.collapsing {
+    html:not([data-theme="light"]) #headerNavbar,
+    html:not([data-theme="light"]) #headerNavbar.collapse,
+    html:not([data-theme="light"]) #headerNavbar.collapsing,
+    html[data-theme="dark"] #headerNavbar,
+    html[data-theme="dark"] #headerNavbar.collapse,
+    html[data-theme="dark"] #headerNavbar.collapsing {
         background: rgba(8, 14, 30, 0.98) !important;
-        padding: 18px !important;
-        border-radius: 16px;
-        margin-top: 10px;
-        border: 1px solid rgba(0, 240, 255, 0.2);
+        backdrop-filter: blur(20px) !important;
+        -webkit-backdrop-filter: blur(20px) !important;
+        padding: 20px 16px !important;
+        border-radius: 20px !important;
+        margin-top: 12px !important;
+        border: 1.5px solid rgba(0, 240, 255, 0.25) !important;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7), 0 0 20px rgba(0, 240, 255, 0.15) !important;
+    }
+
+    #headerNavbar .navbar-nav {
+        width: 100% !important;
+        text-align: center !important;
+    }
+
+    #headerNavbar .nav-item {
+        width: 100% !important;
+        display: flex !important;
+        justify-content: center !important;
     }
 
     .nav-link-custom {
-        width: 100%;
-        margin: 3px 0;
+        width: 100% !important;
+        margin: 4px 0 !important;
+        padding: 10px 16px !important;
+        border-radius: 14px !important;
+        justify-content: center !important;
+        text-align: center !important;
     }
 
-    .navbar-toggler {
-        border: 1px solid rgba(0, 240, 255, 0.4) !important;
-        padding: 5px 10px;
+    .cart-nav-link {
+        width: 44px !important;
+        height: 44px !important;
+        border-radius: 50% !important;
+        margin: 6px auto !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
     }
 
-    .navbar-toggler-icon {
-        filter: invert(1);
+    .btn-auth-login,
+    .btn-auth-logout {
+        width: 100% !important;
+        justify-content: center !important;
+        margin: 6px 0 !important;
+        text-align: center !important;
+        padding: 10px !important;
+        border-radius: 25px !important;
+    }
+
+    .theme-dropdown-wrap {
+        width: 100% !important;
+        margin: 6px 0 !important;
+    }
+
+    .theme-toggle-btn {
+        width: 100% !important;
+        justify-content: center !important;
+        padding: 9px !important;
+        border-radius: 25px !important;
+    }
+
+    html:not([data-theme="light"]) .navbar-toggler,
+    html[data-theme="dark"] .navbar-toggler {
+        border: 1.5px solid rgba(0, 240, 255, 0.4) !important;
+        background: rgba(8, 14, 30, 0.8) !important;
+        border-radius: 12px !important;
+        padding: 6px 12px !important;
+        transition: all 0.25s ease !important;
+        box-shadow: 0 0 12px rgba(0, 240, 255, 0.2) !important;
+    }
+
+    html:not([data-theme="light"]) .navbar-toggler:focus,
+    html:not([data-theme="light"]) .navbar-toggler:hover,
+    html[data-theme="dark"] .navbar-toggler:focus,
+    html[data-theme="dark"] .navbar-toggler:hover {
+        border-color: #00f0ff !important;
+        box-shadow: 0 0 18px rgba(0, 240, 255, 0.5) !important;
+    }
+
+    html:not([data-theme="light"]) .navbar-toggler-icon,
+    html[data-theme="dark"] .navbar-toggler-icon {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%2300f0ff' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2.5' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+        filter: none !important;
     }
 }
 

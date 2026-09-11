@@ -22,11 +22,139 @@
     rel="stylesheet">
 
   <!-- Centralized Stylesheets & Theme Engine -->
-  <link rel="stylesheet" href="{% static 'main.css' %}?v=3.5">
-  <link rel="stylesheet" href="{% static 'theme.css' %}?v=3.5">
-  <script src="{% static 'theme.js' %}?v=3.5"></script>
+  <link rel="stylesheet" href="{% static 'main.css' %}?v=4.0">
+  <link rel="stylesheet" href="{% static 'theme.css' %}?v=4.0">
+  <script src="{% static 'theme.js' %}?v=4.0"></script>
 
   <style>
+    /* Profile Hero Card & Buttons - Matching Image 2 */
+    .profile-hero-custom-card {
+      background: rgba(8, 18, 36, 0.85);
+      border: 1.5px solid rgba(0, 240, 255, 0.35);
+      border-radius: 24px;
+      padding: 24px 28px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .profile-avatar-glow-wrap {
+      position: relative;
+      width: 90px;
+      height: 90px;
+      flex-shrink: 0;
+    }
+
+    .profile-avatar-glow-img {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      border: 3px solid #00f0ff;
+      box-shadow: 0 0 20px rgba(0, 240, 255, 0.55);
+      object-fit: cover;
+      display: block;
+    }
+
+    .profile-avatar-glow-default {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      border: 3px solid #00f0ff;
+      box-shadow: 0 0 20px rgba(0, 240, 255, 0.55);
+      background: linear-gradient(135deg, #00f0ff, #0077ff);
+      color: #050b1a;
+      font-size: 34px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .profile-avatar-camera-badge {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #ff007f, #7928ca);
+      border: 2px solid #ffffff;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+      outline: none;
+      padding: 0;
+    }
+    .profile-avatar-camera-badge:hover {
+      transform: scale(1.15);
+    }
+
+    .btn-profile-hero-outline {
+      background: rgba(0, 240, 255, 0.06);
+      border: 1.5px solid #00f0ff;
+      color: #00f0ff;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      font-size: 14px;
+      padding: 8px 24px;
+      border-radius: 30px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      transition: all 0.25s ease;
+      cursor: pointer;
+      outline: none;
+    }
+    .btn-profile-hero-outline:hover {
+      background: rgba(0, 240, 255, 0.2);
+      color: #ffffff;
+      box-shadow: 0 0 16px rgba(0, 240, 255, 0.4);
+      transform: translateY(-1px);
+    }
+
+    .btn-profile-hero-primary {
+      background: linear-gradient(135deg, #00f0ff, #0077ff);
+      border: none;
+      color: #050b1a !important;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 800;
+      font-size: 14px;
+      padding: 9px 28px;
+      border-radius: 30px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      box-shadow: 0 0 22px rgba(0, 240, 255, 0.65);
+      transition: all 0.25s ease;
+      cursor: pointer;
+    }
+    .btn-profile-hero-primary:hover {
+      background: linear-gradient(135deg, #00ffcc, #00f0ff);
+      box-shadow: 0 0 30px rgba(0, 240, 255, 0.85);
+      transform: translateY(-2px);
+      color: #050b1a !important;
+    }
+
+    html[data-theme="light"] .profile-hero-custom-card {
+      background: #ffffff;
+      border-color: #cbd5e1;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    }
+    html[data-theme="light"] .btn-profile-hero-outline {
+      border-color: #0284c7;
+      color: #0284c7;
+      background: #f0f9ff;
+    }
+    html[data-theme="light"] .btn-profile-hero-outline:hover {
+      background: #0284c7;
+      color: #ffffff;
+    }
+
     /* Reading History Custom Buttons - Dark & Light Mode */
     .btn-history-clear-all {
       background: rgba(255, 51, 102, 0.12) !important;
@@ -45,6 +173,7 @@
       gap: 6px !important;
       text-decoration: none !important;
     }
+
     .btn-history-clear-all:hover {
       background: #ff3366 !important;
       color: #ffffff !important;
@@ -73,6 +202,7 @@
       outline: none !important;
       line-height: 1 !important;
     }
+
     .btn-history-item-del:hover {
       background: #ff3366 !important;
       color: #ffffff !important;
@@ -98,6 +228,7 @@
       gap: 8px !important;
       text-decoration: none !important;
     }
+
     .btn-history-show-more:hover {
       background: linear-gradient(135deg, #00f0ff, #0077ff) !important;
       color: #050b1a !important;
@@ -112,13 +243,16 @@
       scrollbar-width: thin !important;
       scrollbar-color: #00f0ff rgba(10, 20, 45, 0.6) !important;
     }
+
     .history-grid-container.history-grid-scroll-active::-webkit-scrollbar {
       width: 6px !important;
     }
+
     .history-grid-container.history-grid-scroll-active::-webkit-scrollbar-track {
       background: rgba(10, 20, 45, 0.6) !important;
       border-radius: 4px !important;
     }
+
     .history-grid-container.history-grid-scroll-active::-webkit-scrollbar-thumb {
       background: linear-gradient(180deg, #00f0ff, #0077ff) !important;
       border-radius: 4px !important;
@@ -129,28 +263,34 @@
       border-color: rgba(220, 38, 38, 0.35) !important;
       color: #dc2626 !important;
     }
+
     html[data-theme="light"] .btn-history-clear-all:hover {
       background: #dc2626 !important;
       color: #ffffff !important;
     }
+
     html[data-theme="light"] .btn-history-item-del {
       background: rgba(220, 38, 38, 0.1) !important;
       border-color: rgba(220, 38, 38, 0.35) !important;
       color: #dc2626 !important;
     }
+
     html[data-theme="light"] .btn-history-item-del:hover {
       background: #dc2626 !important;
       color: #ffffff !important;
     }
+
     html[data-theme="light"] .btn-history-show-more {
       background: linear-gradient(135deg, rgba(0, 102, 204, 0.12), rgba(14, 165, 233, 0.12)) !important;
       border-color: #0066cc !important;
       color: #0066cc !important;
     }
+
     html[data-theme="light"] .btn-history-show-more:hover {
       background: linear-gradient(135deg, #0066cc, #0284c7) !important;
       color: #ffffff !important;
     }
+
     html[data-theme="light"] .history-grid-container.history-grid-scroll-active {
       scrollbar-color: #0066cc rgba(220, 230, 245, 0.8) !important;
     }
@@ -235,7 +375,7 @@
               </a>
               {% else %}
               <a href="/Profile/" class="profile-avatar active-nav-avatar" title="View Profile">
-                {{ request.session.fullname|slice:":1"|upper }}{{ request.session.fullname.split|last|slice:":1"|upper }}
+                {{ request.session.fullname|slice:":1"|upper }}
               </a>
               {% endif %}
             </li>
@@ -287,48 +427,57 @@
      ========================================== -->
     <div class="container py-4">
 
-      <!-- Profile Card Banner -->
-      <div class="profile-hero-card mb-4">
-        <div class="row align-items-center gy-4">
-          <div class="col-auto">
-            <div class="profile-large-avatar-wrap">
-              {% if user_obj.profile_pic %}
-              <img src="{{ user_obj.profile_pic.url }}" alt="{{ user_obj.Fullname }}" class="profile-large-avatar-img">
-              {% else %}
-              <div class="profile-large-avatar">
-                {{ user_obj.Fullname|slice:":1"|upper }}{{ user_obj.Fullname.split|last|slice:":1"|upper }}
-              </div>
-              {% endif %}
-              <button type="button" class="profile-avatar-edit-btn" data-bs-toggle="modal"
-                data-bs-target="#profilePicModal" title="Change Profile Photo">
-                <i class="fa fa-camera"></i>
-              </button>
+      <!-- Profile Card Banner (Matching Second Image) -->
+      <div class="profile-hero-custom-card mb-4">
+        <div class="d-flex align-items-center gap-4 flex-wrap flex-md-nowrap">
+          <!-- Left: Glowing Avatar with Camera Badge -->
+          <div class="profile-avatar-glow-wrap">
+            {% if user_obj.profile_pic %}
+            <img src="{{ user_obj.profile_pic.url }}" alt="{{ user_obj.Fullname }}" class="profile-avatar-glow-img">
+            {% else %}
+            <div class="profile-avatar-glow-default">
+              {{ user_obj.Fullname|slice:":1"|upper }}
             </div>
-          </div>
-          <div class="col">
-            <div class="d-flex flex-wrap align-items-center gap-2 mb-1">
-              <h1 class="profile-user-name mb-0">{{ user_obj.Fullname }}</h1>
-              <span class="profile-badge"><i class="fa fa-star text-warning me-1"></i> Manga Explorer</span>
-            </div>
-            <div class="profile-meta-grid">
-              <div class="meta-item"><i class="fa fa-envelope text-info me-2"></i><strong>Email:</strong> {{ user_obj.email }}</div>
-              <div class="meta-item"><i class="fa fa-phone text-success me-2"></i><strong>Phone:</strong> {{ user_obj.phonnumber }}</div>
-              <div class="meta-item"><i class="fa fa-globe text-primary me-2"></i><strong>Country:</strong> {{ user_obj.country|default:"Global" }}</div>
-              <div class="meta-item"><i class="fa fa-birthday-cake text-warning me-2"></i><strong>Age:</strong> {{ user_obj.Age|default:"-" }}</div>
-            </div>
-          </div>
-          <div class="col-12 col-md-auto d-flex flex-wrap gap-2">
-            <button type="button" class="btn-auth-login py-2 px-3" data-bs-toggle="modal"
-              data-bs-target="#profilePicModal">
-              <i class="fa fa-camera me-1"></i> {% if user_obj.profile_pic %}Change Photo{% else %}Add Photo{% endif %}
+            {% endif %}
+            <button type="button" class="profile-avatar-camera-badge" data-bs-toggle="modal" data-bs-target="#profilePicModal" title="Change Profile Photo">
+              <i class="fa fa-camera"></i>
             </button>
-            <a href="/MyOrders/" class="btn-checkout py-2 px-3">
-              <i class="fa fa-truck me-1"></i> Track Orders ({{ total_orders }})
-            </a>
-            <a href="/Shop/" class="btn-auth-login py-2 px-3">
-              <i class="fa fa-book me-1"></i> Browse Manga
-            </a>
           </div>
+
+          <!-- Right: Name, Badge, and Meta Details in 2 Rows -->
+          <div class="flex-grow-1">
+            <div class="d-flex align-items-center gap-2 mb-2">
+              <h2 class="fw-bold text-white mb-0 font-sora" style="font-size: 28px;">{{ user_obj.Fullname }}</h2>
+              <span class="badge" style="background: rgba(255, 193, 7, 0.15); border: 1px solid rgba(255, 193, 7, 0.6); color: #ffc107; font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 13px; padding: 4px 12px; border-radius: 20px;">
+                <i class="fa fa-star text-warning me-1"></i> Manga Explorer
+              </span>
+            </div>
+
+            <!-- Meta Row 1: Email, Phone, Country -->
+            <div class="d-flex flex-wrap align-items-center gap-4 text-light small mb-2" style="font-family: 'Outfit', sans-serif; font-size: 14.5px;">
+              <div><i class="fa fa-envelope text-info me-1"></i> <strong class="text-white">Email:</strong> {{ user_obj.email }}</div>
+              <div><i class="fa fa-phone text-success me-1"></i> <strong class="text-white">Phone:</strong> {{ user_obj.phonnumber }}</div>
+              <div><i class="fa fa-globe text-primary me-1"></i> <strong class="text-white">Country:</strong> {{ user_obj.country|default:"India" }}</div>
+            </div>
+
+            <!-- Meta Row 2: Age -->
+            <div class="d-flex flex-wrap align-items-center gap-4 text-light small" style="font-family: 'Outfit', sans-serif; font-size: 14.5px;">
+              <div><i class="fa fa-birthday-cake text-warning me-1"></i> <strong class="text-white">Age:</strong> {{ user_obj.Age|default:"20" }}</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom Row: 3 Action Buttons -->
+        <div class="d-flex flex-wrap align-items-center gap-3 mt-4 pt-1">
+          <button type="button" class="btn-profile-hero-outline" data-bs-toggle="modal" data-bs-target="#profilePicModal">
+            <i class="fa fa-camera me-2"></i> {% if user_obj.profile_pic %}Change Photo{% else %}Add Photo{% endif %}
+          </button>
+          <a href="/MyOrders/" class="btn-profile-hero-primary">
+            <i class="fa fa-truck me-2"></i> Track Orders ({{ total_orders }})
+          </a>
+          <a href="/Shop/" class="btn-profile-hero-outline">
+            <i class="fa fa-book me-2"></i> Browse Manga
+          </a>
         </div>
       </div>
 
@@ -399,8 +548,7 @@
                   <i class="fa fa-bookmark-o me-1"></i> Current Progress: <strong id="lastReadChapterText">Chapter {{ last_read.last_chapter }}</strong>
                 </p>
                 <div class="d-flex gap-3 flex-wrap">
-                  <a href="/manga/{{ last_read.manga.id }}/read/{{ last_read.last_chapter }}/"
-                    class="btn-continue-reading" id="lastReadContinueBtn">
+                  <a href="/manga/{{ last_read.manga.id }}/read/{{ last_read.last_chapter }}/" class="btn-continue-reading" id="lastReadContinueBtn">
                     <i class="fa fa-play-circle me-1"></i> Continue Reading
                   </a>
                   <a href="/manga/{{ last_read.manga.id }}/" class="btn-auth-login py-2 px-3" id="lastReadDetailsBtn">
@@ -416,8 +564,7 @@
         <div class="empty-section-card text-center py-5" id="emptyLastReadCard" {% if last_read %}style="display: none;"{% endif %}>
           <i class="fa fa-book-open fa-3x text-muted mb-3"></i>
           <h4>No Reading History Yet</h4>
-          <p class="text-muted">Start reading any manga from the shop or catalog, and your progress will automatically
-            appear here!</p>
+          <p class="text-muted">Start reading any manga from the shop or catalog, and your progress will automatically appear here!</p>
           <a href="/Shop/" class="btn-checkout mt-2"><i class="fa fa-compass me-1"></i> Explore Manga Library</a>
         </div>
       </div>
@@ -429,7 +576,7 @@
         <div class="section-header-wrap d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
           <div class="d-flex align-items-center gap-2">
             <h2 class="section-title mb-0"><i class="fa fa-history text-info me-2"></i> Full Reading History</h2>
-            <span class="badge bg-dark-subtle text-info font-outfit" id="historyCountBadge">{{ reading_history.count }} Titles</span>
+            <span class="badge bg-dark-subtle text-info font-outfit" id="historyCountBadge">{{ total_read_manga }} Titles</span>
           </div>
           {% if reading_history %}
           <button type="button" class="btn-history-clear-all" id="btnClearAllHistory" onclick="confirmClearAllHistory()">
@@ -441,10 +588,7 @@
         <div id="historyGridWrap">
           <div class="row g-3 history-grid-container" id="historyGridContainer">
             {% for item in reading_history %}
-            <div class="col-12 col-md-6 col-lg-4 history-card-item {% if forloop.counter > 3 %}history-item-hidden{% endif %}" 
-                 id="history-item-{{ item.id }}" 
-                 data-index="{{ forloop.counter }}"
-                 {% if forloop.counter > 3 %}style="display: none;"{% endif %}>
+            <div class="col-12 col-md-6 col-lg-4 history-card-item {% if forloop.counter > 3 %}history-item-hidden{% endif %}" id="history-item-{{ item.id }}" data-index="{{ forloop.counter }}" {% if forloop.counter > 3 %}style="display: none;"{% endif %}>
               <div class="history-item-card position-relative">
                 <!-- Individual Remove / Delete ✕ Button -->
                 <button type="button" class="btn-history-item-del" onclick="deleteHistoryItem('{{ item.id }}')" title="Remove {{ item.manga_name }} from History">
@@ -477,13 +621,13 @@
           </div>
 
           <!-- Pagination / Show More Button Controls -->
-          {% if reading_history.count > 3 %}
+          {% if total_read_manga > 3 %}
           <div class="text-center mt-3 pt-2" id="showMoreHistoryWrap">
             <button type="button" class="btn-history-show-more" id="btnShowMoreHistory" onclick="loadMoreHistory()">
               <i class="fa fa-chevron-down me-1"></i> Show More
             </button>
             <div class="text-muted small mt-2 font-outfit" id="historyPaginationStatus">
-              Showing <span id="visibleHistoryCount">3</span> of <span id="totalHistoryCount">{{ reading_history.count }}</span> Titles
+              Showing <span id="visibleHistoryCount">3</span> of <span id="totalHistoryCount">{{ total_read_manga }}</span> Titles
             </div>
           </div>
           {% endif %}
@@ -663,8 +807,7 @@
         <div class="modal-content photo-modal-content">
           <div class="modal-header border-0 pb-0">
             <h5 class="modal-title font-sora text-info d-flex align-items-center gap-2" id="profilePicModalLabel">
-              <i class="fa fa-camera"></i> {% if user_obj.profile_pic %}Change Profile Photo{% else %}Add Profile
-              Photo{% endif %}
+              <i class="fa fa-camera"></i> {% if user_obj.profile_pic %}Change Profile Photo{% else %}Add Profile Photo{% endif %}
             </h5>
             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
@@ -674,11 +817,9 @@
             <div class="text-center mb-4">
               <div id="previewContainer" class="position-relative d-inline-block">
                 {% if user_obj.profile_pic %}
-                <img id="profilePhotoPreview" src="{{ user_obj.profile_pic.url }}" alt="Profile Preview"
-                  class="photo-preview-circle">
+                <img id="profilePhotoPreview" src="{{ user_obj.profile_pic.url }}" alt="Profile Preview" class="photo-preview-circle">
                 {% else %}
-                <div id="defaultAvatarCircle" class="profile-large-avatar mx-auto"
-                  style="width: 120px; height: 120px; font-size: 42px;">
+                <div id="defaultAvatarCircle" class="profile-large-avatar mx-auto" style="width: 120px; height: 120px; font-size: 42px;">
                   {{ user_obj.Fullname|slice:":1"|upper }}{{ user_obj.Fullname.split|last|slice:":1"|upper }}
                 </div>
                 <img id="profilePhotoPreview" src="" alt="Profile Preview" class="photo-preview-circle d-none">
@@ -692,13 +833,11 @@
             <!-- Upload Form -->
             <form action="/UploadProfilePic/" method="POST" enctype="multipart/form-data" id="profilePhotoForm">
               {% csrf_token %}
-              <div class="photo-upload-zone mb-3" onclick="document.getElementById('profilePicInput').click();"
-                id="photoDropZone">
+              <div class="photo-upload-zone mb-3" onclick="document.getElementById('profilePicInput').click();" id="photoDropZone">
                 <i class="fa fa-cloud-upload fa-2x text-info mb-2"></i>
                 <div class="fw-semibold">Click to choose or drag & drop photo</div>
                 <div class="text-muted small">PNG, JPG, JPEG, WEBP or GIF (Max 5MB)</div>
-                <input type="file" id="profilePicInput" name="profile_pic" accept="image/*" class="d-none"
-                  onchange="previewSelectedImage(this);" required>
+                <input type="file" id="profilePicInput" name="profile_pic" accept="image/*" class="d-none" onchange="previewSelectedImage(this);" required>
               </div>
 
               <div id="selectedFileName" class="text-info small text-center mb-3 fw-semibold d-none">
@@ -707,8 +846,7 @@
 
               <div class="d-grid gap-2 mb-2">
                 <button type="submit" class="btn-checkout py-2" id="uploadSubmitBtn">
-                  <i class="fa fa-upload me-1"></i> {% if user_obj.profile_pic %}Update Profile Photo{% else %}Save
-                  Profile Photo{% endif %}
+                  <i class="fa fa-upload me-1"></i> {% if user_obj.profile_pic %}Update Profile Photo{% else %}Save Profile Photo{% endif %}
                 </button>
               </div>
             </form>
@@ -830,7 +968,7 @@
           if (clearBtn) clearBtn.style.display = 'none';
           if (emptyCard) emptyCard.style.display = 'block';
           if (gridContainer) gridContainer.classList.remove('history-grid-scroll-active');
-          
+
           // Clear and hide RECENT ACTIVITY / Last Read Highlight Card
           if (lastReadWrap) lastReadWrap.style.display = 'none';
           if (emptyLastRead) emptyLastRead.style.display = 'block';
@@ -896,54 +1034,54 @@
             'X-CSRFToken': getCsrf()
           }
         })
-        .then(res => res.json())
-        .then(data => {
-          if (data.status === 'success') {
-            setTimeout(() => {
-              // Check if deleted item was the active last read card
-              const lastReadCard = document.getElementById('activeLastReadCard');
-              const wasActiveLastRead = lastReadCard && (lastReadCard.getAttribute('data-history-id') === String(historyId));
+          .then(res => res.json())
+          .then(data => {
+            if (data.status === 'success') {
+              setTimeout(() => {
+                // Check if deleted item was the active last read card
+                const lastReadCard = document.getElementById('activeLastReadCard');
+                const wasActiveLastRead = lastReadCard && (lastReadCard.getAttribute('data-history-id') === String(historyId));
 
-              itemEl.remove();
-              updateHistoryDisplay();
+                itemEl.remove();
+                updateHistoryDisplay();
 
-              // If deleted item was the last read card and items remain, update it with new top item
-              if (wasActiveLastRead) {
-                const firstRemaining = document.querySelector('.history-card-item');
-                if (firstRemaining) {
-                  const newHistId = firstRemaining.id.replace('history-item-', '');
-                  const thumb = firstRemaining.querySelector('.history-item-thumb')?.src;
-                  const title = firstRemaining.querySelector('.history-item-title')?.textContent?.trim();
-                  const chap = firstRemaining.querySelector('.history-item-chap')?.textContent?.trim();
-                  const date = firstRemaining.querySelector('.history-item-date')?.textContent?.trim();
-                  const readHref = firstRemaining.querySelector('.history-read-btn')?.getAttribute('href');
+                // If deleted item was the last read card and items remain, update it with new top item
+                if (wasActiveLastRead) {
+                  const firstRemaining = document.querySelector('.history-card-item');
+                  if (firstRemaining) {
+                    const newHistId = firstRemaining.id.replace('history-item-', '');
+                    const thumb = firstRemaining.querySelector('.history-item-thumb')?.src;
+                    const title = firstRemaining.querySelector('.history-item-title')?.textContent?.trim();
+                    const chap = firstRemaining.querySelector('.history-item-chap')?.textContent?.trim();
+                    const date = firstRemaining.querySelector('.history-item-date')?.textContent?.trim();
+                    const readHref = firstRemaining.querySelector('.history-read-btn')?.getAttribute('href');
 
-                  if (lastReadCard) {
-                    lastReadCard.setAttribute('data-history-id', newHistId);
-                    const imgEl = document.getElementById('lastReadImg');
-                    if (imgEl && thumb) imgEl.src = thumb;
-                    const titleEl = document.getElementById('lastReadTitle');
-                    if (titleEl && title) titleEl.textContent = title;
-                    const chapEl = document.getElementById('lastReadChapterText');
-                    if (chapEl && chap) chapEl.textContent = chap;
-                    const dateEl = document.getElementById('lastReadDate');
-                    if (dateEl && date) dateEl.textContent = date;
-                    const contBtn = document.getElementById('lastReadContinueBtn');
-                    if (contBtn && readHref) contBtn.setAttribute('href', readHref);
+                    if (lastReadCard) {
+                      lastReadCard.setAttribute('data-history-id', newHistId);
+                      const imgEl = document.getElementById('lastReadImg');
+                      if (imgEl && thumb) imgEl.src = thumb;
+                      const titleEl = document.getElementById('lastReadTitle');
+                      if (titleEl && title) titleEl.textContent = title;
+                      const chapEl = document.getElementById('lastReadChapterText');
+                      if (chapEl && chap) chapEl.textContent = chap;
+                      const dateEl = document.getElementById('lastReadDate');
+                      if (dateEl && date) dateEl.textContent = date;
+                      const contBtn = document.getElementById('lastReadContinueBtn');
+                      if (contBtn && readHref) contBtn.setAttribute('href', readHref);
+                    }
                   }
                 }
-              }
-            }, 250);
-          } else {
-            itemEl.style.opacity = '1';
-            itemEl.style.transform = 'none';
-            alert('Could not remove history item. Please try again.');
-          }
-        })
-        .catch(err => {
-          console.error(err);
-          window.location.href = `/remove-reading-history/${historyId}/`;
-        });
+              }, 250);
+            } else {
+              itemEl.style.opacity = '1';
+              itemEl.style.transform = 'none';
+              alert('Could not remove history item. Please try again.');
+            }
+          })
+          .catch(err => {
+            console.error(err);
+            window.location.href = `/remove-reading-history/${historyId}/`;
+          });
       }
 
       function confirmClearAllHistory() {
@@ -961,28 +1099,28 @@
             'X-CSRFToken': getCsrf()
           }
         })
-        .then(res => res.json())
-        .then(data => {
-          if (data.status === 'success') {
-            const grid = document.getElementById('historyGridContainer');
-            if (grid) grid.innerHTML = '';
+          .then(res => res.json())
+          .then(data => {
+            if (data.status === 'success') {
+              const grid = document.getElementById('historyGridContainer');
+              if (grid) grid.innerHTML = '';
 
-            // Instantly clear and hide RECENT ACTIVITY / Last Read Highlight Card
-            const lastReadWrap = document.getElementById('lastReadCardWrap');
-            const emptyLastRead = document.getElementById('emptyLastReadCard');
-            if (lastReadWrap) lastReadWrap.style.display = 'none';
-            if (emptyLastRead) emptyLastRead.style.display = 'block';
+              // Instantly clear and hide RECENT ACTIVITY / Last Read Highlight Card
+              const lastReadWrap = document.getElementById('lastReadCardWrap');
+              const emptyLastRead = document.getElementById('emptyLastReadCard');
+              if (lastReadWrap) lastReadWrap.style.display = 'none';
+              if (emptyLastRead) emptyLastRead.style.display = 'block';
 
-            currentVisibleHistory = 3;
-            updateHistoryDisplay();
-          } else {
+              currentVisibleHistory = 3;
+              updateHistoryDisplay();
+            } else {
+              window.location.href = '/clear-reading-history/';
+            }
+          })
+          .catch(err => {
+            console.error(err);
             window.location.href = '/clear-reading-history/';
-          }
-        })
-        .catch(err => {
-          console.error(err);
-          window.location.href = '/clear-reading-history/';
-        });
+          });
       }
 
       // Attach functions to window scope for onclick handlers

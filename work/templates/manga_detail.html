@@ -22,9 +22,9 @@
     rel="stylesheet">
 
   <!-- Centralized Stylesheets & Theme Engine -->
-  <link rel="stylesheet" href="{% static 'main.css' %}?v=2.8">
-  <link rel="stylesheet" href="{% static 'theme.css' %}?v=2.8">
-  <script src="{% static 'theme.js' %}?v=2.8"></script>
+  <link rel="stylesheet" href="{% static 'main.css' %}?v=4.0">
+  <link rel="stylesheet" href="{% static 'theme.css' %}?v=4.0">
+  <script src="{% static 'theme.js' %}?v=4.0"></script>
 </head>
 
 <body>
@@ -104,7 +104,7 @@
               </a>
               {% else %}
               <a href="/Profile/" class="profile-avatar" title="View Profile">
-                {{ request.session.fullname|slice:":1"|upper }}{{ request.session.fullname.split|last|slice:":1"|upper }}
+                {{ request.session.fullname|slice:":1"|upper }}
               </a>
               {% endif %}
             </li>

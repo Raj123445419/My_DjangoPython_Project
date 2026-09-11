@@ -1251,4 +1251,4 @@ def remove_profile_pic(request):
             messages.info(request, "No profile photo to remove.")
 
     return redirect('/Profile/')
-
+
