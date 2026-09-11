@@ -1841,7 +1841,7 @@ input[type="date"]::-webkit-datetime-edit-year-field {
     transform: translateX(-50%);
     z-index: 99999;
     width: 92%;
-    max-width: 680px;
+    max-width: 780px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -1869,6 +1869,8 @@ input[type="date"]::-webkit-datetime-edit-year-field {
     margin-bottom: 0 !important;
     display: flex;
     align-items: center;
+    justify-content: center;
+    text-align: center;
 }
 
 .myalert.alert-warning {
@@ -2449,6 +2451,104 @@ input[type="date"]::-webkit-datetime-edit-year-field {
 
 .history-read-btn:hover {
     color: #ffffff;
+}
+
+/* Individual Remove ✕ Button */
+.btn-history-item-del {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: rgba(255, 51, 102, 0.15);
+    border: 1px solid rgba(255, 51, 102, 0.35);
+    color: #ff3366;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    z-index: 5;
+    padding: 0;
+}
+
+.btn-history-item-del:hover {
+    background: #ff3366;
+    color: #ffffff;
+    box-shadow: 0 0 12px rgba(255, 51, 102, 0.6);
+    transform: scale(1.1);
+}
+
+/* Clear All History Button */
+.btn-history-clear-all {
+    background: rgba(255, 51, 102, 0.12);
+    border: 1px solid rgba(255, 51, 102, 0.4);
+    color: #ff3366;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    padding: 5px 14px;
+    border-radius: 20px;
+    transition: all 0.25s ease;
+    cursor: pointer;
+}
+
+.btn-history-clear-all:hover {
+    background: #ff3366;
+    color: #ffffff;
+    box-shadow: 0 0 15px rgba(255, 51, 102, 0.5);
+    transform: translateY(-1px);
+}
+
+/* Show More Glowing Button */
+.btn-history-show-more {
+    background: linear-gradient(135deg, rgba(0, 240, 255, 0.2), rgba(0, 119, 255, 0.25));
+    border: 1.5px solid #00f0ff;
+    color: #00f0ff;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 700;
+    font-size: 14.5px;
+    padding: 9px 26px;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 18px rgba(0, 240, 255, 0.2);
+}
+
+.btn-history-show-more:hover {
+    background: linear-gradient(135deg, #00f0ff, #0077ff);
+    color: #050b1a;
+    box-shadow: 0 0 25px rgba(0, 240, 255, 0.6);
+    transform: translateY(-2px);
+}
+
+/* Scrollable History Grid (Activates once 12 items are visible) */
+.history-grid-container {
+    transition: max-height 0.4s ease;
+}
+
+.history-grid-container.history-grid-scroll-active {
+    max-height: 520px;
+    overflow-y: auto;
+    padding-right: 6px;
+    scrollbar-width: thin;
+    scrollbar-color: #00f0ff rgba(10, 20, 45, 0.6);
+}
+
+.history-grid-container.history-grid-scroll-active::-webkit-scrollbar {
+    width: 6px;
+}
+
+.history-grid-container.history-grid-scroll-active::-webkit-scrollbar-track {
+    background: rgba(10, 20, 45, 0.6);
+    border-radius: 4px;
+}
+
+.history-grid-container.history-grid-scroll-active::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #00f0ff, #0077ff);
+    border-radius: 4px;
 }
 
 /* ==========================================================================

@@ -503,7 +503,29 @@ html, body {
     </div>
     {% endfor %}
 
-    <!-- Chapter End Banner -->
+    <!-- Chapter End Banner / Manga Completion Banner -->
+    {% if chapter_num == total_chapters %}
+    <div class="text-center py-5 my-3 rounded-4 p-4" style="background: linear-gradient(135deg, rgba(10, 25, 55, 0.96), rgba(5, 12, 28, 0.96)); border: 1.5px solid rgba(0, 240, 255, 0.45); box-shadow: 0 0 35px rgba(0, 240, 255, 0.25);">
+      <div style="font-size: 42px; margin-bottom: 12px;">🏆 🌟 🎉</div>
+      <h3 style="font-family: 'Outfit', sans-serif; font-weight: 800; color: #00f0ff; margin-bottom: 10px; font-size: 26px;">
+        Manga Completed: {{ product.name }}!
+      </h3>
+      <p class="text-muted mb-4" style="max-width: 520px; margin: 0 auto 20px auto; font-size: 15px;">
+        You have finished reading all {{ total_chapters }} chapters! It has been automatically cleared from your active reading history list. You can start reading again from Chapter 1 anytime.
+      </p>
+      <div class="d-flex justify-content-center gap-3 flex-wrap">
+        <a href="/manga/{{ product.id }}/chapter/1/" class="btn btn-outline-info rounded-pill px-4 py-2">
+          <i class="fa fa-refresh me-1"></i> Read Again from Chapter 1
+        </a>
+        <a href="/Shop/" class="btn-chapter-jump px-4 py-2">
+          <i class="fa fa-compass me-1"></i> Browse More Manga
+        </a>
+        <a href="/Profile/" class="btn btn-outline-light rounded-pill px-4 py-2">
+          <i class="fa fa-user me-1"></i> View Profile
+        </a>
+      </div>
+    </div>
+    {% else %}
     <div class="text-center py-5 my-3 rounded-4 p-4" style="background: rgba(10, 18, 38, 0.9); border: 1px solid rgba(0, 240, 255, 0.25);">
       <h3 style="font-family: 'Merienda', cursive; color: #00f0ff; margin-bottom: 10px;">
         🎉 End of Chapter {{ chapter_num }}
@@ -525,6 +547,7 @@ html, body {
         {% endif %}
       </div>
     </div>
+    {% endif %}
   </div>
 
   <!-- 2. SINGLE PAGE FLIP MODE -->
@@ -2252,12 +2275,40 @@ function showLanguageToast(msg) {
     }, 2500);
 }
 
+// Auto-complete manga on finishing last chapter
+let mangaCompletedTriggered = false;
+const totalMangaChapters = {{ total_chapters }};
+
+function checkAndCompleteManga() {
+    if (mangaCompletedTriggered) return;
+    if (currentChapterNum >= totalMangaChapters) {
+        mangaCompletedTriggered = true;
+        fetch('/complete-manga-reading/{{ product.id }}/', {
+            method: 'POST',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRFToken': '{{ csrf_token }}'
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.status === 'completed') {
+                showLanguageToast('🎉 Manga completed! Cleared from active reading history.');
+            }
+        })
+        .catch(err => console.log('Complete manga error:', err));
+    }
+}
+
 // Reading progress calculation on scroll
 window.addEventListener('scroll', function() {
     const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
     if (totalHeight > 0) {
         const progress = (window.scrollY / totalHeight) * 100;
         document.getElementById('readingProgressBar').style.width = `${progress}%`;
+        if (progress >= 90) {
+            checkAndCompleteManga();
+        }
     }
 });
 
@@ -2306,6 +2357,11 @@ function updateSinglePage() {
         const singleLayer = document.getElementById('singlePageOverlayLayer');
         if (singleLayer) {
             renderOverlaysForPage(page.page_num, singleLayer, currentActiveLanguage);
+        }
+
+        // If on last page of last chapter, mark completed
+        if (currentSingleIndex === pagesData.length - 1) {
+            checkAndCompleteManga();
         }
     }
 

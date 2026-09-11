@@ -86,6 +86,9 @@ urlpatterns = [
     path('ReturnRequest/<int:order_id>/', views.submit_return_request, name='submit_return_request'),
     path('UploadProfilePic/', views.upload_profile_pic, name='upload_profile_pic'),
     path('RemoveProfilePic/', views.remove_profile_pic, name='remove_profile_pic'),
+    path('remove-reading-history/<int:id>/', views.remove_reading_history, name='remove_reading_history'),
+    path('clear-reading-history/', views.clear_all_reading_history, name='clear_all_reading_history'),
+    path('complete-manga-reading/<int:id>/', views.complete_manga_reading, name='complete_manga_reading'),
 ]
 
 

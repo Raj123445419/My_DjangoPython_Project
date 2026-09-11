@@ -1,605 +1,1003 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ user_obj.Fullname }}'s Profile - My Anime Book</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ user_obj.Fullname }}'s Profile - My Anime Book</title>
 
-    <!-- Bootstrap 5 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Bootstrap JS Bundle -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    
-    <!-- Google Fonts: Sora (Headings), Poppins (Body/Text), Outfit (Buttons/Nav) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800&family=Sora:wght@600;700;800;900&display=swap" rel="stylesheet">
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-    <!-- Centralized Stylesheets & Theme Engine -->
-    <link rel="stylesheet" href="{% static 'main.css' %}?v=2.7">
-    <link rel="stylesheet" href="{% static 'theme.css' %}?v=2.7">
-    <script src="{% static 'theme.js' %}?v=2.7"></script>
+  <!-- Google Fonts: Sora (Headings), Poppins (Body/Text), Outfit (Buttons/Nav) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800&family=Sora:wght@600;700;800;900&display=swap"
+    rel="stylesheet">
+
+  <!-- Centralized Stylesheets & Theme Engine -->
+  <link rel="stylesheet" href="{% static 'main.css' %}?v=3.5">
+  <link rel="stylesheet" href="{% static 'theme.css' %}?v=3.5">
+  <script src="{% static 'theme.js' %}?v=3.5"></script>
+
+  <style>
+    /* Reading History Custom Buttons - Dark & Light Mode */
+    .btn-history-clear-all {
+      background: rgba(255, 51, 102, 0.12) !important;
+      border: 1px solid rgba(255, 51, 102, 0.45) !important;
+      color: #ff3366 !important;
+      font-family: 'Outfit', sans-serif !important;
+      font-weight: 600 !important;
+      font-size: 13px !important;
+      padding: 6px 16px !important;
+      border-radius: 20px !important;
+      transition: all 0.25s ease !important;
+      cursor: pointer !important;
+      outline: none !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 6px !important;
+      text-decoration: none !important;
+    }
+    .btn-history-clear-all:hover {
+      background: #ff3366 !important;
+      color: #ffffff !important;
+      box-shadow: 0 0 15px rgba(255, 51, 102, 0.6) !important;
+      transform: translateY(-1px) !important;
+    }
+
+    .btn-history-item-del {
+      position: absolute !important;
+      top: 10px !important;
+      right: 10px !important;
+      width: 28px !important;
+      height: 28px !important;
+      border-radius: 50% !important;
+      background: rgba(255, 51, 102, 0.15) !important;
+      border: 1px solid rgba(255, 51, 102, 0.45) !important;
+      color: #ff3366 !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      font-size: 13px !important;
+      cursor: pointer !important;
+      transition: all 0.25s ease !important;
+      z-index: 10 !important;
+      padding: 0 !important;
+      outline: none !important;
+      line-height: 1 !important;
+    }
+    .btn-history-item-del:hover {
+      background: #ff3366 !important;
+      color: #ffffff !important;
+      box-shadow: 0 0 12px rgba(255, 51, 102, 0.7) !important;
+      transform: scale(1.15) !important;
+    }
+
+    .btn-history-show-more {
+      background: linear-gradient(135deg, rgba(0, 240, 255, 0.18), rgba(0, 119, 255, 0.22)) !important;
+      border: 1.5px solid #00f0ff !important;
+      color: #00f0ff !important;
+      font-family: 'Outfit', sans-serif !important;
+      font-weight: 700 !important;
+      font-size: 14.5px !important;
+      padding: 9px 30px !important;
+      border-radius: 30px !important;
+      cursor: pointer !important;
+      transition: all 0.3s ease !important;
+      box-shadow: 0 4px 18px rgba(0, 240, 255, 0.25) !important;
+      outline: none !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 8px !important;
+      text-decoration: none !important;
+    }
+    .btn-history-show-more:hover {
+      background: linear-gradient(135deg, #00f0ff, #0077ff) !important;
+      color: #050b1a !important;
+      box-shadow: 0 0 25px rgba(0, 240, 255, 0.6) !important;
+      transform: translateY(-2px) !important;
+    }
+
+    .history-grid-container.history-grid-scroll-active {
+      max-height: 520px !important;
+      overflow-y: auto !important;
+      padding-right: 6px !important;
+      scrollbar-width: thin !important;
+      scrollbar-color: #00f0ff rgba(10, 20, 45, 0.6) !important;
+    }
+    .history-grid-container.history-grid-scroll-active::-webkit-scrollbar {
+      width: 6px !important;
+    }
+    .history-grid-container.history-grid-scroll-active::-webkit-scrollbar-track {
+      background: rgba(10, 20, 45, 0.6) !important;
+      border-radius: 4px !important;
+    }
+    .history-grid-container.history-grid-scroll-active::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, #00f0ff, #0077ff) !important;
+      border-radius: 4px !important;
+    }
+
+    html[data-theme="light"] .btn-history-clear-all {
+      background: rgba(220, 38, 38, 0.1) !important;
+      border-color: rgba(220, 38, 38, 0.35) !important;
+      color: #dc2626 !important;
+    }
+    html[data-theme="light"] .btn-history-clear-all:hover {
+      background: #dc2626 !important;
+      color: #ffffff !important;
+    }
+    html[data-theme="light"] .btn-history-item-del {
+      background: rgba(220, 38, 38, 0.1) !important;
+      border-color: rgba(220, 38, 38, 0.35) !important;
+      color: #dc2626 !important;
+    }
+    html[data-theme="light"] .btn-history-item-del:hover {
+      background: #dc2626 !important;
+      color: #ffffff !important;
+    }
+    html[data-theme="light"] .btn-history-show-more {
+      background: linear-gradient(135deg, rgba(0, 102, 204, 0.12), rgba(14, 165, 233, 0.12)) !important;
+      border-color: #0066cc !important;
+      color: #0066cc !important;
+    }
+    html[data-theme="light"] .btn-history-show-more:hover {
+      background: linear-gradient(135deg, #0066cc, #0284c7) !important;
+      color: #ffffff !important;
+    }
+    html[data-theme="light"] .history-grid-container.history-grid-scroll-active {
+      scrollbar-color: #0066cc rgba(220, 230, 245, 0.8) !important;
+    }
+  </style>
 </head>
 
 <body>
-<div class="main-bg" style="background-image: linear-gradient(180deg, rgba(8, 14, 28, 0.5) 0%, rgba(6, 12, 24, 0.75) 100%), url(/static/img/First_page_hero_background_images.jpg); background-position: center; background-repeat: no-repeat; background-size: cover; background-attachment: fixed; min-height: 100vh;">
+  <div class="main-bg"
+    style="background-image: linear-gradient(180deg, rgba(8, 14, 28, 0.5) 0%, rgba(6, 12, 24, 0.75) 100%), url(/static/img/First_page_hero_background_images.jpg); background-position: center; background-repeat: no-repeat; background-size: cover; background-attachment: fixed; min-height: 100vh;">
 
-<!-- ==========================================
+    <!-- ==========================================
      UNIFIED HEADER NAVBAR
      ========================================== -->
-<nav class="navbar navbar-expand-lg app-navbar">
-  <div class="container-fluid px-3 px-md-4">
-    
-    <a class="navbar-brand d-flex align-items-center" href="/">
-      <span class="font-brand">My Anime book</span>
-    </a>
+    <nav class="navbar navbar-expand-lg app-navbar">
+      <div class="container-fluid px-3 px-md-4">
 
-    {% if request.session.fullname %}
-    <div class="d-lg-none ms-auto me-2">
-      {% if current_user.profile_pic %}
-      <a href="/Profile/" class="profile-avatar-img-wrap active-nav-avatar" title="View Profile">
-        <img src="{{ current_user.profile_pic.url }}" alt="{{ request.session.fullname }}" class="profile-avatar-img">
-      </a>
-      {% elif request.session.profile_pic_url %}
-      <a href="/Profile/" class="profile-avatar-img-wrap active-nav-avatar" title="View Profile">
-        <img src="{{ request.session.profile_pic_url }}" alt="{{ request.session.fullname }}" class="profile-avatar-img">
-      </a>
-      {% else %}
-      <a href="/Profile/" class="profile-avatar active-nav-avatar" title="View Profile">
-        {{ request.session.fullname|slice:":1"|upper }}{{ request.session.fullname.split|last|slice:":1"|upper }}
-      </a>
-      {% endif %}
-    </div>
-    {% endif %}
-
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#headerNavbar">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div class="collapse navbar-collapse justify-content-end" id="headerNavbar">
-      <ul class="navbar-nav align-items-center gap-1 font-nav">
-        <li class="nav-item">
-          <a class="nav-link nav-link-custom" href="/Home/">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link nav-link-custom" href="/Shop/">Shop</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link nav-link-custom" href="/Aboutus/">About us</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link nav-link-custom" href="/Contect/">Contect</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link nav-link-custom" href="/MyOrders/">Orders</a>
-        </li>
-
-        <li class="nav-item">
-          <a class="nav-link cart-nav-link" href="/Cart/" title="View Cart">
-            <i class="fa fa-cart-plus" aria-hidden="true"></i>
-          </a>
-        </li>
+        <a class="navbar-brand d-flex align-items-center" href="/">
+          <span class="font-brand">My Anime book</span>
+        </a>
 
         {% if request.session.fullname %}
-        <li class="nav-item d-none d-lg-block ms-2">
+        <div class="d-lg-none ms-auto me-2">
           {% if current_user.profile_pic %}
           <a href="/Profile/" class="profile-avatar-img-wrap active-nav-avatar" title="View Profile">
-            <img src="{{ current_user.profile_pic.url }}" alt="{{ request.session.fullname }}" class="profile-avatar-img">
+            <img src="{{ current_user.profile_pic.url }}" alt="{{ request.session.fullname }}"
+              class="profile-avatar-img">
           </a>
           {% elif request.session.profile_pic_url %}
           <a href="/Profile/" class="profile-avatar-img-wrap active-nav-avatar" title="View Profile">
-            <img src="{{ request.session.profile_pic_url }}" alt="{{ request.session.fullname }}" class="profile-avatar-img">
+            <img src="{{ request.session.profile_pic_url }}" alt="{{ request.session.fullname }}"
+              class="profile-avatar-img">
           </a>
           {% else %}
           <a href="/Profile/" class="profile-avatar active-nav-avatar" title="View Profile">
             {{ request.session.fullname|slice:":1"|upper }}{{ request.session.fullname.split|last|slice:":1"|upper }}
           </a>
           {% endif %}
-        </li>
-        <li class="nav-item ms-lg-2 mt-2 mt-lg-0">
-          <a class="btn-auth-logout" href="/Logout/">Log Out</a>
-        </li>
-        {% else %}
-        <li class="nav-item ms-lg-2 mt-2 mt-lg-0">
-          <a class="btn-auth-login" href="/Account/">Log In</a>
-        </li>
+        </div>
         {% endif %}
 
-        <!-- Theme Mode Switcher -->
-        <li class="nav-item ms-lg-2 mt-2 mt-lg-0 my-lg-auto theme-dropdown-wrap dropdown">
-          <button class="theme-toggle-btn dropdown-toggle" type="button" id="themeDropdown" data-bs-toggle="dropdown" aria-expanded="false" title="Theme Mode">
-            <i class="fa fa-clock-o me-1 theme-icon-indicator text-info"></i>
-            <span class="theme-label-indicator">Auto</span>
-          </button>
-          <ul class="dropdown-menu dropdown-menu-end theme-dropdown-menu" aria-labelledby="themeDropdown">
-            <li><button type="button" class="dropdown-item theme-opt active" data-theme-set="auto"><i class="fa fa-clock-o text-info me-2"></i> Auto (8PM-6AM Night)</button></li>
-            <li><button type="button" class="dropdown-item theme-opt" data-theme-set="dark"><i class="fa fa-moon-o text-primary me-2"></i> Dark (Locked)</button></li>
-            <li><button type="button" class="dropdown-item theme-opt" data-theme-set="light"><i class="fa fa-sun-o text-warning me-2"></i> Light (Locked)</button></li>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#headerNavbar">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse justify-content-end" id="headerNavbar">
+          <ul class="navbar-nav align-items-center gap-1 font-nav">
+            <li class="nav-item">
+              <a class="nav-link nav-link-custom" href="/Home/">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link nav-link-custom" href="/Shop/">Shop</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link nav-link-custom" href="/Aboutus/">About us</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link nav-link-custom" href="/Contect/">Contect</a>
+            </li>
+            {% if request.session.fullname %}
+            <li class="nav-item">
+              <a class="nav-link nav-link-custom" href="/MyOrders/">Orders</a>
+            </li>
+            {% endif %}
+
+            <li class="nav-item">
+              <a class="nav-link cart-nav-link" href="/Cart/" title="View Cart">
+                <i class="fa fa-cart-plus" aria-hidden="true"></i>
+              </a>
+            </li>
+
+            {% if request.session.fullname %}
+            <li class="nav-item d-none d-lg-block ms-2">
+              {% if current_user.profile_pic %}
+              <a href="/Profile/" class="profile-avatar-img-wrap active-nav-avatar" title="View Profile">
+                <img src="{{ current_user.profile_pic.url }}" alt="{{ request.session.fullname }}"
+                  class="profile-avatar-img">
+              </a>
+              {% elif request.session.profile_pic_url %}
+              <a href="/Profile/" class="profile-avatar-img-wrap active-nav-avatar" title="View Profile">
+                <img src="{{ request.session.profile_pic_url }}" alt="{{ request.session.fullname }}"
+                  class="profile-avatar-img">
+              </a>
+              {% else %}
+              <a href="/Profile/" class="profile-avatar active-nav-avatar" title="View Profile">
+                {{ request.session.fullname|slice:":1"|upper }}{{ request.session.fullname.split|last|slice:":1"|upper }}
+              </a>
+              {% endif %}
+            </li>
+            <li class="nav-item ms-lg-2 mt-2 mt-lg-0">
+              <a class="btn-auth-logout" href="/Logout/">Log Out</a>
+            </li>
+            {% else %}
+            <li class="nav-item ms-lg-2 mt-2 mt-lg-0">
+              <a class="btn-auth-login" href="/Account/">Log In</a>
+            </li>
+            {% endif %}
+
+            <!-- Theme Mode Switcher -->
+            <li class="nav-item ms-lg-2 mt-2 mt-lg-0 my-lg-auto theme-dropdown-wrap dropdown">
+              <button class="theme-toggle-btn dropdown-toggle" type="button" id="themeDropdown"
+                data-bs-toggle="dropdown" aria-expanded="false" title="Theme Mode">
+                <i class="fa fa-clock-o me-1 theme-icon-indicator text-info"></i>
+                <span class="theme-label-indicator">Auto</span>
+              </button>
+              <ul class="dropdown-menu dropdown-menu-end theme-dropdown-menu" aria-labelledby="themeDropdown">
+                <li><button type="button" class="dropdown-item theme-opt active" data-theme-set="auto"><i
+                      class="fa fa-clock-o text-info me-2"></i> Auto (8PM-6AM Night)</button></li>
+                <li><button type="button" class="dropdown-item theme-opt" data-theme-set="dark"><i
+                      class="fa fa-moon-o text-primary me-2"></i> Dark (Locked)</button></li>
+                <li><button type="button" class="dropdown-item theme-opt" data-theme-set="light"><i
+                      class="fa fa-sun-o text-warning me-2"></i> Light (Locked)</button></li>
+              </ul>
+            </li>
           </ul>
-        </li>
-      </ul>
-    </div>
+        </div>
 
-  </div>
-</nav>
+      </div>
+    </nav>
 
-<!-- ==========================================
+    <!-- ==========================================
      NOTIFICATION ALERTS
      ========================================== -->
-<div class="alert-box">
-{% for message in messages %}
-<div class="alert alert-{{message.tags}} alert-dismissible show myalert" role="alert">
-    {{ message }}
-    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-</div>
-{% endfor %}
-</div>
-
-<!-- ==========================================
-     USER PROFILE HERO & DETAILS
-     ========================================== -->
-<div class="container py-4">
-
-  <!-- Profile Card Banner -->
-  <div class="profile-hero-card mb-4">
-    <div class="row align-items-center gy-4">
-      <div class="col-auto">
-        <div class="profile-large-avatar-wrap">
-          {% if user_obj.profile_pic %}
-            <img src="{{ user_obj.profile_pic.url }}" alt="{{ user_obj.Fullname }}" class="profile-large-avatar-img">
-          {% else %}
-            <div class="profile-large-avatar">
-              {{ user_obj.Fullname|slice:":1"|upper }}{{ user_obj.Fullname.split|last|slice:":1"|upper }}
-            </div>
-          {% endif %}
-          <button type="button" class="profile-avatar-edit-btn" data-bs-toggle="modal" data-bs-target="#profilePicModal" title="Change Profile Photo">
-            <i class="fa fa-camera"></i>
-          </button>
-        </div>
-      </div>
-      <div class="col">
-        <div class="d-flex flex-wrap align-items-center gap-2 mb-1">
-          <h1 class="profile-user-name mb-0">{{ user_obj.Fullname }}</h1>
-          <span class="profile-badge"><i class="fa fa-star text-warning me-1"></i> Manga Explorer</span>
-        </div>
-        <div class="profile-meta-grid">
-          <div class="meta-item"><i class="fa fa-envelope text-info me-2"></i><strong>Email:</strong> {{ user_obj.email }}</div>
-          <div class="meta-item"><i class="fa fa-phone text-success me-2"></i><strong>Phone:</strong> {{ user_obj.phonnumber }}</div>
-          <div class="meta-item"><i class="fa fa-globe text-primary me-2"></i><strong>Country:</strong> {{ user_obj.country|default:"Global" }}</div>
-          <div class="meta-item"><i class="fa fa-birthday-cake text-warning me-2"></i><strong>Age:</strong> {{ user_obj.Age|default:"-" }}</div>
-        </div>
-      </div>
-      <div class="col-12 col-md-auto d-flex flex-wrap gap-2">
-        <button type="button" class="btn-auth-login py-2 px-3" data-bs-toggle="modal" data-bs-target="#profilePicModal">
-          <i class="fa fa-camera me-1"></i> {% if user_obj.profile_pic %}Change Photo{% else %}Add Photo{% endif %}
-        </button>
-        <a href="/MyOrders/" class="btn-checkout py-2 px-3">
-          <i class="fa fa-truck me-1"></i> Track Orders ({{ total_orders }})
-        </a>
-        <a href="/Shop/" class="btn-auth-login py-2 px-3">
-          <i class="fa fa-book me-1"></i> Browse Manga
-        </a>
-      </div>
-    </div>
-  </div>
-
-  <!-- Stats Grid -->
-  <div class="row g-3 mb-4">
-    <div class="col-12 col-sm-6 col-lg-4">
-      <div class="stat-glass-card">
-        <div class="stat-icon icon-read">
-          <i class="fa fa-bookmark"></i>
-        </div>
-        <div>
-          <div class="stat-value">{{ total_read_manga }}</div>
-          <div class="stat-label">Manga in Reading List</div>
-        </div>
-      </div>
-    </div>
-    <div class="col-12 col-sm-6 col-lg-4">
-      <div class="stat-glass-card">
-        <div class="stat-icon icon-orders">
-          <i class="fa fa-shopping-bag"></i>
-        </div>
-        <div>
-          <div class="stat-value">{{ total_orders }}</div>
-          <div class="stat-label">Total Manga Orders</div>
-        </div>
-      </div>
-    </div>
-    <div class="col-12 col-sm-12 col-lg-4">
-      <div class="stat-glass-card">
-        <div class="stat-icon icon-tier">
-          <i class="fa fa-diamond"></i>
-        </div>
-        <div>
-          <div class="stat-value">Otaku Master</div>
-          <div class="stat-label">Account Tier: Verified</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ==========================================
-       LAST READ MANGA HIGHLIGHT
-       ========================================== -->
-  <div class="section-container mb-4">
-    <div class="section-header-wrap d-flex justify-content-between align-items-center mb-3">
-      <h2 class="section-title mb-0"><i class="fa fa-clock-o text-warning me-2"></i> Last Read Manga</h2>
-      <span class="text-muted small">Auto-saved reading progress</span>
-    </div>
-
-    {% if last_read %}
-    <div class="last-read-card">
-      <div class="row g-4 align-items-center">
-        <div class="col-auto">
-          {% if last_read.manga.image %}
-          <img src="{{ last_read.manga.image.url }}" alt="{{ last_read.manga_name }}" class="last-read-cover">
-          {% else %}
-          <div class="last-read-cover-placeholder"><i class="fa fa-book"></i></div>
-          {% endif %}
-        </div>
-        <div class="col">
-          <div class="d-flex flex-wrap align-items-center gap-2 mb-2">
-            <span class="badge bg-primary px-3 py-1 font-outfit">RECENT ACTIVITY</span>
-            <span class="text-muted small"><i class="fa fa-calendar me-1"></i>{{ last_read.last_read_at|date:"D, d M Y · h:i A" }}</span>
-          </div>
-          <h3 class="last-read-title">{{ last_read.manga_name }}</h3>
-          <p class="last-read-chapter text-info mb-3">
-            <i class="fa fa-bookmark-o me-1"></i> Current Progress: <strong>Chapter {{ last_read.last_chapter }}</strong>
-          </p>
-          <div class="d-flex gap-3 flex-wrap">
-            <a href="/manga/{{ last_read.manga.id }}/read/{{ last_read.last_chapter }}/" class="btn-continue-reading">
-              <i class="fa fa-play-circle me-1"></i> Continue Reading
-            </a>
-            <a href="/manga/{{ last_read.manga.id }}/" class="btn-auth-login py-2 px-3">
-              <i class="fa fa-list me-1"></i> All Chapters
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-    {% else %}
-    <div class="empty-section-card text-center py-5">
-      <i class="fa fa-book-open fa-3x text-muted mb-3"></i>
-      <h4>No Reading History Yet</h4>
-      <p class="text-muted">Start reading any manga from the shop or catalog, and your progress will automatically appear here!</p>
-      <a href="/Shop/" class="btn-checkout mt-2"><i class="fa fa-compass me-1"></i> Explore Manga Library</a>
-    </div>
-    {% endif %}
-  </div>
-
-  <!-- ==========================================
-       COMPLETE READING HISTORY LIST
-       ========================================== -->
-  <div class="section-container mb-4">
-    <div class="section-header-wrap d-flex justify-content-between align-items-center mb-3">
-      <h2 class="section-title mb-0"><i class="fa fa-history text-info me-2"></i> Full Reading History</h2>
-      <span class="badge bg-dark-subtle text-info font-outfit">{{ reading_history.count }} Titles</span>
-    </div>
-
-    {% if reading_history %}
-    <div class="row g-3">
-      {% for item in reading_history %}
-      <div class="col-12 col-md-6 col-lg-4">
-        <div class="history-item-card">
-          <div class="d-flex gap-3 align-items-center">
-            {% if item.manga.image %}
-            <img src="{{ item.manga.image.url }}" alt="{{ item.manga_name }}" class="history-item-thumb">
-            {% else %}
-            <div class="history-item-placeholder"><i class="fa fa-book"></i></div>
-            {% endif %}
-            <div class="flex-grow-1 overflow-hidden">
-              <h4 class="history-item-title text-truncate" title="{{ item.manga_name }}">{{ item.manga_name }}</h4>
-              <p class="history-item-chap mb-1"><i class="fa fa-bookmark text-warning me-1"></i> Chapter {{ item.last_chapter }}</p>
-              <div class="history-item-date text-muted small"><i class="fa fa-clock-o me-1"></i> {{ item.last_read_at|date:"d M Y, h:i A" }}</div>
-            </div>
-          </div>
-          <div class="mt-3 pt-2 border-top border-secondary border-opacity-25 d-flex justify-content-between align-items-center">
-            <a href="/manga/{{ item.manga.id }}/read/{{ item.last_chapter }}/" class="history-read-btn">
-              <i class="fa fa-play me-1"></i> Read Now
-            </a>
-            <a href="/manga/{{ item.manga.id }}/" class="text-muted small text-decoration-none hover-light">
-              Details <i class="fa fa-angle-right"></i>
-            </a>
-          </div>
-        </div>
+    <div class="alert-box">
+      {% for message in messages %}
+      <div class="alert alert-{{message.tags}} alert-dismissible show myalert" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
       </div>
       {% endfor %}
     </div>
-    {% else %}
-    <div class="empty-section-card text-center py-4">
-      <p class="text-muted mb-0">Your manga reading list is empty. Read chapters online to build your collection!</p>
-    </div>
-    {% endif %}
-  </div>
 
-  <!-- ==========================================
-       RECENT ORDERS OVERVIEW
-       ========================================== -->
-  <div class="section-container mb-4">
-    <div class="section-header-wrap d-flex justify-content-between align-items-center mb-3">
-      <h2 class="section-title mb-0"><i class="fa fa-cube text-success me-2"></i> Recent Order Status</h2>
-      <a href="/MyOrders/" class="text-decoration-none font-outfit text-info">View All Orders <i class="fa fa-arrow-right"></i></a>
-    </div>
+    <!-- ==========================================
+     USER PROFILE HERO & DETAILS
+     ========================================== -->
+    <div class="container py-4">
 
-    {% if orders %}
-    <div class="table-responsive">
-      <table class="cart-custom-table align-middle">
-        <thead>
-          <tr>
-            <th>Order ID</th>
-            <th>Placed On</th>
-            <th>Items</th>
-            <th>Total Amount</th>
-            <th>Status</th>
-            <th class="text-end">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for order in orders|slice:":5" %}
-          <tr>
-            <td>
-              <strong class="font-outfit text-info">#{{ order.order_number }}</strong>
-            </td>
-            <td>
-              <span class="text-muted small">{{ order.created_at|date:"d M Y, h:i A" }}</span>
-            </td>
-            <td>
-              <span>{{ order.items.count }} Manga Editions</span>
-            </td>
-            <td>
-              <strong style="color: #00ffcc;">${{ order.total_amount }}</strong>
-            </td>
-            <td>
-              {% if order.status == 'Placed' or order.status == 'PLACED' %}
-                <span class="badge status-badge status-placed">Order Placed</span>
-              {% elif order.status == 'Processing' or order.status == 'PROCESSING' %}
-                <span class="badge status-badge status-processing">Processing</span>
-              {% elif order.status == 'Out for Delivery' or order.status == 'OUT_FOR_DELIVERY' %}
-                <span class="badge status-badge status-shipped">Out for Delivery</span>
-              {% elif order.status == 'Delivered' or order.status == 'DELIVERED' %}
-                <span class="badge status-badge status-delivered">Delivered</span>
-              {% elif 'Return Requested' in order.status %}
-                <span class="badge status-badge status-return-req">Return Requested</span>
-              {% elif 'Replacement Requested' in order.status %}
-                <span class="badge status-badge status-replacement-req">Replacement Requested</span>
-              {% elif 'Approved' in order.status %}
-                <span class="badge status-badge status-approved">{{ order.status }}</span>
-              {% elif 'Refunded' in order.status or 'Dispatched' in order.status %}
-                <span class="badge status-badge status-delivered">{{ order.status }}</span>
+      <!-- Profile Card Banner -->
+      <div class="profile-hero-card mb-4">
+        <div class="row align-items-center gy-4">
+          <div class="col-auto">
+            <div class="profile-large-avatar-wrap">
+              {% if user_obj.profile_pic %}
+              <img src="{{ user_obj.profile_pic.url }}" alt="{{ user_obj.Fullname }}" class="profile-large-avatar-img">
               {% else %}
-                <span class="badge status-badge status-cancelled">{{ order.status }}</span>
-              {% endif %}
-            </td>
-            <td class="text-end">
-              <a href="/MyOrders/" class="btn-auth-login py-1 px-3" style="font-size: 13px;">
-                <i class="fa fa-search me-1"></i> Track & Manage
-              </a>
-            </td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </div>
-    {% else %}
-    <div class="empty-section-card text-center py-4">
-      <p class="text-muted mb-2">You haven't placed any physical manga orders yet.</p>
-      <a href="/Cart/" class="btn-checkout py-2 px-3"><i class="fa fa-shopping-cart me-1"></i> View Cart & Checkout</a>
-    </div>
-    {% endif %}
-  </div>
-
-</div>
-
-<!-- ==========================================
-     UNIFIED FOOTER
-     ========================================== -->
-<footer class="app-footer">
-  <div class="container-fluid px-3 px-md-4">
-    <div class="row align-items-center gy-3">
-      
-      <div class="col-12 col-md-4 text-center text-md-start">
-        <span class="font-brand" style="font-size: 20px;">My Anime book</span>
-        <p class="footer-copyright small mb-0 mt-1">© 2026 My Anime book. All rights reserved.</p>
-      </div>
-
-      <div class="col-12 col-md-8 text-center text-md-end">
-        <ul class="list-inline mb-0 font-nav">
-          <li class="list-inline-item"><a class="nav-link-custom" href="/Home/">Home</a></li>
-          <li class="list-inline-item"><a class="nav-link-custom" href="/Shop/">Shop</a></li>
-          <li class="list-inline-item"><a class="nav-link-custom" href="/Aboutus/">About us</a></li>
-          <li class="list-inline-item"><a class="nav-link-custom" href="/Contect/">Contect</a></li>
-          <li class="list-inline-item"><a class="nav-link-custom" href="/MyOrders/">Orders</a></li>
-          
-          {% if request.session.fullname %}
-          <li class="list-inline-item ms-md-2 mt-2 mt-md-0">
-            <button type="button" class="btn-delete-account" data-bs-toggle="modal" data-bs-target="#feedbackModal">
-              Delete Account
-            </button>
-          </li>
-          {% endif %}
-        </ul>
-      </div>
-
-    </div>
-  </div>
-</footer>
-
-<!-- Delete Account Modal -->
-<div class="modal fade" id="feedbackModal" tabindex="-1" aria-labelledby="feedbackModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content delete-modal-content">
-      <div class="modal-header border-0 pb-0">
-        <h5 class="modal-title font-sora text-danger" id="feedbackModalLabel">
-          <i class="fa fa-exclamation-triangle me-2"></i> Delete Account
-        </h5>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body pt-3">
-        <p class="text-muted small mb-3">
-          Enter your registered credentials to confirm permanent account deletion.
-        </p>
-        <form action="/DeleteAccount/" method="POST">
-          {% csrf_token %}
-          <div class="mb-3">
-            <label class="form-label small text-uppercase fw-semibold">Email Address</label>
-            <input type="email" name="email" class="form-control delete-input" placeholder="Registered Email" required>
-          </div>
-          <div class="mb-3">
-            <label class="form-label small text-uppercase fw-semibold">Password</label>
-            <input type="password" name="password" class="form-control delete-input" placeholder="Your Password" required>
-          </div>
-          <div class="mb-3">
-            <label class="form-label small text-uppercase fw-semibold">Phone Number</label>
-            <input type="tel" name="phnumber" class="form-control delete-input" placeholder="Registered Phone Number" required>
-          </div>
-          <div class="d-flex justify-content-end gap-2 mt-4">
-            <button type="button" class="btn btn-secondary px-3" data-bs-dismiss="modal">Cancel</button>
-            <button type="submit" class="btn btn-danger px-3">Delete Permanently</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ==========================================
-     PROFILE PHOTO UPLOAD / CHANGE / REMOVE MODAL
-     ========================================== -->
-<div class="modal fade" id="profilePicModal" tabindex="-1" aria-labelledby="profilePicModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered photo-modal-dialog">
-    <div class="modal-content photo-modal-content">
-      <div class="modal-header border-0 pb-0">
-        <h5 class="modal-title font-sora text-info d-flex align-items-center gap-2" id="profilePicModalLabel">
-          <i class="fa fa-camera"></i> {% if user_obj.profile_pic %}Change Profile Photo{% else %}Add Profile Photo{% endif %}
-        </h5>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body pt-3">
-        
-        <!-- Current / Live Preview -->
-        <div class="text-center mb-4">
-          <div id="previewContainer" class="position-relative d-inline-block">
-            {% if user_obj.profile_pic %}
-              <img id="profilePhotoPreview" src="{{ user_obj.profile_pic.url }}" alt="Profile Preview" class="photo-preview-circle">
-            {% else %}
-              <div id="defaultAvatarCircle" class="profile-large-avatar mx-auto" style="width: 120px; height: 120px; font-size: 42px;">
+              <div class="profile-large-avatar">
                 {{ user_obj.Fullname|slice:":1"|upper }}{{ user_obj.Fullname.split|last|slice:":1"|upper }}
               </div>
-              <img id="profilePhotoPreview" src="" alt="Profile Preview" class="photo-preview-circle d-none">
-            {% endif %}
+              {% endif %}
+              <button type="button" class="profile-avatar-edit-btn" data-bs-toggle="modal"
+                data-bs-target="#profilePicModal" title="Change Profile Photo">
+                <i class="fa fa-camera"></i>
+              </button>
+            </div>
           </div>
-          <p class="text-muted small mt-2 mb-0" id="previewStatusLabel">
-            {% if user_obj.profile_pic %}Current Custom Profile Photo{% else %}Default Initials Avatar{% endif %}
-          </p>
+          <div class="col">
+            <div class="d-flex flex-wrap align-items-center gap-2 mb-1">
+              <h1 class="profile-user-name mb-0">{{ user_obj.Fullname }}</h1>
+              <span class="profile-badge"><i class="fa fa-star text-warning me-1"></i> Manga Explorer</span>
+            </div>
+            <div class="profile-meta-grid">
+              <div class="meta-item"><i class="fa fa-envelope text-info me-2"></i><strong>Email:</strong> {{ user_obj.email }}</div>
+              <div class="meta-item"><i class="fa fa-phone text-success me-2"></i><strong>Phone:</strong> {{ user_obj.phonnumber }}</div>
+              <div class="meta-item"><i class="fa fa-globe text-primary me-2"></i><strong>Country:</strong> {{ user_obj.country|default:"Global" }}</div>
+              <div class="meta-item"><i class="fa fa-birthday-cake text-warning me-2"></i><strong>Age:</strong> {{ user_obj.Age|default:"-" }}</div>
+            </div>
+          </div>
+          <div class="col-12 col-md-auto d-flex flex-wrap gap-2">
+            <button type="button" class="btn-auth-login py-2 px-3" data-bs-toggle="modal"
+              data-bs-target="#profilePicModal">
+              <i class="fa fa-camera me-1"></i> {% if user_obj.profile_pic %}Change Photo{% else %}Add Photo{% endif %}
+            </button>
+            <a href="/MyOrders/" class="btn-checkout py-2 px-3">
+              <i class="fa fa-truck me-1"></i> Track Orders ({{ total_orders }})
+            </a>
+            <a href="/Shop/" class="btn-auth-login py-2 px-3">
+              <i class="fa fa-book me-1"></i> Browse Manga
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats Grid -->
+      <div class="row g-3 mb-4">
+        <div class="col-12 col-sm-6 col-lg-4">
+          <div class="stat-glass-card">
+            <div class="stat-icon icon-read">
+              <i class="fa fa-bookmark"></i>
+            </div>
+            <div>
+              <div class="stat-value" id="statTotalReadManga">{{ total_read_manga }}</div>
+              <div class="stat-label">Manga in Reading List</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-sm-6 col-lg-4">
+          <div class="stat-glass-card">
+            <div class="stat-icon icon-orders">
+              <i class="fa fa-shopping-bag"></i>
+            </div>
+            <div>
+              <div class="stat-value">{{ total_orders }}</div>
+              <div class="stat-label">Total Manga Orders</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-sm-12 col-lg-4">
+          <div class="stat-glass-card">
+            <div class="stat-icon icon-tier">
+              <i class="fa fa-diamond"></i>
+            </div>
+            <div>
+              <div class="stat-value">Otaku Master</div>
+              <div class="stat-label">Account Tier: Verified</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==========================================
+       LAST READ MANGA HIGHLIGHT
+       ========================================== -->
+      <div class="section-container mb-4" id="lastReadSectionContainer">
+        <div class="section-header-wrap d-flex justify-content-between align-items-center mb-3">
+          <h2 class="section-title mb-0"><i class="fa fa-clock-o text-warning me-2"></i> Last Read Manga</h2>
+          <span class="text-muted small">Auto-saved reading progress</span>
         </div>
 
-        <!-- Upload Form -->
-        <form action="/UploadProfilePic/" method="POST" enctype="multipart/form-data" id="profilePhotoForm">
-          {% csrf_token %}
-          <div class="photo-upload-zone mb-3" onclick="document.getElementById('profilePicInput').click();" id="photoDropZone">
-            <i class="fa fa-cloud-upload fa-2x text-info mb-2"></i>
-            <div class="fw-semibold">Click to choose or drag & drop photo</div>
-            <div class="text-muted small">PNG, JPG, JPEG, WEBP or GIF (Max 5MB)</div>
-            <input type="file" id="profilePicInput" name="profile_pic" accept="image/*" class="d-none" onchange="previewSelectedImage(this);" required>
+        <div id="lastReadCardWrap" {% if not last_read %}style="display: none;"{% endif %}>
+          {% if last_read %}
+          <div class="last-read-card" id="activeLastReadCard" data-manga-id="{{ last_read.manga.id }}" data-history-id="{{ last_read.id }}">
+            <div class="row g-4 align-items-center">
+              <div class="col-auto">
+                {% if last_read.manga.image %}
+                <img src="{{ last_read.manga.image.url }}" alt="{{ last_read.manga_name }}" class="last-read-cover" id="lastReadImg">
+                {% else %}
+                <div class="last-read-cover-placeholder" id="lastReadPlaceholder"><i class="fa fa-book"></i></div>
+                {% endif %}
+              </div>
+              <div class="col">
+                <div class="d-flex flex-wrap align-items-center gap-2 mb-2">
+                  <span class="badge bg-primary px-3 py-1 font-outfit">RECENT ACTIVITY</span>
+                  <span class="text-muted small"><i class="fa fa-calendar me-1"></i><span id="lastReadDate">{{ last_read.last_read_at|date:"D, d M Y · h:i A" }}</span></span>
+                </div>
+                <h3 class="last-read-title" id="lastReadTitle">{{ last_read.manga_name }}</h3>
+                <p class="last-read-chapter text-info mb-3">
+                  <i class="fa fa-bookmark-o me-1"></i> Current Progress: <strong id="lastReadChapterText">Chapter {{ last_read.last_chapter }}</strong>
+                </p>
+                <div class="d-flex gap-3 flex-wrap">
+                  <a href="/manga/{{ last_read.manga.id }}/read/{{ last_read.last_chapter }}/"
+                    class="btn-continue-reading" id="lastReadContinueBtn">
+                    <i class="fa fa-play-circle me-1"></i> Continue Reading
+                  </a>
+                  <a href="/manga/{{ last_read.manga.id }}/" class="btn-auth-login py-2 px-3" id="lastReadDetailsBtn">
+                    <i class="fa fa-list me-1"></i> All Chapters
+                  </a>
+                </div>
+              </div>
+            </div>
           </div>
+          {% endif %}
+        </div>
 
-          <div id="selectedFileName" class="text-info small text-center mb-3 fw-semibold d-none">
-            <i class="fa fa-check-circle me-1"></i> <span id="fileNameText"></span>
+        <div class="empty-section-card text-center py-5" id="emptyLastReadCard" {% if last_read %}style="display: none;"{% endif %}>
+          <i class="fa fa-book-open fa-3x text-muted mb-3"></i>
+          <h4>No Reading History Yet</h4>
+          <p class="text-muted">Start reading any manga from the shop or catalog, and your progress will automatically
+            appear here!</p>
+          <a href="/Shop/" class="btn-checkout mt-2"><i class="fa fa-compass me-1"></i> Explore Manga Library</a>
+        </div>
+      </div>
+
+      <!-- ==========================================
+       COMPLETE READING HISTORY LIST
+       ========================================== -->
+      <div class="section-container mb-4" id="historySectionContainer">
+        <div class="section-header-wrap d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+          <div class="d-flex align-items-center gap-2">
+            <h2 class="section-title mb-0"><i class="fa fa-history text-info me-2"></i> Full Reading History</h2>
+            <span class="badge bg-dark-subtle text-info font-outfit" id="historyCountBadge">{{ reading_history.count }} Titles</span>
           </div>
-
-          <div class="d-grid gap-2 mb-2">
-            <button type="submit" class="btn-checkout py-2" id="uploadSubmitBtn">
-              <i class="fa fa-upload me-1"></i> {% if user_obj.profile_pic %}Update Profile Photo{% else %}Save Profile Photo{% endif %}
-            </button>
-          </div>
-        </form>
-
-        {% if user_obj.profile_pic %}
-        <!-- Remove Form -->
-        <form action="/RemoveProfilePic/" method="POST" onsubmit="return confirm('Are you sure you want to remove your profile photo and restore default avatar?');" class="mt-2 text-center">
-          {% csrf_token %}
-          <button type="submit" class="btn btn-link text-danger text-decoration-none small">
-            <i class="fa fa-trash me-1"></i> Remove Photo & Restore Default Avatar
+          {% if reading_history %}
+          <button type="button" class="btn-history-clear-all" id="btnClearAllHistory" onclick="confirmClearAllHistory()">
+            <i class="fa fa-trash-o me-1"></i> Clear All History
           </button>
-        </form>
-        {% endif %}
+          {% endif %}
+        </div>
 
+        <div id="historyGridWrap">
+          <div class="row g-3 history-grid-container" id="historyGridContainer">
+            {% for item in reading_history %}
+            <div class="col-12 col-md-6 col-lg-4 history-card-item {% if forloop.counter > 3 %}history-item-hidden{% endif %}" 
+                 id="history-item-{{ item.id }}" 
+                 data-index="{{ forloop.counter }}"
+                 {% if forloop.counter > 3 %}style="display: none;"{% endif %}>
+              <div class="history-item-card position-relative">
+                <!-- Individual Remove / Delete ✕ Button -->
+                <button type="button" class="btn-history-item-del" onclick="deleteHistoryItem('{{ item.id }}')" title="Remove {{ item.manga_name }} from History">
+                  <i class="fa fa-times"></i>
+                </button>
+
+                <div class="d-flex gap-3 align-items-center">
+                  {% if item.manga.image %}
+                  <img src="{{ item.manga.image.url }}" alt="{{ item.manga_name }}" class="history-item-thumb">
+                  {% else %}
+                  <div class="history-item-placeholder"><i class="fa fa-book"></i></div>
+                  {% endif %}
+                  <div class="flex-grow-1 overflow-hidden pe-4">
+                    <h4 class="history-item-title text-truncate" title="{{ item.manga_name }}">{{ item.manga_name }}</h4>
+                    <p class="history-item-chap mb-1"><i class="fa fa-bookmark text-warning me-1"></i> Chapter {{ item.last_chapter }}</p>
+                    <div class="history-item-date text-muted small"><i class="fa fa-clock-o me-1"></i> {{ item.last_read_at|date:"d M Y, h:i A" }}</div>
+                  </div>
+                </div>
+                <div class="mt-3 pt-2 border-top border-secondary border-opacity-25 d-flex justify-content-between align-items-center">
+                  <a href="/manga/{{ item.manga.id }}/read/{{ item.last_chapter }}/" class="history-read-btn">
+                    <i class="fa fa-play me-1"></i> Read Chapter {{ item.last_chapter }}
+                  </a>
+                  <a href="/manga/{{ item.manga.id }}/" class="text-muted small text-decoration-none hover-light">
+                    Details <i class="fa fa-angle-right"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+
+          <!-- Pagination / Show More Button Controls -->
+          {% if reading_history.count > 3 %}
+          <div class="text-center mt-3 pt-2" id="showMoreHistoryWrap">
+            <button type="button" class="btn-history-show-more" id="btnShowMoreHistory" onclick="loadMoreHistory()">
+              <i class="fa fa-chevron-down me-1"></i> Show More
+            </button>
+            <div class="text-muted small mt-2 font-outfit" id="historyPaginationStatus">
+              Showing <span id="visibleHistoryCount">3</span> of <span id="totalHistoryCount">{{ reading_history.count }}</span> Titles
+            </div>
+          </div>
+          {% endif %}
+        </div>
+
+        <!-- Empty State (Shown when no history exists or after clearing) -->
+        <div class="empty-section-card text-center py-4" id="emptyHistoryCard" {% if reading_history %}style="display: none;"{% endif %}>
+          <i class="fa fa-book-open fa-2x text-muted mb-2"></i>
+          <p class="text-muted mb-0">Your manga reading list is empty. Read chapters online to build your collection!</p>
+          <a href="/Shop/" class="btn-checkout mt-2 d-inline-block"><i class="fa fa-compass me-1"></i> Explore Manga Library</a>
+        </div>
+      </div>
+
+      <!-- ==========================================
+       RECENT ORDERS OVERVIEW
+       ========================================== -->
+      <div class="section-container mb-4">
+        <div class="section-header-wrap d-flex justify-content-between align-items-center mb-3">
+          <h2 class="section-title mb-0"><i class="fa fa-cube text-success me-2"></i> Recent Order Status</h2>
+          <a href="/MyOrders/" class="text-decoration-none font-outfit text-info">View All Orders <i
+              class="fa fa-arrow-right"></i></a>
+        </div>
+
+        {% if orders %}
+        <div class="table-responsive">
+          <table class="cart-custom-table align-middle">
+            <thead>
+              <tr>
+                <th>Order ID</th>
+                <th>Placed On</th>
+                <th>Items</th>
+                <th>Total Amount</th>
+                <th>Status</th>
+                <th class="text-end">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for order in orders|slice:":5" %}
+              <tr>
+                <td>
+                  <strong class="font-outfit text-info">#{{ order.order_number }}</strong>
+                </td>
+                <td>
+                  <span class="text-muted small">{{ order.created_at|date:"d M Y, h:i A" }}</span>
+                </td>
+                <td>
+                  <span>{{ order.items.count }} Manga Editions</span>
+                </td>
+                <td>
+                  <strong style="color: #00ffcc;">${{ order.total_amount }}</strong>
+                </td>
+                <td>
+                  {% if order.status == 'Placed' or order.status == 'PLACED' %}
+                  <span class="badge status-badge status-placed">Order Placed</span>
+                  {% elif order.status == 'Processing' or order.status == 'PROCESSING' %}
+                  <span class="badge status-badge status-processing">Processing</span>
+                  {% elif order.status == 'Out for Delivery' or order.status == 'OUT_FOR_DELIVERY' %}
+                  <span class="badge status-badge status-shipped">Out for Delivery</span>
+                  {% elif order.status == 'Delivered' or order.status == 'DELIVERED' %}
+                  <span class="badge status-badge status-delivered">Delivered</span>
+                  {% elif 'Return Requested' in order.status %}
+                  <span class="badge status-badge status-return-req">Return Requested</span>
+                  {% elif 'Replacement Requested' in order.status %}
+                  <span class="badge status-badge status-replacement-req">Replacement Requested</span>
+                  {% elif 'Approved' in order.status %}
+                  <span class="badge status-badge status-approved">{{ order.status }}</span>
+                  {% elif 'Refunded' in order.status or 'Dispatched' in order.status %}
+                  <span class="badge status-badge status-delivered">{{ order.status }}</span>
+                  {% else %}
+                  <span class="badge status-badge status-cancelled">{{ order.status }}</span>
+                  {% endif %}
+                </td>
+                <td class="text-end">
+                  <a href="/MyOrders/" class="btn-auth-login py-1 px-3" style="font-size: 13px;">
+                    <i class="fa fa-search me-1"></i> Track & Manage
+                  </a>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        {% else %}
+        <div class="empty-section-card text-center py-4">
+          <p class="text-muted mb-2">You haven't placed any physical manga orders yet.</p>
+          <a href="/Cart/" class="btn-checkout py-2 px-3"><i class="fa fa-shopping-cart me-1"></i> View Cart &
+            Checkout</a>
+        </div>
+        {% endif %}
+      </div>
+
+    </div>
+
+    <!-- ==========================================
+     UNIFIED FOOTER
+     ========================================== -->
+    <footer class="app-footer">
+      <div class="container-fluid px-3 px-md-4">
+        <div class="row align-items-center gy-3">
+
+          <div class="col-12 col-md-4 text-center text-md-start">
+            <span class="font-brand" style="font-size: 20px;">My Anime book</span>
+            <p class="footer-copyright small mb-0 mt-1">© 2026 My Anime book. All rights reserved.</p>
+          </div>
+
+          <div class="col-12 col-md-8 text-center text-md-end">
+            <ul class="list-inline mb-0 font-nav">
+              <li class="list-inline-item"><a class="nav-link-custom" href="/Home/">Home</a></li>
+              <li class="list-inline-item"><a class="nav-link-custom" href="/Shop/">Shop</a></li>
+              <li class="list-inline-item"><a class="nav-link-custom" href="/Aboutus/">About us</a></li>
+              <li class="list-inline-item"><a class="nav-link-custom" href="/Contect/">Contect</a></li>
+              {% if request.session.fullname %}
+              <li class="list-inline-item"><a class="nav-link-custom" href="/MyOrders/">Orders</a></li>
+              {% endif %}
+
+              {% if request.session.fullname %}
+              <li class="list-inline-item ms-md-2 mt-2 mt-md-0">
+                <button type="button" class="btn-delete-account" data-bs-toggle="modal" data-bs-target="#feedbackModal">
+                  Delete Account
+                </button>
+              </li>
+              {% endif %}
+            </ul>
+          </div>
+
+        </div>
+      </div>
+    </footer>
+
+    <!-- Delete Account Modal -->
+    <div class="modal fade" id="feedbackModal" tabindex="-1" aria-labelledby="feedbackModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content delete-modal-content">
+          <div class="modal-header border-0 pb-0">
+            <h5 class="modal-title font-sora text-danger" id="feedbackModalLabel">
+              <i class="fa fa-exclamation-triangle me-2"></i> Delete Account
+            </h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body pt-3">
+            <p class="text-muted small mb-3">
+              Enter your registered credentials to confirm permanent account deletion.
+            </p>
+            <form action="/DeleteAccount/" method="POST">
+              {% csrf_token %}
+              <div class="mb-3">
+                <label class="form-label small text-uppercase fw-semibold">Email Address</label>
+                <input type="email" name="email" class="form-control delete-input" placeholder="Registered Email"
+                  required>
+              </div>
+              <div class="mb-3">
+                <label class="form-label small text-uppercase fw-semibold">Password</label>
+                <input type="password" name="password" class="form-control delete-input" placeholder="Your Password"
+                  required>
+              </div>
+              <div class="mb-3">
+                <label class="form-label small text-uppercase fw-semibold">Phone Number</label>
+                <input type="tel" name="phnumber" class="form-control delete-input"
+                  placeholder="Registered Phone Number" required>
+              </div>
+              <div class="d-flex justify-content-end gap-2 mt-4">
+                <button type="button" class="btn btn-secondary px-3" data-bs-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-danger px-3">Delete Permanently</button>
+              </div>
+            </form>
+          </div>
+        </div>
       </div>
     </div>
+
+    <!-- ==========================================
+     PROFILE PHOTO UPLOAD / CHANGE / REMOVE MODAL
+     ========================================== -->
+    <div class="modal fade" id="profilePicModal" tabindex="-1" aria-labelledby="profilePicModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered photo-modal-dialog">
+        <div class="modal-content photo-modal-content">
+          <div class="modal-header border-0 pb-0">
+            <h5 class="modal-title font-sora text-info d-flex align-items-center gap-2" id="profilePicModalLabel">
+              <i class="fa fa-camera"></i> {% if user_obj.profile_pic %}Change Profile Photo{% else %}Add Profile
+              Photo{% endif %}
+            </h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body pt-3">
+
+            <!-- Current / Live Preview -->
+            <div class="text-center mb-4">
+              <div id="previewContainer" class="position-relative d-inline-block">
+                {% if user_obj.profile_pic %}
+                <img id="profilePhotoPreview" src="{{ user_obj.profile_pic.url }}" alt="Profile Preview"
+                  class="photo-preview-circle">
+                {% else %}
+                <div id="defaultAvatarCircle" class="profile-large-avatar mx-auto"
+                  style="width: 120px; height: 120px; font-size: 42px;">
+                  {{ user_obj.Fullname|slice:":1"|upper }}{{ user_obj.Fullname.split|last|slice:":1"|upper }}
+                </div>
+                <img id="profilePhotoPreview" src="" alt="Profile Preview" class="photo-preview-circle d-none">
+                {% endif %}
+              </div>
+              <p class="text-muted small mt-2 mb-0" id="previewStatusLabel">
+                {% if user_obj.profile_pic %}Current Custom Profile Photo{% else %}Default Initials Avatar{% endif %}
+              </p>
+            </div>
+
+            <!-- Upload Form -->
+            <form action="/UploadProfilePic/" method="POST" enctype="multipart/form-data" id="profilePhotoForm">
+              {% csrf_token %}
+              <div class="photo-upload-zone mb-3" onclick="document.getElementById('profilePicInput').click();"
+                id="photoDropZone">
+                <i class="fa fa-cloud-upload fa-2x text-info mb-2"></i>
+                <div class="fw-semibold">Click to choose or drag & drop photo</div>
+                <div class="text-muted small">PNG, JPG, JPEG, WEBP or GIF (Max 5MB)</div>
+                <input type="file" id="profilePicInput" name="profile_pic" accept="image/*" class="d-none"
+                  onchange="previewSelectedImage(this);" required>
+              </div>
+
+              <div id="selectedFileName" class="text-info small text-center mb-3 fw-semibold d-none">
+                <i class="fa fa-check-circle me-1"></i> <span id="fileNameText"></span>
+              </div>
+
+              <div class="d-grid gap-2 mb-2">
+                <button type="submit" class="btn-checkout py-2" id="uploadSubmitBtn">
+                  <i class="fa fa-upload me-1"></i> {% if user_obj.profile_pic %}Update Profile Photo{% else %}Save
+                  Profile Photo{% endif %}
+                </button>
+              </div>
+            </form>
+
+            {% if user_obj.profile_pic %}
+            <!-- Remove Form -->
+            <form action="/RemoveProfilePic/" method="POST"
+              onsubmit="return confirm('Are you sure you want to remove your profile photo and restore default avatar?');"
+              class="mt-2 text-center">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-link text-danger text-decoration-none small">
+                <i class="fa fa-trash me-1"></i> Remove Photo & Restore Default Avatar
+              </button>
+            </form>
+            {% endif %}
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function previewSelectedImage(input) {
+        if (input.files && input.files[0]) {
+          const file = input.files[0];
+          const reader = new FileReader();
+          reader.onload = function (e) {
+            const previewImg = document.getElementById('profilePhotoPreview');
+            const defaultCircle = document.getElementById('defaultAvatarCircle');
+            const fileNameDisplay = document.getElementById('selectedFileName');
+            const fileNameText = document.getElementById('fileNameText');
+            const statusLabel = document.getElementById('previewStatusLabel');
+
+            if (previewImg) {
+              previewImg.src = e.target.result;
+              previewImg.classList.remove('d-none');
+            }
+            if (defaultCircle) {
+              defaultCircle.classList.add('d-none');
+            }
+            if (fileNameDisplay && fileNameText) {
+              fileNameText.textContent = file.name;
+              fileNameDisplay.classList.remove('d-none');
+            }
+            if (statusLabel) {
+              statusLabel.textContent = "New Selected Photo Preview";
+              statusLabel.className = "text-info small mt-2 mb-0 fw-semibold";
+            }
+          };
+          reader.readAsDataURL(file);
+        }
+      }
+
+      // Drag & drop support
+      document.addEventListener('DOMContentLoaded', function () {
+        const dropZone = document.getElementById('photoDropZone');
+        const fileInput = document.getElementById('profilePicInput');
+
+        if (dropZone && fileInput) {
+          ['dragenter', 'dragover'].forEach(eventName => {
+            dropZone.addEventListener(eventName, (e) => {
+              e.preventDefault();
+              dropZone.classList.add('dragover');
+            }, false);
+          });
+
+          ['dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, (e) => {
+              e.preventDefault();
+              dropZone.classList.remove('dragover');
+            }, false);
+          });
+
+          dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('dragover');
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            if (files && files.length > 0) {
+              fileInput.files = files;
+              previewSelectedImage(fileInput);
+            }
+          });
+        }
+      });
+
+      // =========================================================================
+      // READING HISTORY CONTROLS: SHOW MORE (3 AT A TIME, SCROLL AT 12), DELETE, CLEAR
+      // =========================================================================
+      let currentVisibleHistory = 3;
+      const historyStep = 3;
+      const scrollThreshold = 12;
+
+      function getCsrf() {
+        const el = document.querySelector('[name=csrfmiddlewaretoken]');
+        return el ? el.value : '{{ csrf_token }}';
+      }
+
+      function updateHistoryDisplay() {
+        const items = document.querySelectorAll('.history-card-item');
+        const total = items.length;
+        const visibleCountSpan = document.getElementById('visibleHistoryCount');
+        const totalCountSpan = document.getElementById('totalHistoryCount');
+        const showMoreWrap = document.getElementById('showMoreHistoryWrap');
+        const gridContainer = document.getElementById('historyGridContainer');
+        const countBadge = document.getElementById('historyCountBadge');
+        const clearBtn = document.getElementById('btnClearAllHistory');
+        const emptyCard = document.getElementById('emptyHistoryCard');
+        const lastReadWrap = document.getElementById('lastReadCardWrap');
+        const emptyLastRead = document.getElementById('emptyLastReadCard');
+        const statRead = document.getElementById('statTotalReadManga');
+
+        if (countBadge) countBadge.textContent = `${total} Titles`;
+        if (totalCountSpan) totalCountSpan.textContent = total;
+        if (statRead) statRead.textContent = total;
+
+        if (total === 0) {
+          if (showMoreWrap) showMoreWrap.style.display = 'none';
+          if (clearBtn) clearBtn.style.display = 'none';
+          if (emptyCard) emptyCard.style.display = 'block';
+          if (gridContainer) gridContainer.classList.remove('history-grid-scroll-active');
+          
+          // Clear and hide RECENT ACTIVITY / Last Read Highlight Card
+          if (lastReadWrap) lastReadWrap.style.display = 'none';
+          if (emptyLastRead) emptyLastRead.style.display = 'block';
+          return;
+        } else {
+          if (emptyCard) emptyCard.style.display = 'none';
+          if (clearBtn) clearBtn.style.display = 'inline-flex';
+          if (lastReadWrap) lastReadWrap.style.display = 'block';
+          if (emptyLastRead) emptyLastRead.style.display = 'none';
+        }
+
+        let visibleCount = 0;
+        items.forEach((item, index) => {
+          if (index < currentVisibleHistory) {
+            item.style.display = '';
+            item.classList.remove('history-item-hidden');
+            visibleCount++;
+          } else {
+            item.style.display = 'none';
+            item.classList.add('history-item-hidden');
+          }
+        });
+
+        if (visibleCountSpan) visibleCountSpan.textContent = visibleCount;
+
+        // If visible reaches >= 12, enable scrolling container
+        if (gridContainer) {
+          if (visibleCount >= scrollThreshold) {
+            gridContainer.classList.add('history-grid-scroll-active');
+          } else {
+            gridContainer.classList.remove('history-grid-scroll-active');
+          }
+        }
+
+        // Hide "Show More" if all items are visible
+        if (showMoreWrap) {
+          if (visibleCount >= total) {
+            showMoreWrap.style.display = 'none';
+          } else {
+            showMoreWrap.style.display = 'block';
+          }
+        }
+      }
+
+      function loadMoreHistory() {
+        currentVisibleHistory += historyStep;
+        updateHistoryDisplay();
+      }
+
+      function deleteHistoryItem(historyId) {
+        const itemEl = document.getElementById(`history-item-${historyId}`);
+        if (!itemEl) return;
+
+        // Visual feedback animation
+        itemEl.style.transition = 'all 0.3s ease';
+        itemEl.style.opacity = '0';
+        itemEl.style.transform = 'scale(0.85)';
+
+        fetch(`/remove-reading-history/${historyId}/`, {
+          method: 'POST',
+          headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-CSRFToken': getCsrf()
+          }
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (data.status === 'success') {
+            setTimeout(() => {
+              // Check if deleted item was the active last read card
+              const lastReadCard = document.getElementById('activeLastReadCard');
+              const wasActiveLastRead = lastReadCard && (lastReadCard.getAttribute('data-history-id') === String(historyId));
+
+              itemEl.remove();
+              updateHistoryDisplay();
+
+              // If deleted item was the last read card and items remain, update it with new top item
+              if (wasActiveLastRead) {
+                const firstRemaining = document.querySelector('.history-card-item');
+                if (firstRemaining) {
+                  const newHistId = firstRemaining.id.replace('history-item-', '');
+                  const thumb = firstRemaining.querySelector('.history-item-thumb')?.src;
+                  const title = firstRemaining.querySelector('.history-item-title')?.textContent?.trim();
+                  const chap = firstRemaining.querySelector('.history-item-chap')?.textContent?.trim();
+                  const date = firstRemaining.querySelector('.history-item-date')?.textContent?.trim();
+                  const readHref = firstRemaining.querySelector('.history-read-btn')?.getAttribute('href');
+
+                  if (lastReadCard) {
+                    lastReadCard.setAttribute('data-history-id', newHistId);
+                    const imgEl = document.getElementById('lastReadImg');
+                    if (imgEl && thumb) imgEl.src = thumb;
+                    const titleEl = document.getElementById('lastReadTitle');
+                    if (titleEl && title) titleEl.textContent = title;
+                    const chapEl = document.getElementById('lastReadChapterText');
+                    if (chapEl && chap) chapEl.textContent = chap;
+                    const dateEl = document.getElementById('lastReadDate');
+                    if (dateEl && date) dateEl.textContent = date;
+                    const contBtn = document.getElementById('lastReadContinueBtn');
+                    if (contBtn && readHref) contBtn.setAttribute('href', readHref);
+                  }
+                }
+              }
+            }, 250);
+          } else {
+            itemEl.style.opacity = '1';
+            itemEl.style.transform = 'none';
+            alert('Could not remove history item. Please try again.');
+          }
+        })
+        .catch(err => {
+          console.error(err);
+          window.location.href = `/remove-reading-history/${historyId}/`;
+        });
+      }
+
+      function confirmClearAllHistory() {
+        if (!confirm('Are you sure you want to clear your entire reading history? This cannot be undone.')) {
+          return;
+        }
+
+        const clearBtn = document.getElementById('btnClearAllHistory');
+        if (clearBtn) clearBtn.disabled = true;
+
+        fetch('/clear-reading-history/', {
+          method: 'POST',
+          headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-CSRFToken': getCsrf()
+          }
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (data.status === 'success') {
+            const grid = document.getElementById('historyGridContainer');
+            if (grid) grid.innerHTML = '';
+
+            // Instantly clear and hide RECENT ACTIVITY / Last Read Highlight Card
+            const lastReadWrap = document.getElementById('lastReadCardWrap');
+            const emptyLastRead = document.getElementById('emptyLastReadCard');
+            if (lastReadWrap) lastReadWrap.style.display = 'none';
+            if (emptyLastRead) emptyLastRead.style.display = 'block';
+
+            currentVisibleHistory = 3;
+            updateHistoryDisplay();
+          } else {
+            window.location.href = '/clear-reading-history/';
+          }
+        })
+        .catch(err => {
+          console.error(err);
+          window.location.href = '/clear-reading-history/';
+        });
+      }
+
+      // Attach functions to window scope for onclick handlers
+      window.loadMoreHistory = loadMoreHistory;
+      window.deleteHistoryItem = deleteHistoryItem;
+      window.confirmClearAllHistory = confirmClearAllHistory;
+      window.updateHistoryDisplay = updateHistoryDisplay;
+
+      // Initialize on load
+      document.addEventListener('DOMContentLoaded', function () {
+        updateHistoryDisplay();
+      });
+    </script>
+
   </div>
-</div>
-
-<script>
-function previewSelectedImage(input) {
-  if (input.files && input.files[0]) {
-    const file = input.files[0];
-    const reader = new FileReader();
-    reader.onload = function(e) {
-      const previewImg = document.getElementById('profilePhotoPreview');
-      const defaultCircle = document.getElementById('defaultAvatarCircle');
-      const fileNameDisplay = document.getElementById('selectedFileName');
-      const fileNameText = document.getElementById('fileNameText');
-      const statusLabel = document.getElementById('previewStatusLabel');
-
-      if (previewImg) {
-        previewImg.src = e.target.result;
-        previewImg.classList.remove('d-none');
-      }
-      if (defaultCircle) {
-        defaultCircle.classList.add('d-none');
-      }
-      if (fileNameDisplay && fileNameText) {
-        fileNameText.textContent = file.name;
-        fileNameDisplay.classList.remove('d-none');
-      }
-      if (statusLabel) {
-        statusLabel.textContent = "New Selected Photo Preview";
-        statusLabel.className = "text-info small mt-2 mb-0 fw-semibold";
-      }
-    };
-    reader.readAsDataURL(file);
-  }
-}
-
-// Drag & drop support
-document.addEventListener('DOMContentLoaded', function() {
-  const dropZone = document.getElementById('photoDropZone');
-  const fileInput = document.getElementById('profilePicInput');
-
-  if (dropZone && fileInput) {
-    ['dragenter', 'dragover'].forEach(eventName => {
-      dropZone.addEventListener(eventName, (e) => {
-        e.preventDefault();
-        dropZone.classList.add('dragover');
-      }, false);
-    });
-
-    ['dragleave', 'drop'].forEach(eventName => {
-      dropZone.addEventListener(eventName, (e) => {
-        e.preventDefault();
-        dropZone.classList.remove('dragover');
-      }, false);
-    });
-
-    dropZone.addEventListener('drop', (e) => {
-      e.preventDefault();
-      dropZone.classList.remove('dragover');
-      const dt = e.dataTransfer;
-      const files = dt.files;
-      if (files && files.length > 0) {
-        fileInput.files = files;
-        previewSelectedImage(fileInput);
-      }
-    });
-  }
-});
-</script>
-
-</div>
 </body>
+
 </html>

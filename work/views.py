@@ -25,6 +25,39 @@ def get_current_user(request):
     return None
 
 
+def sync_user_cart(request, cart=None):
+    """
+    Persists cart items to active session and to the logged-in user's private storage.
+    """
+    if cart is None:
+        cart = request.session.get('cart', {})
+    request.session['cart'] = cart
+    user = get_current_user(request)
+    if user:
+        request.session[f'user_cart_{user.id}'] = cart
+    request.session.modified = True
+
+
+def load_user_cart_on_login(request, user):
+    """
+    When a user logs in, merges any temporary guest cart items into their private account cart,
+    and sets the active session cart to this user's cart.
+    """
+    guest_cart = request.session.get('cart', {})
+    user_saved_cart = request.session.get(f'user_cart_{user.id}', {})
+
+    # Merge guest items into user saved cart
+    for pid, gitem in guest_cart.items():
+        if pid in user_saved_cart:
+            user_saved_cart[pid]['quantity'] += gitem.get('quantity', 1)
+        else:
+            user_saved_cart[pid] = gitem
+
+    request.session['cart'] = user_saved_cart
+    request.session[f'user_cart_{user.id}'] = user_saved_cart
+    request.session.modified = True
+
+
 # Create your views here.
 
 
@@ -135,7 +168,7 @@ def addtocart(request, id):
 
             'price': price,
 
-            'image': product.image.url,
+            'image': product.image.url if product.image else '',
 
             'quantity': 1,
         }
@@ -145,7 +178,7 @@ def addtocart(request, id):
             f"{product.name} added to cart successfully 🛒"
         )
 
-    request.session['cart'] = cart
+    sync_user_cart(request, cart)
 
     # SAME PAGE REDIRECT
     return redirect(request.META.get('HTTP_REFERER', '/'))
@@ -161,6 +194,9 @@ def cart(request):
         request.session['phone'] = user.phonnumber or request.session.get('phone', '')
         request.session['fullname'] = user.Fullname or request.session.get('fullname', '')
         request.session['email'] = user.email or request.session.get('email', '')
+        # If user is logged in, ensure their saved cart is loaded
+        if f'user_cart_{user.id}' in request.session and not request.session.get('cart'):
+            request.session['cart'] = request.session[f'user_cart_{user.id}']
     elif request.session.get('country'):
         user_country = request.session.get('country', 'India').strip()
 
@@ -171,7 +207,7 @@ def cart(request):
     for key, item in cart.items():
 
         # CLEAN PRICE
-        price = str(item['price'])
+        price = str(item.get('price', 0))
 
         price = price.replace('₹', '')
         price = price.replace('$', '')
@@ -184,7 +220,7 @@ def cart(request):
         except ValueError:
             price = 10.0
 
-        quantity = int(item['quantity'])
+        quantity = int(item.get('quantity', 1))
 
         item['total'] = price * quantity
 
@@ -256,12 +292,12 @@ def sipage(request):
                   password=l,
                   phonnumber=m
             )
-
             obj.save()
             request.session['fullname'] = h
             request.session['email'] = k
             request.session['phone'] = m
             request.session['country'] = j
+            load_user_cart_on_login(request, obj)
 
             messages.success(
                   request,
@@ -321,6 +357,9 @@ def logincheck(request):
             request.session['country'] = u_obj.country
             request.session['profile_pic_url'] = u_obj.profile_pic.url if u_obj.profile_pic else ''
 
+            # Restore and merge this specific user's private cart
+            load_user_cart_on_login(request, u_obj)
+
             messages.success(
                   request,
                   'Welcome Back Which Manga Are We Completing Today My Master 👑'
@@ -333,14 +372,10 @@ def logincheck(request):
 
             messages.warning(
                   request,
-                  mark_safe(
-                        'Signup Required Before Entering The Anime World 🌌.<br>'
-                        '<center>Click on Don’t have an account?</center>'
-                  )
+                  "Signup Required Before Entering The Anime World 🌌. Click on Don't have an account?"
             )
 
             return redirect('/Account/')
-
 
 
 
@@ -365,10 +400,19 @@ def logout(request):
 
         return redirect('/Home/')
 
-    # LOGOUT (clean session keys without invalidating CSRF cookie)
+    user = get_current_user(request)
+    if user:
+        # Save user's current cart before logging out
+        current_cart = request.session.get('cart', {})
+        request.session[f'user_cart_{user.id}'] = current_cart
+
+    # LOGOUT: clean user keys and clear session cart so guest/next user doesn't see it
+    request.session.pop('cart', None)
     request.session.pop('fullname', None)
     request.session.pop('email', None)
     request.session.pop('phone', None)
+    request.session.pop('profile_pic_url', None)
+    request.session.modified = True
 
     messages.success(
         request,
@@ -388,7 +432,7 @@ def increase_quantity(request, key):
 
         cart[key]['quantity'] += 1
 
-    request.session['cart'] = cart
+    sync_user_cart(request, cart)
 
     return redirect('/Cart/')
 
@@ -407,7 +451,7 @@ def decrease_quantity(request, key):
 
             del cart[key]
 
-    request.session['cart'] = cart
+    sync_user_cart(request, cart)
 
     return redirect('/Cart/')
 
@@ -430,7 +474,7 @@ def remove_cart_item(request, id):
             f"{item_name} removed from cart successfully 🗑️"
         )
 
-    request.session['cart'] = cart
+    sync_user_cart(request, cart)
 
     return redirect('/Cart/')
 
@@ -698,27 +742,18 @@ def manga_detail(request, id):
     # Recommended / Related manga from same category
     related_products = ShopProduct.objects.filter(category=product.category).exclude(id=product.id)[:4]
 
-    # Track reading history if user is logged in
+    # Check if user already has reading progress for this manga
     curr_user = get_current_user(request)
+    user_history = None
     if curr_user:
-        try:
-            ReadingHistory.objects.update_or_create(
-                user=curr_user,
-                manga=product,
-                defaults={
-                    'manga_name': product.name,
-                    'last_chapter': 1,
-                    'manga_image': product.image.url if product.image else ''
-                }
-            )
-        except Exception as e:
-            print(f"Reading history error: {e}")
+        user_history = ReadingHistory.objects.filter(user=curr_user, manga=product).first()
 
     return render(request, 'manga_detail.html', {
         'product': product,
         'total_chapters': total_chapters,
         'chapter_list': chapter_list,
         'related_products': related_products,
+        'user_history': user_history,
     })
 
 
@@ -830,15 +865,65 @@ def user_profile(request):
     })
 
 
+# REMOVE INDIVIDUAL MANGA FROM READING HISTORY
+@csrf_exempt
+def remove_reading_history(request, id):
+    user = get_current_user(request)
+    if not user:
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest' or request.GET.get('ajax') == '1':
+            return JsonResponse({'status': 'error', 'message': 'Please login first'}, status=401)
+        return redirect('/Account/')
+
+    # Delete either by ReadingHistory pk or by manga_id
+    ReadingHistory.objects.filter(user=user, id=id).delete()
+    ReadingHistory.objects.filter(user=user, manga_id=id).delete()
+    remaining_count = ReadingHistory.objects.filter(user=user).count()
+
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest' or request.GET.get('ajax') == '1' or request.method == 'POST':
+        return JsonResponse({'status': 'success', 'remaining_count': remaining_count})
+
+    messages.success(request, "Manga removed from your reading history! 🗑️")
+    return redirect('/Profile/')
+
+
+# CLEAR ALL READING HISTORY WITH ONE CLICK
+@csrf_exempt
+def clear_all_reading_history(request):
+    user = get_current_user(request)
+    if not user:
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest' or request.GET.get('ajax') == '1':
+            return JsonResponse({'status': 'error', 'message': 'Please login first'}, status=401)
+        return redirect('/Account/')
+
+    ReadingHistory.objects.filter(user=user).delete()
+
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest' or request.GET.get('ajax') == '1' or request.method == 'POST':
+        return JsonResponse({'status': 'success', 'remaining_count': 0})
+
+    messages.success(request, "Your entire reading history has been cleared! 🗑️✨")
+    return redirect('/Profile/')
+
+
+# AUTO-COMPLETE / REMOVE MANGA FROM HISTORY ON FINISHING LAST CHAPTER/PAGE
+@csrf_exempt
+def complete_manga_reading(request, id):
+    user = get_current_user(request)
+    if user:
+        ReadingHistory.objects.filter(user=user, manga_id=id).delete()
+        ReadingHistory.objects.filter(user=user, id=id).delete()
+        return JsonResponse({'status': 'completed', 'message': 'Manga completed and cleared from history!'})
+    return JsonResponse({'status': 'guest'})
+
+
 # PLACE ORDER (COD & ONLINE)
 @csrf_exempt
 def place_order(request):
     # Enforce Login Requirement: Only logged-in users can place orders
     user = get_current_user(request)
-    if not user and not request.session.get('fullname'):
+    if not user:
         messages.warning(
             request,
-            "Please Login or Sign Up first! Without that you cannot place an order ⚠️"
+            "Please Login or Sign Up first! You cannot place an order without logging in ⚠️"
         )
         return redirect('/Account/')
 
@@ -860,8 +945,6 @@ def place_order(request):
     if not customer_name or not phone or not shipping_address:
         messages.error(request, "Please provide your Full Name, Phone Number, and Delivery Address ⚠️")
         return redirect('/Cart/')
-
-    user = get_current_user(request)
 
     # Calculate Grand Total
     grand_total = 0
@@ -886,7 +969,7 @@ def place_order(request):
 
     country = request.POST.get('country', '').strip() or (user.country.strip() if (user and user.country) else request.session.get('country', 'India'))
 
-    # Create Order
+    # Create Order strictly associated with the logged-in user
     order = UserOrder.objects.create(
         order_number=order_num,
         user=user,
@@ -921,8 +1004,11 @@ def place_order(request):
             image=item.get('image', '')
         )
 
-    # Clear Cart Session
+    # Clear Cart Session & User Saved Cart
     request.session['cart'] = {}
+    if user:
+        request.session[f'user_cart_{user.id}'] = {}
+    request.session.modified = True
 
     messages.success(
         request,
@@ -936,14 +1022,15 @@ def place_order(request):
     return redirect('/MyOrders/')
 
 
-# LIVE ORDER TRACKING & MANAGEMENT
+# LIVE ORDER TRACKING & MANAGEMENT (ONLY FOR LOGGED IN USER)
 def my_orders(request):
     user = get_current_user(request)
-    user_email = request.session.get('email')
-    user_phone = request.session.get('phone')
+    if not user:
+        messages.warning(request, "Please Login or Sign Up to view your orders 🔐")
+        return redirect('/Account/')
 
     # If logged-in user's country was updated in backend (sidata), sync their session and orders in real-time
-    if user and user.country:
+    if user.country:
         fresh_country = user.country.strip()
         request.session['country'] = fresh_country
         UserOrder.objects.filter(
@@ -952,21 +1039,14 @@ def my_orders(request):
             (Q(phone=user.phonnumber) if user.phonnumber else Q(pk__in=[]))
         ).update(country=fresh_country, user=user)
 
-    orders = []
-    if user:
-        orders = list(UserOrder.objects.filter(user=user).prefetch_related('items').order_by('-created_at', '-id'))
-    elif user_email:
-        orders = list(UserOrder.objects.filter(email__iexact=user_email).prefetch_related('items').order_by('-created_at', '-id'))
-    elif user_phone:
-        orders = list(UserOrder.objects.filter(phone=user_phone).prefetch_related('items').order_by('-created_at', '-id'))
-    else:
-        orders = list(UserOrder.objects.all().prefetch_related('items').order_by('-created_at', '-id'))
+    # STRICT: Only retrieve orders belonging to THIS logged-in user
+    orders = list(UserOrder.objects.filter(user=user).prefetch_related('items').order_by('-created_at', '-id'))
 
-    # Flexible Order search: Puts matched orders at top while keeping all orders visible
+    # Order search strictly filtered to THIS user's orders
     search_q = request.GET.get('track', '').strip()
     highlight_order_id = None
     if search_q:
-        matched_qs = UserOrder.objects.filter(
+        matched_qs = UserOrder.objects.filter(user=user).filter(
             Q(order_number__icontains=search_q) |
             Q(full_name__icontains=search_q) |
             Q(phone__icontains=search_q) |
@@ -996,7 +1076,12 @@ def update_order(request, order_id):
     if request.method != "POST":
         return redirect('/MyOrders/')
 
-    order = get_object_or_404(UserOrder, id=order_id)
+    user = get_current_user(request)
+    if not user:
+        messages.warning(request, "Please login first 🔐")
+        return redirect('/Account/')
+
+    order = get_object_or_404(UserOrder, id=order_id, user=user)
 
     if order.status not in ['Placed', 'Processing']:
         messages.error(request, f"Order #{order.order_number} cannot be modified because it is {order.get_status_display()} ⚠️")
@@ -1026,7 +1111,12 @@ def cancel_order(request, order_id):
     if request.method != "POST":
         return redirect('/MyOrders/')
 
-    order = get_object_or_404(UserOrder, id=order_id)
+    user = get_current_user(request)
+    if not user:
+        messages.warning(request, "Please login first 🔐")
+        return redirect('/Account/')
+
+    order = get_object_or_404(UserOrder, id=order_id, user=user)
 
     # Prevent cancellation once out for delivery or delivered
     if order.status in ['Out for Delivery', 'Delivered']:
@@ -1053,7 +1143,12 @@ def submit_return_request(request, order_id):
     if request.method != "POST":
         return redirect('/MyOrders/')
 
-    order = get_object_or_404(UserOrder, id=order_id)
+    user = get_current_user(request)
+    if not user:
+        messages.warning(request, "Please login first 🔐")
+        return redirect('/Account/')
+
+    order = get_object_or_404(UserOrder, id=order_id, user=user)
 
     eligible_statuses = ['Delivered', 'Return Requested', 'Replacement Requested', 'Return Approved', 'Replacement Approved']
     if order.status not in eligible_statuses:
@@ -1071,8 +1166,6 @@ def submit_return_request(request, order_id):
     if not reason or not description:
         messages.error(request, "Please select a reason and provide description for your request ⚠️")
         return redirect('/MyOrders/')
-
-    user = get_current_user(request) or order.user
 
     # Create or update return request record
     return_obj, created = OrderReturnRequest.objects.update_or_create(

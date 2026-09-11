@@ -97,10 +97,18 @@ html:not([data-theme="light"]) body {
 }
 
 /* Dark Mode Headings */
-html[data-theme="dark"] h1, html[data-theme="dark"] h2, html[data-theme="dark"] h3, 
-html[data-theme="dark"] h4, html[data-theme="dark"] h5, html[data-theme="dark"] h6,
-html:not([data-theme="light"]) h1, html:not([data-theme="light"]) h2, html:not([data-theme="light"]) h3,
-html:not([data-theme="light"]) h4, html:not([data-theme="light"]) h5, html:not([data-theme="light"]) h6 {
+html[data-theme="dark"] h1,
+html[data-theme="dark"] h2,
+html[data-theme="dark"] h3,
+html[data-theme="dark"] h4,
+html[data-theme="dark"] h5,
+html[data-theme="dark"] h6,
+html:not([data-theme="light"]) h1,
+html:not([data-theme="light"]) h2,
+html:not([data-theme="light"]) h3,
+html:not([data-theme="light"]) h4,
+html:not([data-theme="light"]) h5,
+html:not([data-theme="light"]) h6 {
     color: #ffffff !important;
     text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
 }
@@ -320,12 +328,10 @@ html[data-theme="light"] .cardbox:hover {
 
 /* Gradient overlay preserves anime artwork with clear dark fade at bottom */
 html[data-theme="light"] .imgbox::after {
-    background: linear-gradient(
-        to top,
-        rgba(6, 12, 24, 0.92) 0%,
-        rgba(6, 12, 24, 0.55) 35%,
-        transparent 68%
-    ) !important;
+    background: linear-gradient(to top,
+            rgba(6, 12, 24, 0.92) 0%,
+            rgba(6, 12, 24, 0.55) 35%,
+            transparent 68%) !important;
 }
 
 html[data-theme="light"] .cardcontent .manga-name,
@@ -687,17 +693,18 @@ html[data-theme="light"] .auth-link {
 
 /* 5. Light Manga Details & Chapters */
 html[data-theme="light"] .manga-detail-hero {
-    background: rgba(240, 246, 254, 0.94) !important;
-    border: 1.5px solid rgba(0, 119, 255, 0.3) !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
 }
 
 html[data-theme="light"] .manga-header-title {
-    color: #091b38 !important;
-    text-shadow: none !important;
+    color: #ffffff !important;
+    text-shadow: 0 0 25px rgba(0, 240, 255, 0.4) !important;
 }
 
 html[data-theme="light"] .manga-detail-hero p {
-    color: #1e293b !important;
+    color: #cbd5e1 !important;
 }
 
 html[data-theme="light"] .chapters-container {
@@ -936,6 +943,51 @@ html[data-theme="light"] .history-read-btn {
     color: #0066cc !important;
 }
 
+html[data-theme="light"] .btn-history-item-del {
+    background: rgba(220, 38, 38, 0.1) !important;
+    border-color: rgba(220, 38, 38, 0.3) !important;
+    color: #dc2626 !important;
+}
+
+html[data-theme="light"] .btn-history-item-del:hover {
+    background: #dc2626 !important;
+    color: #ffffff !important;
+}
+
+html[data-theme="light"] .btn-history-clear-all {
+    background: rgba(220, 38, 38, 0.1) !important;
+    border-color: rgba(220, 38, 38, 0.35) !important;
+    color: #dc2626 !important;
+}
+
+html[data-theme="light"] .btn-history-clear-all:hover {
+    background: #dc2626 !important;
+    color: #ffffff !important;
+}
+
+html[data-theme="light"] .btn-history-show-more {
+    background: linear-gradient(135deg, rgba(0, 102, 204, 0.15), rgba(14, 165, 233, 0.15)) !important;
+    border-color: #0066cc !important;
+    color: #0066cc !important;
+}
+
+html[data-theme="light"] .btn-history-show-more:hover {
+    background: linear-gradient(135deg, #0066cc, #0284c7) !important;
+    color: #ffffff !important;
+}
+
+html[data-theme="light"] .history-grid-container.history-grid-scroll-active {
+    scrollbar-color: #0066cc rgba(220, 230, 245, 0.8) !important;
+}
+
+html[data-theme="light"] .history-grid-container.history-grid-scroll-active::-webkit-scrollbar-track {
+    background: rgba(220, 230, 245, 0.8) !important;
+}
+
+html[data-theme="light"] .history-grid-container.history-grid-scroll-active::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #0066cc, #0284c7) !important;
+}
+
 html[data-theme="light"] .order-card-container {
     background: rgba(255, 255, 255, 0.94) !important;
     border-color: rgba(0, 102, 204, 0.3) !important;
@@ -1105,12 +1157,14 @@ html[data-theme="light"] .return-info-line {
 }
 
 html[data-theme="light"] .return-info-line strong {
-    color: #004499 !important; /* Deep Blue Label */
+    color: #004499 !important;
+    /* Deep Blue Label */
     font-weight: 700 !important;
 }
 
 html[data-theme="light"] .return-info-line span {
-    color: #0f172a !important; /* High contrast dark navy value */
+    color: #0f172a !important;
+    /* High contrast dark navy value */
     font-weight: 600 !important;
 }
 
@@ -1353,10 +1407,3 @@ html[data-theme="light"] .currency-toast-popup {
     color: #091b38 !important;
     box-shadow: 0 10px 30px rgba(0, 50, 150, 0.2) !important;
 }
-
-
-
-
-
-
-

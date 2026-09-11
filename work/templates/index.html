@@ -72,9 +72,11 @@
         <li class="nav-item">
           <a class="nav-link nav-link-custom" href="/Contect/">Contect</a>
         </li>
+        {% if request.session.fullname %}
         <li class="nav-item">
           <a class="nav-link nav-link-custom" href="/MyOrders/">Orders</a>
         </li>
+        {% endif %}
 
         <li class="nav-item">
           <a class="nav-link cart-nav-link" href="/Cart/" title="View Cart">
